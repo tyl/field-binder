@@ -26,6 +26,7 @@ public class ButtonBar {
     private final Button btnEdit  = new Button("Edit");
     private final Button btnRemove  = new Button("Remove");
     private final Button btnCommit  = new Button("Commit");
+    private final Button btnDiscard = new Button("Discard");
 
     ButtonBar(final CrudNavigation nav) {
         this.nav = nav;
@@ -41,6 +42,7 @@ public class ButtonBar {
         buttonLayout.addComponent(btnEdit);
         buttonLayout.addComponent(btnRemove);
         buttonLayout.addComponent(btnCommit);
+        buttonLayout.addComponent(btnDiscard);
 
 
 
@@ -98,6 +100,13 @@ public class ButtonBar {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 nav.commit();
+            }
+        });
+
+        btnDiscard.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                nav.discard();
             }
         });
 

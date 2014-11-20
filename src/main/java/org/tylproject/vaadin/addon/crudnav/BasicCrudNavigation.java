@@ -10,9 +10,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by evacchi on 19/11/14.
  */
-final public class BasicCrudNavigation
-        extends AbstractCrudNavigation
-        implements CrudNavigation {
+final public class BasicCrudNavigation extends AbstractCrudNavigation implements CrudNavigation {
 
     private final Container.Indexed container;
     private Object currentItemId;
@@ -40,8 +38,8 @@ final public class BasicCrudNavigation
     public Object setCurrentItemId(Object itemId) {
         Object prevId = this.currentItemId;
         this.currentItemId = itemId;
-        getEventRouter().fireEvent(new CurrentItemChange.Event(this,
-                currentItemId, prevId));
+        getEventRouter().fireEvent(
+                new CurrentItemChange.Event(this, currentItemId, prevId));
         return prevId;
     }
 
