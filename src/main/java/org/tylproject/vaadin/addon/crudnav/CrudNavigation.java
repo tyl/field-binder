@@ -22,6 +22,8 @@ public interface CrudNavigation extends
         OnDiscard.Notifier{
 
     public Container.Indexed  getContainer();
+    public void setContainer(Container.Indexed container);
+
     public Item getCurrentItem();
     public Object getCurrentItemId();
     public Object setCurrentItemId(Object itemId);

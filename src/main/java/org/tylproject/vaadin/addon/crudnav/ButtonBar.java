@@ -6,6 +6,8 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
 
+import javax.annotation.Nonnull;
+
 /**
  * Created by evacchi on 19/11/14.
  */
@@ -16,7 +18,7 @@ public class ButtonBar {
     }
 
     private final HorizontalLayout buttonLayout;
-    private final CrudNavigation nav;
+    private @Nonnull CrudNavigation nav;
 
     private final Button btnFirst = new Button("First");
     private final Button btnPrev  = new Button("Prev");
@@ -49,42 +51,42 @@ public class ButtonBar {
         btnFirst.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav.first();
+                nav().first();
             }
         });
 
         btnNext.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav.next();
+                nav().next();
             }
         });
 
         btnPrev.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav.prev();
+                nav().prev();
             }
         });
 
         btnLast.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav.last();
+                nav().last();
             }
         });
 
         btnCreate.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav.create();
+                nav().create();
             }
         });
 
         btnEdit.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav.edit();
+                nav().edit();
             }
         });
 
@@ -92,50 +94,49 @@ public class ButtonBar {
         btnRemove.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav.remove();
+                nav().remove();
             }
         });
 
         btnCommit.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav.commit();
+                nav().commit();
             }
         });
 
         btnDiscard.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav.discard();
+                nav().discard();
             }
         });
 
-        nav.addCurrentItemChangeListener(new CurrentItemChange.Listener() {
-            @Override
-            public void currentItemChangeListener(CurrentItemChange.Event event) {
-                Container.Indexed ctr = nav.getContainer();
-                Object currentId = nav.getCurrentItemId();
-
-                boolean hasNext = false;
-                boolean hasPrev = false;
-
-                if(currentId != null){
-                    hasNext = null != ctr.nextItemId(currentId);
-                    hasPrev = null != ctr.prevItemId(currentId);
-                }
-
-                btnNext.setEnabled(hasNext);
-                btnPrev.setEnabled(hasPrev);
-                btnFirst.setEnabled(hasPrev);
-                btnLast.setEnabled(hasNext);
-
-            }
-        });
+        attachNavigation(nav);
 
     }
 
     public Layout getLayout() {
         return buttonLayout;
+    }
+
+    public void setNavigation(@Nonnull CrudNavigation nav) {
+        detachNavigation(this.nav);
+        this.nav = nav;
+        attachNavigation(nav);
+        updateButtonStatus();
+    }
+
+    private CrudNavigation nav() {
+        return this.nav;
+    }
+
+    private void detachNavigation(@Nonnull CrudNavigation nav) {
+        nav.removeCurrentItemChangeListener(buttonBarStatusUpdater);
+    }
+
+    private void attachNavigation(@Nonnull CrudNavigation nav) {
+        nav.addCurrentItemChangeListener(buttonBarStatusUpdater);
     }
 
     private void enable(Button... btns) {
@@ -144,4 +145,29 @@ public class ButtonBar {
     private void disable(Button... btns) {
         for (Button btn: btns) btn.setEnabled(false);
     }
+
+    private void updateButtonStatus() {
+        Container.Indexed ctr = nav.getContainer();
+        Object currentId = nav.getCurrentItemId();
+
+        boolean hasNext = false;
+        boolean hasPrev = false;
+
+        if(currentId != null){
+            hasNext = null != ctr.nextItemId(currentId);
+            hasPrev = null != ctr.prevItemId(currentId);
+        }
+
+        btnNext.setEnabled(hasNext);
+        btnPrev.setEnabled(hasPrev);
+        btnFirst.setEnabled(hasPrev);
+        btnLast.setEnabled(hasNext);
+    }
+
+    CurrentItemChange.Listener buttonBarStatusUpdater = new CurrentItemChange.Listener() {
+        @Override
+        public void currentItemChangeListener(CurrentItemChange.Event event) {
+            updateButtonStatus();
+        }
+    };
 }

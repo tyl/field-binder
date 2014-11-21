@@ -12,16 +12,23 @@ import javax.annotation.Nonnull;
  */
 final public class BasicCrudNavigation extends AbstractCrudNavigation implements CrudNavigation {
 
-    private final Container.Indexed container;
+    private @Nonnull Container.Indexed container;
     private Object currentItemId;
 
-    public BasicCrudNavigation(Container.Indexed container) {
-        this.container = container;
+    public BasicCrudNavigation(@Nonnull final Container.Indexed container) {
+        setContainer(container);
     }
 
     @Override
     public Container.Indexed getContainer() {
         return container;
+    }
+
+    @Override
+    public void setContainer(Container.Indexed container) {
+        this.container = container;
+        this.currentItemId = null;
+        first();
     }
 
     @Override
