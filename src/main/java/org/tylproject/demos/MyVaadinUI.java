@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
@@ -19,6 +20,7 @@ import org.tylproject.vaadin.addon.crudnav.BasicCrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.ButtonBar;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.*;
+import org.tylproject.vaadin.addon.masterdetail.DetailContainerChange;
 import org.tylproject.vaadin.addon.masterdetail.MasterDetail;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class MyVaadinUI extends UI
 
     //region Field declarations
     private static final String FOCUS = "masterdetail-focus";
+    private List<? extends Focusable> fieldOrder;
 
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class)
@@ -60,6 +63,13 @@ public class MyVaadinUI extends UI
     final ButtonBar buttonBar = ButtonBar.forNavigation(masterNav);
 
     final Panel formPanel = new Panel();
+//    {
+//        @Override
+//        public void removeShortcutListener(ShortcutListener shortcut) {
+//            getActionManager().removeAction(shortcut);
+//        }
+//    };
+
     final Panel tablePanel = new Panel();
     //endregion
 
@@ -68,14 +78,18 @@ public class MyVaadinUI extends UI
 
         setupDummyDataset();
 
-
         final VerticalLayout layout = new VerticalLayout();
 
         layout.addComponent(buttonBar.getLayout());
 
 
-        masterNav.addCurrentItemChangeListener(
-                new MasterUpdater(masterNav, masterDetail));
+        masterNav.addCurrentItemChangeListener(new MasterUpdater(masterDetail));
+        masterDetail.addDetailContainerChangeListener(new DetailContainerChange.Listener() {
+            @Override
+            public void detailContainerChange(DetailContainerChange.Event event) {
+                detailNav.setContainer((Container.Indexed) event.getNewContainer());
+            }
+        });
 
         detailNav.addCurrentItemChangeListener(
                 new Nav2TableSelectionUpdater(table));
@@ -100,6 +114,16 @@ public class MyVaadinUI extends UI
         table.setSelectable(true);
         table.setSizeFull();
         table.setHeight("400px");
+
+        table.setTableFieldFactory(new TableFieldFactory() {
+            final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
+            @Override
+            public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
+                if (itemId == table.getValue())
+                    return fieldFactory.createField(container, itemId, propertyId, uiContext);
+                else return null;
+            }
+        });
 
 
 
@@ -170,39 +194,47 @@ public class MyVaadinUI extends UI
 
 
 
+
+        formPanel.addShortcutListener(new TabCycler(fieldOrder));
+
+
         this.addShortcutListener(new ShortcutListener(
-                "focus-change", ShortcutAction.KeyCode.F9,
-                new int[]{  }) {
+                "focus-change", ShortcutAction.KeyCode.TAB, new int[] {ShortcutAction.ModifierKey.CTRL}) {
             @Override
             public void handleAction(Object sender, Object target) {
                 Notification.show("hello");
                 if (currentNav == masterNav) {
+                    // switch to table
+                    formPanel.removeAction(tabCycler);
                     focus(detailNav);
                     table.focus();
                     detailNav.first();
                 }
                 else {
+                    formPanel.addShortcutListener(tabCycler);
                     focus(masterNav);
                     formPanel.focus();
                 }
             }
         });
 
-
-
-        (table).addListener(FieldEvents.BlurEvent.class, new FieldEvents.BlurListener() {
+        this.addShortcutListener(new ShortcutListener(
+                "next-item", ShortcutAction.KeyCode.F4, new int[0]
+        ) {
             @Override
-            public void blur(FieldEvents.BlurEvent event) {
-                System.out.println("Blur " + event);
+            public void handleAction(Object sender, Object target) {
+                currentNav().next();
             }
-        }, FieldEvents.BlurListener.blurMethod);
-        (table).addListener(FieldEvents.FocusEvent.class, new FieldEvents.FocusListener() {
-            @Override
-            public void focus(FieldEvents.FocusEvent event) {
-                System.out.println("Focus " + event);
-            }
-        }, FieldEvents.FocusListener.focusMethod);
+        });
 
+        this.addShortcutListener(new ShortcutListener(
+                "next-item", ShortcutAction.KeyCode.F3, new int[0]
+        ) {
+            @Override
+            public void handleAction(Object sender, Object target) {
+                currentNav().prev();
+            }
+        });
 
         formPanel.addClickListener(new MouseEvents.ClickListener() {
             @Override
@@ -219,15 +251,19 @@ public class MyVaadinUI extends UI
                 //table.focus();
             }
         });
-        tablePanel.setTabIndex(-1);
-        table.setTabIndex(-1);
+//        tablePanel.setTabIndex(-1);
+//        table.setTabIndex(-1);
 
 
         focus(masterNav);
     }
 
+    private CrudNavigation currentNav() {
+        return currentNav;
+    }
+
     private void focus(CrudNavigation nav) {
-        if (this.currentNav == nav) return;
+        if (this.currentNav() == nav) return;
 
         //Notification.show( (nav == masterNav) ? "Master" : "Detail" );
         if (nav == masterNav) {
@@ -246,24 +282,38 @@ public class MyVaadinUI extends UI
         formLayout.setMargin(true);
         formLayout.setHeightUndefined();
 
-        formLayout.addComponent(fieldGroup.buildAndBind("firstName"));
-        formLayout.addComponent(fieldGroup.buildAndBind("lastName"));
+        final TextField firstName = (TextField) fieldGroup.buildAndBind("firstName");
+        final TextField lastName = (TextField) fieldGroup.buildAndBind("lastName");
+        formLayout.addComponent(firstName);
+        formLayout.addComponent(lastName);
+
+        TextField one = new TextField("one");
+
+        TextField two = new TextField("two");
+
+        TextField three = new TextField("three");
+
+        formLayout.addComponent(one);
+        formLayout.addComponent(two);
+        formLayout.addComponent(three);
+
+        this.fieldOrder = Arrays.asList(  firstName, lastName, one, two, three );
+        this.tabCycler = new TabCycler(fieldOrder);
+
 
         return formLayout;
     }
 
     private class MasterUpdater implements CurrentItemChange.Listener {
-        private final CrudNavigation masterNav;
         private final MasterDetail masterDetail;
 
-        public MasterUpdater(CrudNavigation masterNav, MasterDetail masterDetail) {
-            this.masterNav = masterNav;
+        public MasterUpdater(MasterDetail masterDetail) {
             this.masterDetail = masterDetail;
         }
 
         @Override
         public void currentItemChangeListener(CurrentItemChange.Event event) {
-            masterDetail.setMasterItemDataSource(masterNav.getCurrentItem());
+            masterDetail.setMasterItemDataSource(event.getNewItem());
         }
     }
 
@@ -291,8 +341,32 @@ public class MyVaadinUI extends UI
 
         @Override
         public void valueChange(Property.ValueChangeEvent event) {
-            detailNav.setCurrentItemId(event.getProperty().getValue());
+            nav.setCurrentItemId(event.getProperty().getValue());
         }
     }
 
+    private TabCycler tabCycler ;
+
+    private class TabCycler extends ShortcutListener {
+        private final List<? extends Focusable> focusables;
+        private final Focusable first;
+
+        public TabCycler(List<? extends Focusable> focusables) {
+            super("tab", KeyCode.TAB, new int[0]);
+            this.focusables = focusables;
+            this.first = focusables.get(0);
+        }
+
+        @Override
+        public void handleAction(Object sender, Object target) {
+            if (sender == formPanel) {
+                int indexOf = focusables.indexOf(target);
+                if (indexOf < 0 || indexOf == focusables.size() - 1) {
+                    first.focus();
+                } else {
+                    focusables.get(indexOf + 1).focus();
+                }
+            }
+        }
+    }
 }
