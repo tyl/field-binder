@@ -56,6 +56,7 @@ public abstract class BeanItemStrategy {
         @Override
         public void masterItemChange(MasterItemChange.Event event) {
             BeanItem<?> beanItem = (BeanItem<?>) event.getNewItem();
+            if (beanItem == null) return;
 
             Property<?> detailProperty = beanItem.getItemProperty(detailPropertyId);
             Collection<U> values = (Collection<U>) detailProperty.getValue();
