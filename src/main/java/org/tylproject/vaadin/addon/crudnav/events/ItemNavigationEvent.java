@@ -1,5 +1,6 @@
 package org.tylproject.vaadin.addon.crudnav.events;
 
+import com.vaadin.data.Item;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 
 import java.util.EventObject;
@@ -20,9 +21,15 @@ public class ItemNavigationEvent extends EventObject {
     public Object getNewItemId() {
         return newItemId;
     }
+    public Item getNewItem() {
+        return getSource().getContainer().getItem(newItemId);
+    }
 
     public Object getOldItemId() {
         return oldItemId;
+    }
+    public Item getOldItem() {
+        return getSource().getContainer().getItem(oldItemId);
     }
 
     @Override

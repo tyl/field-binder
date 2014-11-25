@@ -29,6 +29,17 @@ public class ButtonBar {
     private final Button btnRemove  = new Button("Remove");
     private final Button btnCommit  = new Button("Commit");
     private final Button btnDiscard = new Button("Discard");
+    private final Button[] allButtons = {
+            btnFirst,
+            btnPrev,
+            btnNext,
+            btnLast,
+            btnCreate,
+            btnEdit,
+            btnRemove,
+            btnCommit,
+            btnDiscard
+    };
 
     ButtonBar(final CrudNavigation nav) {
         this.nav = nav;
@@ -148,6 +159,13 @@ public class ButtonBar {
 
     private void updateButtonStatus() {
         Container.Indexed ctr = nav.getContainer();
+        if (ctr == null) {
+            disable(allButtons);
+            return;
+        } else {
+            enable(allButtons);
+        }
+
         Object currentId = nav.getCurrentItemId();
 
         boolean hasNext = false;
@@ -170,4 +188,15 @@ public class ButtonBar {
             updateButtonStatus();
         }
     };
+
+    class NextButtonClickListener implements Button.ClickListener {
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+            nav().next();
+        }
+    }
+
 }
+
+
+

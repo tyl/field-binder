@@ -10,6 +10,14 @@ import org.tylproject.vaadin.addon.crudnav.events.OnCommit;
  */
 public class BasicCrudStrategy implements ItemRemove.Listener,
         ItemCreate.Listener, OnCommit.Listener {
+
+
+
+    private static BasicCrudStrategy instance = new BasicCrudStrategy();
+    public static BasicCrudStrategy get() { return instance; }
+
+    protected BasicCrudStrategy() {}
+
     @Override
     public void itemRemoveListener(ItemRemove.Event event) {
         event.getSource().getContainer().removeItem(event.getSource().getCurrentItemId());
