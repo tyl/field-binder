@@ -75,11 +75,11 @@ public class MyVaadinUI extends UI
 
         setupDummyDataset();
 
-        setupMainButtonBar();
+        setupLayout();
 
         setupDetailNav();
         setupDetailCrud();
-        
+
         setupMasterNav();
         setupMasterCrud();
 
@@ -96,24 +96,20 @@ public class MyVaadinUI extends UI
         setContent(layout);
     }
 
-    private void setupMainButtonBar() {
+    private void setupLayout() {
         layout.addComponent(buttonBar.getLayout());
+        layout.addComponent(formPanel);
+        layout.addComponent(tablePanel);
     }
 
     private void setupMasterLayout() {
         FormLayout formLayout = makeFormLayout(fieldGroup,
                 masterDataSource.getItem(masterDataSource.firstItemId()));
-
-
         formPanel.setContent(formLayout);
-
-        layout.addComponent(formPanel);
-
     }
 
     private void setupDetailLayout() {
 
-        layout.addComponent(tablePanel);
         tablePanel.setContent(table);
         table.setSelectable(true);
         table.setSizeFull();
@@ -153,13 +149,7 @@ public class MyVaadinUI extends UI
     }
 
     private void setupDetailNav() {
-        masterDetail.addDetailContainerChangeListener(new DetailContainerChange.Listener() {
-            @Override
-            public void detailContainerChange(DetailContainerChange.Event event) {
-                detailNav.setContainer((Container.Indexed) event.getNewContainer());
-                detailNav.first();
-            }
-        });
+        masterDetail.addDetailContainerChangeListener(new DetailContainerUpdater(detailNav));
 
         detailNav.addCurrentItemChangeListener(new Nav2TableSelectionUpdater(table));
 
@@ -293,7 +283,7 @@ public class MyVaadinUI extends UI
         return formLayout;
     }
 
-    private class MasterUpdater implements CurrentItemChange.Listener {
+    public static class MasterUpdater implements CurrentItemChange.Listener {
         private final MasterDetail masterDetail;
 
         public MasterUpdater(MasterDetail masterDetail) {
@@ -352,6 +342,20 @@ public class MyVaadinUI extends UI
                     focusables.get(indexOf + 1).focus();
                 }
             //}
+        }
+    }
+
+    private class DetailContainerUpdater implements DetailContainerChange.Listener {
+        private final CrudNavigation nav;
+
+        public DetailContainerUpdater(CrudNavigation detailNav) {
+            this.nav = detailNav;
+        }
+
+        @Override
+        public void detailContainerChange(DetailContainerChange.Event event) {
+            nav.setContainer((Container.Indexed) event.getNewContainer());
+            nav.first();
         }
     }
 }
