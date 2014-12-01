@@ -1,7 +1,8 @@
-package org.tylproject.vaadin.addon.masterdetail;
+package org.tylproject.vaadin.addon.masterdetail.events;
 
 import com.vaadin.data.Container;
 import com.vaadin.util.ReflectTools;
+import org.tylproject.vaadin.addon.masterdetail.MasterDetailController;
 
 import java.lang.reflect.Method;
 import java.util.EventObject;

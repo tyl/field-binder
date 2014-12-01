@@ -1,10 +1,9 @@
-package org.tylproject.vaadin.addon.masterdetail.builder;
+package org.tylproject.vaadin.addon.masterdetail;
 
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**

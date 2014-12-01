@@ -1,9 +1,8 @@
-package org.tylproject.vaadin.addon.masterdetail.builder;
+package org.tylproject.vaadin.addon.masterdetail;
 
 import com.vaadin.data.Property;
 import com.vaadin.ui.Table;
 import org.tylproject.vaadin.addon.crudnav.BasicCrudNavigation;
-import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
 
 /**

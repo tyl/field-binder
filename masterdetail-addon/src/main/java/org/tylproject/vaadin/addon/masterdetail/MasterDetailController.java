@@ -4,6 +4,8 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.EventRouter;
+import org.tylproject.vaadin.addon.masterdetail.events.DetailContainerChange;
+import org.tylproject.vaadin.addon.masterdetail.events.MasterItemChange;
 
 import java.io.Serializable;
 

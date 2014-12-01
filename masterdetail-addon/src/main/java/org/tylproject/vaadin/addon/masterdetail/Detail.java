@@ -1,15 +1,11 @@
-package org.tylproject.vaadin.addon.masterdetail.builder;
+package org.tylproject.vaadin.addon.masterdetail;
 
-import com.vaadin.data.util.BeanContainer;
 import com.vaadin.ui.Table;
-import org.tylproject.vaadin.addon.masterdetail.builder.crud.BeanDetailCrud;
-import org.tylproject.vaadin.addon.masterdetail.builder.crud.BeanMasterCrud;
+import org.tylproject.vaadin.addon.masterdetail.crud.BeanDetailCrud;
 import org.tylproject.vaadin.addon.crudnav.BasicCrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.*;
 import org.vaadin.maddon.ListContainer;
-
-import java.util.List;
 
 /**
  * Created by evacchi on 27/11/14.

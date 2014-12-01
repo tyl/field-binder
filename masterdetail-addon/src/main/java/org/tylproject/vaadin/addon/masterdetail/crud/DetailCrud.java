@@ -1,6 +1,6 @@
-package org.tylproject.vaadin.addon.masterdetail.builder.crud;
+package org.tylproject.vaadin.addon.masterdetail.crud;
 
-import org.tylproject.vaadin.addon.masterdetail.builder.Detail;
+import org.tylproject.vaadin.addon.masterdetail.Detail;
 
 /**
  * Created by evacchi on 27/11/14.

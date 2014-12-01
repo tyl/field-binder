@@ -6,7 +6,7 @@
 	<artifactId>masterdetail-demo</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>Vaadin Web Application</name>
+	<name>Master-Detail Demo</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

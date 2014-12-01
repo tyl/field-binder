@@ -1,11 +1,9 @@
 package org.tylproject.demos;
 
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Container;
-import com.vaadin.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.server.VaadinRequest;
@@ -13,11 +11,10 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.tylproject.vaadin.addon.masterdetail.builder.Detail;
-import org.tylproject.vaadin.addon.masterdetail.builder.Master;
-import org.tylproject.vaadin.addon.masterdetail.builder.MasterDetail;
-import org.tylproject.vaadin.addon.masterdetail.builder.crud.BeanDetailCrud;
-import org.tylproject.vaadin.addon.masterdetail.builder.crud.BeanMasterCrud;
+import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
+import org.tylproject.vaadin.addon.masterdetail.Detail;
+import org.tylproject.vaadin.addon.masterdetail.Master;
+import org.tylproject.vaadin.addon.masterdetail.MasterDetail;
 import org.tylproject.demos.model.Address;
 import org.tylproject.demos.model.Person;
 import org.tylproject.vaadin.addon.MongoContainer;
@@ -38,12 +35,17 @@ public class MyVaadinUI extends UI {
     @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class)
     public static class Servlet extends VaadinServlet {}
 
-    final Container.Indexed masterDataSource  = // setupDummyDataset();
+    // setup a container instance
+    final MongoContainer<Person> masterDataSource  = // makeDummyDataset();
         MongoContainer.Builder.forEntity(Person.class, makeMongoTemplate()).build();
 
-    final BeanFieldGroup<Person> fieldGroup = new BeanFieldGroup<Person>(Person.class);
+    // instantiate field group for master
+    final FieldGroup fieldGroup = new FieldGroup();
+
+    // instantiate table for detail
     final Table table = new Table();
 
+    // generates the MasterDetail class
     final MasterDetail masterDetail = MasterDetail.with(
             Master.of(Person.class).fromContainer(masterDataSource).boundTo(fieldGroup).withDefaultCrud(),
             Detail.collectionOf(Address.class).fromMasterProperty("addressList").boundTo(table).withDefaultCrud()
@@ -66,7 +68,7 @@ public class MyVaadinUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
 
-        setupDummyDataset();
+        makeDummyDataset();
         setupLayout();
 
         setupMasterLayout();
@@ -105,6 +107,7 @@ public class MyVaadinUI extends UI {
         table.setSizeFull();
         table.setHeight("400px");
 
+        // inline editing
         table.setTableFieldFactory(new TableFieldFactory() {
             final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
             @Override
@@ -118,8 +121,7 @@ public class MyVaadinUI extends UI {
 
     }
 
-
-    private ListContainer<Person> setupDummyDataset() {
+    private ListContainer<Person> makeDummyDataset() {
         ListContainer<Person> dataSource = new ListContainer<Person>(Person.class);
         dataSource.addAll(Arrays.asList(
                 new Person("George", "Harrison"),
@@ -131,22 +133,30 @@ public class MyVaadinUI extends UI {
     }
 
 
-
-    protected FormLayout makeFormLayout(BeanFieldGroup fieldGroup) {
-
-        //  masterDetail.getMaster().getNavigation().first();
-
+    protected FormLayout makeFormLayout(final FieldGroup fieldGroup) {
 
 
         FormLayout formLayout = new FormLayout();
         formLayout.setMargin(true);
         formLayout.setHeightUndefined();
 
-//        fieldGroup.setItemDataSource(new BeanItem<Person>(new Person()));
+
+        masterDetail.getMaster().getNavigation().addCurrentItemChangeListener(new CurrentItemChange.Listener() {
+            @Override
+            public void currentItemChange(CurrentItemChange.Event event) {
+                if (event.getNewItemId() == null) {
+                    fieldGroup.setItemDataSource(new BeanItem<Person>(new Person()));
+                }
+            }
+        });
+        masterDetail.getMaster().getNavigation().first();
+
 
         final TextField firstName = (TextField) fieldGroup.buildAndBind("firstName");
         final TextField middleName = (TextField) fieldGroup.buildAndBind("middleName");
         final TextField lastName = (TextField) fieldGroup.buildAndBind("lastName");
+
+
 
         formLayout.addComponent(firstName);
         formLayout.addComponent(middleName);

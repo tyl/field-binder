@@ -1,4 +1,4 @@
-package org.tylproject.vaadin.addon.masterdetail.builder.crud;
+package org.tylproject.vaadin.addon.masterdetail.crud;
 
 import org.tylproject.vaadin.addon.crudnav.events.*;
 

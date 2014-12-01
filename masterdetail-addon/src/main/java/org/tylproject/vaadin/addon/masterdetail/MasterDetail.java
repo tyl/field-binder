@@ -1,4 +1,4 @@
-package org.tylproject.vaadin.addon.masterdetail.builder;
+package org.tylproject.vaadin.addon.masterdetail;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -7,7 +7,6 @@ import com.vaadin.ui.Table;
 import org.tylproject.vaadin.addon.masterdetail.connectors.ListContainerConnector;
 import org.tylproject.vaadin.addon.masterdetail.connectors.MasterDetailConnector;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
-import org.tylproject.vaadin.addon.masterdetail.MasterDetailController;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,15 +29,6 @@ public class MasterDetail<T,U> {
     }
 
 
-//    public MasterDetail(Builder builder) {
-//        this.master = builder.master;
-//        this.detail = builder.detail;
-//        this.controller = builder.masterDetailController;
-//        this.master.getNavigation().addCurrentItemChangeListener(new LeanBeanStrategy
-//                .MasterListener<Address>("addressList", Address.class, detail.getNavigation()));
-//        this.master.getNavigation().first();
-//    }
-
     public MasterDetailController getController() {
         return controller;
     }
@@ -55,15 +45,6 @@ public class MasterDetail<T,U> {
         return new Builder<X,Y>(masterBuilder, detailBuilder);
     }
 
-    /**
-     *
-     *
-     * MasterDetailForm
-     *   .forMaster(Master.of(Person.class).fromContainer(masterContainer).boundTo(fieldGroup))
-     *   .withDetail(Detail.collectionOf(Address.class).fromMasterProperty("addressList").boundTo(table))
-     *
-     *
-     */
     public static class Builder<TT,UU> {
 
 

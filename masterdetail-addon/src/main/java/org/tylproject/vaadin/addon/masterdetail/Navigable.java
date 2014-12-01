@@ -1,4 +1,4 @@
-package org.tylproject.vaadin.addon.masterdetail.builder;
+package org.tylproject.vaadin.addon.masterdetail;
 
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 

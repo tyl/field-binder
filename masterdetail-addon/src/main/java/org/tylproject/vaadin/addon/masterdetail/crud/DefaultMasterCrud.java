@@ -1,7 +1,7 @@
-package org.tylproject.vaadin.addon.masterdetail.builder.crud;
+package org.tylproject.vaadin.addon.masterdetail.crud;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
-import org.tylproject.vaadin.addon.masterdetail.builder.Master;
+import org.tylproject.vaadin.addon.masterdetail.Master;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.ItemEdit;
 import org.tylproject.vaadin.addon.crudnav.events.ItemRemove;

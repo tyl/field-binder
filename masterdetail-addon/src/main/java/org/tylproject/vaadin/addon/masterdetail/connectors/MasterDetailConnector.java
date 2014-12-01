@@ -1,11 +1,7 @@
 package org.tylproject.vaadin.addon.masterdetail.connectors;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
-import com.vaadin.ui.Table;
-import org.tylproject.vaadin.addon.masterdetail.builder.Detail;
-import org.tylproject.vaadin.addon.masterdetail.builder.Master;
+import org.tylproject.vaadin.addon.masterdetail.Detail;
 
 import java.util.Collection;
 

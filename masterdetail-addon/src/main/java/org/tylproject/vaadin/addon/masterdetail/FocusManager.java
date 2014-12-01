@@ -1,12 +1,10 @@
-package org.tylproject.vaadin.addon.masterdetail.builder;
+package org.tylproject.vaadin.addon.masterdetail;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.ui.*;
-import org.tylproject.vaadin.addon.crudnav.BasicCrudNavigation;
-import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.KeyBinder;
 
 import java.util.*;

@@ -1,7 +1,7 @@
 package org.tylproject.vaadin.addon.masterdetail.connectors;
 
 import com.vaadin.data.Container;
-import org.tylproject.vaadin.addon.masterdetail.builder.Detail;
+import org.tylproject.vaadin.addon.masterdetail.Detail;
 import org.vaadin.maddon.ListContainer;
 
 import java.util.Collection;

@@ -1,10 +1,10 @@
-package org.tylproject.vaadin.addon.masterdetail.builder;
+package org.tylproject.vaadin.addon.masterdetail;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanContainer;
-import org.tylproject.vaadin.addon.masterdetail.builder.crud.BeanMasterCrud;
-import org.tylproject.vaadin.addon.masterdetail.builder.crud.MongoMasterCrud;
+import org.tylproject.vaadin.addon.masterdetail.crud.BeanMasterCrud;
+import org.tylproject.vaadin.addon.masterdetail.crud.MongoMasterCrud;
 import org.tylproject.vaadin.addon.MongoContainer;
 import org.tylproject.vaadin.addon.crudnav.BasicCrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
@@ -69,7 +69,8 @@ public class Master<T> extends NavigableFieldGroup<FieldGroup> {
                 & OnCommit.Listener
                 & ItemRemove.Listener
                 & ItemEdit.Listener
-                & ItemCreate.Listener> Master.Builder<M> withCrud(X crudObject) {
+                & ItemCreate.Listener
+                & CurrentItemChange.Listener> Master.Builder<M> withCrud(X crudObject) {
 
 
             CrudNavigation masterNav = this.build().getNavigation();
@@ -79,6 +80,7 @@ public class Master<T> extends NavigableFieldGroup<FieldGroup> {
             masterNav.addOnDiscardListener(crudObject);
             masterNav.addItemEditListener(crudObject);
             masterNav.addItemCreateListener(crudObject);
+            masterNav.addCurrentItemChangeListener(crudObject);
 
             return this;
         }

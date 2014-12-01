@@ -1,7 +1,6 @@
-package org.tylproject.vaadin.addon.masterdetail.builder;
+package org.tylproject.vaadin.addon.masterdetail;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.ui.Panel;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
 
@@ -32,7 +31,7 @@ public class NavigableFieldGroup<T extends FieldGroup>
     }
     @Override
     public void currentItemChange(CurrentItemChange.Event event) {
-        if (event.getNewItem() != null) getFieldGroup().setItemDataSource(event.getNewItem());
+        fieldGroup.setItemDataSource(event.getNewItem());
     }
 
 }
