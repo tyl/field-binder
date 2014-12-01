@@ -16,6 +16,8 @@ Then `cd` into the `masterdetail-demo` directory and launch with
 
 ## 10 Minutes Tutorial
 
+![Master-Detail Demo](readme-imgs/masterdetail-demo.png)
+
 Define your model through POJOs:
 
 ```java
@@ -129,7 +131,7 @@ You should then initialize the form by adding the components to a layout as usua
         mainLayout.setMargin(true);
 
         mainLayout.addComponent(masterBar.getLayout());
-        mainLayout.addComponent(formLayout);
+        mainLayout.addComponent(new Panel(formLayout));
 
         mainLayout.addComponent(detailBar.getLayout());
         mainLayout.addComponent(table);

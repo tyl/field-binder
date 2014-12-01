@@ -78,7 +78,7 @@ public class MyVaadinUI extends UI {
         mainLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
         mainLayout.addComponent(buttonBar.getLayout());
-        mainLayout.addComponent(formLayout);
+        mainLayout.addComponent(new Panel(formLayout));
 
         mainLayout.addComponent(detailBar.getLayout());
         mainLayout.addComponent(table);
@@ -113,7 +113,7 @@ public class MyVaadinUI extends UI {
 
     private static MongoOperations makeMongoTemplate() {
         try {
-            return new MongoTemplate(new MongoClient ("localhost"), "test");
+            return new MongoTemplate(new MongoClient ("localhost"), "scratch");
         } catch (UnknownHostException ex) { throw new Error(ex); }
     }
 

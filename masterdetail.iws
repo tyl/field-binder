@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4fe03c24-2ee0-4a2e-9bcd-56c9fe775305" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/Master.java" afterPath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/Master.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/MongoMasterCrud.java" afterPath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/MongoMasterCrud.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java" afterPath="$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail.iws" afterPath="$PROJECT_DIR$/masterdetail.iws" />
     </list>
     <ignored path="masterdetail.iws" />
@@ -39,13 +36,13 @@
       <file leaf-file-name="MyVaadinUI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.24779736" vertical-offset="0" max-vertical-offset="1350">
-              <caret line="37" column="84" selection-start-line="36" selection-start-column="0" selection-end-line="37" selection-end-column="84" />
+            <state vertical-scroll-proportion="0.60674155" vertical-offset="816" max-vertical-offset="1350">
+              <caret line="115" column="76" selection-start-line="115" selection-start-column="76" selection-end-line="115" selection-end-column="76" />
               <folding>
                 <element signature="e#979#996#0" expanded="false" />
                 <element signature="e#997#1024#0" expanded="true" />
                 <element signature="method#init#0;class#MyVaadinUI#0" expanded="false" />
-                <element signature="class#3371:3813" expanded="false" />
+                <element signature="class#3382:3824" expanded="false" />
                 <element signature="method#makeDummyDataset#0;class#MyVaadinUI#0" expanded="false" />
               </folding>
             </state>
@@ -131,10 +128,10 @@
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/builder/crud/MasterCrud.java" />
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/builder/MasterDetail.java" />
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/MongoMasterCrud.java" />
-        <option value="$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java" />
         <option value="$PROJECT_DIR$/masterdetail-addon/pom.xml" />
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/Master.java" />
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetail.java" />
+        <option value="$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java" />
       </list>
     </option>
   </component>
@@ -558,7 +555,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39957264" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39957264" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -645,7 +642,7 @@
             <element signature="e#979#996#0" expanded="false" />
             <element signature="e#997#1024#0" expanded="true" />
             <element signature="method#init#0;class#MyVaadinUI#0" expanded="false" />
-            <element signature="class#3371:3813" expanded="false" />
+            <element signature="class#3382:3824" expanded="false" />
             <element signature="method#makeDummyDataset#0;class#MyVaadinUI#0" expanded="false" />
           </folding>
         </state>
@@ -995,13 +992,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24779736" vertical-offset="0" max-vertical-offset="1350">
-          <caret line="37" column="84" selection-start-line="36" selection-start-column="0" selection-end-line="37" selection-end-column="84" />
+        <state vertical-scroll-proportion="0.60674155" vertical-offset="816" max-vertical-offset="1350">
+          <caret line="115" column="76" selection-start-line="115" selection-start-column="76" selection-end-line="115" selection-end-column="76" />
           <folding>
             <element signature="e#979#996#0" expanded="false" />
             <element signature="e#997#1024#0" expanded="true" />
             <element signature="method#init#0;class#MyVaadinUI#0" expanded="false" />
-            <element signature="class#3371:3813" expanded="false" />
+            <element signature="class#3382:3824" expanded="false" />
             <element signature="method#makeDummyDataset#0;class#MyVaadinUI#0" expanded="false" />
           </folding>
         </state>
