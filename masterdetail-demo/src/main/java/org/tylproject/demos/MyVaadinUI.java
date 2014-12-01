@@ -34,8 +34,8 @@ public class MyVaadinUI extends UI {
     public static class Servlet extends VaadinServlet {}
 
     // setup a container instance
-    final MongoContainer<Person> masterDataSource  = // makeDummyDataset();
-        MongoContainer.Builder.forEntity(Person.class, makeMongoTemplate()).build();
+    final ListContainer<Person> masterDataSource  =  makeDummyDataset();
+//        MongoContainer.Builder.forEntity(Person.class, makeMongoTemplate()).build();
 
     // instantiate field group for master
     final FieldGroup fieldGroup = new FieldGroup();
