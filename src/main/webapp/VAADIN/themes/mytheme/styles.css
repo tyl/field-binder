@@ -12081,10 +12081,6 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: hidden;
 }
 
-.mytheme *:focus {
-	border: 4px solid black !important;
-}
-
 .mytheme .v-panel.masterdetail-focus {
 	box-shadow: -5px 0px 0px 0px #197de1;
 }

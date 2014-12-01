@@ -1,6 +1,8 @@
 package org.tylproject.demos.model;
 
 import lombok.Data;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,10 @@ import java.util.List;
  */
 
 public class Person {
+    @Id
+    private ObjectId id;
     private String firstName;
+    private String middleName;
     private String lastName;
     private List<Address> addressList = new ArrayList<Address>();
 
@@ -32,6 +37,14 @@ public class Person {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public String getLastName() {
