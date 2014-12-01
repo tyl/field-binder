@@ -213,3 +213,46 @@ Now, run with
   $ mvn jetty:run
 ```
 
+## Hooking Into The Default Events
+
+The `CrudNavigation` component defines several events that you can listen to 
+
+* Navigation Events:
+	* FirstItem
+	* NextItem
+	* PrevItem
+	* LastItem
+	* CurrentItemChange
+
+Because the Navigation object maintains an internal state, that is, a pointer to the "current" item id, for each other navigation event,  the `CurrentItemChange` event always fires. Therefore, if you want to hook into *every* navigation event, then you should listen to `CurrentItemChange`.
+
+* CRUD events
+	* ItemCreate
+	* ItemEdit
+	* ItemRemove
+	* AfterCommit, OnCommit, BeforeCommit
+	* OnDiscard
+
+For instance, in order to listen to the `CurrentItemChange` event on the `Master` component use:
+
+```java
+masterDetail.getMaster().getNavigation().addCurrentItemChangeListener(new CurrentItemChange.Listener(){
+    public void currentItemChange(CurrentItemChange.Event event) {
+       // display the updated current itemId in a notification
+       Notification.show(event.getNewItemId());
+    }
+});
+```
+
+All the event listeners follow the same naming pattern, just substitute `CurrentItemChange` with the name of the event you want to listen to. If you want to hook into the navigation of a detail, just use `getDetail()` instead of `getMaster()`. For instance, listening to the `OnCommit` event of the detail, you would simply write:
+
+
+```java
+masterDetail.getDetail().getNavigation().addOnCommitListener(new OnCommit.Listener(){
+    public void onCommit(OnCommit.Event event) {
+       Notification.show("Commit Done").
+    }
+});
+```
+
+
