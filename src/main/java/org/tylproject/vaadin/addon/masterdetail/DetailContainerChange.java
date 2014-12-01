@@ -14,7 +14,7 @@ public class DetailContainerChange {
         private final Container oldContainer;
         private final Container newContainer;
 
-        public Event(MasterDetail source, Container oldContainer, Container newContainer) {
+        public Event(MasterDetailController source, Container oldContainer, Container newContainer) {
             super(source);
             this.oldContainer = oldContainer;
             this.newContainer = newContainer;

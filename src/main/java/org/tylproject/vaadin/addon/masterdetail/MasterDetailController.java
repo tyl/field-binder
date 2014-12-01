@@ -4,14 +4,13 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.EventRouter;
-import org.tylproject.vaadin.addon.masterdetail.strategies.MasterStrategyBuilder;
 
 import java.io.Serializable;
 
 /**
  * Created by evacchi on 20/11/14.
  */
-public class MasterDetail implements Serializable,
+public class MasterDetailController implements Serializable,
         MasterItemChange.Notifier, DetailContainerChange.Notifier {
 
     private final EventRouter eventRouter = new EventRouter();
@@ -21,13 +20,16 @@ public class MasterDetail implements Serializable,
     private Item masterItemDataSource;
     private Container detailContainerDataSource;
 
-    MasterDetail(Builder builder) {
+    MasterDetailController(Builder builder) {
         this.master = builder.master;
         this.detail = builder.detail;
         if (builder.masterListener != null) {
             addMasterItemChangeListener(builder.masterListener);
         }
     }
+
+
+
     public FieldGroup getMaster() {
         return master;
     }
@@ -107,17 +109,17 @@ public class MasterDetail implements Serializable,
             this.detail = detail;
             return this;
         }
-        public Builder where(MasterStrategyBuilder masterStrategyBuilder) {
-            return this.connectedBy(masterStrategyBuilder.build());
-        }
+//        public Builder where(MasterStrategyBuilder masterStrategyBuilder) {
+//            return this.connectedBy(masterStrategyBuilder.build());
+//        }
 
 
         public Builder connectedBy(MasterItemChange.Listener listener) {
             this.masterListener = listener;
             return this;
         }
-        public MasterDetail build() {
-            return new MasterDetail(this);
+        public MasterDetailController build() {
+            return new MasterDetailController(this);
         }
 
 

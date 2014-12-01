@@ -1,7 +1,6 @@
 package org.tylproject.vaadin.addon.masterdetail;
 
 import com.vaadin.data.Item;
-import com.vaadin.ui.Component;
 import com.vaadin.util.ReflectTools;
 
 import java.lang.reflect.Method;
@@ -14,14 +13,14 @@ public abstract class MasterItemChange {
     public static class Event extends EventObject {
         private final Item oldItem;
         private final Item newItem;
-        public Event(MasterDetail source, Item oldItem, Item newItem) {
+        public Event(MasterDetailController source, Item oldItem, Item newItem) {
             super(source);
             this.oldItem = oldItem;
             this.newItem = newItem;
         }
         @Override
-        public MasterDetail getSource() {
-            return (MasterDetail) super.getSource();
+        public MasterDetailController getSource() {
+            return (MasterDetailController) super.getSource();
         }
 
         public Item getOldItem() {
@@ -37,7 +36,7 @@ public abstract class MasterItemChange {
     public static interface Listener {
         public static final Method method = ReflectTools.findMethod(Listener.class, "masterItemChange", Event.class);
 
-        public void masterItemChange(MasterItemChange.Event event);
+        public void masterItemChange(Event event);
     }
 
     public static interface Notifier {
