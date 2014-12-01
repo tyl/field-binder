@@ -5,7 +5,7 @@ A Vaadin logic component (non-visual) to automatically manage master/detail-type
 
 A Master-Detail is bound to a `Container` through a `CrudNavigation` controller class. A `CrudNavigation`  class wraps a `Container` and maintains a pointer to a `currentItemId`. When the pointer moves to a different element of the `Container` the detail is updated accordingly.
 
-The `CrudNavigation` component may be also used as stand-alone; it provides utility methods such as `next()`, `prev()`, `fist()`, `last()`. It also provides hooks (Vaadin event listeners) to implement CRUD functionalities. This addon comes with default implementations for the most used containers.
+The `CrudNavigation` component may be also used as stand-alone; it provides utility methods such as `next()`, `prev()`, `first()`, `last()`. It also provides hooks (Vaadin event listeners) to implement CRUD functionalities. This addon comes with default implementations for the most used containers.
 
 The result is smart scaffolding of a master-detail form, with little to none code required.
 
