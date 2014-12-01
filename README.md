@@ -24,12 +24,20 @@ public class Person {
    private String firstName;
    private String lastName; 
    private List<Address> addressList = new ArrayList<Address>();
+   public Person() {}
+   public Person(String firstName, String lastName) {
+     this.firstName = firstName;
+     this.lastName = lastName;
+   }
+   /* ...getters and setters... */
 }
 public class Address {
     private String street;
     private String zipCode;
     private String city;
     private String state;
+    public Address() {}
+    /* ...getters and setters... */
 }
 ```
 
@@ -40,12 +48,13 @@ class MyVaadinUI extends UI {
   ...
   final FieldGroup fieldGroup = new FieldGroup();
   final Table table = new Table();
+  ...
 }
 ```
-Define the container. For instance, using a `BeanItemContainer<Person>` (as a better alternative, please consider [Maddon](https://github.com/mstahv/maddon)'s `ListContainer`. This add-on supports it out of the box.)
+Define the container. For instance, using a `BeanItemContainer<Person>` (as a better alternative, please consider [Maddon](https://github.com/mstahv/maddon)'s `ListContainer`, a drop-in replacement for `BeanItemContainer`, with better APIs and performances. This add-on supports it out of the box.)
 
 ```java
-  final BeanItemContainer<Person> = 
+  final BeanItemContainer<Person> masterDataSource = 
          new BeanItemContainer<Person>(Person.class, new ArrayList<Person>(Arrays.asList(
                 new Person("George", "Harrison"),
                 new Person("John", "Lennon"),
@@ -54,13 +63,18 @@ Define the container. For instance, using a `BeanItemContainer<Person>` (as a be
         )));
 ```
 
-Or, using built-in support for the [Lazy MongoContainer Addon](https://github.com/tyl/mongodbcontainer-addon)
+Or, using built-in support for the [Lazy MongoContainer Addon](https://github.com/tyl/mongodbcontainer-addon). For instance:
+
 
 ```java
   final MongoContainer<Person> masterDataSource  = // makeDummyDataset();
         MongoContainer.Builder.forEntity(Person.class, makeMongoTemplate()).build();
   
-  private static MongoContainer<Person> makeMongoTemplate() { /* ...init code here...  */ }
+  private static MongoOperations makeMongoTemplate() {
+    try {
+      return new MongoTemplate(new MongoClient ("localhost"), "test");
+    } catch (UnknownHostException ex) { throw new Error(ex); }
+  }
 
 ```
 
@@ -108,13 +122,13 @@ You should then initialize the form by adding the components to a layout as usua
         setupMainLayout();
         setupFormLayout();
         setupTable();
-        setContent(layout);
+        setContent(mainLayout);
     }
 
     private void setupMainLayout() {
         mainLayout.setMargin(true);
 
-        mainLayout.addComponent(buttonBar.getLayout());
+        mainLayout.addComponent(masterBar.getLayout());
         mainLayout.addComponent(formLayout);
 
         mainLayout.addComponent(detailBar.getLayout());

@@ -22,7 +22,6 @@ public class MongoMasterCrud<M> extends DefaultMasterCrud {
     public void itemCreate(ItemCreate.Event event) {
         M bean = createBean();
         super.fieldGroup.setReadOnly(false);
-        super.navigation.getContainer().addItem(bean);
         final MongoContainer<M> container = (MongoContainer<M>) super.navigation.getContainer();
         super.navigation.setCurrentItemId(container.addEntity(bean));
     }

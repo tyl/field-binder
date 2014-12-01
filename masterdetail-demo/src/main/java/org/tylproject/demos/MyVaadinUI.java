@@ -5,13 +5,11 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.masterdetail.Detail;
 import org.tylproject.vaadin.addon.masterdetail.Master;
 import org.tylproject.vaadin.addon.masterdetail.MasterDetail;
@@ -51,58 +49,51 @@ public class MyVaadinUI extends UI {
             Detail.collectionOf(Address.class).fromMasterProperty("addressList").boundTo(table).withDefaultCrud()
     ).build();
 
-
-    final VerticalLayout layout = new VerticalLayout();
+    final TextField firstName = (TextField) fieldGroup.buildAndBind("firstName");
+    final TextField lastName = (TextField) fieldGroup.buildAndBind("lastName");
 
     final ButtonBar buttonBar = ButtonBar.forNavigation(masterDetail.getMaster().getNavigation());
     final ButtonBar detailBar = ButtonBar.forNavigation(masterDetail.getDetail().getNavigation());
 
-//    final KeyBinder keyBinder = KeyBinder.forNavigation(masterDetail.getMaster().getNavigation());
 
-    final Panel masterPanel = new Panel();
-    final Panel detailPanel = new Panel();
+    final VerticalLayout mainLayout = new VerticalLayout();
+    final FormLayout formLayout = new FormLayout();
 
-
-//    private FocusManager focusManager = new FocusManager(this);
 
     @Override
     protected void init(VaadinRequest request) {
 
-        makeDummyDataset();
-        setupLayout();
+        setupMainLayout();
 
-        setupMasterLayout();
-        setupDetailLayout();
+        setupFormLayout();
+        setupTable();
 
-        setContent(layout);
+        setContent(mainLayout);
+
     }
 
 
-    public static MongoOperations makeMongoTemplate() {
-        try {
-            return new MongoTemplate(new MongoClient ("localhost"), "test");
-        } catch (UnknownHostException ex) { throw new Error(ex); }
+    private void setupMainLayout() {
+        mainLayout.setMargin(true);
+        mainLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+
+        mainLayout.addComponent(buttonBar.getLayout());
+        mainLayout.addComponent(formLayout);
+
+        mainLayout.addComponent(detailBar.getLayout());
+        mainLayout.addComponent(table);
     }
 
-    private void setupLayout() {
-        layout.setMargin(true);
-        layout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+    private void setupFormLayout() {
+        formLayout.setMargin(true);
+        formLayout.setHeightUndefined();
 
-        layout.addComponent(buttonBar.getLayout());
-        layout.addComponent(masterPanel);
-
-        layout.addComponent(detailBar.getLayout());
-        layout.addComponent(detailPanel);
+        formLayout.addComponent(firstName);
+        formLayout.addComponent(lastName);
     }
 
-    private void setupMasterLayout() {
-        FormLayout formLayout = makeFormLayout(fieldGroup);
-        masterPanel.setContent(formLayout);
-    }
+    private void setupTable() {
 
-    private void setupDetailLayout() {
-
-        detailPanel.setContent(table);
         table.setSelectable(true);
         table.setSizeFull();
         table.setHeight("400px");
@@ -117,11 +108,16 @@ public class MyVaadinUI extends UI {
                 else return null;
             }
         });
-
-
     }
 
-    private ListContainer<Person> makeDummyDataset() {
+
+    private static MongoOperations makeMongoTemplate() {
+        try {
+            return new MongoTemplate(new MongoClient ("localhost"), "test");
+        } catch (UnknownHostException ex) { throw new Error(ex); }
+    }
+
+    private static ListContainer<Person> makeDummyDataset() {
         ListContainer<Person> dataSource = new ListContainer<Person>(Person.class);
         dataSource.addAll(Arrays.asList(
                 new Person("George", "Harrison"),
@@ -131,40 +127,6 @@ public class MyVaadinUI extends UI {
         ));
         return dataSource;
     }
-
-
-    protected FormLayout makeFormLayout(final FieldGroup fieldGroup) {
-
-
-        FormLayout formLayout = new FormLayout();
-        formLayout.setMargin(true);
-        formLayout.setHeightUndefined();
-
-
-        masterDetail.getMaster().getNavigation().addCurrentItemChangeListener(new CurrentItemChange.Listener() {
-            @Override
-            public void currentItemChange(CurrentItemChange.Event event) {
-                if (event.getNewItemId() == null) {
-                    fieldGroup.setItemDataSource(new BeanItem<Person>(new Person()));
-                }
-            }
-        });
-        masterDetail.getMaster().getNavigation().first();
-
-
-        final TextField firstName = (TextField) fieldGroup.buildAndBind("firstName");
-        final TextField middleName = (TextField) fieldGroup.buildAndBind("middleName");
-        final TextField lastName = (TextField) fieldGroup.buildAndBind("lastName");
-
-
-
-        formLayout.addComponent(firstName);
-        formLayout.addComponent(middleName);
-        formLayout.addComponent(lastName);
-
-        return formLayout;
-    }
-
 
 
 }

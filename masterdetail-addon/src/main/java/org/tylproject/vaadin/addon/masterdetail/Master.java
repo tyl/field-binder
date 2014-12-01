@@ -3,6 +3,7 @@ package org.tylproject.vaadin.addon.masterdetail;
 import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanContainer;
+import com.vaadin.data.util.BeanItemContainer;
 import org.tylproject.vaadin.addon.masterdetail.crud.BeanMasterCrud;
 import org.tylproject.vaadin.addon.masterdetail.crud.MongoMasterCrud;
 import org.tylproject.vaadin.addon.MongoContainer;
@@ -88,7 +89,9 @@ public class Master<T> extends NavigableFieldGroup<FieldGroup> {
 
         public Master.Builder<M> withDefaultCrud() {
 
-            if (masterContainer instanceof BeanContainer || masterContainer instanceof ListContainer) {
+            if (masterContainer instanceof BeanContainer
+                    || masterContainer instanceof BeanItemContainer
+                    || masterContainer instanceof ListContainer) {
                 withCrud(new BeanMasterCrud<M>(masterClass).withMaster(this.build()));
             } else if (masterContainer instanceof MongoContainer) {
                 withCrud(new MongoMasterCrud<M>(masterClass).withMaster(this.build()));
