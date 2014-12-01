@@ -19,8 +19,8 @@ public class OnCommit {
     public static interface Listener {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
-                        "onCommitListener", Event.class);
-        public void onCommitListener(Event event);
+                        "onCommit", Event.class);
+        public void onCommit(Event event);
     }
 
     public static interface Notifier {

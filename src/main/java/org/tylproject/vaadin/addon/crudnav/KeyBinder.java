@@ -152,7 +152,7 @@ public class KeyBinder implements Action.Handler {
 
     CurrentItemChange.Listener buttonBarStatusUpdater = new CurrentItemChange.Listener() {
         @Override
-        public void currentItemChangeListener(CurrentItemChange.Event event) {
+        public void currentItemChange(CurrentItemChange.Event event) {
             updateButtonStatus();
         }
     };

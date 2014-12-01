@@ -19,8 +19,8 @@ public class BeforeCommit {
     public static interface Listener {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
-                        "beforeCommitListener", Event.class);
-        public void beforeCommitListener(Event event);
+                        "beforeCommit", Event.class);
+        public void beforeCommit(Event event);
     }
 
     public static interface Notifier {

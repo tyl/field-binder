@@ -19,8 +19,8 @@ public class OnDiscard {
     public static interface Listener {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
-                        "onDiscardListener", Event.class);
-        public void onDiscardListener(Event event);
+                        "onDiscard", Event.class);
+        public void onDiscard(Event event);
     }
 
     public static interface Notifier {

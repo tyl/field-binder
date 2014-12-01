@@ -16,8 +16,8 @@ public class ItemRemove {
     public static interface Listener {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
-                        "itemRemoveListener", Event.class);
-        public void itemRemoveListener(Event event);
+                        "itemRemove", Event.class);
+        public void itemRemove(Event event);
     }
 
     public static interface Notifier {

@@ -15,8 +15,8 @@ public class NextItem {
     public static interface Listener {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
-                        "nextItemListener", Event.class);
-        public void nextItemListener(Event event);
+                        "nextItem", Event.class);
+        public void nextItem(Event event);
     }
 
     public static interface Notifier {

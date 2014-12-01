@@ -123,7 +123,7 @@ public class ButtonBar {
             }
         });
 
-        attachNavigation(nav);
+        setNavigation(nav);
 
     }
 
@@ -167,6 +167,11 @@ public class ButtonBar {
         }
 
         Object currentId = nav.getCurrentItemId();
+        if (currentId == null) {
+            disable(allButtons);
+            enable(btnCreate);
+            return;
+        }
 
         boolean hasNext = false;
         boolean hasPrev = false;
@@ -184,7 +189,7 @@ public class ButtonBar {
 
     CurrentItemChange.Listener buttonBarStatusUpdater = new CurrentItemChange.Listener() {
         @Override
-        public void currentItemChangeListener(CurrentItemChange.Event event) {
+        public void currentItemChange(CurrentItemChange.Event event) {
             updateButtonStatus();
         }
     };

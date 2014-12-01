@@ -21,8 +21,8 @@ public class CurrentItemChange {
 
     public static interface Listener {
         public static final Method METHOD =
-                ReflectTools.findMethod(Listener.class, "currentItemChangeListener", Event.class);
-        public void currentItemChangeListener(Event event);
+                ReflectTools.findMethod(Listener.class, "currentItemChange", Event.class);
+        public void currentItemChange(Event event);
     }
 
     public static interface Notifier {

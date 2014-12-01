@@ -15,8 +15,8 @@ public class PrevItem {
     public static interface Listener {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
-                        "prevItemListener", Event.class);
-        public void prevItemListener(Event event);
+                        "prevItem", Event.class);
+        public void prevItem(Event event);
     }
 
     public static interface Notifier {

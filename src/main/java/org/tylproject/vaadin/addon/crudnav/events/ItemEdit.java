@@ -16,8 +16,8 @@ public class ItemEdit {
     public static interface Listener {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
-                        "itemEditListener", Event.class);
-        public void itemEditListener(Event event);
+                        "itemEdit", Event.class);
+        public void itemEdit(Event event);
     }
 
     public static interface Notifier {

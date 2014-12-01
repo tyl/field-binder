@@ -11,6 +11,8 @@ import java.util.EventObject;
 public class ItemNavigationEvent extends EventObject {
     private final Object newItemId;
     private final Object oldItemId;
+    private Item newItem;
+    private Item oldItem;
 
     public ItemNavigationEvent(CrudNavigation source, Object newItemId, Object oldItemId)  {
         super(source);
@@ -22,14 +24,22 @@ public class ItemNavigationEvent extends EventObject {
         return newItemId;
     }
     public Item getNewItem() {
-        return getSource().getContainer().getItem(newItemId);
+        if (newItemId == null) return null;
+        if (newItem == null) {
+            newItem = getSource().getContainer().getItem(newItemId);
+        }
+        return newItem;
     }
 
     public Object getOldItemId() {
         return oldItemId;
     }
     public Item getOldItem() {
-        return getSource().getContainer().getItem(oldItemId);
+        if (oldItemId == null) return null;
+        if (oldItem == null) {
+            oldItem = getSource().getContainer().getItem(oldItemId);
+        }
+        return oldItem;
     }
 
     @Override

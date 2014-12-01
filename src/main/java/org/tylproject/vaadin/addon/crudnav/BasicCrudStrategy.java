@@ -19,18 +19,18 @@ public class BasicCrudStrategy implements ItemRemove.Listener,
     protected BasicCrudStrategy() {}
 
     @Override
-    public void itemRemoveListener(ItemRemove.Event event) {
+    public void itemRemove(ItemRemove.Event event) {
         event.getSource().getContainer().removeItem(event.getSource().getCurrentItemId());
     }
 
     @Override
-    public void itemCreateListener(ItemCreate.Event event) {
+    public void itemCreate(ItemCreate.Event event) {
         Object id = event.getSource().getContainer().addItem();
         event.getSource().setCurrentItemId(id);
     }
 
     @Override
-    public void onCommitListener(OnCommit.Event event) {
+    public void onCommit(OnCommit.Event event) {
         Notification.show("committed");
     }
 }

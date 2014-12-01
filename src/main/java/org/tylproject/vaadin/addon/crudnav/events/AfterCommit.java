@@ -19,8 +19,8 @@ public class AfterCommit {
     public static interface Listener {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
-                        "afterCommitListener", Event.class);
-        public void afterCommitListener(Event event);
+                        "afterCommit", Event.class);
+        public void afterCommit(Event event);
     }
 
     public static interface Notifier {
