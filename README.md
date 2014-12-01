@@ -16,7 +16,7 @@ Then `cd` into the `masterdetail-demo` directory and launch with
 
 ## 10 Minutes Tutorial
 
-![Master-Detail Demo](readme-imgs/masterdetail-demo.png)
+![Master-Detail Demo](https://bytebucket.org/evacchi/vaadin-masterdetail-addon/raw/16845e1d15321ac0e63c8b01498e177e4e91309c/readme-imgs/masterdetail-demo.png?token=951b7095d5439265892799b8e76a0607c88cebda)
 
 Define your model through POJOs:
 
