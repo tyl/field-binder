@@ -1,8 +1,18 @@
 Master-Detail Addon
 ===================
 
-## Demo
-Install the packages with 
+A Vaadin logic component (non-visual) to automatically manage master/detail-type forms, by automatically wiring together regular Vaadin components.
+
+A Master-Detail is bound to a `Container` through a `CrudNavigation` controller class. A `CrudNavigation`  class wraps a `Container` and maintains a pointer to a `currentItemId`. When the pointer moves to a different element of the `Container` the detail is updated accordingly.
+
+The `CrudNavigation` component may be also used as stand-alone; it provides utility methods such as `next()`, `prev()`, `fist()`, `last()`. It also provides hooks (Vaadin event listeners) to implement CRUD functionalities. This addon comes with default implementations for the most used containers.
+
+The result is smart scaffolding of a master-detail form, with little to none code required.
+
+![Master-Detail Demo](https://bytebucket.org/evacchi/vaadin-masterdetail-addon/raw/16845e1d15321ac0e63c8b01498e177e4e91309c/readme-imgs/masterdetail-demo.png?token=951b7095d5439265892799b8e76a0607c88cebda)
+
+## Demo (or, «The 0 Minutes Tutorial»)
+Install the packages with Maven using
 
 ```sh
     $ mvn install
@@ -14,25 +24,36 @@ Then `cd` into the `masterdetail-demo` directory and launch with
    $ mvn jetty:run
 ```
 
-## 10 Minutes Tutorial
+Play with the code in `masterdetail-demo/src/main/java`
 
-![Master-Detail Demo](https://bytebucket.org/evacchi/vaadin-masterdetail-addon/raw/16845e1d15321ac0e63c8b01498e177e4e91309c/readme-imgs/masterdetail-demo.png?token=951b7095d5439265892799b8e76a0607c88cebda)
+## The 10 Minutes Tutorial
 
-Define your model through POJOs:
+Create a Vaadin project. If you use Maaven, use the Vaadin Archetype, and add this dependency to your `pom.xml`:
+
+```xml
+		<dependency>
+			<groupId>org.tylproject.vaadin.addon.masterdetail</groupId>
+			<artifactId>masterdetail-addon</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+```
+
+
+In this quick tutorial you will realize the demo in a step-by-step fashion.
+The tutorial consist of 6 simple steps:
+
+1. Define the data model using Java Beans
+2. Initialize a container for the master data source
+3. Create the `FieldGroup` for the Master, and the `Table` for the detail
+4. Create the `MasterDetail` instance, and bind it to the `FieldGroup` and the `Table`
+5. Add everything to the UI
+6. Create the (optional) button bars to control the Navigators for the Master and the Detail
+
+### Define The Model
+
+In this example, we will write a simple address book, where each `Person` may have many `Address`es. You would write the following bean class for the Addresses
 
 ```java
-public class Person {
-   @Id private ObjectId id;
-   private String firstName;
-   private String lastName; 
-   private List<Address> addressList = new ArrayList<Address>();
-   public Person() {}
-   public Person(String firstName, String lastName) {
-     this.firstName = firstName;
-     this.lastName = lastName;
-   }
-   /* ...getters and setters... */
-}
 public class Address {
     private String street;
     private String zipCode;
@@ -43,17 +64,36 @@ public class Address {
 }
 ```
 
-In your UI, define a `FieldGroup` to that will be bound to the `Person` objects, and the table that will be bound to the `List<Address>` of addresses.
+and the Person entity:
 
 ```java
-class MyVaadinUI extends UI {
-  ...
-  final FieldGroup fieldGroup = new FieldGroup();
-  final Table table = new Table();
-  ...
+public class Person {
+   private String firstName;
+   private String lastName; 
+   private List<Address> addressList = new ArrayList<Address>();
+   public Person() {}
+   public Person(String firstName, String lastName) {
+     this.firstName = firstName;
+     this.lastName = lastName;
+   }
+   
+   /* ...getters and setters... */
 }
 ```
-Define the container. For instance, using a `BeanItemContainer<Person>` (as a better alternative, please consider [Maddon](https://github.com/mstahv/maddon)'s `ListContainer`, a drop-in replacement for `BeanItemContainer`, with better APIs and performances. This add-on supports it out of the box.)
+
+If you plan to use  Mongo, you may also want to include an auto-generated `Id` field:
+```java
+   @Id private ObjectId id;
+```
+
+Once your model classes have been defined, then you can proceed to define the container from which you will pull instances of these classes.
+
+
+### Create The Container
+ 
+You may use a `BeanItemContainer<Person>`. As a better alternative, please consider [Maddon](https://github.com/mstahv/maddon)'s `ListContainer`, a drop-in replacement for `BeanItemContainer`, with better APIs and performances. This add-on supports it out of the box.
+
+Define the ` masterDataSource` field in your UI class:
 
 ```java
   final BeanItemContainer<Person> masterDataSource = 
@@ -65,7 +105,7 @@ Define the container. For instance, using a `BeanItemContainer<Person>` (as a be
         )));
 ```
 
-Or, using built-in support for the [Lazy MongoContainer Addon](https://github.com/tyl/mongodbcontainer-addon). For instance:
+It is also possible to take advantage of the built-in support for the [Lazy MongoContainer Addon](https://github.com/tyl/mongodbcontainer-addon). In this case, you would write something along the lines of:
 
 
 ```java
@@ -74,10 +114,23 @@ Or, using built-in support for the [Lazy MongoContainer Addon](https://github.co
   
   private static MongoOperations makeMongoTemplate() {
     try {
-      return new MongoTemplate(new MongoClient ("localhost"), "test");
+      return new MongoTemplate(new MongoClient("localhost"), "test");
     } catch (UnknownHostException ex) { throw new Error(ex); }
   }
 
+```
+
+### Create And Bind The MasterDetail
+
+In your UI, define a `FieldGroup` to that will be bound to the `Person` objects, and the table that will be bound to the `List<Address>` of addresses.
+
+```java
+class MyVaadinUI extends UI {
+  ...
+  final FieldGroup fieldGroup = new FieldGroup();
+  final Table table = new Table();
+  ...
+}
 ```
 
 Bind the Table as the FieldGroup's detail using the syntax:
@@ -99,21 +152,24 @@ Bind the Table as the FieldGroup's detail using the syntax:
   ).build();
 ```
 
-Then, you can generate your master form using the FieldGroup:
+### Initialize The Layout
+
+
+Generate your master form using the FieldGroup:
 
 ```java
   final TextField firstName = (TextField) fieldGroup.buildAndBind("firstName");
   final TextField lastName = (TextField) fieldGroup.buildAndBind("lastName");
 ``` 
 
-You can generate `ButtonBar`s to control the navigation and editing of the master/detail with default actions.
+Generate `ButtonBar`s to control the navigation and editing of the master/detail with default actions.
 
 ```java
   final ButtonBar masterBar = ButtonBar.forNavigation(masterDetail.getMaster().getNavigation());
   final ButtonBar detailBar = ButtonBar.forNavigation(masterDetail.getDetail().getNavigation());
 ```
 
-You should then initialize the form by adding the components to a layout as usual. 
+Finally, initialize the form by adding the components to a layout as usual. 
 
 ```java
     final VerticalLayout mainLayout = new VerticalLayout();
@@ -151,4 +207,9 @@ You should then initialize the form by adding the components to a layout as usua
     }
 ```
 
-For a full example, see the demo.
+Now, run with 
+
+```sh
+  $ mvn jetty:run
+```
+
