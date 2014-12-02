@@ -18,7 +18,7 @@ public class BeanMasterCrud<T> extends DefaultMasterCrud
     @Override
     public void itemCreate(ItemCreate.Event event) {
         T bean = createBean();
-        super.fieldGroup.setReadOnly(false);
+        super.fieldBinder.setReadOnly(false);
         super.navigation.getContainer().addItem(bean);
         super.navigation.setCurrentItemId(bean);
 
@@ -27,7 +27,7 @@ public class BeanMasterCrud<T> extends DefaultMasterCrud
     @Override
     public void currentItemChange(CurrentItemChange.Event event) {
         if (event.getNewItemId() == null) {
-            fieldGroup.setItemDataSource(new BeanItem<T>(createBean()));
+            fieldBinder.setItemDataSource(new BeanItem<T>(createBean()));
         }
     }
 

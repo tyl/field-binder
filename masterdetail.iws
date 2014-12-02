@@ -2,9 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4fe03c24-2ee0-4a2e-9bcd-56c9fe775305" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/AbstractFieldBinder.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/BeanFieldBinder.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/BuildException.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/CommitException.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/FieldBinderFieldFactory.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/NavigationOperations.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/events/RejectOperationException.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/field-binder/field-binder.iml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/NavigableFieldGroup.java" afterPath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/NavigableFieldBinder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/BeanMasterCrud.java" afterPath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/BeanMasterCrud.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/DefaultMasterCrud.java" afterPath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/DefaultMasterCrud.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/FocusManager.java" afterPath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/FocusManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/Master.java" afterPath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/Master.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetailController.java" afterPath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetailController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/MongoMasterCrud.java" afterPath="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/MongoMasterCrud.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java" afterPath="$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-addon/masterdetail-addon.iml" afterPath="$PROJECT_DIR$/masterdetail-addon/masterdetail-addon.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-demo/masterdetail-demo.iml" afterPath="$PROJECT_DIR$/masterdetail-demo/masterdetail-demo.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail.ipr" afterPath="$PROJECT_DIR$/masterdetail.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail.iws" afterPath="$PROJECT_DIR$/masterdetail.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-addon/pom.xml" afterPath="$PROJECT_DIR$/masterdetail-addon/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/masterdetail-demo/pom.xml" afterPath="$PROJECT_DIR$/masterdetail-demo/pom.xml" />
     </list>
     <ignored path="masterdetail.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -14,6 +33,7 @@
     <ignored path=".idea/dataSources.local.xml" />
     <ignored path="$PROJECT_DIR$/masterdetail-demo/target/" />
     <ignored path="$PROJECT_DIR$/masterdetail-connector-mongo/target/" />
+    <ignored path="$PROJECT_DIR$/field-binder/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,46 +54,62 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MyVaadinUI.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MyVaadinUI.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="1485">
-              <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.33205375" vertical-offset="607" max-vertical-offset="1980">
+              <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
               <folding>
-                <element signature="e#979#996#0" expanded="false" />
-                <element signature="method#init#0;class#MyVaadinUI#0" expanded="false" />
-                <element signature="class#3381:3823" expanded="false" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#1043#1060#0" expanded="false" />
+                <element signature="e#1620#1628#0" expanded="true" />
+                <element signature="class#3502:3944" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CurrentItemChange.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/events/CurrentItemChange.java">
+      <file leaf-file-name="AbstractComponentContainer.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/ui/AbstractComponentContainer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
-              <caret line="15" column="49" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="347" max-vertical-offset="4950">
+              <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ItemNavigationEvent.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/events/ItemNavigationEvent.java">
+      <file leaf-file-name="BeanFieldBinder.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/BeanFieldBinder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.115384616" vertical-offset="0" max-vertical-offset="910">
-              <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="167" max-vertical-offset="780">
+              <caret line="27" column="11" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1008#1036#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Field.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/ui/Field.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="88" max-vertical-offset="1530">
+              <caret line="42" column="17" selection-start-line="42" selection-start-column="17" selection-end-line="42" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
+      <file leaf-file-name="FieldGroup.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/data/fieldgroup/FieldGroup.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3377" max-vertical-offset="16035">
+              <caret line="263" column="0" selection-start-line="263" selection-start-column="0" selection-end-line="263" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -81,48 +117,18 @@
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/masterdetail-demo/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="3840">
-              <caret line="71" column="39" selection-start-line="69" selection-start-column="0" selection-end-line="73" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="3915">
+              <caret line="77" column="43" selection-start-line="77" selection-start-column="43" selection-end-line="77" selection-end-column="43" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/masterdetail-addon/pom.xml">
+      <file leaf-file-name="DefaultMasterCrud.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/DefaultMasterCrud.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="1140">
-              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MasterDetail.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetail.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="725" max-vertical-offset="1800">
-              <caret line="66" column="14" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Master.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/Master.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="577" max-vertical-offset="1485">
-              <caret line="91" column="47" selection-start-line="91" selection-start-column="47" selection-end-line="91" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ListContainer.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/peimari/maddon/1.20-SNAPSHOT/maddon-1.20-SNAPSHOT-sources.jar!/org/vaadin/maddon/ListContainer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="4860">
-              <caret line="63" column="38" selection-start-line="63" selection-start-column="38" selection-end-line="63" selection-end-column="38" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="750">
+              <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -138,7 +144,6 @@
       <list>
         <option value="$PROJECT_DIR$/masterdetail-connector-mongo/pom.xml" />
         <option value="$PROJECT_DIR$/crud-navigation-addon/pom.xml" />
-        <option value="$PROJECT_DIR$/masterdetail-demo/pom.xml" />
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/builder/NavigableFieldGroup.java" />
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/builder/Master.java" />
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/builder/crud/BeanMasterCrud.java" />
@@ -147,10 +152,27 @@
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/builder/crud/MasterCrud.java" />
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/builder/MasterDetail.java" />
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/MongoMasterCrud.java" />
+        <option value="$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/events/RejectOperationException.java" />
+        <option value="$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/NavigationOperations.java" />
+        <option value="$PROJECT_DIR$/field-binder/src/main/java/FieldBinder.java" />
+        <option value="$PROJECT_DIR$/field-binder/src/main/java/CommitException.java" />
+        <option value="$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/BuildException.java" />
+        <option value="$PROJECT_DIR$/field-binder/src/main/java/BeanFieldBinder.java" />
+        <option value="$PROJECT_DIR$/field-binder/src/main/java/AbstractFieldBinder.java" />
         <option value="$PROJECT_DIR$/masterdetail-addon/pom.xml" />
+        <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/NavigableFieldGroup.java" />
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/Master.java" />
+        <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/DefaultMasterCrud.java" />
         <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetail.java" />
+        <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetailController.java" />
+        <option value="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/FocusManager.java" />
+        <option value="$PROJECT_DIR$/masterdetail-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/FieldFactory.java" />
+        <option value="$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/FieldBinderFieldFactory.java" />
+        <option value="$PROJECT_DIR$/field-binder/pom.xml" />
+        <option value="$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/BeanFieldBinder.java" />
         <option value="$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java" />
+        <option value="$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/AbstractFieldBinder.java" />
       </list>
     </option>
   </component>
@@ -216,6 +238,20 @@
           <option name="myItemId" value="" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
         </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Master-Detail Demo" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Lifecycle" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$LifecycleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
       </PATH>
       <PATH>
         <PATH_ELEMENT>
@@ -234,6 +270,30 @@
         </PATH_ELEMENT>
         <PATH_ELEMENT>
           <option name="myItemId" value="Master-Detail Addon" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Lifecycle" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$LifecycleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FieldBinder Addon" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="FieldBinder Addon" />
           <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
         </PATH_ELEMENT>
         <PATH_ELEMENT>
@@ -340,6 +400,104 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="masterdetail-demo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="demos" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="masterdetail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="field-binder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="masterdetail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="field-binder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="masterdetail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="field-binder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="masterdetail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="field-binder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="fieldbinder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="masterdetail" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="masterdetail and modules" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleGroupNode" />
             </PATH_ELEMENT>
@@ -421,101 +579,11 @@
               <option name="myItemId" value="masterdetail and modules" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleGroupNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crud-navigation-addon" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="masterdetail" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="masterdetail and modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleGroupNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crud-navigation-addon" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="masterdetail" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="masterdetail and modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleGroupNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crud-navigation-addon" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crudnav" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="masterdetail" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="masterdetail and modules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleGroupNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crud-navigation-addon" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="crudnav" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="events" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -532,10 +600,15 @@
     <property name="FullScreen" value="false" />
     <property name="recentsLimit" value="5" />
     <property name="dynamic.classpath" value="false" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="OverrideImplement.overriding.sorted" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="org.tylproject.vaadin.addon.masterdetail.builder.crud" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="org.tylproject.vaadin.addon.fieldbinder" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon" />
@@ -633,14 +706,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
-      <node-options />
-      <gulpfile />
-      <tasks />
-      <pass-parent-envs>true</pass-parent-envs>
-      <envs />
-      <method />
-    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -659,6 +724,14 @@
       </option>
       <envs />
       <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <pass-parent-envs>true</pass-parent-envs>
+      <envs />
       <method />
     </configuration>
     <list size="1">
@@ -680,34 +753,54 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="1440" y="22" width="1680" height="1028" extended-state="7" />
+    <frame x="1440" y="22" width="1680" height="1028" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39957264" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24969475" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24969475" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Kotlin Bytecode" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32967034" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24969475" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24969475" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39957264" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -719,21 +812,21 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39957264" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39957264" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24969475" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24969475" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Kotlin Bytecode" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32967034" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24969475" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32967034" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24969475" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32905984" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -755,12 +848,21 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="9" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java</url>
+          <line>71</line>
+          <properties />
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="18" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="MavenRunConfiguration">
         <watch expression="field.isEnabled()" language="JAVA" custom="" />
         <watch expression="this.getItemDataSource()" language="JAVA" custom="" />
+        <watch expression="prop.getName()" />
       </configuration>
     </watches-manager>
   </component>
@@ -769,139 +871,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1350">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#979#996#0" expanded="false" />
-            <element signature="method#init#0;class#MyVaadinUI#0" expanded="false" />
-            <element signature="class#3381:3823" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="720">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-demo/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="3840">
-          <caret line="71" column="39" selection-start-line="69" selection-start-column="0" selection-end-line="73" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="1140">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetail.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="725" max-vertical-offset="1800">
-          <caret line="66" column="14" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/Master.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="577" max-vertical-offset="1485">
-          <caret line="91" column="47" selection-start-line="91" selection-start-column="47" selection-end-line="91" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/peimari/maddon/1.20-SNAPSHOT/maddon-1.20-SNAPSHOT-sources.jar!/org/vaadin/maddon/ListContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="4860">
-          <caret line="63" column="38" selection-start-line="63" selection-start-column="38" selection-end-line="63" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1265" max-vertical-offset="2040">
-          <caret line="155" column="66" selection-start-line="155" selection-start-column="66" selection-end-line="155" selection-end-column="66" />
-          <folding>
-            <element signature="e#979#996#0" expanded="false" />
-            <element signature="method#init#0;class#MyVaadinUI#0" expanded="false" />
-            <element signature="class#3381:3823" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetail.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1800">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/events/MasterItemChange.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="675">
-          <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-demo/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3840">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crud-navigation-addon/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="3585">
-          <caret line="34" column="26" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/events/MasterItemChange.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="675">
-          <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-demo/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3840">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/crud-navigation-addon/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="3585">
-          <caret line="34" column="26" selection-start-line="34" selection-start-column="26" selection-end-line="34" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/mongodbcontainer/mongodbcontainer-addon/0.9.2-SNAPSHOT/mongodbcontainer-addon-0.9.2-SNAPSHOT.jar!/org/tylproject/vaadin/addon/MongoContainer.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34201586" vertical-offset="4138" max-vertical-offset="5535">
-          <caret line="338" column="24" selection-start-line="338" selection-start-column="24" selection-end-line="338" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/ButtonBar.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.1486784" vertical-offset="0" max-vertical-offset="2385">
@@ -916,21 +885,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetailController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.7988505" vertical-offset="36" max-vertical-offset="1830">
-          <caret line="74" column="16" selection-start-line="74" selection-start-column="16" selection-end-line="74" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/data/fieldgroup/BeanFieldGroup.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.17196262" vertical-offset="2237" max-vertical-offset="3975">
-          <caret line="166" column="15" selection-start-line="166" selection-start-column="15" selection-end-line="166" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/event/ListenerMethod.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="7461" max-vertical-offset="9765">
@@ -938,26 +892,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/ui/DefaultFieldFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.3925233" vertical-offset="1505" max-vertical-offset="2160">
-          <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/server/AbstractClientConnector.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7662835" vertical-offset="14375" max-vertical-offset="14910">
           <caret line="1047" column="0" selection-start-line="1047" selection-start-column="0" selection-end-line="1047" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/data/fieldgroup/FieldGroup.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32523364" vertical-offset="3021" max-vertical-offset="15795">
-          <caret line="255" column="0" selection-start-line="255" selection-start-column="0" selection-end-line="255" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -991,14 +929,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/DefaultMasterCrud.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19626169" vertical-offset="0" max-vertical-offset="810">
-          <caret line="13" column="54" selection-start-line="13" selection-start-column="54" selection-end-line="13" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/BeanMasterCrud.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.08411215" vertical-offset="90" max-vertical-offset="705">
@@ -1018,8 +948,8 @@
           <nodes>
             <node x="" y="">org.tylproject.vaadin.addon.masterdetail.MasterDetailController</node>
             <node x="" y="">org.tylproject.vaadin.addon.masterdetail.builder</node>
-            <node x="" y="">org.tylproject.vaadin.addon.masterdetail.MasterItemChange</node>
             <node x="" y="">org.tylproject.vaadin.addon.crudnav</node>
+            <node x="" y="">org.tylproject.vaadin.addon.masterdetail.MasterItemChange</node>
             <node x="" y="">org.tylproject.vaadin.addon.masterdetail.connectors</node>
             <node x="" y="">org.tylproject.vaadin.addon.masterdetail.DetailContainerChange</node>
           </nodes>
@@ -1085,18 +1015,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/FocusManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.175" vertical-offset="0" max-vertical-offset="1755">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/data/util/BeanItemContainer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.9548458" vertical-offset="1467" max-vertical-offset="3615">
           <caret line="54" column="13" selection-start-line="54" selection-start-column="13" selection-end-line="54" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1104,15 +1026,40 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4860">
           <caret line="63" column="38" selection-start-line="63" selection-start-column="38" selection-end-line="63" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/Master.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="577" max-vertical-offset="1485">
-          <caret line="91" column="47" selection-start-line="91" selection-start-column="47" selection-end-line="91" selection-end-column="47" />
-          <folding />
+          <folding>
+            <element signature="e#0#11467#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#1964#1965#0" expanded="false" />
+            <element signature="e#2006#2007#0" expanded="false" />
+            <element signature="e#2656#2657#0" expanded="false" />
+            <element signature="e#2690#2691#0" expanded="false" />
+            <element signature="e#3047#3048#0" expanded="false" />
+            <element signature="e#3097#3098#0" expanded="false" />
+            <element signature="e#3131#3132#0" expanded="false" />
+            <element signature="e#3169#3170#0" expanded="false" />
+            <element signature="e#3223#3224#0" expanded="false" />
+            <element signature="e#3268#3269#0" expanded="false" />
+            <element signature="e#4251#4252#0" expanded="false" />
+            <element signature="e#4322#4323#0" expanded="false" />
+            <element signature="e#4518#4519#0" expanded="false" />
+            <element signature="e#4569#4570#0" expanded="false" />
+            <element signature="e#4629#4630#0" expanded="false" />
+            <element signature="e#4679#4680#0" expanded="false" />
+            <element signature="e#5686#5687#0" expanded="false" />
+            <element signature="e#5720#5721#0" expanded="false" />
+            <element signature="e#6400#6401#0" expanded="false" />
+            <element signature="e#6441#6442#0" expanded="false" />
+            <element signature="e#6503#6504#0" expanded="false" />
+            <element signature="e#6558#6559#0" expanded="false" />
+            <element signature="e#9558#9559#0" expanded="false" />
+            <element signature="e#9613#9614#0" expanded="false" />
+            <element signature="e#9675#9676#0" expanded="false" />
+            <element signature="e#9745#9746#0" expanded="false" />
+            <element signature="e#9987#9988#0" expanded="false" />
+            <element signature="e#10066#10067#0" expanded="false" />
+            <element signature="e#10558#10559#0" expanded="false" />
+            <element signature="e#10598#10599#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1124,63 +1071,287 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/NavigableFieldGroup.java">
+    <entry file="file://$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/NavShortcutListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4129956" vertical-offset="0" max-vertical-offset="908">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="555">
+          <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetail.java">
+    <entry file="file://$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/KeyBinder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="725" max-vertical-offset="1800">
-          <caret line="66" column="14" selection-start-line="66" selection-start-column="14" selection-end-line="66" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2190">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-addon/pom.xml">
+    <entry file="file://$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/NavigationOperations.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="1140">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-demo/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="3840">
-          <caret line="71" column="39" selection-start-line="69" selection-start-column="0" selection-end-line="73" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="540" max-vertical-offset="1485">
-          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
+          <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
           <folding>
-            <element signature="e#979#996#0" expanded="false" />
-            <element signature="method#init#0;class#MyVaadinUI#0" expanded="false" />
-            <element signature="class#3381:3823" expanded="false" />
+            <element signature="e#234#235#0" expanded="false" />
+            <element signature="e#286#287#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/events/CurrentItemChange.java">
+    <entry file="file://$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/events/RejectOperationException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
-          <caret line="15" column="49" selection-start-line="15" selection-start-column="49" selection-end-line="15" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="195">
+          <caret line="5" column="64" selection-start-line="5" selection-start-column="64" selection-end-line="5" selection-end-column="64" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/events/ItemNavigationEvent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.115384616" vertical-offset="0" max-vertical-offset="910">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
           <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/CommitException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.066079296" vertical-offset="0" max-vertical-offset="908">
+          <caret line="4" column="30" selection-start-line="4" selection-start-column="30" selection-end-line="4" selection-end-column="30" />
+          <folding>
+            <element signature="e#230#231#0" expanded="true" />
+            <element signature="e#260#261#0" expanded="true" />
+            <element signature="e#323#324#0" expanded="true" />
+            <element signature="e#360#361#0" expanded="true" />
+            <element signature="e#407#408#0" expanded="true" />
+            <element signature="e#435#436#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/data/fieldgroup/FieldGroupFieldFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19823788" vertical-offset="0" max-vertical-offset="908">
+          <caret line="28" column="17" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/crud-navigation-addon/src/main/java/org/tylproject/vaadin/addon/crudnav/events/CurrentItemChange.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42951542" vertical-offset="0" max-vertical-offset="908">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/masterdetail-addon/masterdetail-addon.iws">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="12120">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/Navigable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.175" vertical-offset="0" max-vertical-offset="600">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/masterdetail-addon/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="405" max-vertical-offset="1215">
+          <caret line="35" column="12" selection-start-line="35" selection-start-column="12" selection-end-line="35" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/Master.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5947136" vertical-offset="0" max-vertical-offset="1485">
+          <caret line="51" column="58" selection-start-line="51" selection-start-column="58" selection-end-line="51" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/BuildException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.08259912" vertical-offset="0" max-vertical-offset="908">
+          <caret line="5" column="53" selection-start-line="5" selection-start-column="53" selection-end-line="5" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetail.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="625" max-vertical-offset="1800">
+          <caret line="70" column="28" selection-start-line="70" selection-start-column="28" selection-end-line="70" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/MasterDetailController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1890">
+          <caret line="36" column="28" selection-start-line="36" selection-start-column="28" selection-end-line="36" selection-end-column="28" />
+          <folding>
+            <element signature="e#1203#1204#0" expanded="false" />
+            <element signature="e#1232#1233#0" expanded="false" />
+            <element signature="e#3601#3602#0" expanded="false" />
+            <element signature="e#3649#3650#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/FocusManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1290" max-vertical-offset="1980">
+          <caret line="124" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="124" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/crud/DefaultMasterCrud.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="750">
+          <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/masterdetail-demo/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="3915">
+          <caret line="77" column="43" selection-start-line="77" selection-start-column="43" selection-end-line="77" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/masterdetail-addon/src/main/java/org/tylproject/vaadin/addon/masterdetail/NavigableFieldBinder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7120921" vertical-offset="4" max-vertical-offset="525">
+          <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/ui/DefaultFieldFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.048458" vertical-offset="0" max-vertical-offset="2160">
+          <caret line="144" column="49" selection-start-line="144" selection-start-column="49" selection-end-line="144" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/data/fieldgroup/BeanFieldGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.3623347" vertical-offset="0" max-vertical-offset="3975">
+          <caret line="166" column="0" selection-start-line="166" selection-start-column="0" selection-end-line="166" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/data/fieldgroup/DefaultFieldGroupFieldFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.86372364" vertical-offset="1080" max-vertical-offset="2520">
+          <caret line="135" column="33" selection-start-line="134" selection-start-column="0" selection-end-line="135" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/field-binder/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2591171" vertical-offset="0" max-vertical-offset="521">
+          <caret line="9" column="27" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/ui/AbstractComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33259913" vertical-offset="11023" max-vertical-offset="13860">
+          <caret line="848" column="16" selection-start-line="848" selection-start-column="16" selection-end-line="848" selection-end-column="16" />
+          <folding>
+            <element signature="e#23702#23703#0" expanded="true" />
+            <element signature="e#23744#23745#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/ui/AbstractComponentContainer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="347" max-vertical-offset="4950">
+          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/BeanFieldBinder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="167" max-vertical-offset="780">
+          <caret line="27" column="11" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1008#1036#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/data/fieldgroup/FieldGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3377" max-vertical-offset="16035">
+          <caret line="263" column="0" selection-start-line="263" selection-start-column="0" selection-end-line="263" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/AbstractFieldBinder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="4.3110237" vertical-offset="0" max-vertical-offset="4965">
+          <caret line="148" column="30" selection-start-line="148" selection-start-column="30" selection-end-line="148" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1011#1012#0" expanded="true" />
+            <element signature="e#1044#1045#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/FieldBinderFieldFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39325842" vertical-offset="0" max-vertical-offset="534">
+          <caret line="14" column="24" selection-start-line="14" selection-start-column="24" selection-end-line="14" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-server/7.3.4/vaadin-server-7.3.4-sources.jar!/com/vaadin/ui/Field.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="88" max-vertical-offset="1530">
+          <caret line="42" column="17" selection-start-line="42" selection-start-column="17" selection-end-line="42" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/masterdetail-demo/src/main/java/org/tylproject/demos/MyVaadinUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33205375" vertical-offset="607" max-vertical-offset="1980">
+          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1043#1060#0" expanded="false" />
+            <element signature="e#1620#1628#0" expanded="true" />
+            <element signature="class#3502:3944" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

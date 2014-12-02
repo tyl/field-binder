@@ -1,6 +1,6 @@
 package org.tylproject.vaadin.addon.masterdetail.crud;
 
-import com.vaadin.data.fieldgroup.FieldGroup;
+import org.tylproject.vaadin.addon.fieldbinder.BeanFieldBinder;
 import org.tylproject.vaadin.addon.masterdetail.Master;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.ItemEdit;
@@ -14,32 +14,28 @@ import org.tylproject.vaadin.addon.crudnav.events.OnDiscard;
 public abstract class DefaultMasterCrud implements MasterCrud {
 
     protected CrudNavigation navigation;
-    protected FieldGroup fieldGroup;
+    protected BeanFieldBinder<?> fieldBinder;
 
     public DefaultMasterCrud() {}
 
     @Override
     public MasterCrud withMaster(Master<?> target) {
         this.navigation = target.getNavigation();
-        this.fieldGroup = target.getFieldGroup();
-        fieldGroup.setReadOnly(true);
+        this.fieldBinder = target.getFieldGroup();
+        fieldBinder.setReadOnly(true);
         return this;
     }
 
     @Override
     public void onCommit(OnCommit.Event event) {
-        try {
-            fieldGroup.commit();
-            fieldGroup.setReadOnly(true);
-        } catch (FieldGroup.CommitException e) {
-            throw new RuntimeException(e);
-        }
+        fieldBinder.commit();
+        fieldBinder.setReadOnly(true);
     }
 
     @Override
     public void onDiscard(OnDiscard.Event event) {
-        fieldGroup.discard();
-        fieldGroup.setReadOnly(true);
+        fieldBinder.discard();
+        fieldBinder.setReadOnly(true);
     }
 
     @Override
@@ -49,6 +45,6 @@ public abstract class DefaultMasterCrud implements MasterCrud {
 
     @Override
     public void itemEdit(ItemEdit.Event event) {
-        fieldGroup.setReadOnly(!fieldGroup.isReadOnly());
+        fieldBinder.setReadOnly(!fieldBinder.isReadOnly());
     }
 }

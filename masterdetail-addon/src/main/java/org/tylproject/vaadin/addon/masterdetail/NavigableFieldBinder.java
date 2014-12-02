@@ -1,32 +1,34 @@
 package org.tylproject.vaadin.addon.masterdetail;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
+import org.springframework.context.annotation.Bean;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
+import org.tylproject.vaadin.addon.fieldbinder.BeanFieldBinder;
 
 /**
  * Created by evacchi on 26/11/14.
  */
-public class NavigableFieldGroup<T extends FieldGroup>
-        implements Navigable<T>, CurrentItemChange.Listener{
-    private final T fieldGroup;
+public class NavigableFieldBinder<T>
+        implements Navigable<BeanFieldBinder<T>>, CurrentItemChange.Listener{
+    private final BeanFieldBinder fieldGroup;
     private final CrudNavigation navigation;
 
-    public NavigableFieldGroup(T fieldGroup, CrudNavigation navigation) {
+    public NavigableFieldBinder(BeanFieldBinder<T> fieldGroup, CrudNavigation navigation) {
         this.fieldGroup = fieldGroup;
         this.navigation = navigation;
         navigation.addCurrentItemChangeListener(this);
     }
 
     @Override
-    public T getNavigable() {
+    public BeanFieldBinder<T> getNavigable() {
         return this.getFieldGroup();
     }
     @Override
     public CrudNavigation getNavigation() {
         return this.navigation;
     }
-    public T getFieldGroup() {
+    public BeanFieldBinder<T> getFieldGroup() {
         return this.fieldGroup;
     }
     @Override

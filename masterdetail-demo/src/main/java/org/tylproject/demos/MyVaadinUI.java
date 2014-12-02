@@ -10,6 +10,7 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.tylproject.vaadin.addon.fieldbinder.BeanFieldBinder;
 import org.tylproject.vaadin.addon.masterdetail.Detail;
 import org.tylproject.vaadin.addon.masterdetail.Master;
 import org.tylproject.vaadin.addon.masterdetail.MasterDetail;
@@ -38,7 +39,7 @@ public class MyVaadinUI extends UI {
 //        MongoContainer.Builder.forEntity(Person.class, makeMongoTemplate()).build();
 
     // instantiate field group for master
-    final FieldGroup fieldGroup = new FieldGroup();
+    final BeanFieldBinder<Person> fieldGroup = new BeanFieldBinder<Person>(Person.class);
 
     // instantiate table for detail
     final Table table = new Table();
@@ -49,8 +50,8 @@ public class MyVaadinUI extends UI {
             Detail.collectionOf(Address.class).fromMasterProperty("addressList").boundTo(table).withDefaultCrud()
     ).build();
 
-    final TextField firstName = (TextField) fieldGroup.buildAndBind("firstName");
-    final TextField lastName = (TextField) fieldGroup.buildAndBind("lastName");
+    final TextField firstName = (TextField) fieldGroup.build("firstName");
+    final TextField lastName = (TextField) fieldGroup.build("lastName");
 
     final ButtonBar buttonBar = ButtonBar.forNavigation(masterDetail.getMaster().getNavigation());
     final ButtonBar detailBar = ButtonBar.forNavigation(masterDetail.getDetail().getNavigation());
@@ -67,6 +68,8 @@ public class MyVaadinUI extends UI {
 
         setupFormLayout();
         setupTable();
+
+//        fieldGroup.bindAll();
 
         setContent(mainLayout);
 
