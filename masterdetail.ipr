@@ -168,7 +168,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/crud-navigation-addon/crud-navigation-addon.iml" filepath="$PROJECT_DIR$/crud-navigation-addon/crud-navigation-addon.iml" group="masterdetail and modules" />
-      <module fileurl="file://$PROJECT_DIR$/field-binder/field-binder.iml" filepath="$PROJECT_DIR$/field-binder/field-binder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/field-binder/field-binder.iml" filepath="$PROJECT_DIR$/field-binder/field-binder.iml" group="masterdetail and modules" />
       <module fileurl="file://$PROJECT_DIR$/masterdetail-addon/masterdetail-addon.iml" filepath="$PROJECT_DIR$/masterdetail-addon/masterdetail-addon.iml" group="masterdetail and modules" />
       <module fileurl="file://$PROJECT_DIR$/masterdetail-demo/masterdetail-demo.iml" filepath="$PROJECT_DIR$/masterdetail-demo/masterdetail-demo.iml" />
     </modules>

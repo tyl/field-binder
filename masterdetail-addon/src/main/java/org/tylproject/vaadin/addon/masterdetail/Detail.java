@@ -51,6 +51,7 @@ public class Detail<D> extends NavigableTable {
 
         public Builder(Class<D> detailClass) {
             this.detailClass = detailClass;
+            this.table = new Table();
         }
 
         public Builder<D> fromMasterProperty(String masterPropertyId) {

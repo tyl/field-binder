@@ -2,10 +2,8 @@ package org.tylproject.vaadin.addon.masterdetail;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.EventRouter;
-import org.springframework.context.annotation.Bean;
-import org.tylproject.vaadin.addon.fieldbinder.BeanFieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.masterdetail.events.DetailContainerChange;
 import org.tylproject.vaadin.addon.masterdetail.events.MasterItemChange;
 
@@ -18,7 +16,7 @@ public class MasterDetailController implements Serializable,
         MasterItemChange.Notifier, DetailContainerChange.Notifier {
 
     private final EventRouter eventRouter = new EventRouter();
-    private final BeanFieldBinder<?> master;
+    private final FieldBinder<?> master;
     private final Container.Viewer detail;
 
     private Item masterItemDataSource;
@@ -34,7 +32,7 @@ public class MasterDetailController implements Serializable,
 
 
 
-    public BeanFieldBinder<?> getMaster() {
+    public FieldBinder<?> getMaster() {
         return master;
     }
 
@@ -98,15 +96,15 @@ public class MasterDetailController implements Serializable,
 
     public static class Builder {
 
-        public static Builder forMaster(BeanFieldBinder<?> fieldGroup) {
+        public static Builder forMaster(FieldBinder<?> fieldGroup) {
             return new Builder(fieldGroup);
         }
 
-        final BeanFieldBinder<?> master;
+        final FieldBinder<?> master;
         Container.Viewer detail;
         MasterItemChange.Listener masterListener;
 
-        public Builder(BeanFieldBinder<?> fieldGroup) {
+        public Builder(FieldBinder<?> fieldGroup) {
             this.master = fieldGroup;
         }
         public Builder withDetail(Container.Viewer detail) {

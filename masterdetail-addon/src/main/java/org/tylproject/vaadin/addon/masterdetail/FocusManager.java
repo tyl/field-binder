@@ -28,7 +28,7 @@ public class FocusManager<T,U> {
 //        this.ui = ui;
 //        this.masterDetail = masterDetail;
 //        NavigableFieldGroup<FieldGroup> masterNavigable = masterDetail.getMaster();
-//        FieldGroup masterFieldGroup = masterDetail.getMaster().getFieldGroup();
+//        FieldGroup masterFieldGroup = masterDetail.getMaster().getFieldBinder();
 //
 //        this.masterFocus = new FocusableNavigable<FieldGroup, Panel>(
 //                masterNavigable,

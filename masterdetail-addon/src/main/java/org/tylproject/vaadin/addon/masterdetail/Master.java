@@ -1,10 +1,9 @@
 package org.tylproject.vaadin.addon.masterdetail;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItemContainer;
-import org.tylproject.vaadin.addon.fieldbinder.BeanFieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.masterdetail.crud.BeanMasterCrud;
 import org.tylproject.vaadin.addon.masterdetail.crud.MongoMasterCrud;
 import org.tylproject.vaadin.addon.MongoContainer;
@@ -16,11 +15,11 @@ import org.vaadin.maddon.ListContainer;
 /**
  * Created by evacchi on 27/11/14.
  */
-public class Master<T> extends NavigableFieldBinder {
+public class Master<T> extends NavigableFieldBinder<T> {
 
     private final Class<T> type;
 
-    private Master(BeanFieldBinder<T> fieldGroup, CrudNavigation navigation, Class<T> masterClass) {
+    private Master(FieldBinder<T> fieldGroup, CrudNavigation navigation, Class<T> masterClass) {
         super(fieldGroup, navigation);
         this.type = masterClass;
     }
@@ -37,11 +36,12 @@ public class Master<T> extends NavigableFieldBinder {
 
         private final Class<M> masterClass;
         private Container.Indexed masterContainer;
-        private BeanFieldBinder<M> fieldGroup;
+        private FieldBinder<M> fieldBinder;
         private Master<M> masterInstance;
 
         private Builder(Class<M> masterClass) {
             this.masterClass = masterClass;
+            this.fieldBinder = new FieldBinder<M>(masterClass);
         }
 
         public Master.Builder<M> fromContainer(Container.Indexed containerDataSource) {
@@ -49,15 +49,15 @@ public class Master<T> extends NavigableFieldBinder {
             return this;
         }
 
-        public Master.Builder<M> boundTo(BeanFieldBinder<M> fieldGroup) {
-            this.fieldGroup = fieldGroup;
+        public Master.Builder<M> boundTo(FieldBinder<M> fieldBinder) {
+            this.fieldBinder = fieldBinder;
             return this;
         }
 
         public Master<M> build() {
             if (masterInstance == null) {
                 this.masterInstance = new Master<M>(
-                        fieldGroup,
+                        fieldBinder,
                         new BasicCrudNavigation(),
                         masterClass
                 );

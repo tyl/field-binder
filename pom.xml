@@ -13,6 +13,7 @@
     <modules>
         <module>masterdetail-addon</module>
         <module>crud-navigation-addon</module>
+        <module>field-binder</module>
     </modules>
 
     <build>

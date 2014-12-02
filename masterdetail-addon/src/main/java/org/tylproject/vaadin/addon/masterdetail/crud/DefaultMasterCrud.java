@@ -1,6 +1,6 @@
 package org.tylproject.vaadin.addon.masterdetail.crud;
 
-import org.tylproject.vaadin.addon.fieldbinder.BeanFieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.masterdetail.Master;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.ItemEdit;
@@ -14,14 +14,14 @@ import org.tylproject.vaadin.addon.crudnav.events.OnDiscard;
 public abstract class DefaultMasterCrud implements MasterCrud {
 
     protected CrudNavigation navigation;
-    protected BeanFieldBinder<?> fieldBinder;
+    protected FieldBinder<?> fieldBinder;
 
     public DefaultMasterCrud() {}
 
     @Override
     public MasterCrud withMaster(Master<?> target) {
         this.navigation = target.getNavigation();
-        this.fieldBinder = target.getFieldGroup();
+        this.fieldBinder = target.getFieldBinder();
         fieldBinder.setReadOnly(true);
         return this;
     }

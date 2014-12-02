@@ -129,11 +129,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
 
     public <T extends Field> T build(String caption, Object propertyId, Class<T> fieldType) {
         Class<?> dataType = getPropertyType(propertyId);
-//        return build(caption, type, fieldType);
-//    }
-//
-//    protected <T extends Field> T build(String caption, Class<?> dataType,
-//                                        Class<T> fieldType) {
+
         T field = getFieldFactory().createField(dataType, fieldType);
         if (field == null) {
             throw new BuildException("Unable to build a field of type "

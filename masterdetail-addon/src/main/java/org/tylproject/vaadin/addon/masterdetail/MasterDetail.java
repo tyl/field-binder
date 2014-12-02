@@ -41,7 +41,7 @@ public class MasterDetail<T,U> {
         return detail;
     }
 
-    public static <X,Y> Builder with(Master.Builder<X> masterBuilder, Detail.Builder<Y> detailBuilder) {
+    public static <X,Y> Builder<X,Y> with(Master.Builder<X> masterBuilder, Detail.Builder<Y> detailBuilder) {
         return new Builder<X,Y>(masterBuilder, detailBuilder);
     }
 
@@ -63,12 +63,12 @@ public class MasterDetail<T,U> {
             return this;
         }
 
-        public MasterDetail build() {
+        public MasterDetail<TT,UU> build() {
             Master<TT> master = masterBuilder.build();
             Detail<UU> detail = detailBuilder.build();
 
             MasterDetailController controller = MasterDetailController.Builder
-                    .forMaster(master.getFieldGroup())
+                    .forMaster(master.getFieldBinder())
                     .withDetail(detail.getTable())
                     .build();
 
