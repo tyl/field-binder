@@ -113,6 +113,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
 
     public void unbind(Field<?> field) {
         getFieldGroup().unbind(field);
+        field.setPropertyDataSource(null);
         resetField(field);
         configureField(field);
     }

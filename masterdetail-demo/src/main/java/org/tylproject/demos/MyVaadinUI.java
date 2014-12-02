@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.tylproject.demos.model.Address;
 import org.tylproject.demos.model.Person;
 import org.tylproject.vaadin.addon.crudnav.ButtonBar;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.masterdetail.Detail;
 import org.tylproject.vaadin.addon.masterdetail.Master;
 import org.tylproject.vaadin.addon.masterdetail.MasterDetail;
@@ -72,6 +73,28 @@ public class MyVaadinUI extends UI {
         mainLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 
         mainLayout.addComponent(buttonBar.getLayout());
+
+
+        final Button find = new Button("Find");
+        mainLayout.addComponent(find);
+        find.addClickListener(new Button.ClickListener() {
+            boolean isBound = true;
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                FieldBinder<Person> fieldBinder = masterDetail.getMaster().getFieldBinder();
+                if (isBound) {
+                    fieldBinder.unbindAll();
+                    find.setCaption("Search");
+                } else {
+                    fieldBinder.bindAll();
+                    find.setCaption("Find");
+                }
+                isBound = !isBound;
+            }
+        });
+
+
+
         mainLayout.addComponent(new Panel(formLayout));
 
         mainLayout.addComponent(detailBar.getLayout());
