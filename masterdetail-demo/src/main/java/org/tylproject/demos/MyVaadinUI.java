@@ -11,7 +11,10 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.tylproject.demos.model.Address;
 import org.tylproject.demos.model.Person;
+import org.tylproject.vaadin.addon.crudnav.BasicCrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.ButtonBar;
+import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
+import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.masterdetail.Detail;
 import org.tylproject.vaadin.addon.masterdetail.Master;
@@ -29,27 +32,46 @@ public class MyVaadinUI extends UI {
 
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = MyVaadinUI.class)
-    public static class Servlet extends VaadinServlet {}
+    public static class Servlet extends VaadinServlet {
+    }
 
     // setup a container instance
-    final ListContainer<Person> masterDataSource  =  makeDummyDataset();
+    final ListContainer<Person> masterDataSource = makeDummyDataset();
+    final FieldBinder<Person> masterDetail = new FieldBinder<Person>(Person.class);
 
     // generates the MasterDetail class
-    final MasterDetail<Person, Address> masterDetail = MasterDetail.with(
-            Master.of(Person.class)
-                    .fromContainer(masterDataSource)
-                    .withDefaultCrud(),
-            Detail.collectionOf(Address.class)
-                    .fromMasterProperty("addressList")
-                    .withDefaultCrud()
-    ).build();
+//    final MasterDetail<Person, Address> masterDetail = MasterDetail.with(
+//            Master.of(Person.class)
+//                    .fromContainer(masterDataSource)
+//                    .withDefaultCrud(),
+//            Detail.collectionOf(Address.class)
+//                    .fromMasterProperty("addressList")
+//                    .withDefaultCrud()
+//    ).build();
 
-    final Field<?> firstName = masterDetail.getMaster().getFieldBinder().build("firstName");
-    final Field<?> lastName = masterDetail.getMaster().getFieldBinder().build("lastName");
+//    final Field<?> firstName = masterDetail.getMaster().getFieldBinder().build("firstName");
+//    final Field<?> lastName = masterDetail.getMaster().getFieldBinder().build("lastName");
 
+    final Field<?> firstName = masterDetail.build("firstName");
+    final Field<?> lastName = masterDetail.build("lastName");
+    final Field<?> addressList = masterDetail.build("addressList");
 
-    final ButtonBar buttonBar = ButtonBar.forNavigation(masterDetail.getMaster().getNavigation());
-    final ButtonBar detailBar = ButtonBar.forNavigation(masterDetail.getDetail().getNavigation());
+    final CrudNavigation navigation = new BasicCrudNavigation();
+    {
+        navigation.addCurrentItemChangeListener(new CurrentItemChange.Listener() {
+            @Override
+            public void currentItemChange(CurrentItemChange.Event event) {
+                masterDetail.setItemDataSource(event.getSource().getCurrentItem());
+            }
+        });
+        navigation.setContainer(masterDataSource);
+
+    }
+    final ButtonBar buttonBar = ButtonBar.forNavigation(navigation);
+
+//
+//    final ButtonBar buttonBar = ButtonBar.forNavigation(masterDetail.getMaster().getNavigation());
+//    final ButtonBar detailBar = ButtonBar.forNavigation(masterDetail.getDetail().getNavigation());
 
     final VerticalLayout mainLayout = new VerticalLayout();
     final FormLayout formLayout = new FormLayout();
@@ -81,7 +103,7 @@ public class MyVaadinUI extends UI {
             boolean isBound = true;
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                FieldBinder<Person> fieldBinder = masterDetail.getMaster().getFieldBinder();
+                FieldBinder<Person> fieldBinder = masterDetail;
                 if (isBound) {
                     fieldBinder.unbindAll();
                     find.setCaption("Search");
@@ -97,33 +119,33 @@ public class MyVaadinUI extends UI {
 
         mainLayout.addComponent(new Panel(formLayout));
 
-        mainLayout.addComponent(detailBar.getLayout());
-        mainLayout.addComponent(masterDetail.getDetail().getTable());
+//        mainLayout.addComponent(detailBar.getLayout());
+//        mainLayout.addComponent(masterDetail.getDetail().getTable());
     }
 
     private void setupFormLayout() {
         formLayout.setMargin(true);
         formLayout.setHeightUndefined();
 
-        formLayout.addComponents(firstName, lastName);
+        formLayout.addComponents(firstName, lastName, addressList);
     }
 
     private void setupTable() {
-        final Table table = masterDetail.getDetail().getTable();
-        table.setSelectable(true);
-        table.setSizeFull();
-        table.setHeight("400px");
-
-        // inline editing
-        table.setTableFieldFactory(new TableFieldFactory() {
-            final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
-            @Override
-            public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
-                if (itemId == table.getValue())
-                    return fieldFactory.createField(container, itemId, propertyId, uiContext);
-                else return null;
-            }
-        });
+//        final Table table = masterDetail.getDetail().getTable();
+//        table.setSelectable(true);
+//        table.setSizeFull();
+//        table.setHeight("400px");
+//
+//        // inline editing
+//        table.setTableFieldFactory(new TableFieldFactory() {
+//            final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
+//            @Override
+//            public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
+//                if (itemId == table.getValue())
+//                    return fieldFactory.createField(container, itemId, propertyId, uiContext);
+//                else return null;
+//            }
+//        });
     }
 
     private static MongoOperations makeMongoTemplate() {
