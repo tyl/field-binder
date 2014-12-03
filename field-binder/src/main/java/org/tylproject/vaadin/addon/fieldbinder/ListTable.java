@@ -18,11 +18,18 @@ import java.util.List;
 public class ListTable<T> extends CustomField<List<T>> {
 
     protected final Table table = new Table();
+    protected final Class<T> containedBeanClass;
 
-    public ListTable() {}
+    public ListTable(Class<T> containedBeanClass) {
+        this.containedBeanClass = containedBeanClass;
+    }
 
     @Override
     protected Component initContent() {
+        return table;
+    }
+
+    public Table getTable() {
         return table;
     }
 
@@ -33,10 +40,10 @@ public class ListTable<T> extends CustomField<List<T>> {
 
     @Override
     protected void setInternalValue(List<T> newValue) {
-        List<T> list = (List<T>) newValue;
+        List<T> list = newValue;
         super.setInternalValue(list);
 
-        ListContainer<?> listContainer = new ListContainer<T>(list);
+        ListContainer<?> listContainer = new ListContainer<T>(containedBeanClass, list);
 
 
         table.setContainerDataSource(listContainer);

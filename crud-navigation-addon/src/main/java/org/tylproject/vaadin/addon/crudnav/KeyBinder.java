@@ -126,7 +126,7 @@ public class KeyBinder implements Action.Handler {
     }
 
     private void updateButtonStatus() {
-        Container.Indexed ctr = nav.getContainer();
+        Container.Ordered ctr = nav.getContainer();
         if (ctr == null) {
             disable(allActions);
             return;

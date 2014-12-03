@@ -21,8 +21,8 @@ public interface CrudNavigation extends
         AfterCommit.Notifier,
         OnDiscard.Notifier{
 
-    public Container.Indexed  getContainer();
-    public void setContainer(Container.Indexed container);
+    public Container.Ordered  getContainer();
+    public void setContainer(Container.Ordered container);
 
     public Item getCurrentItem();
     public Object getCurrentItemId();

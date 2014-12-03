@@ -21,7 +21,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
     private Item itemDataSource = null;
 
 
-    private FieldGroupFieldFactory fieldFactory = new FieldBinderFieldFactory();
+    private FieldBinderFieldFactory fieldFactory = new FieldBinderFieldFactory();
 
     public AbstractFieldBinder(T fieldGroup) {
         this.fieldGroup = fieldGroup;
@@ -140,12 +140,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
 
         field.setCaption(caption);
 
-        propertyIdToField.put(propertyId, field);
-        fieldToPropertyId.put(field, propertyId);
-
-        configureField(field);
-
-        getFieldGroup().bind(field, propertyId);
+        bind(field, propertyId);
 
         return field;
     }
@@ -318,7 +313,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
      * @return The field factory in use
      *
      */
-    public FieldGroupFieldFactory getFieldFactory() {
+    public FieldBinderFieldFactory getFieldFactory() {
         return fieldFactory;
     }
 
@@ -329,7 +324,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
      * @param fieldFactory
      *            The field factory to use
      */
-    public void setFieldFactory(FieldGroupFieldFactory fieldFactory) {
+    public void FieldBinderFieldFactory(FieldBinderFieldFactory fieldFactory) {
         this.fieldFactory = fieldFactory;
     }
 

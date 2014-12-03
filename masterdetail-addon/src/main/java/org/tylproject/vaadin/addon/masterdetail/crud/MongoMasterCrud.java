@@ -1,10 +1,12 @@
 package org.tylproject.vaadin.addon.masterdetail.crud;
 
 import com.vaadin.data.util.BeanItem;
+import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.MongoContainer;
 import org.tylproject.vaadin.addon.crudnav.events.ItemCreate;
 import org.tylproject.vaadin.addon.crudnav.events.OnCommit;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
 /**
  * Created by evacchi on 27/11/14.
@@ -15,6 +17,13 @@ public class MongoMasterCrud<M> extends DefaultMasterCrud {
     public MongoMasterCrud(Class<M> masterClass) {
         this.masterClass = masterClass;
     }
+
+    public MongoMasterCrud(Class<M> masterClass, FieldBinder<M> fieldBinder, CrudNavigation nav) {
+        this.masterClass = masterClass;
+        this.fieldBinder = fieldBinder;
+        this.navigation = nav;
+    }
+
 
 
 

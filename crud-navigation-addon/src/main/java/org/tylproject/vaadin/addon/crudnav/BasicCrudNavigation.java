@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
  */
 final public class BasicCrudNavigation extends AbstractCrudNavigation implements CrudNavigation {
 
-    private @Nonnull Container.Indexed container;
+    private @Nonnull Container.Ordered container;
     private Object currentItemId;
 
     public BasicCrudNavigation() {
@@ -24,12 +24,12 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
     }
 
     @Override
-    public Container.Indexed getContainer() {
+    public Container.Ordered getContainer() {
         return container;
     }
 
     @Override
-    public void setContainer(Container.Indexed container) {
+    public void setContainer(Container.Ordered container) {
         this.container = container;
         this.currentItemId = null;
         first();

@@ -158,7 +158,7 @@ public class ButtonBar {
     }
 
     private void updateButtonStatus() {
-        Container.Indexed ctr = nav.getContainer();
+        Container.Ordered ctr = nav.getContainer();
         if (ctr == null) {
             disable(allButtons);
             return;

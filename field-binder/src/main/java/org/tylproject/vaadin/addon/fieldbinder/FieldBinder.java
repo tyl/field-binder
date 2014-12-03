@@ -24,6 +24,13 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
     }
 
+    public Field<?> buildListOf(Class<?> containedBeanClass, Object propertyId) {
+        Class<?> dataType = getPropertyType(propertyId);
+        Field<?> field = getFieldFactory().createDetailField(dataType, containedBeanClass);
+        bind(field, propertyId);
+        return field;
+    }
+
     public Collection<Field<?>> buildAll() {
         for (DynaProperty prop : dynaClass.getDynaProperties()) {
             build(prop.getName());
@@ -53,26 +60,27 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
     @Override
     protected Class<?> getPropertyType(Object propertyId) {
-        Class<?> t = propertyTypes.get(propertyId);
-        if (t == null) {
-            try {
-                t = (Class<?>) Introspector.getBeanInfo(beanClass).getPropertyDescriptors()[0].getReadMethod().getGenericReturnType();
-                propertyTypes.put(propertyId, t);
-            }  catch (IntrospectionException e) {
-                throw new IllegalArgumentException(e);
-            }
-        }
-
-        return t;
+        return dynaClass.getDynaProperty(propertyId.toString()).getType();
+//        Class<?> t = propertyTypes.get(propertyId);
+//        if (t == null) {
+//            try {
+//                t = (Class<?>) Introspector.getBeanInfo(beanClass).getPropertyDescriptors()[0].getReadMethod().getGenericReturnType();
+//                propertyTypes.put(propertyId, t);
+//            }  catch (IntrospectionException e) {
+//                throw new IllegalArgumentException(e);
+//            }
+//        }
+//
+//        return t;
     }
-
-    private static Map<Object, PropertyDescriptor> createPropertyMap(BeanInfo beanInfo) {
-        Map<Object, PropertyDescriptor> propertyMap = new LinkedHashMap<Object, PropertyDescriptor>();
-
-        for (PropertyDescriptor descriptor: beanInfo.getPropertyDescriptors()) {
-            propertyMap.put(descriptor.getName(), descriptor);
-        }
-
-        return propertyMap;
-    }
+//
+//    private static Map<Object, PropertyDescriptor> createPropertyMap(BeanInfo beanInfo) {
+//        Map<Object, PropertyDescriptor> propertyMap = new LinkedHashMap<Object, PropertyDescriptor>();
+//
+//        for (PropertyDescriptor descriptor: beanInfo.getPropertyDescriptors()) {
+//            propertyMap.put(descriptor.getName(), descriptor);
+//        }
+//
+//        return propertyMap;
+//    }
 }

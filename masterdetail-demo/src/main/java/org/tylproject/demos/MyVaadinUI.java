@@ -1,5 +1,6 @@
 package org.tylproject.demos;
 
+import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -11,14 +12,19 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.tylproject.demos.model.Address;
 import org.tylproject.demos.model.Person;
+import org.tylproject.vaadin.addon.MongoContainer;
 import org.tylproject.vaadin.addon.crudnav.BasicCrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.ButtonBar;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.ListTable;
 import org.tylproject.vaadin.addon.masterdetail.Detail;
 import org.tylproject.vaadin.addon.masterdetail.Master;
 import org.tylproject.vaadin.addon.masterdetail.MasterDetail;
+import org.tylproject.vaadin.addon.masterdetail.crud.BeanDetailCrud;
+import org.tylproject.vaadin.addon.masterdetail.crud.BeanMasterCrud;
+import org.tylproject.vaadin.addon.masterdetail.crud.MongoMasterCrud;
 import org.vaadin.maddon.ListContainer;
 
 import javax.servlet.annotation.WebServlet;
@@ -36,7 +42,9 @@ public class MyVaadinUI extends UI {
     }
 
     // setup a container instance
-    final ListContainer<Person> masterDataSource = makeDummyDataset();
+//    final ListContainer<Person> masterDataSource = makeDummyDataset();
+    final MongoContainer<Person> masterDataSource =
+            MongoContainer.Builder.forEntity(Person.class, makeMongoTemplate()).build();
     final FieldBinder<Person> masterDetail = new FieldBinder<Person>(Person.class);
 
     // generates the MasterDetail class
@@ -54,20 +62,53 @@ public class MyVaadinUI extends UI {
 
     final Field<?> firstName = masterDetail.build("firstName");
     final Field<?> lastName = masterDetail.build("lastName");
-    final Field<?> addressList = masterDetail.build("addressList");
+    final ListTable<Address> addressList = (ListTable<Address>) masterDetail.buildListOf(Address.class, "addressList");
 
     final CrudNavigation navigation = new BasicCrudNavigation();
     {
-        navigation.addCurrentItemChangeListener(new CurrentItemChange.Listener() {
+
+//        BeanMasterCrud<Person> crudObject = new BeanMasterCrud<Person>(Person.class, masterDetail, navigation);
+        MongoMasterCrud<Person> crudObject = new MongoMasterCrud<Person>(Person.class, masterDetail, navigation);
+        CrudNavigation masterNav = navigation;
+
+        masterNav.addItemRemoveListener(crudObject);
+        masterNav.addOnCommitListener(crudObject);
+        masterNav.addOnDiscardListener(crudObject);
+        masterNav.addItemEditListener(crudObject);
+        masterNav.addItemCreateListener(crudObject);
+//        masterNav.addCurrentItemCh -angeListener(crudObject);
+
+        masterNav.addCurrentItemChangeListener(new CurrentItemChange.Listener() {
             @Override
             public void currentItemChange(CurrentItemChange.Event event) {
-                masterDetail.setItemDataSource(event.getSource().getCurrentItem());
+                masterDetail.setItemDataSource(event.getNewItem());
             }
         });
+
+
         navigation.setContainer(masterDataSource);
 
     }
     final ButtonBar buttonBar = ButtonBar.forNavigation(navigation);
+
+
+    final CrudNavigation tableNavigation = new BasicCrudNavigation();
+    {
+
+        BeanDetailCrud<Address> crudObject = new BeanDetailCrud<Address>(Address.class, addressList.getTable(), tableNavigation);
+        CrudNavigation detailNav = tableNavigation;
+
+        detailNav.addItemRemoveListener(crudObject);
+        detailNav.addOnCommitListener(crudObject);
+        detailNav.addOnDiscardListener(crudObject);
+        detailNav.addItemEditListener(crudObject);
+        detailNav.addItemCreateListener(crudObject);
+
+        tableNavigation.setContainer(addressList.getTable());
+
+    }
+    final ButtonBar tableBar = ButtonBar.forNavigation(tableNavigation);
+
 
 //
 //    final ButtonBar buttonBar = ButtonBar.forNavigation(masterDetail.getMaster().getNavigation());
@@ -118,6 +159,8 @@ public class MyVaadinUI extends UI {
 
 
         mainLayout.addComponent(new Panel(formLayout));
+        mainLayout.addComponent(addressList);
+        mainLayout.addComponent(tableBar.getLayout());
 
 //        mainLayout.addComponent(detailBar.getLayout());
 //        mainLayout.addComponent(masterDetail.getDetail().getTable());
@@ -127,25 +170,31 @@ public class MyVaadinUI extends UI {
         formLayout.setMargin(true);
         formLayout.setHeightUndefined();
 
-        formLayout.addComponents(firstName, lastName, addressList);
+        formLayout.addComponents(firstName, lastName);
     }
 
     private void setupTable() {
-//        final Table table = masterDetail.getDetail().getTable();
-//        table.setSelectable(true);
-//        table.setSizeFull();
-//        table.setHeight("400px");
-//
-//        // inline editing
-//        table.setTableFieldFactory(new TableFieldFactory() {
-//            final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
-//            @Override
-//            public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
-//                if (itemId == table.getValue())
-//                    return fieldFactory.createField(container, itemId, propertyId, uiContext);
-//                else return null;
-//            }
-//        });
+
+
+
+        final Table table = ((ListTable<Address>)addressList).getTable();
+        //masterDetail.getDetail().getTable();
+        table.setSelectable(true);
+        table.setSizeFull();
+        table.setHeight("400px");
+
+        // inline editing
+        table.setTableFieldFactory(new TableFieldFactory() {
+            final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
+            @Override
+            public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
+                if (itemId == table.getValue())
+                    return fieldFactory.createField(container, itemId, propertyId, uiContext);
+                else return null;
+            }
+        });
+
+
     }
 
     private static MongoOperations makeMongoTemplate() {
