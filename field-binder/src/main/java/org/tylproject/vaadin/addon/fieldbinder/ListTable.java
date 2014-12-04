@@ -43,10 +43,12 @@ public class ListTable<T> extends CustomField<List<T>> {
         List<T> list = newValue;
         super.setInternalValue(list);
 
-        ListContainer<?> listContainer = new ListContainer<T>(containedBeanClass, list);
-
-
-        table.setContainerDataSource(listContainer);
+        if (newValue == null) {
+            table.setContainerDataSource(null);
+        } else {
+            ListContainer<?> listContainer = new ListContainer<T>(containedBeanClass, list);
+            table.setContainerDataSource(listContainer);
+        }
     }
 
     @Override

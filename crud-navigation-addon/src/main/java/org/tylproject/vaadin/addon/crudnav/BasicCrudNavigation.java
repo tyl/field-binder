@@ -37,7 +37,8 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
 
     @Override
     public Item getCurrentItem() {
-        return container.getItem(getCurrentItemId());
+        Object currentId = getCurrentItemId();
+        return currentId == null? null : container.getItem(currentId);
     }
 
     @Override

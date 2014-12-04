@@ -1,5 +1,6 @@
 package org.tylproject.vaadin.addon.masterdetail.crud;
 
+import com.vaadin.data.Item;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.masterdetail.Master;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
@@ -36,6 +37,10 @@ public abstract class DefaultMasterCrud implements MasterCrud {
     public void onDiscard(OnDiscard.Event event) {
         fieldBinder.discard();
         fieldBinder.setReadOnly(true);
+        Item currentItem = navigation.getCurrentItem();
+        if (currentItem == null) {
+            navigation.first();
+        }
     }
 
     @Override

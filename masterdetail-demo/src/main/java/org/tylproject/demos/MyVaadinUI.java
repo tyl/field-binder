@@ -5,6 +5,7 @@ import com.mongodb.MongoClient;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Container;
+import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
@@ -13,9 +14,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.tylproject.demos.model.Address;
 import org.tylproject.demos.model.Person;
 import org.tylproject.vaadin.addon.MongoContainer;
-import org.tylproject.vaadin.addon.crudnav.BasicCrudNavigation;
-import org.tylproject.vaadin.addon.crudnav.ButtonBar;
-import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
+import org.tylproject.vaadin.addon.crudnav.*;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.ListTable;
@@ -107,7 +106,7 @@ public class MyVaadinUI extends UI {
         tableNavigation.setContainer(addressList.getTable());
 
     }
-    final ButtonBar tableBar = ButtonBar.forNavigation(tableNavigation);
+    final CrudButtonBar tableBar = new CrudButtonBar(tableNavigation);
 
 
 //
@@ -191,6 +190,14 @@ public class MyVaadinUI extends UI {
                 if (itemId == table.getValue())
                     return fieldFactory.createField(container, itemId, propertyId, uiContext);
                 else return null;
+            }
+        });
+
+        table.addItemClickListener(new ItemClickEvent.ItemClickListener() {
+            @Override
+            public void itemClick(ItemClickEvent event) {
+                Object itemId = event.getItemId();
+                tableNavigation.setCurrentItemId(itemId);
             }
         });
 
