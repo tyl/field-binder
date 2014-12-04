@@ -20,7 +20,7 @@ public class BeanMasterCrud<T> extends DefaultMasterCrud
         this.beanClass = beanClass;
         this.fieldBinder = masterDetail;
         this.navigation = navigation;
-
+        fieldBinder.setReadOnly(true);
     }
 
 

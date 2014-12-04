@@ -1,10 +1,15 @@
 package org.tylproject.demos;
 
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Container;
+import com.vaadin.data.Property;
+import com.vaadin.data.Validator;
+import com.vaadin.data.util.converter.Converter;
+import com.vaadin.data.util.filter.And;
+import com.vaadin.data.util.filter.Compare;
+import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
@@ -16,19 +21,20 @@ import org.tylproject.demos.model.Person;
 import org.tylproject.vaadin.addon.MongoContainer;
 import org.tylproject.vaadin.addon.crudnav.*;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
+import org.tylproject.vaadin.addon.crudnav.events.OnClearToFind;
+import org.tylproject.vaadin.addon.crudnav.events.OnFind;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.ListTable;
-import org.tylproject.vaadin.addon.masterdetail.Detail;
-import org.tylproject.vaadin.addon.masterdetail.Master;
-import org.tylproject.vaadin.addon.masterdetail.MasterDetail;
 import org.tylproject.vaadin.addon.masterdetail.crud.BeanDetailCrud;
-import org.tylproject.vaadin.addon.masterdetail.crud.BeanMasterCrud;
 import org.tylproject.vaadin.addon.masterdetail.crud.MongoMasterCrud;
 import org.vaadin.maddon.ListContainer;
 
 import javax.servlet.annotation.WebServlet;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Theme("mytheme")
@@ -61,6 +67,10 @@ public class MyVaadinUI extends UI {
 
     final Field<?> firstName = masterDetail.build("firstName");
     final Field<?> lastName = masterDetail.build("lastName");
+    final Field<?> age = masterDetail.build("age");
+
+    final Label records = new Label();
+
     final ListTable<Address> addressList = (ListTable<Address>) masterDetail.buildListOf(Address.class, "addressList");
 
     final CrudNavigation navigation = new BasicCrudNavigation();
@@ -133,25 +143,43 @@ public class MyVaadinUI extends UI {
     private void setupMainLayout() {
         mainLayout.setMargin(true);
         mainLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+//        final Button clearToFind = new Button("Clear to Find");
+//        final Button find = new Button("Find");
 
         mainLayout.addComponent(buttonBar.getLayout());
 
+//        find.setEnabled(false);
 
-        final Button find = new Button("Find");
-        mainLayout.addComponent(find);
-        find.addClickListener(new Button.ClickListener() {
-            boolean isBound = true;
+
+        final FieldBinder<Person> fieldBinder = masterDetail;
+
+//        mainLayout.addComponents(clearToFind, find);
+
+        navigation.addOnClearToFindListener(new OnClearToFind.Listener() {
+
             @Override
-            public void buttonClick(Button.ClickEvent event) {
-                FieldBinder<Person> fieldBinder = masterDetail;
-                if (isBound) {
+            public void onClearToFind(OnClearToFind.Event event) {
+                if (event.getSource().getCurrentItemId() == null) {
                     fieldBinder.unbindAll();
-                    find.setCaption("Search");
+                    fieldBinder.setReadOnly(false);
+                    navigation.setCurrentItemId(null);
                 } else {
-                    fieldBinder.bindAll();
-                    find.setCaption("Find");
+                    fieldBinder.setReadOnly(false);
+                    navigation.setCurrentItemId(null);
+                    for (Field<?> f : fieldBinder.getFields())
+                        f.setValue(null);
                 }
-                isBound = !isBound;
+            }
+
+        });
+
+        navigation.addOnFindListener(new OnFind.Listener() {
+            @Override
+            public void onFind(OnFind.Event event) {
+                applyFilters(fieldBinder, masterDataSource);
+                fieldBinder.bindAll();
+                fieldBinder.setReadOnly(true);
+                navigation.first();
             }
         });
 
@@ -169,7 +197,15 @@ public class MyVaadinUI extends UI {
         formLayout.setMargin(true);
         formLayout.setHeightUndefined();
 
-        formLayout.addComponents(firstName, lastName);
+        formLayout.addComponents(firstName, lastName, age, records);
+
+        navigation.addCurrentItemChangeListener(new CurrentItemChange.Listener() {
+            @Override
+            public void currentItemChange(CurrentItemChange.Event event) {
+                int current = masterDataSource.indexOfId(navigation.getCurrentItemId());
+                records.setValue(String.format("%d of %d", current, masterDataSource.size()));
+            }
+        });
     }
 
     private void setupTable() {
@@ -219,6 +255,103 @@ public class MyVaadinUI extends UI {
                 new Person("Ringo", "Starr",     new Address("Who Cares, lol"))
         ));
         return dataSource;
+    }
+
+    private void applyFilters(FieldBinder<Person> fieldBinder, Container.Filterable container) {
+        masterDataSource.removeAllContainerFilters();
+        for (Map.Entry<Field<?>,Object> e : fieldBinder.getFieldToPropertyIdBindings().entrySet()) {
+            Field<?> prop = e.getKey();
+            Object propertyId = e.getValue();
+            Object value = prop.getValue();
+            Class<?> modelType = getModelType(prop);
+            if (value != null) {
+                masterDataSource.addContainerFilter(filterFromType(modelType, propertyId, value));
+            }
+        }
+    }
+
+    private Class<?> getModelType(Field<?> prop) {
+        if (prop instanceof AbstractField) {
+            AbstractField<?> abstractField = (AbstractField<?>) prop;
+            Converter<?, Object> converter = abstractField.getConverter();
+            if (converter != null) {
+                return converter.getModelType();
+            }
+        }
+
+        // otherwise, fallback to the property type
+        return prop.getType();
+
+    }
+
+
+    private Object getConvertedValue(Field<?> prop) {
+        if (prop instanceof AbstractField) {
+            return ((AbstractField) prop).getConvertedValue();
+        } else {
+            return prop.getValue();
+        }
+    }
+
+    private Container.Filter filterFromType(Class<?> type, Object propertyId, Object pattern) {
+        if (String.class.isAssignableFrom(type)) {
+            return new SimpleStringFilter(propertyId, pattern.toString(), true, true);
+        } else
+        if (Number.class.isAssignableFrom(type)) {
+            return filterForNumber(propertyId, pattern.toString());
+        } else {
+            throw new UnsupportedOperationException("Unsupported value type: "+type.getCanonicalName());
+        }
+    }
+
+
+    private Container.Filter filterForNumber(Object propertyId, String pattern) {
+        Container.Filter filter = numberEqual(propertyId, pattern);
+        if (filter != null) return filter;
+
+        filter = intRange(propertyId, pattern);
+
+
+        if (filter != null) return filter;
+
+        throw new Validator.InvalidValueException(
+                    String.format("'%s' is not an accepted numeric search pattern", pattern));
+
+    }
+
+    private Container.Filter numberEqual(Object propertyId, String pattern) {
+        try {
+            int i = Integer.parseInt(pattern);
+            return new Compare.Equal(propertyId, i);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
+    Pattern intRange = Pattern.compile("^(\\d+)\\.\\.(\\d+)$");
+    private Container.Filter intRange(Object propertyId, String pattern) {
+        Matcher matcher = intRange.matcher(pattern);
+        matcher.find();
+        String left = matcher.group(1);
+        String right = matcher.group(2);
+        try {
+            int i = Integer.parseInt(left);
+            int j = Integer.parseInt(right);
+
+            if (i>j) {
+                throw new Validator.InvalidValueException(
+                        String.format("The given range '%s' is invalid", pattern));
+            }
+
+            return new And(
+                    new Compare.GreaterOrEqual(propertyId, i),
+                    new Compare.LessOrEqual(propertyId, j)
+            );
+
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+
     }
 
 

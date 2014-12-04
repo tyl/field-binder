@@ -15,6 +15,7 @@ public class ButtonBar implements CrudNavButtonBar {
 
     private final NavButtonBar navBar;
     private final CrudButtonBar crudBar;
+    private final FindButtonBar findBar;
     private final HorizontalLayout buttonLayout = new HorizontalLayout();
 
     public static ButtonBar forNavigation(CrudNavigation nav) {
@@ -24,27 +25,24 @@ public class ButtonBar implements CrudNavButtonBar {
     public ButtonBar(CrudNavigation nav) {
         this.navBar = new NavButtonBar(nav);
         this.crudBar = new CrudButtonBar(nav);
+        this.findBar = new FindButtonBar(nav);
 
-        getLayout().addComponent(navBar.getLayout());
-        getLayout().addComponent(crudBar.getLayout());
+        getLayout().addComponents(
+                navBar.getLayout(),
+                crudBar.getLayout(),
+                findBar.getLayout());
 
     }
-
-
 
     public void setNavigation(@Nonnull CrudNavigation nav) {
         navBar.setNavigation(nav);
         crudBar.setNavigation(nav);
+        findBar.setNavigation(nav);
     }
-
 
     public Layout getLayout() {
         return buttonLayout;
     }
-
-
-
-
 
 }
 

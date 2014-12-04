@@ -7,6 +7,6 @@ import org.tylproject.vaadin.addon.crudnav.events.RejectOperationException;
  */
 public class NavigationOperations {
     public static void reject() {
-        throw new RejectOperationException();
+        throw RejectOperationException.Instance;
     }
 }

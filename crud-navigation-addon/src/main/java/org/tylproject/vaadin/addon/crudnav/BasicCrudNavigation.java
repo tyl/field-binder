@@ -87,9 +87,13 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
 
     @Override
     public void commit() {
-        getEventRouter().fireEvent(new BeforeCommit.Event(this));
-        getEventRouter().fireEvent(new OnCommit.Event(this));
-        getEventRouter().fireEvent(new AfterCommit.Event(this));
+        try {
+            getEventRouter().fireEvent(new BeforeCommit.Event(this));
+            getEventRouter().fireEvent(new OnCommit.Event(this));
+            getEventRouter().fireEvent(new AfterCommit.Event(this));
+        } catch (RejectOperationException signal) {
+            logger.info("Commit operation was interrupted by user");
+        }
     }
 
     @Override
@@ -113,4 +117,20 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
         this.setCurrentItemId(newItemId);
     }
 
+
+    @Override
+    public void clearToFind() {
+        getEventRouter().fireEvent(new OnClearToFind.Event(this));
+    }
+
+    @Override
+    public void find() {
+        try {
+            getEventRouter().fireEvent(new BeforeFind.Event(this));
+            getEventRouter().fireEvent(new OnFind.Event(this));
+            getEventRouter().fireEvent(new AfterFind.Event(this));
+        } catch (RejectOperationException signal) {
+            logger.info("Find operation was interrupted by user");
+        }
+    }
 }

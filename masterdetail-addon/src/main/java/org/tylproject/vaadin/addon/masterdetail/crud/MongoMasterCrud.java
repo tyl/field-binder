@@ -22,6 +22,7 @@ public class MongoMasterCrud<M> extends DefaultMasterCrud {
         this.masterClass = masterClass;
         this.fieldBinder = fieldBinder;
         this.navigation = nav;
+        fieldBinder.setReadOnly(true);
     }
 
 

@@ -3,12 +3,15 @@ package org.tylproject.vaadin.addon.crudnav;
 import com.vaadin.event.EventRouter;
 import org.tylproject.vaadin.addon.crudnav.events.*;
 
+import java.util.logging.Logger;
+
 /**
  * Created by evacchi on 19/11/14.
  */
 public abstract class AbstractCrudNavigation implements CrudNavigation {
 
     private final EventRouter eventRouter = new EventRouter();
+    protected final Logger logger = Logger.getLogger(this.getClass().getCanonicalName());
 
     public EventRouter getEventRouter() {
         return eventRouter;
@@ -136,6 +139,46 @@ public abstract class AbstractCrudNavigation implements CrudNavigation {
     @Override
     public void removeOnDiscardListener(OnDiscard.Listener listener) {
         eventRouter.removeListener(OnDiscard.Event.class, listener, OnDiscard.Listener.METHOD);
+    }
+
+    @Override
+    public void addOnClearToFindListener(OnClearToFind.Listener listener) {
+        eventRouter.addListener(OnClearToFind.Event.class, listener, OnClearToFind.Listener.METHOD);
+    }
+
+    @Override
+    public void removeOnClearToFindListener(OnClearToFind.Listener listener) {
+        eventRouter.removeListener(OnClearToFind.Event.class, listener, OnClearToFind.Listener.METHOD);
+    }
+
+    @Override
+    public void addBeforeFindListener(BeforeFind.Listener listener) {
+        eventRouter.addListener(BeforeFind.Event.class, listener, BeforeFind.Listener.METHOD);
+    }
+
+    @Override
+    public void removeBeforeFindListener(BeforeFind.Listener listener) {
+        eventRouter.removeListener(BeforeFind.Event.class, listener, BeforeFind.Listener.METHOD);
+    }
+
+    @Override
+    public void addOnFindListener(OnFind.Listener listener) {
+        eventRouter.addListener(OnFind.Event.class, listener, OnFind.Listener.METHOD);
+    }
+
+    @Override
+    public void removeOnFindListener(OnFind.Listener listener) {
+        eventRouter.removeListener(OnFind.Event.class, listener, OnFind.Listener.METHOD);
+    }
+
+    @Override
+    public void addAfterFindListener(AfterFind.Listener listener) {
+        eventRouter.addListener(AfterFind.Event.class, listener, AfterFind.Listener.METHOD);
+    }
+
+    @Override
+    public void removeAfterFindListener(AfterFind.Listener listener) {
+        eventRouter.removeListener(AfterFind.Event.class, listener, AfterFind.Listener.METHOD);
     }
 
 

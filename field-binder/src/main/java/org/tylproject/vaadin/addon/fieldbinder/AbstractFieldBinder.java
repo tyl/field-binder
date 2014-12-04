@@ -4,6 +4,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroupFieldFactory;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 
@@ -36,6 +37,15 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
 
     public Collection<Object> getBindingPropertyIds() {
         return Collections.unmodifiableCollection(propertyIdToField.keySet());
+    }
+
+    public Map<Field<?>, Object> getFieldToPropertyIdBindings() {
+        return Collections.unmodifiableMap(fieldToPropertyId);
+    }
+
+
+    public Map<Object, Field<?>> getPropertyIdToFieldBindings() {
+        return Collections.unmodifiableMap(propertyIdToField);
     }
 
     public Field<?> getField(Object propertyId) {
@@ -106,16 +116,32 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         propertyIdToField.put(propertyId, field);
         fieldToPropertyId.put(field, propertyId);
 
-        getFieldGroup().bind(field, propertyId);
+        if (field instanceof AbstractField<?>) {
+            ((AbstractField) field).setValidationVisible(false);
+        }
+
+        if (hasItemDataSource())
+            getFieldGroup().bind(field, propertyId);
 
         configureField(field);
     }
 
     public void unbind(Field<?> field) {
-        getFieldGroup().unbind(field);
+        if (hasItemDataSource())
+            getFieldGroup().unbind(field);
+
+
+        if (field instanceof AbstractField<?>) {
+            ((AbstractField) field).setValidationVisible(false);
+        }
+
         field.setPropertyDataSource(null);
         resetField(field);
         configureField(field);
+    }
+
+    public boolean hasItemDataSource() {
+        return this.itemDataSource != null;
     }
 
     public Field<?> build(Object propertyId) {
