@@ -2,7 +2,6 @@ package org.tylproject.vaadin.addon.crudnav;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
-import com.vaadin.event.EventRouter;
 import org.tylproject.vaadin.addon.crudnav.events.*;
 
 import javax.annotation.Nonnull;
@@ -120,7 +119,7 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
 
     @Override
     public void clearToFind() {
-        getEventRouter().fireEvent(new OnClearToFind.Event(this));
+        getEventRouter().fireEvent(new ClearToFind.Event(this));
     }
 
     @Override
@@ -133,4 +132,29 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
             logger.info("Find operation was interrupted by user");
         }
     }
+
+
+    public <X extends OnDiscard.Listener
+            & OnCommit.Listener
+            & ItemRemove.Listener
+            & ItemEdit.Listener
+            & ItemCreate.Listener> BasicCrudNavigation withCrudListenersFrom(X crudListenersObject) {
+
+        this.addItemRemoveListener(crudListenersObject);
+        this.addOnCommitListener(crudListenersObject);
+        this.addOnDiscardListener(crudListenersObject);
+        this.addItemEditListener(crudListenersObject);
+        this.addItemCreateListener(crudListenersObject);
+
+        return this;
+    }
+
+    public <X extends
+            ClearToFind.Listener
+            & OnFind.Listener> BasicCrudNavigation withFindListenersFrom(X findListenersObject) {
+        this.addClearToFindListener(findListenersObject);
+        this.addOnFindListener(findListenersObject);
+        return this;
+    }
+
 }

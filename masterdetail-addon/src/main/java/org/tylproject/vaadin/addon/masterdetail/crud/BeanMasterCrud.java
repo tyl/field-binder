@@ -16,10 +16,9 @@ public class BeanMasterCrud<T> extends DefaultMasterCrud
         this.beanClass = beanClass;
     }
 
-    public BeanMasterCrud(Class<T> beanClass, FieldBinder<T> masterDetail, CrudNavigation navigation) {
+    public BeanMasterCrud(Class<T> beanClass, FieldBinder<T> masterDetail) {
         this.beanClass = beanClass;
         this.fieldBinder = masterDetail;
-        this.navigation = navigation;
         fieldBinder.setReadOnly(true);
     }
 
@@ -28,8 +27,8 @@ public class BeanMasterCrud<T> extends DefaultMasterCrud
     public void itemCreate(ItemCreate.Event event) {
         T bean = createBean();
         super.fieldBinder.setReadOnly(false);
-        super.navigation.getContainer().addItem(bean);
-        super.navigation.setCurrentItemId(bean);
+        event.getSource().getContainer().addItem(bean);
+        event.getSource().setCurrentItemId(bean);
 
     }
 

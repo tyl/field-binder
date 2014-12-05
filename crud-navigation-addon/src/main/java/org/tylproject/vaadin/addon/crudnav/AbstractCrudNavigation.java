@@ -142,13 +142,13 @@ public abstract class AbstractCrudNavigation implements CrudNavigation {
     }
 
     @Override
-    public void addOnClearToFindListener(OnClearToFind.Listener listener) {
-        eventRouter.addListener(OnClearToFind.Event.class, listener, OnClearToFind.Listener.METHOD);
+    public void addClearToFindListener(ClearToFind.Listener listener) {
+        eventRouter.addListener(ClearToFind.Event.class, listener, ClearToFind.Listener.METHOD);
     }
 
     @Override
-    public void removeOnClearToFindListener(OnClearToFind.Listener listener) {
-        eventRouter.removeListener(OnClearToFind.Event.class, listener, OnClearToFind.Listener.METHOD);
+    public void removeClearToFindListener(ClearToFind.Listener listener) {
+        eventRouter.removeListener(ClearToFind.Event.class, listener, ClearToFind.Listener.METHOD);
     }
 
     @Override

@@ -18,10 +18,10 @@ public class MongoMasterCrud<M> extends DefaultMasterCrud {
         this.masterClass = masterClass;
     }
 
-    public MongoMasterCrud(Class<M> masterClass, FieldBinder<M> fieldBinder, CrudNavigation nav) {
+    public MongoMasterCrud(Class<M> masterClass, FieldBinder<M> fieldBinder) {
         this.masterClass = masterClass;
         this.fieldBinder = fieldBinder;
-        this.navigation = nav;
+//        this.navigation = nav;
         fieldBinder.setReadOnly(true);
     }
 
@@ -34,15 +34,13 @@ public class MongoMasterCrud<M> extends DefaultMasterCrud {
         super.fieldBinder.setReadOnly(false);
 //        final MongoContainer<M> container = (MongoContainer<M>) super.navigation.getContainer();
 //        super.navigation.setCurrentItemId(container.addEntity(bean));
-        super.navigation.setCurrentItemId(null);
+        event.getSource().setCurrentItemId(null);
         super.fieldBinder.setItemDataSource(new BeanItem<M>(bean));
     }
 
     @Override
     public void currentItemChange(CurrentItemChange.Event event) {
-        if (event.getNewItemId() == null) {
-            fieldBinder.setItemDataSource(new BeanItem<M>(createBean()));
-        }
+        super.fieldBinder.setItemDataSource(event.getNewItem());
     }
 
     protected M createBean() {
@@ -57,9 +55,9 @@ public class MongoMasterCrud<M> extends DefaultMasterCrud {
     @Override
     public void onCommit(OnCommit.Event event) {
         super.onCommit(event);
-        final MongoContainer<M> container = (MongoContainer<M>) super.navigation.getContainer();
+        final MongoContainer<M> container = (MongoContainer<M>) event.getSource().getContainer();
         BeanItem<M> beanItem = (BeanItem<M>) fieldBinder.getItemDataSource();
-        super.navigation.setCurrentItemId(container.addEntity(beanItem.getBean()));
+        event.getSource().setCurrentItemId(container.addEntity(beanItem.getBean()));
 
     }
 }

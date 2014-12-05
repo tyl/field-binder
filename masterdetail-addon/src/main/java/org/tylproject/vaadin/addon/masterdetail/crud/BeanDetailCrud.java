@@ -8,16 +8,15 @@ import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 /**
  * Created by evacchi on 26/11/14.
  */
-public class BeanDetailCrud<T> extends DefaultDetailCrud implements ItemCreate.Listener{
+public class BeanDetailCrud<T> extends DefaultDetailCrud implements ItemCreate.Listener {
     private final Class<T> beanClass;
     public BeanDetailCrud(Class<T> beanClass) {
         this.beanClass = beanClass;
     }
 
-    public BeanDetailCrud(Class<T> beanClass, Table table, CrudNavigation navigation) {
+    public BeanDetailCrud(Class<T> beanClass, Table table) {
         this.beanClass = beanClass;
         this.table = table;
-        this.navigation = navigation;
     }
 
     @Override
@@ -25,7 +24,7 @@ public class BeanDetailCrud<T> extends DefaultDetailCrud implements ItemCreate.L
         try {
             T bean = beanClass.newInstance();
             super.table.addItem(bean);
-            super.navigation.setCurrentItemId(bean);
+            event.getSource().setCurrentItemId(bean);
         } catch (Exception ex) {
             throw new UnsupportedOperationException(ex);
         }
