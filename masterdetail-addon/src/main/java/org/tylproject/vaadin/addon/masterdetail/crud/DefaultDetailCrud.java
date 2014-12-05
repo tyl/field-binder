@@ -9,12 +9,10 @@ import org.tylproject.vaadin.addon.crudnav.events.*;
  * Created by evacchi on 26/11/14.
  */
 public abstract class DefaultDetailCrud implements DetailCrud {
-    protected CrudNavigation navigation;
     protected Table table;
 
     @Override
     public DetailCrud withDetail(Detail<?> detail) {
-        this.navigation = detail.getNavigation();
         this.table = detail.getTable();
         return this;
     }
@@ -37,7 +35,7 @@ public abstract class DefaultDetailCrud implements DetailCrud {
 
     @Override
     public void itemRemove(ItemRemove.Event event) {
-        table.removeItem(navigation.getCurrentItemId());
+        table.removeItem(event.getSource().getCurrentItemId());
     }
 
 }

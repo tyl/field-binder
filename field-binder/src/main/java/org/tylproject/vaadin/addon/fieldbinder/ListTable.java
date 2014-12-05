@@ -8,6 +8,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.Table;
+
+import org.vaadin.maddon.FilterableListContainer;
 import org.vaadin.maddon.ListContainer;
 
 import java.util.List;
@@ -46,7 +48,8 @@ public class ListTable<T> extends CustomField<List<T>> {
         if (newValue == null) {
             table.setContainerDataSource(null);
         } else {
-            ListContainer<?> listContainer = new ListContainer<T>(containedBeanClass, list);
+            FilterableListContainer<T> listContainer = new FilterableListContainer<T>(containedBeanClass);
+            listContainer.setCollection(list);
             table.setContainerDataSource(listContainer);
         }
     }

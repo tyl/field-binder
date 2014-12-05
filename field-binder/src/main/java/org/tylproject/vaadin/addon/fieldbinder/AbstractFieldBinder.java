@@ -73,6 +73,12 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         }
     }
 
+    public void clear() {
+    	for (Object fid: this.getBindingPropertyIds()) {
+            Field<?> f = propertyIdToField.get(fid);
+            f.setValue(null);
+    	}
+    }
 
     protected void resetField(Field<?> field) {
         field.setBuffered(false);
