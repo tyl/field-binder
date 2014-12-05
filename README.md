@@ -1,7 +1,7 @@
 Master-Detail Addon
 ===================
 
-A Vaadin logic component (non-visual) to automatically manage master/detail-type forms, by automatically wiring together regular Vaadin components.
+A Vaadin logic component (non-visual) to manage master/detail-type forms, by automatically wiring together regular Vaadin components.
 
 A Master-Detail is bound to a `Container` through a `CrudNavigation` controller class. A `CrudNavigation`  class wraps a `Container` and maintains a pointer to a `currentItemId`. When the pointer moves to a different element of the `Container` the detail is updated accordingly.
 
@@ -254,5 +254,3 @@ masterDetail.getDetail().getNavigation().addOnCommitListener(new OnCommit.Listen
     }
 });
 ```
-
-
