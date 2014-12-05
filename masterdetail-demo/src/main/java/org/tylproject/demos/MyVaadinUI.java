@@ -51,37 +51,71 @@ public class MyVaadinUI extends UI {
     public static class Servlet extends VaadinServlet {
     }
 
-    // setup a container instance
+    // CONTAINER
+    
+    // setup a container instance; uncomment the following line to use an in-memory
+    // container instead of Mongo
 //    final ListContainer<Person> masterDataSource = makeDummyDataset();
     final MongoContainer<Person> masterDataSource =
             MongoContainer.Builder.forEntity(Person.class, makeMongoTemplate()).build();
+    
+    
+    // FIELD BINDER (MASTER/DETAIL EDITOR)
+    
+    // initialize the FieldBinder for the masterDetail editor on the Person entity
     final FieldBinder<Person> masterDetail = new FieldBinder<Person>(Person.class);
-
-
-
+    
+    // MASTER
+    
+    // create a field for each property in the Person bean that we want to bind
+    // the build() method returns a Field<?>. 
+    // If you need a more specific type (e.g., TextField), you'll have to cast it
     final Field<?> firstName = masterDetail.build("firstName");
     final Field<?> lastName = masterDetail.build("lastName");
     final Field<?> age = masterDetail.build("age");
+    
+    // prepare the form layout that will contain the fields defined above
+    final FormLayout formLayout = new FormLayout();
 
+    // DETAIL
 
+    // create field for "collection" property (currently only lists are supported!)
+    // addressList. buildListOf() returns a Field<?> instance like build()
+    // The underlying field is ListTable<T>, where, in this case, T is Address
     final ListTable<Address> addressList = (ListTable<Address>) masterDetail.buildListOf(Address.class, "addressList");
+    
+    
+    
+    // MASTER CONTROLLER AND BUTTONS (and n. of record indicator)
 
+    // Build the navigation controller for the Person entity
     final BasicCrudNavigation masterNavigation = new BasicCrudNavigation();
-
+    
+    // Bind the label "Current# of Total#" to the navigation controller instance
     final NavigationLabel records = new NavigationLabel(masterNavigation);
+    
+    // Buttons:
+    // generate a full button bar: the ButtonBar wraps together 3 separate Button Bars:
+    // NavButtonBar CrudButtonBar and FindButtonBar. These can be instantiated separately as well.
     final ButtonBar buttonBar = ButtonBar.forNavigation(masterNavigation);
+    
+    
+    // DETAIL CONTROLLER AND BUTTONS
 
 
-
+    // let us create a "detail" navigation to hook into the table-related events
     final BasicCrudNavigation detailNavigation = new BasicCrudNavigation();
     
+    // Buttons:
+    // For the detailNavigation we do not need the NavButtonBar, 
+    // let us create only the CrudButtonBar and the FindButtonBar
     final CrudButtonBar tableBar = new CrudButtonBar(detailNavigation);
     final FindButtonBar tableFindBar = new FindButtonBar(detailNavigation);
 
+    // generic main outer layout 
     final VerticalLayout mainLayout = new VerticalLayout();
-    final FormLayout formLayout = new FormLayout();
 
-    
+    // FINISH UP THE INITIALIZATION
     public MyVaadinUI() {
 
         final MongoMasterCrud<Person> masterCrudListeners = new MongoMasterCrud<Person>(Person.class, masterDetail);
@@ -96,8 +130,77 @@ public class MyVaadinUI extends UI {
         final BeanDetailCrud<Address> detailCrudListeners = new BeanDetailCrud<Address>(Address.class, addressList.getTable());
         detailNavigation.withCrudListenersFrom(detailCrudListeners);
         detailNavigation.setContainer(addressList.getTable());
+
+    }
+    
+
+
+    @Override
+    protected void init(VaadinRequest request) {
+
+        setupMainLayout();
+
+        setupFormLayout();
+        setupTable();
+        setupFindForTable();
+
+        setContent(mainLayout);
+
+    }
+
+
+    private void setupMainLayout() {
+        mainLayout.setMargin(true);
+        mainLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+
+        mainLayout.addComponent(buttonBar.getLayout());
+
+        mainLayout.addComponent(new Panel(formLayout));
+        mainLayout.addComponent(addressList);
+        mainLayout.addComponent(new HorizontalLayout(tableBar.getLayout(), tableFindBar.getLayout()));
+
+    }
+
+    private void setupFormLayout() {
+        formLayout.setMargin(true);
+        formLayout.setHeightUndefined();
+
+        formLayout.addComponents(firstName, lastName, age, records);
+    }
+
+    private void setupTable() {
+
+        final Table table = addressList.getTable();
+        table.setSelectable(true);
+        table.setSizeFull();
+        table.setHeight("400px");
+
+        table.setVisibleColumns("city", "state", "street", "zipCode");
+
         
-        addressList.getTable().setVisibleColumns("city", "state", "street", "zipCode");
+        // inline editing
+        table.setTableFieldFactory(new TableFieldFactory() {
+            final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
+            @Override
+            public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
+                if (itemId == table.getValue())
+                    return fieldFactory.createField(container, itemId, propertyId, uiContext);
+                else return null;
+            }
+        });
+
+        table.addItemClickListener(new ItemClickEvent.ItemClickListener() {
+            @Override
+            public void itemClick(ItemClickEvent event) {
+                Object itemId = event.getItemId();
+                detailNavigation.setCurrentItemId(itemId);
+            }
+        });
+
+
+    }
+    
+    private void setupFindForTable() {
         
 
         
@@ -161,9 +264,9 @@ public class MyVaadinUI extends UI {
 			
 			
 		});
-
     }
     
+
     class FindWindow<T> extends Window {
     	
     	FieldBinder<T> fieldBinder;
@@ -196,72 +299,6 @@ public class MyVaadinUI extends UI {
 			
 			setContent(layout);
     	}
-    }
-
-
-    @Override
-    protected void init(VaadinRequest request) {
-
-        setupMainLayout();
-
-        setupFormLayout();
-        setupTable();
-
-        setContent(mainLayout);
-
-    }
-
-
-    private void setupMainLayout() {
-        mainLayout.setMargin(true);
-        mainLayout.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-
-        mainLayout.addComponent(buttonBar.getLayout());
-
-        mainLayout.addComponent(new Panel(formLayout));
-        mainLayout.addComponent(addressList);
-        mainLayout.addComponent(new HorizontalLayout(tableBar.getLayout(), tableFindBar.getLayout()));
-
-    }
-
-    private void setupFormLayout() {
-        formLayout.setMargin(true);
-        formLayout.setHeightUndefined();
-
-        formLayout.addComponents(firstName, lastName, age, records);
-
-
-    }
-
-    private void setupTable() {
-
-
-
-        final Table table = addressList.getTable();
-        table.setSelectable(true);
-        table.setSizeFull();
-        table.setHeight("400px");
-
-        // inline editing
-        table.setTableFieldFactory(new TableFieldFactory() {
-            final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
-            @Override
-            public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
-                if (itemId == table.getValue())
-                    return fieldFactory.createField(container, itemId, propertyId, uiContext);
-                else return null;
-            }
-        });
-
-        table.addItemClickListener(new ItemClickEvent.ItemClickListener() {
-            @Override
-            public void itemClick(ItemClickEvent event) {
-                Object itemId = event.getItemId();
-                detailNavigation.setCurrentItemId(itemId);
-            }
-        });
-
-
     }
 
     private static MongoOperations makeMongoTemplate() {
