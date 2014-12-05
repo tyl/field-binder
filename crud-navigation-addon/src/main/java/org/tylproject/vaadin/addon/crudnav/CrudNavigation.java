@@ -19,10 +19,14 @@ public interface CrudNavigation extends
         OnCommit.Notifier,
         BeforeCommit.Notifier,
         AfterCommit.Notifier,
-        OnDiscard.Notifier{
+        OnDiscard.Notifier,
+        ClearToFind.Notifier,
+        BeforeFind.Notifier,
+        OnFind.Notifier,
+        AfterFind.Notifier {
 
-    public Container.Indexed  getContainer();
-    public void setContainer(Container.Indexed container);
+    public Container.Ordered  getContainer();
+    public void setContainer(Container.Ordered container);
 
     public Item getCurrentItem();
     public Object getCurrentItemId();
@@ -33,6 +37,10 @@ public interface CrudNavigation extends
     public void last();
     public void next();
     public void prev();
+
+    // search
+    public void clearToFind();
+    public void find();
 
     // CRUD
     public void create();

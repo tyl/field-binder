@@ -17,4 +17,7 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
         return field;
     }
 
+    public <T> ListTable<T> createDetailField(Class<?> dataType, Class<T> containedBeanClass) {
+        return new ListTable<T>(containedBeanClass);
+    }
 }

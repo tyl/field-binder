@@ -1,8 +1,10 @@
 package org.tylproject.vaadin.addon.masterdetail.crud;
 
 import com.vaadin.data.util.BeanItem;
+import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.crudnav.events.ItemCreate;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
 /**
  * Created by evacchi on 26/11/14.
@@ -14,13 +16,19 @@ public class BeanMasterCrud<T> extends DefaultMasterCrud
         this.beanClass = beanClass;
     }
 
+    public BeanMasterCrud(Class<T> beanClass, FieldBinder<T> masterDetail) {
+        this.beanClass = beanClass;
+        this.fieldBinder = masterDetail;
+        fieldBinder.setReadOnly(true);
+    }
+
 
     @Override
     public void itemCreate(ItemCreate.Event event) {
         T bean = createBean();
         super.fieldBinder.setReadOnly(false);
-        super.navigation.getContainer().addItem(bean);
-        super.navigation.setCurrentItemId(bean);
+        event.getSource().getContainer().addItem(bean);
+        event.getSource().setCurrentItemId(bean);
 
     }
 

@@ -2,7 +2,6 @@ package org.tylproject.vaadin.addon.crudnav;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
-import com.vaadin.event.EventRouter;
 import org.tylproject.vaadin.addon.crudnav.events.*;
 
 import javax.annotation.Nonnull;
@@ -12,7 +11,7 @@ import javax.annotation.Nonnull;
  */
 final public class BasicCrudNavigation extends AbstractCrudNavigation implements CrudNavigation {
 
-    private @Nonnull Container.Indexed container;
+    private @Nonnull Container.Ordered container;
     private Object currentItemId;
 
     public BasicCrudNavigation() {
@@ -24,12 +23,12 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
     }
 
     @Override
-    public Container.Indexed getContainer() {
+    public Container.Ordered getContainer() {
         return container;
     }
 
     @Override
-    public void setContainer(Container.Indexed container) {
+    public void setContainer(Container.Ordered container) {
         this.container = container;
         this.currentItemId = null;
         first();
@@ -37,7 +36,8 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
 
     @Override
     public Item getCurrentItem() {
-        return container.getItem(getCurrentItemId());
+        Object currentId = getCurrentItemId();
+        return currentId == null? null : container.getItem(currentId);
     }
 
     @Override
@@ -86,9 +86,13 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
 
     @Override
     public void commit() {
-        getEventRouter().fireEvent(new BeforeCommit.Event(this));
-        getEventRouter().fireEvent(new OnCommit.Event(this));
-        getEventRouter().fireEvent(new AfterCommit.Event(this));
+        try {
+            getEventRouter().fireEvent(new BeforeCommit.Event(this));
+            getEventRouter().fireEvent(new OnCommit.Event(this));
+            getEventRouter().fireEvent(new AfterCommit.Event(this));
+        } catch (RejectOperationException signal) {
+            logger.info("Commit operation was interrupted by user");
+        }
     }
 
     @Override
@@ -110,6 +114,47 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
         }
         getEventRouter().fireEvent(new ItemRemove.Event(this));
         this.setCurrentItemId(newItemId);
+    }
+
+
+    @Override
+    public void clearToFind() {
+        getEventRouter().fireEvent(new ClearToFind.Event(this));
+    }
+
+    @Override
+    public void find() {
+        try {
+            getEventRouter().fireEvent(new BeforeFind.Event(this));
+            getEventRouter().fireEvent(new OnFind.Event(this));
+            getEventRouter().fireEvent(new AfterFind.Event(this));
+        } catch (RejectOperationException signal) {
+            logger.info("Find operation was interrupted by user");
+        }
+    }
+
+
+    public <X extends OnDiscard.Listener
+            & OnCommit.Listener
+            & ItemRemove.Listener
+            & ItemEdit.Listener
+            & ItemCreate.Listener> BasicCrudNavigation withCrudListenersFrom(X crudListenersObject) {
+
+        this.addItemRemoveListener(crudListenersObject);
+        this.addOnCommitListener(crudListenersObject);
+        this.addOnDiscardListener(crudListenersObject);
+        this.addItemEditListener(crudListenersObject);
+        this.addItemCreateListener(crudListenersObject);
+
+        return this;
+    }
+
+    public <X extends
+            ClearToFind.Listener
+            & OnFind.Listener> BasicCrudNavigation withFindListenersFrom(X findListenersObject) {
+        this.addClearToFindListener(findListenersObject);
+        this.addOnFindListener(findListenersObject);
+        return this;
     }
 
 }
