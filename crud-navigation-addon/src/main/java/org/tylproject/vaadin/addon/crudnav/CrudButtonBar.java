@@ -84,7 +84,7 @@ public class CrudButtonBar extends AbstractButtonBar {
     protected void updateButtonStatus() {
 
         Object currentId = nav().getCurrentItemId();
-        if (currentId == null) {
+        if (currentId == null && nav().getContainer() != null && nav().getContainer().size() != 0) {
             disable(btnCreate);
         } else {
             enable(btnCreate);
