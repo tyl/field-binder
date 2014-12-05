@@ -1,1 +1,7 @@
 */target/
+.settings/
+.classpath
+*.bak
+*.iml
+*.ipr
+*.iws

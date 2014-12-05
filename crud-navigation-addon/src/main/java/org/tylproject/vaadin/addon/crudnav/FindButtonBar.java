@@ -50,4 +50,12 @@ public class FindButtonBar extends AbstractButtonBar {
             enable(btnClearToFind, btnFind);
         }
     }
+
+    public Button getClearToFindButton() {
+        return btnClearToFind;
+    }
+
+    public Button getFindButton() {
+        return btnFind;
+    }
 }

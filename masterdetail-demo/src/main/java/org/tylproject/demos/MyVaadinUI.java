@@ -31,6 +31,7 @@ import org.tylproject.vaadin.addon.masterdetail.crud.BeanDetailCrud;
 import org.tylproject.vaadin.addon.masterdetail.crud.DefaultFilterFactory;
 import org.tylproject.vaadin.addon.masterdetail.crud.FilterFactory;
 import org.tylproject.vaadin.addon.masterdetail.crud.MongoMasterCrud;
+import org.tylproject.vaadin.addon.masterdetail.crud.TableFindStrategy;
 import org.vaadin.maddon.ListContainer;
 
 import javax.servlet.annotation.WebServlet;
@@ -110,7 +111,9 @@ public class MyVaadinUI extends UI {
     // For the detailNavigation we do not need the NavButtonBar, 
     // let us create only the CrudButtonBar and the FindButtonBar
     final CrudButtonBar tableBar = new CrudButtonBar(detailNavigation);
-    final FindButtonBar tableFindBar = new FindButtonBar(detailNavigation);
+
+//    final FindButtonBar tableFindBar = new FindButtonBar(detailNavigation);
+    final Button btnClearToFind =  new FindButtonBar(detailNavigation).getClearToFindButton();
 
     // generic main outer layout 
     final VerticalLayout mainLayout = new VerticalLayout();
@@ -157,7 +160,7 @@ public class MyVaadinUI extends UI {
 
         mainLayout.addComponent(new Panel(formLayout));
         mainLayout.addComponent(addressList);
-        mainLayout.addComponent(new HorizontalLayout(tableBar.getLayout(), tableFindBar.getLayout()));
+        mainLayout.addComponent(new HorizontalLayout(tableBar.getLayout(), btnClearToFind));
 
     }
 
@@ -175,7 +178,7 @@ public class MyVaadinUI extends UI {
         table.setSizeFull();
         table.setHeight("400px");
 
-        table.setVisibleColumns("city", "state", "street", "zipCode");
+        addressList.setVisibleColumns("city", "state", "street", "zipCode");
 
         
         // inline editing
@@ -202,104 +205,33 @@ public class MyVaadinUI extends UI {
     
     private void setupFindForTable() {
         
+    	detailNavigation.withFindListenersFrom(new TableFindStrategy<Address>(Address.class, detailNavigation, addressList.getTable()));
+        
+//        final FindWindow<Address> w = new FindWindow<Address>(new FieldBinder<Address>(Address.class));
 
         
-        final FindWindow<Address> w = new FindWindow<Address>(new FieldBinder<Address>(Address.class));
-
-        
-        detailNavigation.addClearToFindListener(new ClearToFind.Listener() {
-			@Override
-			public void clearToFind(ClearToFind.Event event) {
-				w.fieldBinder.clear();
-				w.center();
-				UI.getCurrent().addWindow(w);
-				detailNavigation.setCurrentItemId(null);
-				
-			}
-        });
-        
-        detailNavigation.addOnFindListener(new OnFind.Listener() {
-        	
-        	FilterFactory filterFactory = new DefaultFilterFactory();
-        	
-			@Override
-			public void onFind(OnFind.Event event) {
-				applyFilters(w.fieldBinder, (Container.Filterable)addressList.getTable().getContainerDataSource());
-				w.close();
-				detailNavigation.first();
-			}
-			
-			
-
-		    private void applyFilters(FieldBinder<?> fieldBinder, Container.Filterable container) {
-		        container.removeAllContainerFilters();
-		        for (Map.Entry<Field<?>,Object> e : fieldBinder.getFieldToPropertyIdBindings().entrySet()) {
-		            Field<?> prop = e.getKey();
-		            Object propertyId = e.getValue();
-		            Object value = prop.getValue();
-		            Class<?> modelType = getModelType(prop);
-		            if (value != null) {
-		                container.addContainerFilter(filterFactory.createFilter(modelType,
-		                        propertyId, value));
-		            }
-		        }
-		    }
-
-		    private Class<?> getModelType(Field<?> prop) {
-		        if (prop instanceof AbstractField) {
-		            AbstractField<?> abstractField = (AbstractField<?>) prop;
-		            Converter<?, Object> converter = abstractField.getConverter();
-		            if (converter != null) {
-		                return converter.getModelType();
-		            }
-		        }
-
-		        // otherwise, fallback to the property type
-		        return prop.getType();
-
-		    }
-
-			
-			
-			
-			
-		});
+//        detailNavigation.addClearToFindListener(new ClearToFind.Listener() {
+//			@Override
+//			public void clearToFind(ClearToFind.Event event) {
+//				w.fieldBinder.clear();
+//				w.center();
+//				UI.getCurrent().addWindow(w);
+//				detailNavigation.setCurrentItemId(null);
+//				
+//			}
+//        });
+//        
+//        detailNavigation.addOnFindListener(new OnFind.Listener() {
+//        	
+//        	
+//			
+//			
+//			
+//			
+//		});
     }
     
 
-    class FindWindow<T> extends Window {
-    	
-    	FieldBinder<T> fieldBinder;
-    	
-    	public FindWindow(FieldBinder<T> fieldBinder) {
-    		this.fieldBinder = fieldBinder;
-    		
-    		setClosable(false);
-    		setModal(true);
-    		setDraggable(false);
-    		setResizable(false);
-			VerticalLayout layout = new VerticalLayout();
-			layout.addComponents(
-					fieldBinder.build("city"),
-					fieldBinder.build("state"),
-					fieldBinder.build("street"),
-					fieldBinder.build("zipCode")
-			);
-			layout.setMargin(true);
-
-			Button find = new Button("Find");
-			layout.addComponent(find);
-			
-			find.addClickListener(new Button.ClickListener() {
-				@Override
-				public void buttonClick(ClickEvent event) {
-					detailNavigation.find();
-				}
-			});
-			
-			setContent(layout);
-    	}
-    }
 
     private static MongoOperations makeMongoTemplate() {
         try {

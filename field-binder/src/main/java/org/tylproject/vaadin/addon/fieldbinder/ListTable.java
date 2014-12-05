@@ -21,9 +21,15 @@ public class ListTable<T> extends CustomField<List<T>> {
 
     protected final Table table = new Table();
     protected final Class<T> containedBeanClass;
+    private Object[] visibleColumns;
 
     public ListTable(Class<T> containedBeanClass) {
         this.containedBeanClass = containedBeanClass;
+    }
+
+    public void setVisibleColumns(Object ... visibleColumns) {
+        this.visibleColumns = visibleColumns;
+        table.setVisibleColumns(visibleColumns);
     }
 
     @Override
@@ -51,6 +57,9 @@ public class ListTable<T> extends CustomField<List<T>> {
             FilterableListContainer<T> listContainer = new FilterableListContainer<T>(containedBeanClass);
             listContainer.setCollection(list);
             table.setContainerDataSource(listContainer);
+            if (visibleColumns != null) {
+                table.setVisibleColumns(visibleColumns);
+            }
         }
     }
 
