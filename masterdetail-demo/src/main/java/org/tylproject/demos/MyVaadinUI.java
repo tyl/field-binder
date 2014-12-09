@@ -118,6 +118,8 @@ public class MyVaadinUI extends UI {
     // generic main outer layout 
     final VerticalLayout mainLayout = new VerticalLayout();
 
+    final KeyBinder keyBinder = KeyBinder.forNavigation(masterNavigation);
+
     // FINISH UP THE INITIALIZATION
     public MyVaadinUI() {
 
@@ -133,6 +135,9 @@ public class MyVaadinUI extends UI {
         final BeanDetailCrud<Address> detailCrudListeners = new BeanDetailCrud<Address>(Address.class, addressList.getTable());
         detailNavigation.withCrudListenersFrom(detailCrudListeners);
         detailNavigation.setContainer(addressList.getTable());
+
+        this.addActionHandler(keyBinder);
+        keyBinder.constrainTab(firstName, lastName, age);
 
     }
     

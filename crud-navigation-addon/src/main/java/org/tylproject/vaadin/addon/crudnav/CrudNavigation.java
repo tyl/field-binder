@@ -41,6 +41,7 @@ public interface CrudNavigation extends
     // search
     public void clearToFind();
     public void find();
+    public boolean isClearToFindMode();
 
     // CRUD
     public void create();

@@ -1,6 +1,7 @@
 package org.tylproject.vaadin.addon.fieldbinder;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.WrapDynaClass;
@@ -29,6 +30,14 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         Field<?> field = getFieldFactory().createDetailField(dataType, containedBeanClass);
         bind(field, propertyId);
         return field;
+    }
+
+    /**
+     * focus first component
+     */
+    public void focus() {
+        if (getFields().isEmpty()) return;
+        getFields().iterator().next().focus();
     }
 
     public Collection<Field<?>> buildAll() {

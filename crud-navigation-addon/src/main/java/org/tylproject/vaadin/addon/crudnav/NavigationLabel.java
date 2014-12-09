@@ -60,6 +60,7 @@ public class NavigationLabel extends CustomComponent {
                 }
             }
         });
+
     }
 
 
@@ -70,4 +71,6 @@ public class NavigationLabel extends CustomComponent {
         }
         return false;
     }
+
+
 }

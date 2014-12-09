@@ -2,11 +2,10 @@ package org.tylproject.vaadin.addon.crudnav;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
-import com.vaadin.ui.Field;
 import org.tylproject.vaadin.addon.crudnav.events.*;
 
 import javax.annotation.Nonnull;
-import java.util.Map;
+import java.nio.channels.IllegalSelectorException;
 
 /**
  * Created by evacchi on 19/11/14.
@@ -121,12 +120,15 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
 
     @Override
     public void clearToFind() {
+        enterClearToFind();
         getEventRouter().fireEvent(new ClearToFind.Event(this));
     }
 
     @Override
     public void find() {
         try {
+            if (!isClearToFindMode()) throw new IllegalStateException("Cannot find() when in ClearToFind mode");
+            leaveClearToFind();
             getEventRouter().fireEvent(new BeforeFind.Event(this));
             getEventRouter().fireEvent(new OnFind.Event(this));
             getEventRouter().fireEvent(new AfterFind.Event(this));

@@ -16,7 +16,7 @@ public class DefaultFilterFactory implements FilterFactory {
 
     @Override
     public Container.Filter createFilter(Class<?> targetType, Object targetPropertyId, Object pattern) {
-        if (String.class.isAssignableFrom(targetType)) {
+            if (String.class.isAssignableFrom(targetType)) {
             return new SimpleStringFilter(targetPropertyId, pattern.toString(), true, true);
         } else
         if (Number.class.isAssignableFrom(targetType)) {
@@ -72,7 +72,7 @@ public class DefaultFilterFactory implements FilterFactory {
         }
     }
 
-    private final Pattern intRangePattern = Pattern.compile("^(\\d+)\\.\\.(\\d+)$");
+    private final Pattern intRangePattern = Pattern.compile("^(\\d+)-(\\d+)$");
     private Container.Filter intRange(Object propertyId, String pattern) {
         Matcher matcher = intRangePattern.matcher(pattern);
         if (!matcher.find()) return null;

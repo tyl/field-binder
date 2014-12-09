@@ -63,6 +63,7 @@ public abstract class DefaultMasterCrud implements MasterCrud, ClearToFind.Liste
     @Override
     public void itemEdit(ItemEdit.Event event) {
         fieldBinder.setReadOnly(!fieldBinder.isReadOnly());
+        fieldBinder.focus();
     }
 
     public void clearToFind(ClearToFind.Event event) {
@@ -73,7 +74,7 @@ public abstract class DefaultMasterCrud implements MasterCrud, ClearToFind.Liste
 
 
         } else {
-            fieldBinder.setReadOnly(false);
+             fieldBinder.setReadOnly(false);
             event.getSource().setCurrentItemId(null);
             for (Field<?> f : fieldBinder.getFields())
                 f.setValue(null);
@@ -85,6 +86,8 @@ public abstract class DefaultMasterCrud implements MasterCrud, ClearToFind.Liste
             }
 
         }
+
+        fieldBinder.focus();
     }
 
 

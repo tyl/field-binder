@@ -12,6 +12,7 @@ public abstract class AbstractCrudNavigation implements CrudNavigation {
 
     private final EventRouter eventRouter = new EventRouter();
     protected final Logger logger = Logger.getLogger(this.getClass().getCanonicalName());
+    private boolean clearToFindMode;
 
     public EventRouter getEventRouter() {
         return eventRouter;
@@ -182,4 +183,13 @@ public abstract class AbstractCrudNavigation implements CrudNavigation {
     }
 
 
+    public void enterClearToFind() {
+        this.clearToFindMode = true;
+    }
+    public void leaveClearToFind() {
+        this.clearToFindMode = false;
+    }
+    public boolean isClearToFindMode() {
+        return clearToFindMode;
+    }
 }
