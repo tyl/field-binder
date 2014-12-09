@@ -4,11 +4,19 @@ import com.vaadin.data.Container;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
+import org.tylproject.vaadin.addon.crudnav.resources.Strings;
+
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * Created by evacchi on 05/12/14.
  */
 public class NavigationLabel extends CustomComponent {
+
+    private static final ResourceBundle resourceBundle =
+            ResourceBundle.getBundle(Strings.class.getCanonicalName());
+
     private final CrudNavigation navigation;
     private final Label label;
     public NavigationLabel(final CrudNavigation navigation) {
@@ -33,7 +41,10 @@ public class NavigationLabel extends CustomComponent {
 
                     Container.Indexed indexedContainer = (Container.Indexed) container;
                     int current = 1 + indexedContainer.indexOfId(navigation.getCurrentItemId());
-                    label.setValue(String.format("%d of %d", current, indexedContainer.size()));
+                    label.setValue(MessageFormat.format(
+                            resourceBundle.getString("recordCounter"),
+                            current,
+                            indexedContainer.size()));
                 } else {
                     label.setValue("");
                 }

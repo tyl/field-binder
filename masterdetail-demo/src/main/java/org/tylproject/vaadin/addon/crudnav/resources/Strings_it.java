@@ -5,7 +5,7 @@ import java.util.ListResourceBundle;
 /**
  * Created by evacchi on 09/12/14.
  */
-public class ButtonCaptions_it extends ListResourceBundle {
+public class Strings_it extends ListResourceBundle {
 
     private final Object[][] STRINGS = {
 
@@ -24,7 +24,9 @@ public class ButtonCaptions_it extends ListResourceBundle {
 
             // find
             {"clearToFind", "Pulisci e Cerca"},
-            {"find", "Cerca"}
+            {"find", "Cerca"},
+
+            {"recordCounter", "{0} di {1}"}
 
     };
 

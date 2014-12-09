@@ -4,7 +4,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
-import org.tylproject.vaadin.addon.crudnav.resources.ButtonCaptions;
+import org.tylproject.vaadin.addon.crudnav.resources.Strings;
 
 import javax.annotation.Nonnull;
 import java.util.ResourceBundle;
@@ -23,7 +23,7 @@ public abstract class AbstractButtonBar implements CrudNavButtonBar {
     private @Nonnull
     CrudNavigation nav;
     protected static final ResourceBundle resourceBundle =
-            ResourceBundle.getBundle(ButtonCaptions.class.getCanonicalName());
+            ResourceBundle.getBundle(Strings.class.getCanonicalName());
 
 
     protected AbstractButtonBar(CrudNavigation nav) {
