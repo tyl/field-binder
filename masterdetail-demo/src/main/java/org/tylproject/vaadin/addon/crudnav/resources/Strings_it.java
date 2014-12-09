@@ -26,7 +26,9 @@ public class Strings_it extends ListResourceBundle {
             {"clearToFind", "Pulisci e Cerca"},
             {"find", "Cerca"},
 
-            {"recordCounter", "{0} di {1}"}
+            {"recordCounter", "{0} di {1}"},
+            {"recordCounterFiltered", "{0} di {1} (*)"}
+
 
     };
 

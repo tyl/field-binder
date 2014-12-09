@@ -206,29 +206,6 @@ public class MyVaadinUI extends UI {
     private void setupFindForTable() {
         
     	detailNavigation.withFindListenersFrom(new TableFindStrategy<Address>(Address.class, detailNavigation, addressList.getTable()));
-        
-//        final FindWindow<Address> w = new FindWindow<Address>(new FieldBinder<Address>(Address.class));
-
-        
-//        detailNavigation.addClearToFindListener(new ClearToFind.Listener() {
-//			@Override
-//			public void clearToFind(ClearToFind.Event event) {
-//				w.fieldBinder.clear();
-//				w.center();
-//				UI.getCurrent().addWindow(w);
-//				detailNavigation.setCurrentItemId(null);
-//				
-//			}
-//        });
-//        
-//        detailNavigation.addOnFindListener(new OnFind.Listener() {
-//        	
-//        	
-//			
-//			
-//			
-//			
-//		});
     }
     
 

@@ -14,7 +14,9 @@ import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.masterdetail.Master;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,11 +70,48 @@ public abstract class DefaultMasterCrud implements MasterCrud, ClearToFind.Liste
             fieldBinder.unbindAll();
             fieldBinder.setReadOnly(false);
             event.getSource().setCurrentItemId(null);
+
+
         } else {
             fieldBinder.setReadOnly(false);
             event.getSource().setCurrentItemId(null);
             for (Field<?> f : fieldBinder.getFields())
                 f.setValue(null);
+
+
+            if (!getPropertyIdToFilterPattern().isEmpty()) {
+                restorePatterns(fieldBinder, getPropertyIdToFilterPattern());
+                clearPropertyIdToFilterPattern();
+            }
+
+        }
+    }
+
+
+    /**
+     * maps fieldId to filter
+     */
+    Map<Object, Object> propertyIdToFilterPattern = new HashMap<Object, Object>();
+
+    public Map<Object, Object> getPropertyIdToFilterPattern () {
+        return propertyIdToFilterPattern;
+    }
+
+
+    private void clearPropertyIdToFilterPattern() {
+        propertyIdToFilterPattern.clear();
+    }
+
+
+    private void restorePatterns(FieldBinder<?> fieldBinder,  Map<Object, Object> propertyIdToFilterPattern) {
+        for (Map.Entry<Field<?>, Object> e : fieldBinder.getFieldToPropertyIdBindings().entrySet()) {
+
+            Field field = e.getKey(); // raw type
+            Object propertyId = e.getValue();
+            Object pattern = propertyIdToFilterPattern.get(propertyId);
+
+            field.setValue(pattern);
+
         }
     }
 
@@ -85,17 +124,24 @@ public abstract class DefaultMasterCrud implements MasterCrud, ClearToFind.Liste
     }
 
     private void applyFilters(FieldBinder<?> fieldBinder, Container.Filterable container) {
+
+        clearPropertyIdToFilterPattern();
+
         container.removeAllContainerFilters();
         for (Map.Entry<Field<?>,Object> e : fieldBinder.getFieldToPropertyIdBindings().entrySet()) {
             Field<?> prop = e.getKey();
             Object propertyId = e.getValue();
-            Object value = prop.getValue();
+            Object pattern = prop.getValue();
             Class<?> modelType = getModelType(prop);
-            if (value != null) {
+            if (pattern != null) {
+
+                propertyIdToFilterPattern.put(propertyId, pattern);
+
                 container.addContainerFilter(filterFactory.createFilter(modelType,
-                        propertyId, value));
+                        propertyId, pattern));
             }
         }
+
     }
 
     private Class<?> getModelType(Field<?> prop) {

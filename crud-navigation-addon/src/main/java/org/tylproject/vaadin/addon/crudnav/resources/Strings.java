@@ -26,7 +26,8 @@ public class Strings extends ListResourceBundle {
             {"clearToFind", "Clear to Find"},
             {"find", "Find"},
 
-            {"recordCounter", "{0} of {1}"}
+            {"recordCounter", "{0} of {1}"},
+            {"recordCounterFiltered", "{0} of {1} (*)"}
 
     };
 

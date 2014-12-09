@@ -4,10 +4,7 @@ import com.vaadin.data.Buffered;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Table;
+import com.vaadin.ui.*;
 
 import org.vaadin.maddon.FilterableListContainer;
 import org.vaadin.maddon.ListContainer;
@@ -22,6 +19,7 @@ public class ListTable<T> extends CustomField<List<T>> {
     protected final Table table = new Table();
     protected final Class<T> containedBeanClass;
     private Object[] visibleColumns;
+    private String[] headers;
 
     public ListTable(Class<T> containedBeanClass) {
         this.containedBeanClass = containedBeanClass;
@@ -30,6 +28,16 @@ public class ListTable<T> extends CustomField<List<T>> {
     public void setVisibleColumns(Object ... visibleColumns) {
         this.visibleColumns = visibleColumns;
         table.setVisibleColumns(visibleColumns);
+        setAllHeadersFromColumns(visibleColumns);
+    }
+
+    private void setAllHeadersFromColumns(Object[] columns) {
+        String[] headers = new String[columns.length];
+        for (int i = 0; i < columns.length; i++) {
+            Object propertyId = columns[i];
+            headers[i] = DefaultFieldFactory.createCaptionByPropertyId(propertyId);
+        }
+        table.setColumnHeaders(headers);
     }
 
     @Override
@@ -59,6 +67,8 @@ public class ListTable<T> extends CustomField<List<T>> {
             table.setContainerDataSource(listContainer);
             if (visibleColumns != null) {
                 table.setVisibleColumns(visibleColumns);
+            } else {
+                setAllHeadersFromColumns(table.getVisibleColumns());
             }
         }
     }

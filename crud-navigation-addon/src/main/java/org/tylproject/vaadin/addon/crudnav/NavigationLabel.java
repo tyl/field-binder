@@ -1,12 +1,14 @@
 package org.tylproject.vaadin.addon.crudnav;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.crudnav.resources.Strings;
 
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.ResourceBundle;
 
 /**
@@ -19,6 +21,9 @@ public class NavigationLabel extends CustomComponent {
 
     private final CrudNavigation navigation;
     private final Label label;
+    private static final String recordCounter = resourceBundle.getString("recordCounter");
+    private static final String recordCounterFiltered = resourceBundle.getString("recordCounterFiltered");
+
     public NavigationLabel(final CrudNavigation navigation) {
         this.label = new Label();
         this.navigation = navigation;
@@ -41,8 +46,13 @@ public class NavigationLabel extends CustomComponent {
 
                     Container.Indexed indexedContainer = (Container.Indexed) container;
                     int current = 1 + indexedContainer.indexOfId(navigation.getCurrentItemId());
+
+                    String message = isFiltered(container) ?
+                            recordCounterFiltered
+                            : recordCounter;
+
                     label.setValue(MessageFormat.format(
-                            resourceBundle.getString("recordCounter"),
+                            message,
                             current,
                             indexedContainer.size()));
                 } else {
@@ -50,5 +60,14 @@ public class NavigationLabel extends CustomComponent {
                 }
             }
         });
+    }
+
+
+    public boolean isFiltered(Container container) {
+        if (container instanceof Container.Filterable) {
+            Collection<Container.Filter> filters = ((Container.Filterable) container).getContainerFilters();
+            return filters != null && !filters.isEmpty();
+        }
+        return false;
     }
 }

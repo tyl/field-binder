@@ -3,6 +3,7 @@ package org.tylproject.vaadin.addon.masterdetail.crud;
 import java.util.Map;
 
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
+import org.tylproject.vaadin.addon.crudnav.FindButtonBar;
 import org.tylproject.vaadin.addon.crudnav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
@@ -99,16 +100,9 @@ public class TableFindStrategy<T> implements FindStrategy {
 			);
 			layout.setMargin(true);
 
-			Button find = new Button("Find");
+			Button find = new FindButtonBar(navigation).getFindButton();
 			layout.addComponent(find);
-			
-			find.addClickListener(new Button.ClickListener() {
-				@Override
-				public void buttonClick(ClickEvent event) {
-					navigation.find();
-				}
-			});
-			
+
 			setContent(layout);
     	}
     	

@@ -33,12 +33,34 @@ public class DefaultFilterFactory implements FilterFactory {
 
         filter = intRange(propertyId, pattern);
 
+        if (filter != null) return filter;
+
+        filter = intCompare(propertyId, pattern);
 
         if (filter != null) return filter;
 
         throw new Validator.InvalidValueException(
                 String.format("'%s' is not an accepted numeric search pattern", pattern));
 
+    }
+
+
+    private final Pattern intComparePattern = Pattern.compile("^((?:<|>)=?)(\\d+)$");
+    private Container.Filter intCompare(Object propertyId, String pattern) {
+        Matcher matcher = intComparePattern.matcher(pattern);
+        if (!matcher.find()) return null;
+
+        String op = matcher.group(1);
+        int value = Integer.parseInt(matcher.group(2));
+
+        switch (op) {
+            case ">": return new Compare.Greater(propertyId, value);
+            case ">=": return new Compare.GreaterOrEqual(propertyId, value);
+            case "<": return new Compare.Less(propertyId, value);
+            case "<=": return new Compare.LessOrEqual(propertyId, value);
+        }
+
+        return null;
     }
 
     private Container.Filter numberEqual(Object propertyId, String pattern) {
@@ -50,10 +72,10 @@ public class DefaultFilterFactory implements FilterFactory {
         }
     }
 
-    Pattern intRange = Pattern.compile("^(\\d+)\\.\\.(\\d+)$");
+    private final Pattern intRangePattern = Pattern.compile("^(\\d+)\\.\\.(\\d+)$");
     private Container.Filter intRange(Object propertyId, String pattern) {
-        Matcher matcher = intRange.matcher(pattern);
-        matcher.find();
+        Matcher matcher = intRangePattern.matcher(pattern);
+        if (!matcher.find()) return null;
         String left = matcher.group(1);
         String right = matcher.group(2);
         try {

@@ -2,9 +2,11 @@ package org.tylproject.vaadin.addon.crudnav;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
+import com.vaadin.ui.Field;
 import org.tylproject.vaadin.addon.crudnav.events.*;
 
 import javax.annotation.Nonnull;
+import java.util.Map;
 
 /**
  * Created by evacchi on 19/11/14.
