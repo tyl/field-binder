@@ -10,10 +10,10 @@ import com.vaadin.ui.Layout;
 public class NavButtonBar extends AbstractButtonBar {
 
 
-    private final Button btnFirst = new Button("First");
-    private final Button btnPrev  = new Button("Prev");
-    private final Button btnNext  = new Button("Next");
-    private final Button btnLast  = new Button("Last");
+    private final Button btnFirst = button("first");
+    private final Button btnPrev  = button("prev");
+    private final Button btnNext  = button("next");
+    private final Button btnLast  = button("last");
 
     private final Button[] navButtons = {
             btnFirst,

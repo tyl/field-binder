@@ -12,11 +12,11 @@ import javax.annotation.Nonnull;
  */
 public class CrudButtonBar extends AbstractButtonBar {
 
-    private final Button btnCreate  = new Button("Create");
-    private final Button btnEdit    = new Button("Edit");
-    private final Button btnRemove  = new Button("Remove");
-    private final Button btnCommit  = new Button("Commit");
-    private final Button btnDiscard = new Button("Discard");
+    private final Button btnCreate  = button("create");
+    private final Button btnEdit    = button("edit");
+    private final Button btnRemove  = button("remove");
+    private final Button btnCommit  = button("commit");
+    private final Button btnDiscard = button("discard");
 
 
     private final Button[] crudButtons = {

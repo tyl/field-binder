@@ -4,8 +4,10 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
+import org.tylproject.vaadin.addon.crudnav.resources.ButtonCaptions;
 
 import javax.annotation.Nonnull;
+import java.util.ResourceBundle;
 
 /**
  * Created by evacchi on 04/12/14.
@@ -20,11 +22,14 @@ public abstract class AbstractButtonBar implements CrudNavButtonBar {
 
     private @Nonnull
     CrudNavigation nav;
+    protected static final ResourceBundle resourceBundle =
+            ResourceBundle.getBundle(ButtonCaptions.class.getCanonicalName());
 
 
     protected AbstractButtonBar(CrudNavigation nav) {
         this.nav = nav;
     }
+
 
 
 
@@ -49,6 +54,10 @@ public abstract class AbstractButtonBar implements CrudNavButtonBar {
         nav.addCurrentItemChangeListener(buttonBarStatusUpdater);
     }
 
+
+    protected Button button(String labelIdentifier) {
+        return new Button(resourceBundle.getString(labelIdentifier));
+    }
     protected void enable(Button... btns) {
         for (Button btn: btns) btn.setEnabled(true);
     }

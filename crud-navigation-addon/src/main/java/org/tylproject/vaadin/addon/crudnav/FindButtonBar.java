@@ -10,8 +10,8 @@ import javax.annotation.Nonnull;
  */
 public class FindButtonBar extends AbstractButtonBar {
 
-    final Button btnClearToFind = new Button("Clear to Find");
-    final Button btnFind = new Button("Find");
+    final Button btnClearToFind = button("clearToFind");
+    final Button btnFind = button("find");
 
 
     private final Button[] crudButtons = {
