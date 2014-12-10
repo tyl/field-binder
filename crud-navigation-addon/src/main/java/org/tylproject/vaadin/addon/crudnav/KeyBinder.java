@@ -21,11 +21,11 @@ import static com.vaadin.event.ShortcutAction.ModifierKey.*;
 public class KeyBinder implements Action.Handler {
 
 
-    public static KeyBinder forNavigation(CrudNavigation nav) {
-        return new KeyBinder(nav);
-    }
+//    public static KeyBinder forNavigation(CrudNavigation nav) {
+//        return new KeyBinder(nav);
+//    }
 
-    private @Nonnull CrudNavigation nav;
+    private CrudNavigation nav;
 
     private final int[] NoModifiers = {};
     private final int[] ShiftModifier = { SHIFT };
@@ -98,9 +98,6 @@ public class KeyBinder implements Action.Handler {
             if (nav().isClearToFindMode()) nav().find();
         }
     };
-
-
-            
             
     private final NavShortcutListener[] allActions = {
         // nav
@@ -119,9 +116,9 @@ public class KeyBinder implements Action.Handler {
         find
     };
 
-    KeyBinder(final CrudNavigation nav) {
+    public KeyBinder() {}
+    public KeyBinder(@Nonnull CrudNavigation nav) {
         this.nav = nav;
-        attachNavigation(nav);
     }
 
     public void setNavigation(@Nonnull CrudNavigation nav) {
@@ -135,7 +132,8 @@ public class KeyBinder implements Action.Handler {
         return this.nav;
     }
 
-    private void detachNavigation(@Nonnull CrudNavigation nav) {
+    private void detachNavigation(CrudNavigation nav) {
+        if (nav == null) return;
         nav.removeCurrentItemChangeListener(buttonBarStatusUpdater);
     }
 

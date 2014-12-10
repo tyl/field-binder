@@ -120,8 +120,8 @@ public class MyVaadinUI extends UI {
     // generic main outer layout 
     final VerticalLayout mainLayout = new VerticalLayout();
 
-    final KeyBinder keyBinder = KeyBinder.forNavigation(masterNavigation);
-    final FocusManager focusManager = new FocusManager(keyBinder);
+//    final KeyBinder keyBinder = KeyBinder.forNavigation(masterNavigation);
+//    final FocusManager focusManager = new FocusManager(keyBinder);
 
     // FINISH UP THE INITIALIZATION
     public MyVaadinUI() {
@@ -139,13 +139,16 @@ public class MyVaadinUI extends UI {
         detailNavigation.withCrudListenersFrom(detailCrudListeners);
         detailNavigation.setContainer(addressList.getTable());
 
-        this.addActionHandler(keyBinder);
+        final FocusManager focusManager = new FocusManager();
+
         focusManager.configure()
                 .constrainTab(firstName, lastName, age).onPanel(masterPanel).forNavigation(masterNavigation)
                 .andThen(addressList).onPanel(tablePanel).forNavigation(detailNavigation);
         focusManager.focusCurrentGroup();
 
         this.addActionHandler(focusManager);
+        this.addActionHandler(focusManager.getKeyBinder());
+
 
     }
     

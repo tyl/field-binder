@@ -2,21 +2,16 @@ package org.tylproject.vaadin.addon.masterdetail.crud;
 
 import java.util.Map;
 
+import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.FindButtonBar;
+import org.tylproject.vaadin.addon.crudnav.KeyBinder;
 import org.tylproject.vaadin.addon.crudnav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.converter.Converter;
-import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Field;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
+import org.tylproject.vaadin.addon.masterdetail.FocusManager;
 
 public class TableFindStrategy<T> implements FindStrategy {
 	
@@ -83,8 +78,10 @@ public class TableFindStrategy<T> implements FindStrategy {
     class FindWindow extends Window {
     	
     	protected final FieldBinder<T> fieldBinder;
-    	
-    	public FindWindow(FieldBinder<T> fieldBinder) {
+		FocusManager focusManager = new FocusManager();
+
+
+		public FindWindow(FieldBinder<T> fieldBinder) {
     		this.fieldBinder = fieldBinder;
     		
     		setClosable(false);
@@ -92,21 +89,38 @@ public class TableFindStrategy<T> implements FindStrategy {
     		setDraggable(false);
     		setResizable(false);
 			VerticalLayout layout = new VerticalLayout();
-			layout.addComponents(
+			layout.setMargin(true);
+
+			Field<?>[] fields = {
 					fieldBinder.build("city"),
 					fieldBinder.build("state"),
 					fieldBinder.build("street"),
 					fieldBinder.build("zipCode")
-			);
-			layout.setMargin(true);
+			};
+
 
 			Button find = new FindButtonBar(navigation).getFindButton();
+
+			layout.addComponents(fields);
 			layout.addComponent(find);
 
 			setContent(layout);
+
+			focusManager.configure().constrainTab(fields);
+
+			addActionHandler(focusManager);
+			KeyBinder keyBinder = focusManager.getKeyBinder();
+			keyBinder.setNavigation(navigation);
+			addActionHandler(keyBinder);
     	}
-    	
-    	public FieldBinder<T> getFieldBinder() {
+
+		@Override
+		public void setParent(HasComponents parent) {
+			super.setParent(parent);
+			focusManager.focusCurrentGroup();
+		}
+
+		public FieldBinder<T> getFieldBinder() {
 			return fieldBinder;
 		}
     }

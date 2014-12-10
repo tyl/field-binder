@@ -19,22 +19,151 @@ import static com.vaadin.event.ShortcutAction.ModifierKey.SHIFT;
 public class FocusManager implements Action.Handler {
     public static final String FOCUS = "masterdetail-focus";
 
-    private final KeyBinder keyBinder;
 
-    private FocusGroup currentFocusGroup;
-    private List<FocusGroup> focusGroups = new ArrayList<>();
+    private final FocusManager.State currentState = new State();
+    private final KeyBinder keyBinder = new KeyBinder();
 
+    class State {
+        private FocusGroup currentFocusGroup;
+        private List<FocusGroup> focusGroups = new ArrayList<>();
 
-    public FocusManager(KeyBinder keyBinder) {
-        this.keyBinder = keyBinder;
+        public FocusGroup getCurrentFocusGroup() {
+            return currentFocusGroup;
+        }
+
+        public void setCurrentFocusGroup(FocusGroup currentFocusGroup) {
+            this.currentFocusGroup = currentFocusGroup;
+        }
+
+        public List<FocusGroup> getFocusGroups() {
+            return focusGroups;
+        }
+
+        public void setFocusGroups(List<FocusGroup> focusGroups) {
+            this.focusGroups = focusGroups;
+        }
     }
 
+
+
+    private final NavShortcutListener tabber = new NavShortcutListener("Focus", TAB) {
+        @Override
+        protected void handle(Object sender, Object target) {
+            List<? extends Component.Focusable> focusables = getCurrentFocusGroup().getFocusables();
+            int indexOf = focusables.indexOf(target);
+            if (indexOf < 0 || indexOf == focusables.size() - 1) {
+                focusables.get(0).focus();
+            } else {
+                focusables.get(indexOf + 1).focus();
+            }
+        }
+    };
+
+    private final NavShortcutListener tabberShift = new NavShortcutListener("Focus", TAB, SHIFT) {
+        @Override
+        protected void handle(Object sender, Object target) {
+            List<? extends Component.Focusable> focusables = getCurrentFocusGroup().getFocusables();
+            int indexOf = focusables.indexOf(target);
+            if (indexOf == 0) {
+                focusables.get(focusables.size() - 1).focus();
+            } else {
+                focusables.get(indexOf - 1).focus();
+            }
+        }
+    };
+
+    private final NavShortcutListener tabGroupCycle = new NavShortcutListener("Focus", /* full stop */190, ALT) {
+
+
+        @Override
+        protected void handle(Object sender, Object target) {
+            int indexOf = getFocusGroups().indexOf(getCurrentFocusGroup());
+            if (indexOf < 0 || indexOf == getFocusGroups().size() - 1) {
+                setCurrentFocusGroup(getFocusGroups().get(0));
+            } else {
+                setCurrentFocusGroup(getFocusGroups().get(indexOf + 1));
+            }
+            focusCurrentGroup();
+        }
+    };
+
+    private final NavShortcutListener[] allActions = {
+            tabber, tabberShift, tabGroupCycle
+    };
+
+    public FocusManager() {}
+
     public KeyBinder getKeyBinder() {
-        return keyBinder;
+        return this.keyBinder;
     }
 
     public void setCurrentFocusGroup(FocusGroup currentFocusGroup) {
-        this.currentFocusGroup = currentFocusGroup;
+        this.currentState.setCurrentFocusGroup(currentFocusGroup);
+    }
+
+    public List<FocusGroup> getFocusGroups() {
+        return currentState.getFocusGroups();
+    }
+
+
+    public void focusCurrentGroup() {
+        for (FocusGroup fg: getFocusGroups()) fg.unfocus();
+        getCurrentFocusGroup().focus();
+        if (getCurrentFocusGroup().getNavigation() != null) {
+            getKeyBinder().setNavigation(getCurrentFocusGroup().getNavigation());
+        }
+    }
+
+    public FocusGroup getCurrentFocusGroup() {
+        return currentState.getCurrentFocusGroup();
+    }
+
+    public Configurator configure() {
+        return new Configurator();
+    }
+
+    @Override
+    public Action[] getActions(Object target, Object sender) {
+        return allActions;
+    }
+
+    @Override
+    public void handleAction(Action action, Object sender, Object target) {
+        if (action instanceof NavShortcutListener && Arrays.asList(allActions).contains(action)) {
+            NavShortcutListener act = (NavShortcutListener) action;
+            act.handleAction(sender, target);
+        }
+    }
+
+
+    public class Configurator {
+        private Configurator(){}
+
+        public Configurator constrainTab(Field<?>... targets) {
+            FocusGroup focusGroup = new FocusGroup(targets);
+            getFocusGroups().add(focusGroup);
+            if (getCurrentFocusGroup() == null) {
+                setCurrentFocusGroup(focusGroup);
+            }
+            return this;
+        }
+
+        public Configurator onPanel(Panel panel) {
+            getFocusGroups().get(getFocusGroups().size() - 1).setPanel(panel);
+            panel.addClickListener(clickToFocusListener);
+            return this;
+        }
+
+        public Configurator forNavigation(CrudNavigation nav) {
+            getFocusGroups().get(getFocusGroups().size() - 1).setNavigation(nav);
+            return this;
+        }
+
+        public Configurator andThen(Field<?>... targets) {
+            constrainTab(targets);
+            return this;
+        }
+
     }
 
     private class FocusGroup {
@@ -97,7 +226,7 @@ public class FocusManager implements Action.Handler {
     MouseEvents.ClickListener clickToFocusListener = new MouseEvents.ClickListener() {
         @Override
         public void click(MouseEvents.ClickEvent event) {
-            for (FocusGroup fg: focusGroups) {
+            for (FocusGroup fg: getFocusGroups()) {
                 if (fg.getPanel() == event.getSource()) {
                     setCurrentFocusGroup(fg);
                     focusCurrentGroup();
@@ -107,119 +236,6 @@ public class FocusManager implements Action.Handler {
             }
         }
     };
-
-    public void focusCurrentGroup() {
-        for (FocusGroup fg: focusGroups) fg.unfocus();
-        getCurrentFocusGroup().focus();
-        if (getCurrentFocusGroup().getNavigation() != null) {
-            keyBinder.setNavigation(getCurrentFocusGroup().getNavigation());
-        }
-    }
-
-
-    public class Configurator {
-        private Configurator(){}
-
-        public Configurator constrainTab(Field<?>... targets) {
-            FocusGroup focusGroup = new FocusGroup(targets);
-            focusGroups.add(focusGroup);
-            if (getCurrentFocusGroup() == null) {
-                setCurrentFocusGroup(focusGroup);
-            }
-            return this;
-        }
-
-        public Configurator onPanel(Panel panel) {
-            focusGroups.get(focusGroups.size()-1).setPanel(panel);
-            panel.addClickListener(clickToFocusListener);
-            return this;
-        }
-
-        public Configurator forNavigation(CrudNavigation nav) {
-            focusGroups.get(focusGroups.size()-1).setNavigation(nav);
-            return this;
-        }
-
-        public Configurator andThen(Field<?>... targets) {
-            constrainTab(targets);
-            return this;
-        }
-
-    }
-
-
-
-
-    public FocusGroup getCurrentFocusGroup() {
-        return currentFocusGroup;
-    }
-
-
-
-    private final NavShortcutListener tabber = new NavShortcutListener("Focus", TAB) {
-        @Override
-        protected void handle(Object sender, Object target) {
-            List<? extends Component.Focusable> focusables = getCurrentFocusGroup().getFocusables();
-            int indexOf = focusables.indexOf(target);
-            if (indexOf < 0 || indexOf == focusables.size() - 1) {
-                focusables.get(0).focus();
-            } else {
-                focusables.get(indexOf + 1).focus();
-            }
-        }
-    };
-
-    private final NavShortcutListener tabberShift = new NavShortcutListener("Focus", TAB, SHIFT) {
-        @Override
-        protected void handle(Object sender, Object target) {
-            List<? extends Component.Focusable> focusables = getCurrentFocusGroup().getFocusables();
-            int indexOf = focusables.indexOf(target);
-            if (indexOf == 0) {
-                focusables.get(focusables.size() - 1).focus();
-            } else {
-                focusables.get(indexOf - 1).focus();
-            }
-        }
-    };
-
-
-    private final NavShortcutListener tabGroupCycle = new NavShortcutListener("Focus", /* full stop */190, ALT) {
-
-
-        @Override
-        protected void handle(Object sender, Object target) {
-                int indexOf = focusGroups.indexOf(getCurrentFocusGroup());
-            if (indexOf < 0 || indexOf == focusGroups.size() - 1) {
-                setCurrentFocusGroup(focusGroups.get(0));
-            } else {
-                setCurrentFocusGroup(focusGroups.get(indexOf + 1));
-            }
-            focusCurrentGroup();
-        }
-    };
-
-    private final NavShortcutListener[] allActions = {
-        tabber, tabberShift, tabGroupCycle
-    };
-
-
-    public Configurator configure() {
-        return new Configurator();
-    }
-
-    @Override
-    public Action[] getActions(Object target, Object sender) {
-        return allActions;
-    }
-
-    @Override
-    public void handleAction(Action action, Object sender, Object target) {
-        if (action instanceof NavShortcutListener && Arrays.asList(allActions).contains(action)) {
-            NavShortcutListener act = (NavShortcutListener) action;
-            act.handleAction(sender, target);
-        }
-    }
-
 
 //    private UI ui;
 //    private final MasterDetail<T,U> masterDetail;
