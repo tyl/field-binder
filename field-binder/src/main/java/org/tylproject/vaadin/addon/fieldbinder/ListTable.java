@@ -55,6 +55,11 @@ public class ListTable<T> extends CustomField<List<T>> {
     }
 
     @Override
+    public void focus() {
+        table.focus();
+    }
+
+    @Override
     protected void setInternalValue(List<T> newValue) {
         List<T> list = newValue;
         super.setInternalValue(list);

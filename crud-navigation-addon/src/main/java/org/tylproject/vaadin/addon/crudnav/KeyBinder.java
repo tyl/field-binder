@@ -20,7 +20,6 @@ import static com.vaadin.event.ShortcutAction.ModifierKey.*;
  */
 public class KeyBinder implements Action.Handler {
 
-    private List<? extends Component.Focusable> focusables;
 
     public static KeyBinder forNavigation(CrudNavigation nav) {
         return new KeyBinder(nav);
@@ -87,58 +86,19 @@ public class KeyBinder implements Action.Handler {
         }
     };
 
-    private final NavShortcutListener clearToFind = new NavShortcutListener("Clear to Find", NUM9, ALT) {
+    private final NavShortcutListener clearToFind = new NavShortcutListener("Clear to Find", F, ALT) {
         @Override
         public void handle(Object sender, Object target) {
             nav().clearToFind();
         }
     };
-    private final NavShortcutListener find = new NavShortcutListener("Find", NUM0, ALT) {
+    private final NavShortcutListener find = new NavShortcutListener("Find", G, ALT) {
         @Override
         public void handle(Object sender, Object target) {
             if (nav().isClearToFindMode()) nav().find();
         }
     };
 
-    private final NavShortcutListener tabber = new NavShortcutListener("Focus", TAB) {
-        @Override
-        protected void handle(Object sender, Object target) {
-            List<? extends Component.Focusable> focusables = getFocusables();
-            int indexOf = focusables.indexOf(target);
-            if (indexOf < 0 || indexOf == focusables.size() - 1) {
-                focusables.get(0).focus();
-            } else {
-                focusables.get(indexOf + 1).focus();
-            }
-        }
-    };
-
-    private final NavShortcutListener tabberShift = new NavShortcutListener("Focus", TAB, SHIFT) {
-        @Override
-        protected void handle(Object sender, Object target) {
-            List<? extends Component.Focusable> focusables = getFocusables();
-            int indexOf = focusables.indexOf(target);
-            if (indexOf == 0) {
-                focusables.get(focusables.size() - 1).focus();
-            } else {
-                focusables.get(indexOf - 1).focus();
-            }
-        }
-    };
-
-
-//    private final NavShortcutListener tabGroupCycle = new NavShortcutListener("Focus", ALT, ARROW_DOWN) {
-//        @Override
-//        protected void handle(Object sender, Object target) {
-//            List<? extends Component.Focusable> focusables = getFocusables();
-//            int indexOf = focusables.indexOf(target);
-//            if (indexOf == 0) {
-//                focusables.get(focusables.size() - 1).focus();
-//            } else {
-//                focusables.get(indexOf - 1).focus();
-//            }
-//        }
-//    };
 
             
             
@@ -156,10 +116,7 @@ public class KeyBinder implements Action.Handler {
         discard,
         // find
         clearToFind,
-        find,
-
-        //tab navigation
-        tabber,tabberShift
+        find
     };
 
     KeyBinder(final CrudNavigation nav) {
@@ -232,23 +189,11 @@ public class KeyBinder implements Action.Handler {
 
     @Override
     public void handleAction(Action action, Object sender, Object target) {
-        if (action instanceof NavShortcutListener) {
+        if (action instanceof NavShortcutListener && Arrays.asList(allActions).contains(action)) {
             NavShortcutListener act = (NavShortcutListener) action;
             act.handleAction(sender, target);
             if (act.isEnabled()) updateButtonStatus();
         }
     }
 
-    public void constrainTab(Field<?>... targets) {
-        this.focusables = Arrays.asList(targets);
-    }
-
-    public void constrainTab(Collection<Field<?>> targets) {
-        this.focusables = new ArrayList<Component.Focusable>(targets);
-    }
-
-
-    public List<? extends Component.Focusable> getFocusables() {
-        return focusables;
-    }
 }

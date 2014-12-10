@@ -27,6 +27,7 @@ import org.tylproject.vaadin.addon.crudnav.events.OnFind;
 import org.tylproject.vaadin.addon.crudnav.events.ClearToFind.Event;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.ListTable;
+import org.tylproject.vaadin.addon.masterdetail.FocusManager;
 import org.tylproject.vaadin.addon.masterdetail.crud.BeanDetailCrud;
 import org.tylproject.vaadin.addon.masterdetail.crud.DefaultFilterFactory;
 import org.tylproject.vaadin.addon.masterdetail.crud.FilterFactory;
@@ -74,6 +75,7 @@ public class MyVaadinUI extends UI {
     final Field<?> firstName = masterDetail.build("firstName");
     final Field<?> lastName = masterDetail.build("lastName");
     final Field<?> age = masterDetail.build("age");
+    final Panel masterPanel = new Panel();
     
     // prepare the form layout that will contain the fields defined above
     final FormLayout formLayout = new FormLayout();
@@ -84,7 +86,7 @@ public class MyVaadinUI extends UI {
     // addressList. buildListOf() returns a Field<?> instance like build()
     // The underlying field is ListTable<T>, where, in this case, T is Address
     final ListTable<Address> addressList = (ListTable<Address>) masterDetail.buildListOf(Address.class, "addressList");
-    
+    final Panel tablePanel = new Panel();
     
     
     // MASTER CONTROLLER AND BUTTONS (and n. of record indicator)
@@ -119,6 +121,7 @@ public class MyVaadinUI extends UI {
     final VerticalLayout mainLayout = new VerticalLayout();
 
     final KeyBinder keyBinder = KeyBinder.forNavigation(masterNavigation);
+    final FocusManager focusManager = new FocusManager(keyBinder);
 
     // FINISH UP THE INITIALIZATION
     public MyVaadinUI() {
@@ -137,7 +140,12 @@ public class MyVaadinUI extends UI {
         detailNavigation.setContainer(addressList.getTable());
 
         this.addActionHandler(keyBinder);
-        keyBinder.constrainTab(firstName, lastName, age);
+        focusManager.configure()
+                .constrainTab(firstName, lastName, age).onPanel(masterPanel).forNavigation(masterNavigation)
+                .andThen(addressList).onPanel(tablePanel).forNavigation(detailNavigation);
+        focusManager.focusCurrentGroup();
+
+        this.addActionHandler(focusManager);
 
     }
     
@@ -163,8 +171,10 @@ public class MyVaadinUI extends UI {
 
         mainLayout.addComponent(buttonBar.getLayout());
 
-        mainLayout.addComponent(new Panel(formLayout));
-        mainLayout.addComponent(addressList);
+        masterPanel.setContent(formLayout);
+
+        mainLayout.addComponent(masterPanel);
+        mainLayout.addComponent(tablePanel);
         mainLayout.addComponent(new HorizontalLayout(tableBar.getLayout(), btnClearToFind));
 
     }
@@ -204,6 +214,8 @@ public class MyVaadinUI extends UI {
                 detailNavigation.setCurrentItemId(itemId);
             }
         });
+
+        tablePanel.setContent(addressList);
 
 
     }

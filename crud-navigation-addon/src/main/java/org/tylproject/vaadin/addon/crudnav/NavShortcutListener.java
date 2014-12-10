@@ -6,7 +6,7 @@ import com.vaadin.event.ShortcutListener;
  * Created by evacchi on 25/11/14.
  */
 public abstract class NavShortcutListener extends ShortcutListener {
-    private boolean enabled;
+    private boolean enabled = true;
 
     public NavShortcutListener(String caption, int keyCode, int... modifiers) {
         super(caption, keyCode, modifiers);
