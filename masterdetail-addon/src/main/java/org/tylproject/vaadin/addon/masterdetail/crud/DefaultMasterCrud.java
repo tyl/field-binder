@@ -66,15 +66,21 @@ public abstract class DefaultMasterCrud implements MasterCrud, ClearToFind.Liste
         fieldBinder.focus();
     }
 
+
     public void clearToFind(ClearToFind.Event event) {
+        // if the navigator does not point to a valid id
+        // FIXME I don't recall what this particular check was supposed to mean: it was a hack
         if (event.getSource().getCurrentItemId() == null) {
             fieldBinder.unbindAll();
             fieldBinder.setReadOnly(false);
             event.getSource().setCurrentItemId(null);
 
 
+
         } else {
-             fieldBinder.setReadOnly(false);
+            // fields are already unbound, then
+            // jus clear their contents
+            fieldBinder.setReadOnly(false);
             event.getSource().setCurrentItemId(null);
             for (Field<?> f : fieldBinder.getFields())
                 f.setValue(null);

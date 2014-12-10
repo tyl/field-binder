@@ -1,5 +1,6 @@
 package org.tylproject.vaadin.addon.masterdetail.crud;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.vaadin.ui.*;
@@ -21,7 +22,34 @@ public class TableFindStrategy<T> implements FindStrategy {
 	private final TableFindStrategy<T>.FindWindow window;
 
 	FilterFactory filterFactory = new DefaultFilterFactory();
-	
+
+	/**
+	 * maps fieldId to filter
+	 */
+	Map<Object, Object> propertyIdToFilterPattern = new HashMap<Object, Object>();
+
+	public Map<Object, Object> getPropertyIdToFilterPattern () {
+		return propertyIdToFilterPattern;
+	}
+
+
+	private void clearPropertyIdToFilterPattern() {
+		propertyIdToFilterPattern.clear();
+	}
+
+
+	private void restorePatterns(FieldBinder<?> fieldBinder,  Map<Object, Object> propertyIdToFilterPattern) {
+		for (Map.Entry<Field<?>, Object> e : fieldBinder.getFieldToPropertyIdBindings().entrySet()) {
+
+			Field field = e.getKey(); // raw type
+			Object propertyId = e.getValue();
+			Object pattern = propertyIdToFilterPattern.get(propertyId);
+
+			field.setValue(pattern);
+
+		}
+	}
+
 	public TableFindStrategy(Class<T> beanClass, CrudNavigation navigation, Table table) {
 		this.beanClass = beanClass;
 		this.table = table;
@@ -35,8 +63,17 @@ public class TableFindStrategy<T> implements FindStrategy {
 		window.center();
 		UI.getCurrent().addWindow(window);
 		navigation.setCurrentItemId(null);
-		
+
+
+		if (!getPropertyIdToFilterPattern().isEmpty()) {
+			restorePatterns(window.fieldBinder, getPropertyIdToFilterPattern());
+			clearPropertyIdToFilterPattern();
+		}
+
+
 	}
+
+
 	
 	@Override
 	public void onFind(OnFind.Event event) {
@@ -48,15 +85,21 @@ public class TableFindStrategy<T> implements FindStrategy {
 	
 
     private void applyFilters(FieldBinder<T> fieldBinder, Container.Filterable container) {
-        container.removeAllContainerFilters();
+		clearPropertyIdToFilterPattern();
+
+		container.removeAllContainerFilters();
         for (Map.Entry<Field<?>,Object> e : fieldBinder.getFieldToPropertyIdBindings().entrySet()) {
             Field<?> prop = e.getKey();
             Object propertyId = e.getValue();
-            Object value = prop.getValue();
+            Object pattern = prop.getValue();
             Class<?> modelType = getModelType(prop);
-            if (value != null) {
-                container.addContainerFilter(filterFactory.createFilter(modelType,
-                        propertyId, value));
+            if (pattern != null) {
+
+				propertyIdToFilterPattern.put(propertyId, pattern);
+
+
+				container.addContainerFilter(filterFactory.createFilter(modelType,
+                        propertyId, pattern));
             }
         }
     }
