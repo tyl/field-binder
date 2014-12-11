@@ -4,16 +4,10 @@ import com.mongodb.MongoClient;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.data.Container;
-import com.vaadin.data.Validator;
-import com.vaadin.data.util.converter.Converter;
-import com.vaadin.data.util.filter.And;
-import com.vaadin.data.util.filter.Compare;
-import com.vaadin.data.util.filter.SimpleStringFilter;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Button.ClickEvent;
 
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -21,17 +15,11 @@ import org.tylproject.demos.model.Address;
 import org.tylproject.demos.model.Person;
 import org.tylproject.vaadin.addon.MongoContainer;
 import org.tylproject.vaadin.addon.crudnav.*;
-import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
-import org.tylproject.vaadin.addon.crudnav.events.ClearToFind;
-import org.tylproject.vaadin.addon.crudnav.events.OnFind;
-import org.tylproject.vaadin.addon.crudnav.events.ClearToFind.Event;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.ListTable;
 import org.tylproject.vaadin.addon.masterdetail.FocusManager;
 import org.tylproject.vaadin.addon.masterdetail.crud.BeanDetailCrud;
-import org.tylproject.vaadin.addon.masterdetail.crud.DefaultFilterFactory;
-import org.tylproject.vaadin.addon.masterdetail.crud.FilterFactory;
-import org.tylproject.vaadin.addon.masterdetail.crud.MongoMasterCrud;
+import org.tylproject.vaadin.addon.masterdetail.crud.MongoNavigationStrategy;
 import org.tylproject.vaadin.addon.masterdetail.crud.TableFindStrategy;
 import org.vaadin.maddon.ListContainer;
 
@@ -39,9 +27,6 @@ import javax.servlet.annotation.WebServlet;
 
 import java.net.UnknownHostException;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 @Theme("mytheme")
@@ -126,7 +111,7 @@ public class MyVaadinUI extends UI {
     // FINISH UP THE INITIALIZATION
     public MyVaadinUI() {
 
-        final MongoMasterCrud<Person> masterCrudListeners = new MongoMasterCrud<Person>(Person.class, masterDetail);
+        final MongoNavigationStrategy<Person> masterCrudListeners = new MongoNavigationStrategy<Person>(Person.class, masterDetail);
     	
         masterNavigation
         	.withCrudListenersFrom(masterCrudListeners)

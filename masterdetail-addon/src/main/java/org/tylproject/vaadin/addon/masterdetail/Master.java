@@ -4,8 +4,8 @@ import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanContainer;
 import com.vaadin.data.util.BeanItemContainer;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.masterdetail.crud.BeanMasterCrud;
-import org.tylproject.vaadin.addon.masterdetail.crud.MongoMasterCrud;
+import org.tylproject.vaadin.addon.masterdetail.crud.BeanNavigationStrategy;
+import org.tylproject.vaadin.addon.masterdetail.crud.MongoNavigationStrategy;
 import org.tylproject.vaadin.addon.MongoContainer;
 import org.tylproject.vaadin.addon.crudnav.BasicCrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
@@ -93,9 +93,9 @@ public class Master<T> extends NavigableFieldBinder<T> {
             if (masterContainer instanceof BeanContainer
                     || masterContainer instanceof BeanItemContainer
                     || masterContainer instanceof ListContainer) {
-                withCrud(new BeanMasterCrud<M>(masterClass).withMaster(this.build()));
+                withCrud(new BeanNavigationStrategy<M>(masterClass).withMaster(this.build()));
             } else if (masterContainer instanceof MongoContainer) {
-                withCrud(new MongoMasterCrud<M>(masterClass).withMaster(this.build()));
+                withCrud(new MongoNavigationStrategy<M>(masterClass).withMaster(this.build()));
             }
             else throw new UnsupportedOperationException("no known CrudStrategy for this container type: "+masterContainer.getClass());
 

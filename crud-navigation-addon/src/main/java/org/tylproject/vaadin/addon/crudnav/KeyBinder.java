@@ -85,19 +85,21 @@ public class KeyBinder implements Action.Handler {
             nav().discard();
         }
     };
-
     private final NavShortcutListener clearToFind = new NavShortcutListener("Clear to Find", F, ALT) {
         @Override
         public void handle(Object sender, Object target) {
             nav().clearToFind();
+            KeyBinder.this.enable(find);
         }
     };
-    private final NavShortcutListener find = new NavShortcutListener("Find", G, ALT) {
+    private final NavShortcutListener find = new NavShortcutListener("Find", ENTER) {
         @Override
         public void handle(Object sender, Object target) {
             if (nav().isClearToFindMode()) nav().find();
+            KeyBinder.this.disable(find);
         }
     };
+
             
     private final NavShortcutListener[] allActions = {
         // nav

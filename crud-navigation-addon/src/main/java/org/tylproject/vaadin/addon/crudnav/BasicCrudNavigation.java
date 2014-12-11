@@ -19,7 +19,7 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
 
     }
 
-    public BasicCrudNavigation(@Nonnull final Container.Indexed container) {
+    public BasicCrudNavigation(@Nonnull final Container.Ordered container) {
         setContainer(container);
     }
 

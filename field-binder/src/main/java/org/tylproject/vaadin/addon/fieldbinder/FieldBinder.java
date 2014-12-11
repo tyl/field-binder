@@ -1,14 +1,14 @@
 package org.tylproject.vaadin.addon.fieldbinder;
 
+import com.vaadin.data.Container;
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.WrapDynaClass;
+import org.tylproject.vaadin.addon.crudnav.BasicCrudNavigation;
+import org.tylproject.vaadin.addon.crudnav.ButtonBar;
+import org.tylproject.vaadin.addon.fieldbinder.strategies.DefaultNavigationStrategy;
 
-import java.beans.*;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -38,6 +38,19 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     public void focus() {
         if (getFields().isEmpty()) return;
         getFields().iterator().next().focus();
+    }
+
+    public ButtonBar buildDefaultButtonBar(Container.Ordered container) {
+
+        DefaultNavigationStrategy<T> defaultNavigationStrategy = new DefaultNavigationStrategy<T>(beanClass, this);
+
+        BasicCrudNavigation nav = new BasicCrudNavigation(container)
+                                    .withCrudListenersFrom(defaultNavigationStrategy)
+                                    .withFindListenersFrom(defaultNavigationStrategy);
+
+        nav.addCurrentItemChangeListener(defaultNavigationStrategy);
+
+        return new ButtonBar(nav);
     }
 
     public Collection<Field<?>> buildAll() {

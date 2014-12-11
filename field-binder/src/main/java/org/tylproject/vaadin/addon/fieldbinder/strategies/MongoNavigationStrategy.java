@@ -1,9 +1,7 @@
-package org.tylproject.vaadin.addon.masterdetail.crud;
+package org.tylproject.vaadin.addon.fieldbinder.strategies;
 
 import com.vaadin.data.util.BeanItem;
-import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
-import org.tylproject.vaadin.addon.MongoContainer;
 import org.tylproject.vaadin.addon.crudnav.events.ItemCreate;
 import org.tylproject.vaadin.addon.crudnav.events.OnCommit;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
@@ -11,18 +9,10 @@ import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 /**
  * Created by evacchi on 27/11/14.
  */
-public class MongoMasterCrud<M> extends DefaultMasterCrud {
-    private final Class<M> masterClass;
+public class MongoNavigationStrategy<M> extends DefaultNavigationStrategy<M> {
 
-    public MongoMasterCrud(Class<M> masterClass) {
-        this.masterClass = masterClass;
-    }
-
-    public MongoMasterCrud(Class<M> masterClass, FieldBinder<M> fieldBinder) {
-        this.masterClass = masterClass;
-        this.fieldBinder = fieldBinder;
-//        this.navigation = nav;
-        fieldBinder.setReadOnly(true);
+    public MongoNavigationStrategy(Class<M> masterClass, FieldBinder<M> fieldBinder) {
+        super(masterClass, fieldBinder);
     }
 
 
@@ -45,7 +35,7 @@ public class MongoMasterCrud<M> extends DefaultMasterCrud {
 
     protected M createBean() {
         try {
-            return masterClass.newInstance();
+            return getBeanClass().newInstance();
         } catch (Exception ex) {
             throw new UnsupportedOperationException(ex);
         }
@@ -55,9 +45,9 @@ public class MongoMasterCrud<M> extends DefaultMasterCrud {
     @Override
     public void onCommit(OnCommit.Event event) {
         super.onCommit(event);
-        final MongoContainer<M> container = (MongoContainer<M>) event.getSource().getContainer();
+//        final MongoContainer<M> container = (MongoContainer<M>) event.getSource().getContainer();
         BeanItem<M> beanItem = (BeanItem<M>) fieldBinder.getItemDataSource();
-        event.getSource().setCurrentItemId(container.addEntity(beanItem.getBean()));
+//        event.getSource().setCurrentItemId(container.addEntity(beanItem.getBean()));
 
     }
 }

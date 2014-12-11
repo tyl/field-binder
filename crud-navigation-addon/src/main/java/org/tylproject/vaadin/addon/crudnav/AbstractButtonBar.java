@@ -1,20 +1,23 @@
 package org.tylproject.vaadin.addon.crudnav;
 
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
+import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.crudnav.resources.Strings;
 
 import javax.annotation.Nonnull;
+import javax.swing.*;
 import java.util.ResourceBundle;
 
 /**
  * Created by evacchi on 04/12/14.
  */
-public abstract class AbstractButtonBar implements CrudNavButtonBar {
+public abstract class AbstractButtonBar extends CustomComponent implements CrudNavButtonBar {
 
     private final HorizontalLayout buttonLayout = new HorizontalLayout();
+
+    private Panel focusPanel;
+    private FocusManager focusManager;
+
     @Override
     public Layout getLayout() {
         return buttonLayout;
@@ -28,6 +31,7 @@ public abstract class AbstractButtonBar implements CrudNavButtonBar {
 
     protected AbstractButtonBar(CrudNavigation nav) {
         this.nav = nav;
+        setCompositionRoot(this.getLayout());
     }
 
 

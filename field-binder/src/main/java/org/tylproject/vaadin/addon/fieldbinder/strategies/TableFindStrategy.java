@@ -1,19 +1,18 @@
-package org.tylproject.vaadin.addon.masterdetail.crud;
+package org.tylproject.vaadin.addon.fieldbinder.strategies;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
-
+import com.vaadin.data.Container;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
 import org.tylproject.vaadin.addon.crudnav.FindButtonBar;
 import org.tylproject.vaadin.addon.crudnav.KeyBinder;
-import org.tylproject.vaadin.addon.crudnav.events.*;
+import org.tylproject.vaadin.addon.crudnav.events.ClearToFind;
+import org.tylproject.vaadin.addon.crudnav.events.OnFind;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.util.converter.Converter;
-import org.tylproject.vaadin.addon.masterdetail.FocusManager;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class TableFindStrategy<T> implements FindStrategy {
 	
@@ -128,7 +127,7 @@ public class TableFindStrategy<T> implements FindStrategy {
     class FindWindow extends Window {
     	
     	protected final FieldBinder<T> fieldBinder;
-		FocusManager focusManager = new FocusManager();
+//		FocusManager focusManager = new FocusManager();
 
 
 		public FindWindow(FieldBinder<T> fieldBinder) {
@@ -156,18 +155,18 @@ public class TableFindStrategy<T> implements FindStrategy {
 
 			setContent(layout);
 
-			focusManager.configure().constrainTab(fields);
+//			focusManager.configure().constrainTab(fields);
 
-			addActionHandler(focusManager);
-			KeyBinder keyBinder = focusManager.getKeyBinder();
-			keyBinder.setNavigation(navigation);
-			addActionHandler(keyBinder);
+//			addActionHandler(focusManager);
+//			KeyBinder keyBinder = focusManager.getKeyBinder();
+//			keyBinder.setNavigation(navigation);
+//			addActionHandler(keyBinder);
     	}
 
 		@Override
 		public void setParent(HasComponents parent) {
 			super.setParent(parent);
-			focusManager.focusCurrentGroup();
+//			focusManager.focusCurrentGroup();
 		}
 
 		public FieldBinder<T> getFieldBinder() {

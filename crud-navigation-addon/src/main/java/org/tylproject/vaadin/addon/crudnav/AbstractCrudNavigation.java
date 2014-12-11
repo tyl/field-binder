@@ -22,6 +22,12 @@ public abstract class AbstractCrudNavigation implements CrudNavigation {
     public void addCurrentItemChangeListener(
             CurrentItemChange.Listener listener) {
         eventRouter.addListener(CurrentItemChange.Event.class, listener, CurrentItemChange.Listener.METHOD);
+
+        // when a new listener is being hooked, fire immediately
+        // the event on the listener so that it may update its internal status
+        // even if it has missed last event firing
+        Object id = getCurrentItemId();
+        listener.currentItemChange(new CurrentItemChange.Event(this, id, null));
     }
 
     @Override
