@@ -15,7 +15,7 @@ public class FindButtonBar extends AbstractButtonBar {
     final Button btnFind = button("find");
 
 
-    private final Button[] crudButtons = {
+    private final Button[] findButtons = {
             btnClearToFind,
             btnFind
     };
@@ -60,9 +60,9 @@ public class FindButtonBar extends AbstractButtonBar {
         @Override
         public void findEnabled(FindEnabled.Event event) {
             if (event.isFindEnabled()) {
-                enable(crudButtons);
+                enable(btnClearToFind);
             } else {
-                disable(crudButtons);
+                disable(findButtons);
             }
         }
     };

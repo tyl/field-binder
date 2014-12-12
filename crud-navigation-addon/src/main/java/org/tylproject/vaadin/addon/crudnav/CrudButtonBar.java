@@ -94,8 +94,8 @@ public class CrudButtonBar extends AbstractButtonBar {
 
     @Override
     protected void attachNavigation(@Nonnull CrudNavigation nav) {
-        super.attachNavigation(nav);
         nav.addCrudEnabledListener(buttonEnabler);
+        super.attachNavigation(nav);
     }
 
     @Override
@@ -118,14 +118,23 @@ public class CrudButtonBar extends AbstractButtonBar {
     @Override
     protected void updateButtonStatus() {
 
-        Object currentId = nav().getCurrentItemId();
-        if (!nav().isCrudEnabled() || currentId == null && nav().getContainer() != null && nav().getContainer().size() != 0) {
-            disable(btnCreate);
-        } else {
-            enable(btnCreate);
+        if (!nav().isCrudEnabled()) {
+            disable(crudButtons);
+            return;
         }
-        if (nav().getContainer() != null && nav().getContainer().size() == 0) {
-            disable(btnEdit, btnCommit, btnDiscard, btnRemove);
+
+        Object currentId = nav().getCurrentItemId();
+
+        if (nav().getContainer() != null) {
+            if (nav().getContainer().size() == 0) {
+                disable(btnEdit, btnCommit, btnDiscard, btnRemove);
+                enable(btnCreate);
+            } else {
+                enable(btnCreate);
+                if (currentId != null) {
+                    enable(btnEdit, btnCommit, btnDiscard, btnRemove);
+                }
+            }
         }
     }
 

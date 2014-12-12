@@ -57,6 +57,8 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
         this.currentItemId = itemId;
         getEventRouter().fireEvent(
                 new CurrentItemChange.Event(this, currentItemId, prevId));
+
+
         return prevId;
     }
 
@@ -187,7 +189,7 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
         disableFind();
     }
     public void leaveEditingMode() {
-        editingMode = true;
+        editingMode = false;
         enableNavigation();
         enableFind();
     }
@@ -203,7 +205,7 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
     public void find() {
         if (!isFindEnabled()) return;
         try {
-            if (!isClearToFindMode()) throw new IllegalStateException("Cannot find() when in ClearToFind mode");
+            if (!isClearToFindMode()) throw new IllegalStateException("Cannot find() when not in ClearToFind mode");
             leaveClearToFind();
             getEventRouter().fireEvent(new BeforeFind.Event(this));
             getEventRouter().fireEvent(new OnFind.Event(this));

@@ -1,13 +1,14 @@
 package org.tylproject.vaadin.addon.fieldbinder.strategies;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Property;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.crudnav.events.*;
 
 /**
  * Created by evacchi on 11/12/14.
  */
-public class DefaultTableStrategy<T> implements CrudStrategy {
+public class DefaultTableStrategy<T> implements CrudStrategy, CurrentItemChange.Listener {
 
     final Table table;
     final Class<T> beanClass;
@@ -26,8 +27,11 @@ public class DefaultTableStrategy<T> implements CrudStrategy {
         });
     }
 
+    @Override
     public void itemEdit(ItemEdit.Event event) {
-        this.table.setEditable(!this.table.isEditable());
+        table.setEditable(!this.table.isEditable());
+        table.setSelectable(false);
+        table.focus();
     }
 
 
@@ -36,7 +40,11 @@ public class DefaultTableStrategy<T> implements CrudStrategy {
         T bean = createBean();
         event.getSource().getContainer().addItem(bean);
         event.getSource().setCurrentItemId(bean);
+        table.select(bean);
         table.setEditable(true);
+        table.setSelectable(false);
+        table.focus();
+
 
     }
 
@@ -51,14 +59,21 @@ public class DefaultTableStrategy<T> implements CrudStrategy {
     public void onDiscard(OnDiscard.Event event) {
         this.table.discard();
         this.table.setEditable(false);
+        this.table.setSelectable(true);
     }
 
     public void onCommit(OnCommit.Event event) {
         this.table.commit();
         this.table.setEditable(false);
+        this.table.setSelectable(true);
     }
 
     public void itemRemove(ItemRemove.Event event) {
         this.table.removeItem(event.getSource().getCurrentItemId());
+    }
+
+    @Override
+    public void currentItemChange(CurrentItemChange.Event event) {
+        table.select(event.getNewItemId());
     }
 }
