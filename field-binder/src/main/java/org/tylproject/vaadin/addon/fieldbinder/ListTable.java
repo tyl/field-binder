@@ -24,11 +24,12 @@ import java.util.List;
 public class ListTable<T> extends CustomField<List<T>> {
 
     protected final VerticalLayout compositionRoot = new VerticalLayout();
-    protected final Table table = new Table();
+    protected final Table table;
     protected final Class<T> containedBeanClass;
     private Object[] visibleColumns;
 
     public ListTable(Class<T> containedBeanClass) {
+        table = new Table();
         table.setSizeFull();
         table.setHeight("300px");
         table.setSelectable(true);

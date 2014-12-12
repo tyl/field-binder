@@ -56,7 +56,8 @@ public class DefaultNavigationStrategy<T> implements
 
     @Override
     public void itemEdit(ItemEdit.Event event) {
-        fieldBinder.setReadOnly(!fieldBinder.isReadOnly());
+        boolean readOnly = fieldBinder.isReadOnly();
+        fieldBinder.setReadOnly(!readOnly);
         fieldBinder.focus();
     }
 
@@ -102,6 +103,7 @@ public class DefaultNavigationStrategy<T> implements
 
     @Override
     public void itemCreate(ItemCreate.Event event) {
+
         T bean = createBean();
         fieldBinder.setReadOnly(false);
         event.getSource().getContainer().addItem(bean);

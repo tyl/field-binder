@@ -1,6 +1,7 @@
 package org.tylproject.vaadin.addon.fieldbinder.strategies;
 
-import com.vaadin.ui.Table;
+import com.vaadin.data.Container;
+import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.crudnav.events.*;
 
 /**
@@ -11,9 +12,18 @@ public class DefaultTableStrategy<T> implements CrudStrategy {
     final Table table;
     final Class<T> beanClass;
 
-    public DefaultTableStrategy(Class<T> beanClass, Table table) {
+    public DefaultTableStrategy(final Class<T> beanClass, final Table table) {
         this.beanClass = beanClass;
         this.table = table;
+        table.setTableFieldFactory(new TableFieldFactory() {
+            final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
+            @Override
+            public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
+                if (itemId == table.getValue())
+                    return fieldFactory.createField(container, itemId, propertyId, uiContext);
+                else return null;
+            }
+        });
     }
 
     public void itemEdit(ItemEdit.Event event) {
@@ -26,6 +36,7 @@ public class DefaultTableStrategy<T> implements CrudStrategy {
         T bean = createBean();
         event.getSource().getContainer().addItem(bean);
         event.getSource().setCurrentItemId(bean);
+        table.setEditable(true);
 
     }
 

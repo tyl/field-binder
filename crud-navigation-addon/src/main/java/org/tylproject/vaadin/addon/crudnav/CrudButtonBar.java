@@ -3,7 +3,9 @@ package org.tylproject.vaadin.addon.crudnav;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
+import org.tylproject.vaadin.addon.crudnav.events.CrudEnabled;
 import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
+import org.tylproject.vaadin.addon.crudnav.events.NavigationEnabled;
 
 import javax.annotation.Nonnull;
 
@@ -43,6 +45,9 @@ public class CrudButtonBar extends AbstractButtonBar {
         btnCreate.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
+                disable(btnCreate, btnEdit, btnRemove);
+                enable(btnCommit, btnDiscard);
+
                 nav().create();
             }
         });
@@ -50,6 +55,11 @@ public class CrudButtonBar extends AbstractButtonBar {
         btnEdit.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
+                if (btnEdit.isEnabled()) {
+                    disable(btnCreate, btnEdit, btnRemove);
+                } else {
+                    enable(btnCreate, btnEdit, btnRemove);
+                }
                 nav().edit();
             }
         });
@@ -65,6 +75,7 @@ public class CrudButtonBar extends AbstractButtonBar {
         btnCommit.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
+                enable(btnCreate, btnEdit, btnRemove);
                 nav().commit();
             }
         });
@@ -72,6 +83,7 @@ public class CrudButtonBar extends AbstractButtonBar {
         btnDiscard.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
+                enable(btnCreate, btnEdit, btnRemove);
                 nav().discard();
             }
         });
@@ -81,13 +93,39 @@ public class CrudButtonBar extends AbstractButtonBar {
     }
 
     @Override
+    protected void attachNavigation(@Nonnull CrudNavigation nav) {
+        super.attachNavigation(nav);
+        nav.addCrudEnabledListener(buttonEnabler);
+    }
+
+    @Override
+    protected void detachNavigation(@Nonnull CrudNavigation nav) {
+        nav.removeCrudEnabledListener(buttonEnabler);
+        super.detachNavigation(nav);
+    }
+
+    CrudEnabled.Listener buttonEnabler = new CrudEnabled.Listener() {
+        @Override
+        public void crudEnabled(CrudEnabled.Event event) {
+            if (event.isCrudEnabled()) {
+                enable(crudButtons);
+            } else {
+                disable(crudButtons);
+            }
+        }
+    };
+
+    @Override
     protected void updateButtonStatus() {
 
         Object currentId = nav().getCurrentItemId();
-        if (currentId == null && nav().getContainer() != null && nav().getContainer().size() != 0) {
+        if (!nav().isCrudEnabled() || currentId == null && nav().getContainer() != null && nav().getContainer().size() != 0) {
             disable(btnCreate);
         } else {
             enable(btnCreate);
+        }
+        if (nav().getContainer() != null && nav().getContainer().size() == 0) {
+            disable(btnEdit, btnCommit, btnDiscard, btnRemove);
         }
     }
 

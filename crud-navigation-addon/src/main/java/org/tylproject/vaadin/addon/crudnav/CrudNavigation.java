@@ -13,6 +13,8 @@ public interface CrudNavigation extends
         PrevItem.Notifier,
         FirstItem.Notifier,
         LastItem.Notifier,
+        NavigationEnabled.Notifier,
+
         ItemCreate.Notifier,
         ItemEdit.Notifier,
         ItemRemove.Notifier,
@@ -20,10 +22,13 @@ public interface CrudNavigation extends
         BeforeCommit.Notifier,
         AfterCommit.Notifier,
         OnDiscard.Notifier,
+        CrudEnabled.Notifier,
+
         ClearToFind.Notifier,
         BeforeFind.Notifier,
         OnFind.Notifier,
-        AfterFind.Notifier {
+        AfterFind.Notifier,
+        FindEnabled.Notifier {
 
     public Container.Ordered  getContainer();
     public void setContainer(Container.Ordered container);
@@ -37,11 +42,18 @@ public interface CrudNavigation extends
     public void last();
     public void next();
     public void prev();
+    public void enableNavigation();
+    public void disableNavigation();
+    public boolean isNavigationEnabled();
 
     // search
     public void clearToFind();
     public void find();
     public boolean isClearToFindMode();
+    public void enableFind();
+    public void disableFind();
+    public boolean isFindEnabled();
+
 
     // CRUD
     public void create();
@@ -49,5 +61,11 @@ public interface CrudNavigation extends
     public void edit();
     public void discard();
     public void remove();
+    public void enableCrud();
+    public void disableCrud();
+    public boolean isCrudEnabled();
+    public void enterEditingMode();
+    public void leaveEditingMode();
+    public boolean isEditingMode();
 
 }

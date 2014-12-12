@@ -150,17 +150,17 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         return this.itemDataSource != null;
     }
 
-    public Field<?> build(Object propertyId) {
+    public <T extends Field<?>> T build(Object propertyId) {
         String caption = DefaultFieldFactory
                 .createCaptionByPropertyId(propertyId);
-        return build(caption, propertyId);
+        return (T) build(caption, propertyId);
     }
 
-    public Field<?> build(String caption, Object propertyId) {
-        return build(caption, propertyId, Field.class);
+    public <T extends Field<?>> T build(String caption, Object propertyId) {
+        return (T) build(caption, propertyId, Field.class);
     }
 
-    public <T extends Field> T build(String caption, Object propertyId, Class<T> fieldType) {
+    public <T extends Field<?>> T build(String caption, Object propertyId, Class<T> fieldType) {
         Class<?> dataType = getPropertyType(propertyId);
 
         T field = getFieldFactory().createField(dataType, fieldType);

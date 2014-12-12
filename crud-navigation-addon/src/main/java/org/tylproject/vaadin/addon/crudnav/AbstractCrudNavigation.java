@@ -12,7 +12,6 @@ public abstract class AbstractCrudNavigation implements CrudNavigation {
 
     private final EventRouter eventRouter = new EventRouter();
     protected final Logger logger = Logger.getLogger(this.getClass().getCanonicalName());
-    private boolean clearToFindMode;
 
     public EventRouter getEventRouter() {
         return eventRouter;
@@ -77,6 +76,21 @@ public abstract class AbstractCrudNavigation implements CrudNavigation {
     public void removeFirstItemListener(FirstItem.Listener listener) {
         eventRouter.removeListener(FirstItem.Event.class, listener, FirstItem.Listener.METHOD);
     }
+
+
+    @Override
+    public void addNavigationEnabledListener(NavigationEnabled.Listener listener) {
+        eventRouter.addListener(NavigationEnabled.Event.class, listener, NavigationEnabled.Listener.METHOD);
+    }
+
+    @Override
+    public void removeNavigationEnabledListener(NavigationEnabled.Listener listener) {
+        eventRouter.removeListener(NavigationEnabled.Event.class, listener, NavigationEnabled.Listener.METHOD);
+    }
+
+
+    // CRUD
+
 
     @Override
     public void removeAfterCommitListener(AfterCommit.Listener listener) {
@@ -149,6 +163,19 @@ public abstract class AbstractCrudNavigation implements CrudNavigation {
     }
 
     @Override
+    public void addCrudEnabledListener(CrudEnabled.Listener listener) {
+        eventRouter.addListener(CrudEnabled.Event.class, listener, CrudEnabled.Listener.METHOD);
+    }
+
+    @Override
+    public void removeCrudEnabledListener(CrudEnabled.Listener listener) {
+        eventRouter.removeListener(CrudEnabled.Event.class, listener, CrudEnabled.Listener.METHOD);
+    }
+
+
+    // FIND
+
+    @Override
     public void addClearToFindListener(ClearToFind.Listener listener) {
         eventRouter.addListener(ClearToFind.Event.class, listener, ClearToFind.Listener.METHOD);
     }
@@ -188,14 +215,14 @@ public abstract class AbstractCrudNavigation implements CrudNavigation {
         eventRouter.removeListener(AfterFind.Event.class, listener, AfterFind.Listener.METHOD);
     }
 
+    @Override
+    public void addFindEnabledListener(FindEnabled.Listener listener) {
+        eventRouter.addListener(FindEnabled.Event.class, listener, FindEnabled.Listener.METHOD);
+    }
 
-    public void enterClearToFind() {
-        this.clearToFindMode = true;
+    @Override
+    public void removeFindEnabledListener(FindEnabled.Listener listener) {
+        eventRouter.removeListener(FindEnabled.Event.class, listener, FindEnabled.Listener.METHOD);
     }
-    public void leaveClearToFind() {
-        this.clearToFindMode = false;
-    }
-    public boolean isClearToFindMode() {
-        return clearToFindMode;
-    }
+
 }

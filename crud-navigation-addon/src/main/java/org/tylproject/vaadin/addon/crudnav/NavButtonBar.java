@@ -3,6 +3,9 @@ package org.tylproject.vaadin.addon.crudnav;
 import com.vaadin.data.Container;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
+import org.tylproject.vaadin.addon.crudnav.events.NavigationEnabled;
+
+import javax.annotation.Nonnull;
 
 /**
  * Created by evacchi on 04/12/14.
@@ -66,9 +69,28 @@ public class NavButtonBar extends AbstractButtonBar {
     }
 
     @Override
+    protected void attachNavigation(@Nonnull CrudNavigation nav) {
+        super.attachNavigation(nav);
+        nav.addNavigationEnabledListener(buttonEnabler);
+    }
+
+    @Override
+    protected void detachNavigation(@Nonnull CrudNavigation nav) {
+        nav.removeNavigationEnabledListener(buttonEnabler);
+        super.detachNavigation(nav);
+    }
+
+    NavigationEnabled.Listener buttonEnabler = new NavigationEnabled.Listener() {
+        @Override
+        public void navigationEnabled(NavigationEnabled.Event event) {
+            updateButtonStatus();
+        }
+    };
+
+    @Override
     protected  void updateButtonStatus() {
         Container.Ordered ctr = nav().getContainer();
-        if (ctr == null) {
+        if (ctr == null || !nav().isNavigationEnabled()) {
             disable(navButtons);
             return;
         } else {

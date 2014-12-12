@@ -19,7 +19,6 @@ import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.ListTable;
 import org.tylproject.vaadin.addon.masterdetail.FocusManager;
 import org.tylproject.vaadin.addon.masterdetail.crud.BeanDetailCrud;
-import org.tylproject.vaadin.addon.masterdetail.crud.MongoNavigationStrategy;
 import org.tylproject.vaadin.addon.masterdetail.crud.TableFindStrategy;
 import org.vaadin.maddon.ListContainer;
 
@@ -111,13 +110,13 @@ public class MyVaadinUI extends UI {
     // FINISH UP THE INITIALIZATION
     public MyVaadinUI() {
 
-        final MongoNavigationStrategy<Person> masterCrudListeners = new MongoNavigationStrategy<Person>(Person.class, masterDetail);
-    	
-        masterNavigation
-        	.withCrudListenersFrom(masterCrudListeners)
-        	.withFindListenersFrom(masterCrudListeners);
-    	
-        masterNavigation.addCurrentItemChangeListener(masterCrudListeners);
+//        final MongoNavigationStrategy<Person> masterCrudListeners = new MongoNavigationStrategy<Person>(Person.class, masterDetail);
+//
+//        masterNavigation
+//        	.withCrudListenersFrom(masterCrudListeners)
+//        	.withFindListenersFrom(masterCrudListeners);
+//
+//        masterNavigation.addCurrentItemChangeListener(masterCrudListeners);
         masterNavigation.setContainer(masterDataSource);
         
         final BeanDetailCrud<Address> detailCrudListeners = new BeanDetailCrud<Address>(Address.class, addressList.getTable());

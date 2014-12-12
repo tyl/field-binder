@@ -8,10 +8,7 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
 import org.tylproject.demos.model.Address;
 import org.tylproject.demos.model.Person;
-import org.tylproject.vaadin.addon.crudnav.ButtonBar;
-import org.tylproject.vaadin.addon.crudnav.CrudButtonBar;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.fieldbinder.ListTable;
 import org.vaadin.maddon.FilterableListContainer;
 import org.vaadin.maddon.layouts.MFormLayout;
 import org.vaadin.maddon.layouts.MVerticalLayout;
@@ -41,16 +38,16 @@ public class MyVaadinUI extends UI {
     // visual navigation control
 
     // initialize the FieldBinder for the masterDetail editor on the Person entity
-    final FieldBinder<Person> fieldBinder = new FieldBinder<Person>(Person.class);
+    final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class);
 
     // create a field for each property in the Person bean that we want to bind
     // the build() method returns a Field<?>. 
     // If you need a more specific type (e.g., TextField), you'll have to cast it
-//    final Field<?> firstName = fieldBinder.build("firstName");
-//    final Field<?> lastName = fieldBinder.build("lastName");
-//    final Field<?> age = fieldBinder.build("age");
+//    final Field<?> firstName = binder.build("firstName");
+//    final Field<?> lastName = binder.build("lastName");
+//    final Field<?> age = binder.build("age");
 //
-//    final ButtonBar buttonBar = fieldBinder.buildDefaultButtonBar(masterDataSource);
+//    final ButtonBar buttonBar = binder.buildDefaultButtonBar(masterDataSource);
 //
 ////    final NavigationLabel recordCount = buttonBar.buildNavigationLabel();
 //
@@ -64,21 +61,21 @@ public class MyVaadinUI extends UI {
 //    // create field for "collection" property (currently only lists are supported!)
 //    // addressList. buildListOf() returns a Field<?> instance like build()
 //    // The underlying field is ListTable<T>, where, in this case, T is Address
-//    final ListTable<Address> addressList = (ListTable<Address>) fieldBinder.buildListOf(Address.class, "addressList");
+//    final ListTable<Address> addressList = (ListTable<Address>) binder.buildListOf(Address.class, "addressList");
 //    final CrudButtonBar addressListBar = addressList.buildDefaultCrudBar();
 
-    final ListTable<Address> addressList = ((ListTable<Address>)fieldBinder.buildListOf(Address.class, "addressList"));
 
     final VerticalLayout mainLayout = new MVerticalLayout(
-            fieldBinder.buildDefaultButtonBar(masterDataSource),
+            binder.buildDefaultButtonBar(masterDataSource),
 
             new MFormLayout(
-                    fieldBinder.build("firstName"),
-                    fieldBinder.build("lastName"),
-                    fieldBinder.build("age")
+                    binder.build("firstName"),
+                    binder.build("lastName"),
+                    binder.build("age")
             ).withFullWidth().withMargin(true),
 
-            addressList.withDefaultCrudBar()
+            binder.buildListOf(Address.class, "addressList").withDefaultCrudBar()
+
 
     ).withFullWidth().withMargin(true);
 
@@ -87,9 +84,6 @@ public class MyVaadinUI extends UI {
     protected void init(VaadinRequest request) {
 
         setupMainLayout();
-
-        setupFormLayout();
-        setupTable(addressList.getTable());
         setContent(mainLayout);
 
     }
@@ -102,13 +96,6 @@ public class MyVaadinUI extends UI {
 //        mainLayout.addComponents(buttonBar.getLayout(), formLayout, addressList, addressListBar.getLayout());
 
 
-    }
-
-    private void setupFormLayout() {
-//        formLayout.setMargin(true);
-//        formLayout.setHeightUndefined();
-//
-//        formLayout.addComponents(firstName, lastName, age);
     }
 
     private void setupTable(final Table table) {

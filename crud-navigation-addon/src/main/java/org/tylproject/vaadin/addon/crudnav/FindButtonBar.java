@@ -2,6 +2,7 @@ package org.tylproject.vaadin.addon.crudnav;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
+import org.tylproject.vaadin.addon.crudnav.events.FindEnabled;
 
 import javax.annotation.Nonnull;
 
@@ -42,9 +43,33 @@ public class FindButtonBar extends AbstractButtonBar {
         setNavigation(nav);
     }
 
+
+    @Override
+    protected void attachNavigation(@Nonnull CrudNavigation nav) {
+        super.attachNavigation(nav);
+        nav.addFindEnabledListener(buttonEnabler);
+    }
+
+    @Override
+    protected void detachNavigation(@Nonnull CrudNavigation nav) {
+        nav.removeFindEnabledListener(buttonEnabler);
+        super.detachNavigation(nav);
+    }
+
+    FindEnabled.Listener buttonEnabler = new FindEnabled.Listener() {
+        @Override
+        public void findEnabled(FindEnabled.Event event) {
+            if (event.isFindEnabled()) {
+                enable(crudButtons);
+            } else {
+                disable(crudButtons);
+            }
+        }
+    };
+
     @Override
     protected void updateButtonStatus() {
-        if (nav().getCurrentItemId() != null) {
+        if (!nav().isFindEnabled() || nav().getCurrentItemId() != null) {
             disable(btnFind);
         } else {
             enable(btnClearToFind, btnFind);

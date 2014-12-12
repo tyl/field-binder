@@ -25,9 +25,9 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
     }
 
-    public Field<?> buildListOf(Class<?> containedBeanClass, Object propertyId) {
+    public <T> ListTable<T> buildListOf(Class<T> containedBeanClass, Object propertyId) {
         Class<?> dataType = getPropertyType(propertyId);
-        Field<?> field = getFieldFactory().createDetailField(dataType, containedBeanClass);
+        ListTable<T> field = getFieldFactory().createDetailField(dataType, containedBeanClass);
         bind(field, propertyId);
         return field;
     }
