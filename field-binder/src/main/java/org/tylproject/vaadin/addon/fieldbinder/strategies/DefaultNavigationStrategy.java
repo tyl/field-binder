@@ -103,11 +103,10 @@ public class DefaultNavigationStrategy<T> implements
 
     @Override
     public void itemCreate(ItemCreate.Event event) {
-
-        T bean = createBean();
         fieldBinder.setReadOnly(false);
-        event.getSource().getContainer().addItem(bean);
-        event.getSource().setCurrentItemId(bean);
+//        T bean = createBean();
+//        event.getSource().getContainer().addItem(bean);
+//        event.getSource().setCurrentItemId(bean);
 
     }
 

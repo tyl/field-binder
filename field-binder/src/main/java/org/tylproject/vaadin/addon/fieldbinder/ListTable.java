@@ -14,7 +14,9 @@ import org.vaadin.maddon.FilterableListContainer;
 import java.util.List;
 
 /**
- * Created by evacchi on 03/12/14.
+ * A table wrapper where the value is a {@link java.util.List}
+ *
+ * Generally used together with {@link org.tylproject.vaadin.addon.fieldbinder.FieldBinder}
  */
 public class ListTable<T> extends CustomField<List<T>> {
 
@@ -84,6 +86,11 @@ public class ListTable<T> extends CustomField<List<T>> {
         return List.class;
     }
 
+    /**
+     * @return the data type contained by the list
+     */
+    public Class<?> getListType() { return containedBeanClass; }
+
     @Override
     public void focus() {
         table.focus();
@@ -116,26 +123,32 @@ public class ListTable<T> extends CustomField<List<T>> {
     }
 
     @Override
-    public void setPropertyDataSource(Property newDataSource) {
-        super.setPropertyDataSource(newDataSource);
-    }
-
-    @Override
     public void commit() throws SourceException, Validator.InvalidValueException {
         table.commit();
     }
 
+    @Override
+    public void discard() {
+        table.discard();
+    }
 
+    /**
+     * @return adds a default button bar to the bottom right of this component
+     */
     public ListTable<T> withDefaultCrudBar() {
         CrudButtonBar buttonBar = buildDefaultCrudBar();
         compositionRoot.setSizeFull();
 
-        Label spacer = new Label("");
-        HorizontalLayout inner = new HorizontalLayout(spacer, buttonBar);
-        inner.setSizeFull();
-        inner.setWidth("100%");
+//        Label spacer = new Label("");
+//        HorizontalLayout inner = new HorizontalLayout(spacer, buttonBar);
+//        inner.setSizeFull();
+//        inner.setWidth("100%");
+//
+////        inner.setExpandRatio(spacer, 1);
+//        inner.setComponentAlignment(buttonBar, Alignment.BOTTOM_RIGHT);
 
-//        inner.setExpandRatio(spacer, 1);
+        HorizontalLayout inner = new HorizontalLayout(buttonBar);
+        inner.setSizeFull();
         inner.setComponentAlignment(buttonBar, Alignment.BOTTOM_RIGHT);
 
         compositionRoot.addComponent(inner);
@@ -143,6 +156,10 @@ public class ListTable<T> extends CustomField<List<T>> {
     }
 
 
+    /**
+     * build and returns a default button bar for this component
+     * @return
+     */
     public CrudButtonBar buildDefaultCrudBar() {
         navigation.withCrudListenersFrom(new DefaultTableStrategy<T>(containedBeanClass, table));
         final CrudButtonBar crudBar = new CrudButtonBar(navigation);
@@ -155,6 +172,9 @@ public class ListTable<T> extends CustomField<List<T>> {
         return crudBar;
     }
 
+    /**
+     * @return the DataNavigation instance bound to this component
+     */
     public DataNavigation getNavigation() {
         return navigation;
     }

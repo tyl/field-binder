@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by evacchi on 19/11/14.
  */
-public class ButtonBar extends CustomComponent implements CrudNavButtonBar {
+public class ButtonBar extends CustomComponent implements DataNavigationBar {
 
 
     private final NavButtonBar navBar;
@@ -54,9 +54,17 @@ public class ButtonBar extends CustomComponent implements CrudNavButtonBar {
         return new NavigationLabel(this.getNavigation());
     }
 
+    public CrudButtonBar getCrudBar() {
+        return crudBar;
+    }
 
+    public FindButtonBar getFindBar() {
+        return findBar;
+    }
 
-
+    public NavButtonBar getNavigationBar() {
+        return navBar;
+    }
 }
 
 

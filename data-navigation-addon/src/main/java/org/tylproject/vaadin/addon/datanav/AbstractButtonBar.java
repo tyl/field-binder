@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 /**
  * Created by evacchi on 04/12/14.
  */
-public abstract class AbstractButtonBar extends CustomComponent implements CrudNavButtonBar {
+public abstract class AbstractButtonBar extends CustomComponent implements DataNavigationBar {
 
     private final HorizontalLayout buttonLayout = new HorizontalLayout();
 
@@ -32,7 +32,10 @@ public abstract class AbstractButtonBar extends CustomComponent implements CrudN
     protected AbstractButtonBar(DataNavigation nav) {
         this.nav = nav;
         setCompositionRoot(this.getLayout());
+        this.setSizeUndefined();
     }
+
+
 
 
 

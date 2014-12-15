@@ -5,7 +5,8 @@ import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.DefaultFieldFactory;
 
 /**
- * Created by evacchi on 02/12/14.
+ * An extended {@link com.vaadin.data.fieldgroup.FieldGroupFieldFactory}
+ * that supports {@link org.tylproject.vaadin.addon.fieldbinder.ListTable}
  */
 public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
 

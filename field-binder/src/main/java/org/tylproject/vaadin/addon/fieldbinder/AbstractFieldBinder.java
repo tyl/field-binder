@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Created by evacchi on 02/12/14.
+ * Base class for the FieldBinder
  */
 public abstract class AbstractFieldBinder<T extends FieldGroup> implements Serializable {
     private final T fieldGroup;
@@ -57,6 +57,9 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
     }
 
 
+    /**
+     * returns all the fields that are managed by this FieldBinder
+     */
     public Collection<Field<?>> getFields() {
         return Collections.unmodifiableCollection(propertyIdToField.values());
     }

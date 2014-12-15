@@ -21,7 +21,9 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
 
 
     public BasicDataNavigation() {
-
+//        disableNavigation();
+//        disableCrud();
+//        disableFind();
     }
 
     public BasicDataNavigation(@Nonnull final Container.Ordered container) {

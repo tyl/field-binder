@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by evacchi on 04/12/14.
  */
-public interface CrudNavButtonBar extends Serializable {
+public interface DataNavigationBar extends Serializable {
     Layout getLayout();
 
     void setNavigation(@Nonnull DataNavigation nav);

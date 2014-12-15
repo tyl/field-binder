@@ -12,19 +12,19 @@ import javax.annotation.Nonnull;
  */
 public class CrudButtonBar extends AbstractButtonBar {
 
-    private final Button btnCreate  = button("create");
-    private final Button btnEdit    = button("edit");
-    private final Button btnRemove  = button("remove");
-    private final Button btnCommit  = button("commit");
-    private final Button btnDiscard = button("discard");
+    private final Button createButton = button("create");
+    private final Button editButton = button("edit");
+    private final Button removeButton = button("remove");
+    private final Button commitButton = button("commit");
+    private final Button discardButton = button("discard");
 
 
     private final Button[] crudButtons = {
-            btnCreate,
-            btnEdit,
-            btnRemove,
-            btnCommit,
-            btnDiscard
+            createButton,
+            editButton,
+            removeButton,
+            commitButton,
+            discardButton
     };
 
 
@@ -32,22 +32,22 @@ public class CrudButtonBar extends AbstractButtonBar {
         super(nav);
         Layout buttonLayout = getLayout();
 
-        buttonLayout.addComponent(btnCreate);
-        buttonLayout.addComponent(btnEdit);
-        buttonLayout.addComponent(btnRemove);
-        buttonLayout.addComponent(btnCommit);
-        buttonLayout.addComponent(btnDiscard);
+        buttonLayout.addComponent(createButton);
+        buttonLayout.addComponent(editButton);
+        buttonLayout.addComponent(removeButton);
+        buttonLayout.addComponent(commitButton);
+        buttonLayout.addComponent(discardButton);
 
 
 
-        btnCreate.addClickListener(new Button.ClickListener() {
+        createButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 nav().create();
             }
         });
 
-        btnEdit.addClickListener(new Button.ClickListener() {
+        editButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 nav().edit();
@@ -55,21 +55,21 @@ public class CrudButtonBar extends AbstractButtonBar {
         });
 
 
-        btnRemove.addClickListener(new Button.ClickListener() {
+        removeButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 nav().remove();
             }
         });
 
-        btnCommit.addClickListener(new Button.ClickListener() {
+        commitButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 nav().commit();
             }
         });
 
-        btnDiscard.addClickListener(new Button.ClickListener() {
+        discardButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 nav().discard();
@@ -107,10 +107,10 @@ public class CrudButtonBar extends AbstractButtonBar {
         @Override
         public void editingModeChange(EditingModeChange.Event event) {
             if (event.isEnteringEditingMode()) {
-                disable(btnCreate, btnEdit, btnRemove);
-                enable(btnCommit, btnDiscard);
+                disable(createButton, editButton, removeButton);
+                enable(commitButton, discardButton);
             } else {
-                enable(btnCreate, btnEdit, btnRemove);
+                enable(createButton, editButton, removeButton);
             }
         }
     };
@@ -127,16 +127,35 @@ public class CrudButtonBar extends AbstractButtonBar {
 
         if (nav().getContainer() != null) {
             if (nav().getContainer().size() == 0) {
-                disable(btnEdit, btnCommit, btnDiscard, btnRemove);
-                enable(btnCreate);
+                disable(editButton, commitButton, discardButton, removeButton);
+                enable(createButton);
             } else {
-                enable(btnCreate);
+                enable(createButton);
                 if (currentId != null) {
-                    enable(btnEdit, btnCommit, btnDiscard, btnRemove);
+                    enable(editButton, commitButton, discardButton, removeButton);
                 }
             }
         }
     }
 
 
+    public Button getCreateButton() {
+        return createButton;
+    }
+
+    public Button getCommitButton() {
+        return commitButton;
+    }
+
+    public Button getDiscardButton() {
+        return discardButton;
+    }
+
+    public Button getEditButton() {
+        return editButton;
+    }
+
+    public Button getRemoveButton() {
+        return removeButton;
+    }
 }
