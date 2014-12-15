@@ -3,6 +3,8 @@ package org.tylproject.vaadin.addon.datanav;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import org.tylproject.vaadin.addon.datanav.events.*;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.strategies.DataNavigationStrategy;
 
 import javax.annotation.Nonnull;
 
@@ -18,6 +20,8 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     private boolean findEnabled = true;
     private boolean editingMode = false;
     private boolean clearToFindMode = false;
+    private DataNavigationStrategyFactory navigationStrategyFactory;
+
 
 
     public BasicDataNavigation() {
@@ -28,6 +32,11 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
 
     public BasicDataNavigation(@Nonnull final Container.Ordered container) {
         setContainer(container);
+    }
+
+    public void setNavigationStrategyFactory(DataNavigationStrategyFactory
+                                                     navigationStrategyFactory) {
+        this.navigationStrategyFactory = navigationStrategyFactory;
     }
 
     @Override
@@ -276,6 +285,20 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
             & OnFind.Listener> BasicDataNavigation withFindListenersFrom(X findListenersObject) {
         this.addClearToFindListener(findListenersObject);
         this.addOnFindListener(findListenersObject);
+        return this;
+    }
+
+    public <T> BasicDataNavigation withDefaultBehavior() {
+
+        if (navigationStrategyFactory == null) {
+            throw new IllegalStateException("Cannot automatically assign a default behavior");
+        }
+
+        DataNavigationStrategy strategy = navigationStrategyFactory.forContainer(container.getClass());
+
+        this.withCrudListenersFrom(strategy).withFindListenersFrom(strategy);
+        this.addCurrentItemChangeListener(strategy);
+
         return this;
     }
 

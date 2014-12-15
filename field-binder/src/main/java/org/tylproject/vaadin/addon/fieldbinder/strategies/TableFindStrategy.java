@@ -16,9 +16,9 @@ import java.util.logging.Logger;
 public class TableFindStrategy<T> implements FindStrategy {
 	
 	private final Table table;
-	private final DataNavigation navigation;
+//	private final DataNavigation navigation;
 	private final Class<T> beanClass;
-	private final TableFindStrategy<T>.FindWindow window;
+	private FindWindow window;
 
 	private static final Logger logger = Logger.getAnonymousLogger();
 
@@ -51,19 +51,20 @@ public class TableFindStrategy<T> implements FindStrategy {
 		}
 	}
 
-	public TableFindStrategy(Class<T> beanClass, DataNavigation navigation, Table table) {
+	public TableFindStrategy(Class<T> beanClass, Table table) {
 		this.beanClass = beanClass;
 		this.table = table;
-		this.navigation = navigation;
-		this.window = new FindWindow(new FieldBinder<T>(beanClass));
+//		this.navigation = navigation;
+//		this.window = new FindWindow(new FieldBinder<T>(beanClass));
 	}
 
 	@Override
 	public void clearToFind(ClearToFind.Event event) {
+		this.window = new FindWindow(new FieldBinder<T>(beanClass), event.getSource());
 		window.fieldBinder.clear();
 		window.center();
 		UI.getCurrent().addWindow(window);
-		navigation.setCurrentItemId(null);
+		event.getSource().setCurrentItemId(null);
 
 
 		if (!getPropertyIdToFilterPattern().isEmpty()) {
@@ -78,9 +79,12 @@ public class TableFindStrategy<T> implements FindStrategy {
 	
 	@Override
 	public void onFind(OnFind.Event event) {
+		if (window == null) throw new IllegalStateException("Find Window is null: illegal state transition occurred");
+
 		applyFilters(window.getFieldBinder(), (Container.Filterable) table.getContainerDataSource());
 		window.close();
-		navigation.first();
+
+		event.getSource().first();
 	}
 	
 	
@@ -129,7 +133,7 @@ public class TableFindStrategy<T> implements FindStrategy {
 //		FocusManager focusManager = new FocusManager();
 
 
-		public FindWindow(FieldBinder<T> fieldBinder) {
+		public FindWindow(FieldBinder<T> fieldBinder, DataNavigation navigation) {
     		this.fieldBinder = fieldBinder;
     		
     		setClosable(false);

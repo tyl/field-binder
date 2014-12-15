@@ -45,13 +45,14 @@ public class MyVaadinUI extends UI {
 
     final VerticalLayout mainLayout = new MVerticalLayout(
 
-            new ButtonBar(binder.getNavigation()),
+            new ButtonBar(binder.getNavigation().withDefaultBehavior()),
 
             new MFormLayout(
                     binder.build("firstName"),
                     binder.build("lastName"),
                     binder.build("age"),
                     new NavigationLabel(binder.getNavigation())
+
             ).withFullWidth().withMargin(true),
 
             binder.buildListOf(Address.class, "addressList").withDefaultCrudBar()
@@ -62,20 +63,7 @@ public class MyVaadinUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-
-//        binder.getNavigation().withDefaultCrudListeners();
-
-//        binder.getNavigation().setContainer(container);
-
         setContent(mainLayout);
-//        binder.getNavigation().addOnCommitListener(new OnCommit.Listener() {
-//            @Override
-//            public void onCommit(OnCommit.Event event) {
-//                Person p = binder.getBeanDataSource();
-//                container.addEntity(p);
-//            }
-//        });
-
     }
 
 
@@ -92,8 +80,7 @@ public class MyVaadinUI extends UI {
 
     private MongoContainer<Person> makeMongoContainer() {
         try {
-            return
-                    MongoContainer.Builder.forEntity(
+            return MongoContainer.Builder.forEntity(
                             Person.class,
                             new MongoTemplate(new MongoClient("localhost"), "scratch"))
                             .build();

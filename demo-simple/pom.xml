@@ -102,7 +102,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.tylproject.vaadin.addon.fieldbinder</groupId>
-			<artifactId>field-binder</artifactId>
+			<artifactId>field-fieldBinder</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>

@@ -7,11 +7,9 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Field;
 import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.WrapDynaClass;
-import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
-import org.tylproject.vaadin.addon.datanav.ButtonBar;
-import org.tylproject.vaadin.addon.datanav.DataNavigation;
+import org.tylproject.vaadin.addon.datanav.*;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
-import org.tylproject.vaadin.addon.fieldbinder.strategies.DefaultNavigationStrategy;
+import org.tylproject.vaadin.addon.fieldbinder.strategies.DataNavigationStrategy;
 
 import java.util.*;
 
@@ -64,13 +62,9 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         this.beanClass = beanClass;
         this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
 
-        DefaultNavigationStrategy<T> defaultNavigationStrategy = new DefaultNavigationStrategy<T>(beanClass, this);
 
-        BasicDataNavigation nav = new BasicDataNavigation(container)
-                .withCrudListenersFrom(defaultNavigationStrategy)
-                .withFindListenersFrom(defaultNavigationStrategy);
-
-        nav.addCurrentItemChangeListener(defaultNavigationStrategy);
+        BasicDataNavigation nav = new BasicDataNavigation(container);
+        nav.setNavigationStrategyFactory(new DefaultDataNavigationStrategyFactory(this));
 
         this.navigation = nav;
 

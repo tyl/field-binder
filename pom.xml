@@ -11,7 +11,6 @@
     <name>Master-Detail Addon Main</name>
 
     <modules>
-        <module>data-navigation-addon</module>
         <module>field-binder</module>
     </modules>
 

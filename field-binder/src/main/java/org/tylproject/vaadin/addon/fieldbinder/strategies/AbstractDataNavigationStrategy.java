@@ -9,10 +9,7 @@ import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 /**
  * Created by evacchi on 26/11/14.
  */
-public class DefaultNavigationStrategy<T> implements
-        CurrentItemChange.Listener,
-        CrudStrategy,
-        FindStrategy {
+public abstract class AbstractDataNavigationStrategy<T> implements DataNavigationStrategy {
 
     protected final FieldBinder<T> fieldBinder;
     protected FilterApplier filterApplier = new FilterApplier();
@@ -22,9 +19,9 @@ public class DefaultNavigationStrategy<T> implements
         return beanClass;
     }
 
-    public DefaultNavigationStrategy(Class<T> beanClass, FieldBinder<T> fieldBinder) {
+    public AbstractDataNavigationStrategy(FieldBinder<T> fieldBinder) {
         this.fieldBinder = fieldBinder;
-        this.beanClass = beanClass;
+        this.beanClass = fieldBinder.getType();
         fieldBinder.setReadOnly(true);
     }
 
@@ -104,10 +101,9 @@ public class DefaultNavigationStrategy<T> implements
     @Override
     public void itemCreate(ItemCreate.Event event) {
         fieldBinder.setReadOnly(false);
-//        T bean = createBean();
-//        event.getSource().getContainer().addItem(bean);
-//        event.getSource().setCurrentItemId(bean);
-
+        event.getSource().setCurrentItemId(null);
+        T bean = createBean();
+        fieldBinder.setBeanDataSource(bean);
     }
 
     protected T createBean() {

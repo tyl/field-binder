@@ -7,6 +7,7 @@ import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
+import org.tylproject.vaadin.addon.datanav.TableNavigationStrategyFactory;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.fieldbinder.strategies.DefaultTableStrategy;
 import org.vaadin.maddon.FilterableListContainer;
@@ -34,12 +35,13 @@ public class ListTable<T> extends CustomField<List<T>> {
         table.setMultiSelect(false);
 
         navigation = new BasicDataNavigation();
+        navigation.setNavigationStrategyFactory(new TableNavigationStrategyFactory(this));
 
         compositionRoot.addComponent(table);
         this.containedBeanClass = containedBeanClass;
 
 
-        navigation.setContainer(table);
+//        navigation.setContainer(table);
         this.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -89,7 +91,7 @@ public class ListTable<T> extends CustomField<List<T>> {
     /**
      * @return the data type contained by the list
      */
-    public Class<?> getListType() { return containedBeanClass; }
+    public Class<T> getListType() { return containedBeanClass; }
 
     @Override
     public void focus() {
@@ -110,6 +112,8 @@ public class ListTable<T> extends CustomField<List<T>> {
             FilterableListContainer<T> listContainer = new FilterableListContainer<T>(containedBeanClass);
             listContainer.setCollection(list);
             table.setContainerDataSource(listContainer);
+            navigation.setContainer(listContainer);
+
 
             if (visibleColumns != null) {
                 this.setVisibleColumns(visibleColumns);
@@ -161,21 +165,22 @@ public class ListTable<T> extends CustomField<List<T>> {
      * @return
      */
     public CrudButtonBar buildDefaultCrudBar() {
-        navigation.withCrudListenersFrom(new DefaultTableStrategy<T>(containedBeanClass, table));
-        final CrudButtonBar crudBar = new CrudButtonBar(navigation);
-        navigation.addCurrentItemChangeListener(new CurrentItemChange.Listener() {
-            @Override
-            public void currentItemChange(CurrentItemChange.Event event) {
-                table.select(event.getNewItemId());
-            }
-        });
+//        navigation.withCrudListenersFrom(new DefaultTableStrategy<T>(containedBeanClass, table));
+
+        final CrudButtonBar crudBar = new CrudButtonBar(getNavigation().withDefaultBehavior());
+//        navigation.addCurrentItemChangeListener(new CurrentItemChange.Listener() {
+//            @Override
+//            public void currentItemChange(CurrentItemChange.Event event) {
+//                table.select(event.getNewItemId());
+//            }
+//        });
         return crudBar;
     }
 
     /**
      * @return the DataNavigation instance bound to this component
      */
-    public DataNavigation getNavigation() {
+    public BasicDataNavigation getNavigation() {
         return navigation;
     }
 

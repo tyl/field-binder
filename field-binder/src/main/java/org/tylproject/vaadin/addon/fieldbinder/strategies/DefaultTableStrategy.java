@@ -7,14 +7,17 @@ import org.tylproject.vaadin.addon.datanav.events.*;
 /**
  * Created by evacchi on 11/12/14.
  */
-public class DefaultTableStrategy<T> implements CrudStrategy, CurrentItemChange.Listener {
+public class DefaultTableStrategy<T> implements DataNavigationStrategy {
 
     final Table table;
     final Class<T> beanClass;
+    final TableFindStrategy<T> findStrategy;
 
     public DefaultTableStrategy(final Class<T> beanClass, final Table table) {
         this.beanClass = beanClass;
         this.table = table;
+        this.findStrategy = new TableFindStrategy<>(beanClass, table);
+
         table.setTableFieldFactory(new TableFieldFactory() {
             final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
             @Override
@@ -74,5 +77,15 @@ public class DefaultTableStrategy<T> implements CrudStrategy, CurrentItemChange.
     @Override
     public void currentItemChange(CurrentItemChange.Event event) {
         table.select(event.getNewItemId());
+    }
+
+    @Override
+    public void onFind(OnFind.Event event) {
+        findStrategy.onFind(event);
+    }
+
+    @Override
+    public void clearToFind(ClearToFind.Event event) {
+        findStrategy.clearToFind(event);
     }
 }
