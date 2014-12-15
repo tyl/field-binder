@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.tylproject.demos.model.Address;
 import org.tylproject.demos.model.Person;
 import org.tylproject.vaadin.addon.MongoContainer;
+import org.tylproject.vaadin.addon.datanav.ButtonBar;
 import org.tylproject.vaadin.addon.datanav.NavigationLabel;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.vaadin.maddon.FilterableListContainer;
@@ -33,18 +34,18 @@ public class MyVaadinUI extends UI {
     
     // setup a container instance; uncomment the following line to use an in-memory
     // container instead of Mongo
-    final FilterableListContainer<Person> container = makeDummyDataset();
-//    final MongoContainer<Person> container = makeMongoContainer();
+//    final FilterableListContainer<Person> container = makeDummyDataset();
+    final MongoContainer<Person> container = makeMongoContainer();
 
     // FIELD BINDER (MASTER/DETAIL EDITOR)
 
     // initialize the FieldBinder for the masterDetail editor on the Person entity
-    final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class);
+    final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container);
 
 
     final VerticalLayout mainLayout = new MVerticalLayout(
 
-            binder.buildDefaultButtonBar(container),
+            new ButtonBar(binder.getNavigation()),
 
             new MFormLayout(
                     binder.build("firstName"),
@@ -64,7 +65,7 @@ public class MyVaadinUI extends UI {
 
 //        binder.getNavigation().withDefaultCrudListeners();
 
-        binder.getNavigation().first();
+//        binder.getNavigation().setContainer(container);
 
         setContent(mainLayout);
 //        binder.getNavigation().addOnCommitListener(new OnCommit.Listener() {

@@ -56,18 +56,23 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         super(new FieldGroup());
         this.beanClass = beanClass;
         this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
+        this.navigation = null;
+    }
 
+    public FieldBinder(Class<T> beanClass, Container.Ordered container) {
+        super(new FieldGroup());
+        this.beanClass = beanClass;
+        this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
 
         DefaultNavigationStrategy<T> defaultNavigationStrategy = new DefaultNavigationStrategy<T>(beanClass, this);
 
-        BasicDataNavigation nav = new BasicDataNavigation()
+        BasicDataNavigation nav = new BasicDataNavigation(container)
                 .withCrudListenersFrom(defaultNavigationStrategy)
                 .withFindListenersFrom(defaultNavigationStrategy);
 
         nav.addCurrentItemChangeListener(defaultNavigationStrategy);
 
         this.navigation = nav;
-
 
     }
 
@@ -114,7 +119,8 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
         field.getNavigation().addEditingModeChangeListener(new EditingModeSwitcher(navigation));
 
-        this.navigation.addEditingModeChangeListener(new EditingModeSwitcher(field.getNavigation()));
+        this.getNavigation().addEditingModeChangeListener(new EditingModeSwitcher(field
+                .getNavigation()));
 
 
         return field;
@@ -134,7 +140,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
      *
      */
     public ButtonBar buildDefaultButtonBar(Container.Ordered container) {
-        navigation.setContainer(container);
+        getNavigation().setContainer(container);
         return new ButtonBar(navigation);
     }
 
@@ -186,6 +192,9 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
     public BasicDataNavigation getNavigation() {
+        if (navigation == null)
+            throw new IllegalStateException("Cannot return Navigation: no Container.Ordered instance was given at construction time");
+
         return navigation;
     }
 
