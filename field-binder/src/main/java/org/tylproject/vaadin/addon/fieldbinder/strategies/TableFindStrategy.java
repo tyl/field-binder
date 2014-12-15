@@ -3,7 +3,7 @@ package org.tylproject.vaadin.addon.fieldbinder.strategies;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.*;
-import org.tylproject.vaadin.addon.datanav.CrudNavigation;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.FindButtonBar;
 import org.tylproject.vaadin.addon.datanav.events.ClearToFind;
 import org.tylproject.vaadin.addon.datanav.events.OnFind;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class TableFindStrategy<T> implements FindStrategy {
 	
 	private final Table table;
-	private final CrudNavigation navigation;
+	private final DataNavigation navigation;
 	private final Class<T> beanClass;
 	private final TableFindStrategy<T>.FindWindow window;
 
@@ -51,7 +51,7 @@ public class TableFindStrategy<T> implements FindStrategy {
 		}
 	}
 
-	public TableFindStrategy(Class<T> beanClass, CrudNavigation navigation, Table table) {
+	public TableFindStrategy(Class<T> beanClass, DataNavigation navigation, Table table) {
 		this.beanClass = beanClass;
 		this.table = table;
 		this.navigation = navigation;

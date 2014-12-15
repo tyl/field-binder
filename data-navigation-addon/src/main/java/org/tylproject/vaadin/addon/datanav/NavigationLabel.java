@@ -18,12 +18,12 @@ public class NavigationLabel extends CustomComponent {
     private static final ResourceBundle resourceBundle =
             ResourceBundle.getBundle(Strings.class.getCanonicalName());
 
-    private final CrudNavigation navigation;
+    private final DataNavigation navigation;
     private final Label label;
     private static final String recordCounter = resourceBundle.getString("recordCounter");
     private static final String recordCounterFiltered = resourceBundle.getString("recordCounterFiltered");
 
-    public NavigationLabel(final CrudNavigation navigation) {
+    public NavigationLabel(final DataNavigation navigation) {
         this.label = new Label();
         this.navigation = navigation;
 

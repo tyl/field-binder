@@ -24,12 +24,12 @@ public abstract class AbstractButtonBar extends CustomComponent implements CrudN
     }
 
     private @Nonnull
-    CrudNavigation nav;
+    DataNavigation nav;
     protected static final ResourceBundle resourceBundle =
             ResourceBundle.getBundle(Strings.class.getCanonicalName());
 
 
-    protected AbstractButtonBar(CrudNavigation nav) {
+    protected AbstractButtonBar(DataNavigation nav) {
         this.nav = nav;
         setCompositionRoot(this.getLayout());
     }
@@ -38,23 +38,23 @@ public abstract class AbstractButtonBar extends CustomComponent implements CrudN
 
 
     @Override
-    public void setNavigation(@Nonnull CrudNavigation nav) {
+    public void setNavigation(@Nonnull DataNavigation nav) {
         detachNavigation(this.nav);
         this.nav = nav;
         attachNavigation(nav);
         updateButtonStatus();
     }
 
-    protected CrudNavigation nav() {
+    protected DataNavigation nav() {
         return this.nav;
     }
 
 
-    protected void detachNavigation(@Nonnull CrudNavigation nav) {
+    protected void detachNavigation(@Nonnull DataNavigation nav) {
         nav.removeCurrentItemChangeListener(buttonBarStatusUpdater);
     }
 
-    protected void attachNavigation(@Nonnull CrudNavigation nav) {
+    protected void attachNavigation(@Nonnull DataNavigation nav) {
         nav.addCurrentItemChangeListener(buttonBarStatusUpdater);
     }
 

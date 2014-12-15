@@ -1,6 +1,6 @@
 package org.tylproject.vaadin.addon.datanav.events;
 
-import org.tylproject.vaadin.addon.datanav.CrudNavigation;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
 
 import java.util.EventObject;
 
@@ -8,12 +8,12 @@ import java.util.EventObject;
  * Created by evacchi on 19/11/14.
  */
 public class CrudEvent extends EventObject {
-    public CrudEvent(CrudNavigation source) {
+    public CrudEvent(DataNavigation source) {
         super(source);
     }
 
     @Override
-    public CrudNavigation getSource() {
-        return (CrudNavigation) super.getSource();
+    public DataNavigation getSource() {
+        return (DataNavigation) super.getSource();
     }
 }

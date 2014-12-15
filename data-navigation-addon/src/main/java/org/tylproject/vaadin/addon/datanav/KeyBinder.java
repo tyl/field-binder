@@ -21,7 +21,7 @@ public class KeyBinder implements Action.Handler {
 //        return new KeyBinder(nav);
 //    }
 
-    private CrudNavigation nav;
+    private DataNavigation nav;
 
     private final int[] NoModifiers = {};
     private final int[] ShiftModifier = { SHIFT };
@@ -115,27 +115,27 @@ public class KeyBinder implements Action.Handler {
     };
 
     public KeyBinder() {}
-    public KeyBinder(@Nonnull CrudNavigation nav) {
+    public KeyBinder(@Nonnull DataNavigation nav) {
         this.nav = nav;
     }
 
-    public void setNavigation(@Nonnull CrudNavigation nav) {
+    public void setNavigation(@Nonnull DataNavigation nav) {
         detachNavigation(this.nav);
         this.nav = nav;
         attachNavigation(nav);
         updateButtonStatus();
     }
 
-    private CrudNavigation nav() {
+    private DataNavigation nav() {
         return this.nav;
     }
 
-    private void detachNavigation(CrudNavigation nav) {
+    private void detachNavigation(DataNavigation nav) {
         if (nav == null) return;
         nav.removeCurrentItemChangeListener(buttonBarStatusUpdater);
     }
 
-    private void attachNavigation(@Nonnull CrudNavigation nav) {
+    private void attachNavigation(@Nonnull DataNavigation nav) {
         nav.addCurrentItemChangeListener(buttonBarStatusUpdater);
     }
 

@@ -1,7 +1,7 @@
 package org.tylproject.vaadin.addon.datanav.events;
 
 import com.vaadin.data.Item;
-import org.tylproject.vaadin.addon.datanav.CrudNavigation;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
 
 import java.util.EventObject;
 
@@ -14,7 +14,7 @@ public class ItemNavigationEvent extends EventObject {
     private Item newItem;
     private Item oldItem;
 
-    public ItemNavigationEvent(CrudNavigation source, Object newItemId, Object oldItemId)  {
+    public ItemNavigationEvent(DataNavigation source, Object newItemId, Object oldItemId)  {
         super(source);
         this.newItemId = newItemId;
         this.oldItemId = oldItemId;
@@ -43,7 +43,7 @@ public class ItemNavigationEvent extends EventObject {
     }
 
     @Override
-    public CrudNavigation getSource() {
-        return (CrudNavigation) super.getSource();
+    public DataNavigation getSource() {
+        return (DataNavigation) super.getSource();
     }
 }

@@ -76,7 +76,7 @@ public class MyVaadinUI extends UI {
     // MASTER CONTROLLER AND BUTTONS (and n. of record indicator)
 
     // Build the navigation controller for the Person entity
-    final BasicCrudNavigation masterNavigation = new BasicCrudNavigation();
+    final BasicDataNavigation masterNavigation = new BasicDataNavigation();
     
     // Bind the label "Current# of Total#" to the navigation controller instance
     final NavigationLabel records = new NavigationLabel(masterNavigation);
@@ -91,7 +91,7 @@ public class MyVaadinUI extends UI {
 
 
     // let us create a "detail" navigation to hook into the table-related events
-    final BasicCrudNavigation detailNavigation = new BasicCrudNavigation();
+    final BasicDataNavigation detailNavigation = new BasicDataNavigation();
     
     // Buttons:
     // For the detailNavigation we do not need the NavButtonBar, 

@@ -1,13 +1,13 @@
 package org.tylproject.vaadin.addon.datanav.events;
 
 import com.vaadin.util.ReflectTools;
-import org.tylproject.vaadin.addon.datanav.CrudNavigation;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
 
 import java.lang.reflect.Method;
 
 public class ItemRemove {
     public static class Event extends CrudEvent {
-        public Event(CrudNavigation source) {
+        public Event(DataNavigation source) {
             super(source);
         }
     }

@@ -14,13 +14,13 @@ public class ButtonBar extends CustomComponent implements CrudNavButtonBar {
     private final CrudButtonBar crudBar;
     private final FindButtonBar findBar;
     private final HorizontalLayout buttonLayout = new HorizontalLayout();
-    private final CrudNavigation nav;
+    private final DataNavigation nav;
 
-    public static ButtonBar forNavigation(CrudNavigation nav) {
+    public static ButtonBar forNavigation(DataNavigation nav) {
         return new ButtonBar(nav);
     }
 
-    public ButtonBar(CrudNavigation nav) {
+    public ButtonBar(DataNavigation nav) {
         setCompositionRoot(getLayout());
 
         this.nav = nav;
@@ -36,13 +36,13 @@ public class ButtonBar extends CustomComponent implements CrudNavButtonBar {
 
     }
 
-    public void setNavigation(@Nonnull CrudNavigation nav) {
+    public void setNavigation(@Nonnull DataNavigation nav) {
         navBar.setNavigation(nav);
         crudBar.setNavigation(nav);
         findBar.setNavigation(nav);
     }
 
-    public CrudNavigation getNavigation() {
+    public DataNavigation getNavigation() {
         return nav;
     }
 

@@ -7,7 +7,7 @@ import org.tylproject.vaadin.addon.datanav.events.*;
 /**
  * Created by evacchi on 19/11/14.
  */
-public interface CrudNavigation extends
+public interface DataNavigation extends
         CurrentItemChange.Notifier,
         NextItem.Notifier,
         PrevItem.Notifier,
@@ -23,6 +23,7 @@ public interface CrudNavigation extends
         AfterCommit.Notifier,
         OnDiscard.Notifier,
         CrudEnabled.Notifier,
+        EditingModeChange.Notifier,
 
         ClearToFind.Notifier,
         BeforeFind.Notifier,

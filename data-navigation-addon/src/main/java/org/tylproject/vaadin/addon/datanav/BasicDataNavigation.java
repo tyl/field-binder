@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by evacchi on 19/11/14.
  */
-final public class BasicCrudNavigation extends AbstractCrudNavigation implements CrudNavigation {
+final public class BasicDataNavigation extends AbstractDataNavigation implements DataNavigation {
 
     private @Nonnull Container.Ordered container;
     private Object currentItemId;
@@ -20,11 +20,11 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
     private boolean clearToFindMode = false;
 
 
-    public BasicCrudNavigation() {
+    public BasicDataNavigation() {
 
     }
 
-    public BasicCrudNavigation(@Nonnull final Container.Ordered container) {
+    public BasicDataNavigation(@Nonnull final Container.Ordered container) {
         setContainer(container);
     }
 
@@ -153,6 +153,7 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
     @Override
     public void remove() {
         if (!isCrudEnabled()) return;
+        if (isEditingMode()) leaveEditingMode();
         Object currentItemId = this.getCurrentItemId();
         Object newItemId = container.nextItemId(currentItemId);
         if (newItemId == null) {
@@ -187,11 +188,15 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
         editingMode = true;
         disableNavigation();
         disableFind();
+        getEventRouter().fireEvent(new EditingModeChange.Event(this, EditingModeChange
+                .Status.Entering));
     }
     public void leaveEditingMode() {
         editingMode = false;
         enableNavigation();
         enableFind();
+        getEventRouter().fireEvent(new EditingModeChange.Event(this, EditingModeChange
+                .Status.Leaving));
     }
 
     @Override
@@ -253,7 +258,7 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
             & OnCommit.Listener
             & ItemRemove.Listener
             & ItemEdit.Listener
-            & ItemCreate.Listener> BasicCrudNavigation withCrudListenersFrom(X crudListenersObject) {
+            & ItemCreate.Listener> BasicDataNavigation withCrudListenersFrom(X crudListenersObject) {
 
         this.addItemRemoveListener(crudListenersObject);
         this.addOnCommitListener(crudListenersObject);
@@ -266,7 +271,7 @@ final public class BasicCrudNavigation extends AbstractCrudNavigation implements
 
     public <X extends
             ClearToFind.Listener
-            & OnFind.Listener> BasicCrudNavigation withFindListenersFrom(X findListenersObject) {
+            & OnFind.Listener> BasicDataNavigation withFindListenersFrom(X findListenersObject) {
         this.addClearToFindListener(findListenersObject);
         this.addOnFindListener(findListenersObject);
         return this;

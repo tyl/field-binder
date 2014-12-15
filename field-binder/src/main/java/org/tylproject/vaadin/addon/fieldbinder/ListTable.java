@@ -4,9 +4,9 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
 
-import org.tylproject.vaadin.addon.datanav.BasicCrudNavigation;
+import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
-import org.tylproject.vaadin.addon.datanav.CrudNavigation;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.fieldbinder.strategies.DefaultTableStrategy;
 import org.vaadin.maddon.FilterableListContainer;
@@ -22,7 +22,7 @@ public class ListTable<T> extends CustomField<List<T>> {
     protected final Table table;
     protected final Class<T> containedBeanClass;
     private Object[] visibleColumns;
-    private final CrudNavigation navigation;
+    private final BasicDataNavigation navigation;
 
     public ListTable(Class<T> containedBeanClass) {
         table = new Table();
@@ -31,20 +31,26 @@ public class ListTable<T> extends CustomField<List<T>> {
         table.setSelectable(true);
         table.setMultiSelect(false);
 
-        navigation = new BasicCrudNavigation();
+        navigation = new BasicDataNavigation();
 
         compositionRoot.addComponent(table);
         this.containedBeanClass = containedBeanClass;
 
 
+        navigation.setContainer(table);
         this.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                System.out.println("yay");
+                navigation.setCurrentItemId(event.getProperty().getValue());
+                table.setSelectable(true);
             }
         });
-
-        navigation.setContainer(table);
+        table.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                navigation.setCurrentItemId(event.getProperty().getValue());
+            }
+        });
 
 
     }
@@ -105,9 +111,6 @@ public class ListTable<T> extends CustomField<List<T>> {
             }
 
             // clear selection
-            //FIXME: event won't fire if the last selection was already null!
-            //MEMO: would it be worth to attach a navigation by default?
-            table.setValue(null);
             table.select(null);
         }
     }
@@ -141,31 +144,19 @@ public class ListTable<T> extends CustomField<List<T>> {
 
 
     public CrudButtonBar buildDefaultCrudBar() {
-        final BasicCrudNavigation nav = new BasicCrudNavigation(table);
-        nav.withCrudListenersFrom(new DefaultTableStrategy<T>(containedBeanClass, table));
-        final CrudButtonBar crudBar = new CrudButtonBar(nav);
-        nav.addCurrentItemChangeListener(new CurrentItemChange.Listener() {
+        navigation.withCrudListenersFrom(new DefaultTableStrategy<T>(containedBeanClass, table));
+        final CrudButtonBar crudBar = new CrudButtonBar(navigation);
+        navigation.addCurrentItemChangeListener(new CurrentItemChange.Listener() {
             @Override
             public void currentItemChange(CurrentItemChange.Event event) {
                 table.select(event.getNewItemId());
             }
         });
-        this.addValueChangeListener(new NavUpdater(nav));
-
         return crudBar;
     }
 
-    static class NavUpdater implements ValueChangeListener {
-        private final BasicCrudNavigation nav;
-
-        NavUpdater(BasicCrudNavigation nav) {
-            this.nav = nav;
-        }
-        @Override
-        public void valueChange(Property.ValueChangeEvent event) {
-            nav.setCurrentItemId(event.getProperty().getValue());
-        }
+    public DataNavigation getNavigation() {
+        return navigation;
     }
-
 
 }

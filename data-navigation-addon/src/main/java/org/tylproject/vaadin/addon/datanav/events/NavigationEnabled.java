@@ -1,7 +1,7 @@
 package org.tylproject.vaadin.addon.datanav.events;
 
 import com.vaadin.util.ReflectTools;
-import org.tylproject.vaadin.addon.datanav.CrudNavigation;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
 
 import java.lang.reflect.Method;
 import java.util.EventObject;
@@ -14,7 +14,7 @@ public class NavigationEnabled {
     public static class Event extends EventObject {
         private final boolean navigationEnabled;
 
-        public Event(CrudNavigation source, boolean navigationEnabled) {
+        public Event(DataNavigation source, boolean navigationEnabled) {
             super(source);
             this.navigationEnabled = navigationEnabled;
         }
@@ -24,8 +24,8 @@ public class NavigationEnabled {
         }
 
         @Override
-        public CrudNavigation getSource() {
-            return (CrudNavigation) super.getSource();
+        public DataNavigation getSource() {
+            return (DataNavigation) super.getSource();
         }
 
     }

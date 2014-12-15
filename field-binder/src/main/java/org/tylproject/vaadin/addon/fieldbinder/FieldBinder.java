@@ -5,8 +5,10 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.ui.Field;
 import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.WrapDynaClass;
-import org.tylproject.vaadin.addon.datanav.BasicCrudNavigation;
+import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.ButtonBar;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
+import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
 import org.tylproject.vaadin.addon.fieldbinder.strategies.DefaultNavigationStrategy;
 
 import java.util.*;
@@ -18,17 +20,38 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
     private final WrapDynaClass dynaClass ;
     private final Class<T> beanClass;
+    private final BasicDataNavigation navigation;
 
     public FieldBinder(Class<T> beanClass) {
         super(new FieldGroup());
         this.beanClass = beanClass;
         this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
+
+
+        DefaultNavigationStrategy<T> defaultNavigationStrategy = new DefaultNavigationStrategy<T>(beanClass, this);
+
+        BasicDataNavigation nav = new BasicDataNavigation()
+                .withCrudListenersFrom(defaultNavigationStrategy)
+                .withFindListenersFrom(defaultNavigationStrategy);
+
+        nav.addCurrentItemChangeListener(defaultNavigationStrategy);
+
+        this.navigation = nav;
+
+
     }
 
-    public <T> ListTable<T> buildListOf(Class<T> containedBeanClass, Object propertyId) {
-        Class<?> dataType = getPropertyType(propertyId);
-        ListTable<T> field = getFieldFactory().createDetailField(dataType, containedBeanClass);
+    public <U> ListTable<U> buildListOf(Class<U> containedBeanClass, Object propertyId) {
+        final Class<?> dataType = getPropertyType(propertyId);
+        final ListTable<U> field = getFieldFactory().createDetailField(dataType, containedBeanClass);
+
         bind(field, propertyId);
+
+        field.getNavigation().addEditingModeChangeListener(new EditingModeSwitcher(navigation));
+
+        this.navigation.addEditingModeChangeListener(new EditingModeSwitcher(field.getNavigation()));
+
+
         return field;
     }
 
@@ -41,16 +64,8 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
     public ButtonBar buildDefaultButtonBar(Container.Ordered container) {
-
-        DefaultNavigationStrategy<T> defaultNavigationStrategy = new DefaultNavigationStrategy<T>(beanClass, this);
-
-        BasicCrudNavigation nav = new BasicCrudNavigation(container)
-                                    .withCrudListenersFrom(defaultNavigationStrategy)
-                                    .withFindListenersFrom(defaultNavigationStrategy);
-
-        nav.addCurrentItemChangeListener(defaultNavigationStrategy);
-
-        return new ButtonBar(nav);
+        navigation.setContainer(container);
+        return new ButtonBar(navigation);
     }
 
     public Collection<Field<?>> buildAll() {
@@ -78,31 +93,31 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         return getFields();
     }
 
-    private Map<Object, Class<?>> propertyTypes = new HashMap<Object, Class<?>>();
-
     @Override
     protected Class<?> getPropertyType(Object propertyId) {
         return dynaClass.getDynaProperty(propertyId.toString()).getType();
-//        Class<?> t = propertyTypes.get(propertyId);
-//        if (t == null) {
-//            try {
-//                t = (Class<?>) Introspector.getBeanInfo(beanClass).getPropertyDescriptors()[0].getReadMethod().getGenericReturnType();
-//                propertyTypes.put(propertyId, t);
-//            }  catch (IntrospectionException e) {
-//                throw new IllegalArgumentException(e);
-//            }
-//        }
-//
-//        return t;
     }
-//
-//    private static Map<Object, PropertyDescriptor> createPropertyMap(BeanInfo beanInfo) {
-//        Map<Object, PropertyDescriptor> propertyMap = new LinkedHashMap<Object, PropertyDescriptor>();
-//
-//        for (PropertyDescriptor descriptor: beanInfo.getPropertyDescriptors()) {
-//            propertyMap.put(descriptor.getName(), descriptor);
-//        }
-//
-//        return propertyMap;
-//    }
+
+    static class EditingModeSwitcher implements EditingModeChange.Listener {
+        final DataNavigation otherNavigation;
+        EditingModeSwitcher(DataNavigation other) {
+            this.otherNavigation = other;
+        }
+
+        @Override
+        public void editingModeChange(EditingModeChange.Event event) {
+            if (event.isEnteringEditingMode()) {
+                otherNavigation.disableNavigation();
+                otherNavigation.disableCrud();
+                otherNavigation.disableFind();
+            } else {
+                otherNavigation.enableNavigation();
+                otherNavigation.enableCrud();
+                otherNavigation.enableFind();
+            }
+        }
+    }
+
+
+
 }

@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 /**
  * Created by evacchi on 19/11/14.
  */
-public abstract class AbstractCrudNavigation implements CrudNavigation {
+public abstract class AbstractDataNavigation implements DataNavigation {
 
     private final EventRouter eventRouter = new EventRouter();
     protected final Logger logger = Logger.getLogger(this.getClass().getCanonicalName());
@@ -172,6 +172,15 @@ public abstract class AbstractCrudNavigation implements CrudNavigation {
         eventRouter.removeListener(CrudEnabled.Event.class, listener, CrudEnabled.Listener.METHOD);
     }
 
+    @Override
+    public void addEditingModeChangeListener(EditingModeChange.Listener listener) {
+        eventRouter.addListener(EditingModeChange.Event.class, listener, EditingModeChange.Listener.METHOD);
+    }
+
+    @Override
+    public void removeEditingModeChangeListener(EditingModeChange.Listener listener) {
+        eventRouter.removeListener(EditingModeChange.Event.class, listener, EditingModeChange.Listener.METHOD);
+    }
 
     // FIND
 

@@ -25,7 +25,7 @@ public class NavButtonBar extends AbstractButtonBar {
             btnLast
     };
 
-    public NavButtonBar(final CrudNavigation nav) {
+    public NavButtonBar(final DataNavigation nav) {
         super(nav);
         Layout buttonLayout = getLayout();
 
@@ -69,13 +69,13 @@ public class NavButtonBar extends AbstractButtonBar {
     }
 
     @Override
-    protected void attachNavigation(@Nonnull CrudNavigation nav) {
+    protected void attachNavigation(@Nonnull DataNavigation nav) {
         super.attachNavigation(nav);
         nav.addNavigationEnabledListener(buttonEnabler);
     }
 
     @Override
-    protected void detachNavigation(@Nonnull CrudNavigation nav) {
+    protected void detachNavigation(@Nonnull DataNavigation nav) {
         nav.removeNavigationEnabledListener(buttonEnabler);
         super.detachNavigation(nav);
     }

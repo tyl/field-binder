@@ -20,7 +20,7 @@ public class FindButtonBar extends AbstractButtonBar {
             btnFind
     };
 
-    public FindButtonBar(@Nonnull CrudNavigation nav) {
+    public FindButtonBar(@Nonnull DataNavigation nav) {
         super(nav);
 
         Layout buttonLayout = getLayout();
@@ -45,13 +45,13 @@ public class FindButtonBar extends AbstractButtonBar {
 
 
     @Override
-    protected void attachNavigation(@Nonnull CrudNavigation nav) {
+    protected void attachNavigation(@Nonnull DataNavigation nav) {
         super.attachNavigation(nav);
         nav.addFindEnabledListener(buttonEnabler);
     }
 
     @Override
-    protected void detachNavigation(@Nonnull CrudNavigation nav) {
+    protected void detachNavigation(@Nonnull DataNavigation nav) {
         nav.removeFindEnabledListener(buttonEnabler);
         super.detachNavigation(nav);
     }

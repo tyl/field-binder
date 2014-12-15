@@ -1,7 +1,7 @@
 package org.tylproject.vaadin.addon.datanav.events;
 
 import com.vaadin.util.ReflectTools;
-import org.tylproject.vaadin.addon.datanav.CrudNavigation;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
 
 import java.lang.reflect.Method;
 
@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 public class CurrentItemChange {
 
     public static class Event extends ItemNavigationEvent {
-        public Event(CrudNavigation source, Object newItemId, Object oldItemId) {
+        public Event(DataNavigation source, Object newItemId, Object oldItemId) {
             super(source, newItemId, oldItemId);
         }
     }
