@@ -106,19 +106,14 @@
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.tylproject.vaadin.addon.crudnav</groupId>
-			<artifactId>crud-navigation-addon</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.tylproject.vaadin.addon.masterdetail</groupId>
-			<artifactId>masterdetail-addon</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.tylproject.vaadin.addon.mongodbcontainer</groupId>
+			<artifactId>mongodbcontainer-addon</artifactId>
+			<version>0.9.5-beta</version>
 		</dependency>
 	</dependencies>
 
