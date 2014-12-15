@@ -5,8 +5,8 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.ui.Field;
 import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.WrapDynaClass;
-import org.tylproject.vaadin.addon.crudnav.BasicCrudNavigation;
-import org.tylproject.vaadin.addon.crudnav.ButtonBar;
+import org.tylproject.vaadin.addon.datanav.BasicCrudNavigation;
+import org.tylproject.vaadin.addon.datanav.ButtonBar;
 import org.tylproject.vaadin.addon.fieldbinder.strategies.DefaultNavigationStrategy;
 
 import java.util.*;

@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.tylproject.demos.model.Address;
 import org.tylproject.demos.model.Person;
 import org.tylproject.vaadin.addon.MongoContainer;
-import org.tylproject.vaadin.addon.crudnav.*;
+import org.tylproject.vaadin.addon.datanav.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.ListTable;
 import org.tylproject.vaadin.addon.masterdetail.FocusManager;

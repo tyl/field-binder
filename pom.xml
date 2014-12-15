@@ -11,7 +11,7 @@
     <name>Master-Detail Addon Main</name>
 
     <modules>
-        <module>crud-navigation-addon</module>
+        <module>data-navigation-addon</module>
         <module>field-binder</module>
     </modules>
 

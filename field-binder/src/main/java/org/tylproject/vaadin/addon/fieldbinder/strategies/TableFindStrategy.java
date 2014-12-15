@@ -3,11 +3,10 @@ package org.tylproject.vaadin.addon.fieldbinder.strategies;
 import com.vaadin.data.Container;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.*;
-import org.tylproject.vaadin.addon.crudnav.CrudNavigation;
-import org.tylproject.vaadin.addon.crudnav.FindButtonBar;
-import org.tylproject.vaadin.addon.crudnav.KeyBinder;
-import org.tylproject.vaadin.addon.crudnav.events.ClearToFind;
-import org.tylproject.vaadin.addon.crudnav.events.OnFind;
+import org.tylproject.vaadin.addon.datanav.CrudNavigation;
+import org.tylproject.vaadin.addon.datanav.FindButtonBar;
+import org.tylproject.vaadin.addon.datanav.events.ClearToFind;
+import org.tylproject.vaadin.addon.datanav.events.OnFind;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
 import java.util.HashMap;

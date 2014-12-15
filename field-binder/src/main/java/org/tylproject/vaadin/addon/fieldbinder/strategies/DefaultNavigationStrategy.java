@@ -3,7 +3,7 @@ package org.tylproject.vaadin.addon.fieldbinder.strategies;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.ui.Field;
-import org.tylproject.vaadin.addon.crudnav.events.*;
+import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
 /**

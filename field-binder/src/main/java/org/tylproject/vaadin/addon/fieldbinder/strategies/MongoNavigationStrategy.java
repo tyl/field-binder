@@ -1,9 +1,9 @@
 package org.tylproject.vaadin.addon.fieldbinder.strategies;
 
 import com.vaadin.data.util.BeanItem;
-import org.tylproject.vaadin.addon.crudnav.events.CurrentItemChange;
-import org.tylproject.vaadin.addon.crudnav.events.ItemCreate;
-import org.tylproject.vaadin.addon.crudnav.events.OnCommit;
+import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
+import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
+import org.tylproject.vaadin.addon.datanav.events.OnCommit;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
 /**

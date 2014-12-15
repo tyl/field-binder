@@ -1,9 +1,8 @@
 package org.tylproject.vaadin.addon.fieldbinder.strategies;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Property;
 import com.vaadin.ui.*;
-import org.tylproject.vaadin.addon.crudnav.events.*;
+import org.tylproject.vaadin.addon.datanav.events.*;
 
 /**
  * Created by evacchi on 11/12/14.
