@@ -51,7 +51,7 @@ public class FilterApplier {
             Field<?> prop = e.getValue();
             Object pattern = prop.getValue();
             Class<?> modelType = getModelType(prop);
-            if (pattern != null) {
+            if (pattern != null && !pattern.toString().isEmpty()) {
 
                 propertyIdToFilterPattern.put(propertyId, pattern);
 

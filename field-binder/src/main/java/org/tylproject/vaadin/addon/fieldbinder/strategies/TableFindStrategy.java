@@ -19,37 +19,38 @@ public class TableFindStrategy<T> implements FindStrategy {
 //	private final DataNavigation navigation;
 	private final Class<T> beanClass;
 	private FindWindow window;
+	private final FilterApplier filterApplier = new FilterApplier();
 
 	private static final Logger logger = Logger.getAnonymousLogger();
-
-	FilterFactory filterFactory = new DefaultFilterFactory();
-
-	/**
-	 * maps fieldId to filter
-	 */
-	Map<Object, Object> propertyIdToFilterPattern = new HashMap<Object, Object>();
-
-	public Map<Object, Object> getPropertyIdToFilterPattern () {
-		return propertyIdToFilterPattern;
-	}
-
-
-	private void clearPropertyIdToFilterPattern() {
-		propertyIdToFilterPattern.clear();
-	}
-
-
-	private void restorePatterns(FieldBinder<?> fieldBinder,  Map<Object, Object> propertyIdToFilterPattern) {
-		for (Map.Entry<Field<?>, Object> e : fieldBinder.getFieldToPropertyIdBindings().entrySet()) {
-
-			Field field = e.getKey(); // raw type
-			Object propertyId = e.getValue();
-			Object pattern = propertyIdToFilterPattern.get(propertyId);
-
-			field.setValue(pattern);
-
-		}
-	}
+//
+//	FilterFactory filterFactory = new DefaultFilterFactory();
+//
+//	/**
+//	 * maps fieldId to filter
+//	 */
+//	Map<Object, Object> propertyIdToFilterPattern = new HashMap<Object, Object>();
+//
+//	public Map<Object, Object> getPropertyIdToFilterPattern () {
+//		return propertyIdToFilterPattern;
+//	}
+//
+//
+//	private void clearPropertyIdToFilterPattern() {
+//		propertyIdToFilterPattern.clear();
+//	}
+//
+//
+//	private void restorePatterns(FieldBinder<?> fieldBinder,  Map<Object, Object> propertyIdToFilterPattern) {
+//		for (Map.Entry<Field<?>, Object> e : fieldBinder.getFieldToPropertyIdBindings().entrySet()) {
+//
+//			Field field = e.getKey(); // raw type
+//			Object propertyId = e.getValue();
+//			Object pattern = propertyIdToFilterPattern.get(propertyId);
+//
+//			field.setValue(pattern);
+//
+//		}
+//	}
 
 	public TableFindStrategy(Class<T> beanClass, Table table) {
 		this.beanClass = beanClass;
@@ -58,80 +59,56 @@ public class TableFindStrategy<T> implements FindStrategy {
 //		this.window = new FindWindow(new FieldBinder<T>(beanClass));
 	}
 
-	@Override
+
 	public void clearToFind(ClearToFind.Event event) {
-		this.window = new FindWindow(new FieldBinder<T>(beanClass), event.getSource());
-		window.fieldBinder.clear();
-		window.center();
+		// if the navigator does not point to a valid id
+		// FIXME I don't recall what this particular check was supposed to mean: it was a hack
+
+		FieldBinder<T> fieldBinder = new FieldBinder<T>(beanClass);
+//		this.window.fieldBinder.clear();
+		this.window = new FindWindow(fieldBinder, event.getSource());
+		this.window.center();
+
 		UI.getCurrent().addWindow(window);
 		event.getSource().setCurrentItemId(null);
 
 
-		if (!getPropertyIdToFilterPattern().isEmpty()) {
-			restorePatterns(window.fieldBinder, getPropertyIdToFilterPattern());
-			clearPropertyIdToFilterPattern();
+		DataNavigation nav = event.getSource();
+
+		fieldBinder.unbindAll();
+		fieldBinder.setReadOnly(false);
+		event.getSource().setCurrentItemId(null);
+
+
+		if (filterApplier.hasAppliedFilters()) {
+			filterApplier.restorePatterns(fieldBinder.getPropertyIdToFieldBindings());
+			filterApplier.clearPropertyIdToFilterPatterns();
 		}
 
 
+		fieldBinder.focus();
 	}
 
-
-	
 	@Override
 	public void onFind(OnFind.Event event) {
-		if (window == null) throw new IllegalStateException("Find Window is null: illegal state transition occurred");
+		if (window == null) {
+			throw new IllegalStateException("Find Window is null: illegal state transition occurred");
+		}
 
-		applyFilters(window.getFieldBinder(), (Container.Filterable) table.getContainerDataSource());
+		FieldBinder<T> fieldBinder = window.getFieldBinder();
+
+		filterApplier.applyFilters(fieldBinder.getPropertyIdToFieldBindings(), (Container.Filterable) event.getSource().getContainer());
+
 		window.close();
+		window = null;
 
 		event.getSource().first();
 	}
-	
-	
 
-    private void applyFilters(FieldBinder<T> fieldBinder, Container.Filterable container) {
-		clearPropertyIdToFilterPattern();
-
-		container.removeAllContainerFilters();
-        for (Map.Entry<Field<?>,Object> e : fieldBinder.getFieldToPropertyIdBindings().entrySet()) {
-            Field<?> prop = e.getKey();
-            Object propertyId = e.getValue();
-            Object pattern = prop.getValue();
-            Class<?> modelType = getModelType(prop);
-            if (pattern != null) {
-
-				propertyIdToFilterPattern.put(propertyId, pattern);
-
-				Container.Filter f = filterFactory.createFilter(modelType,
-						propertyId, pattern);
-
-				if (f != null) {
-					logger.info("Applying filter: " + f);
-					container.addContainerFilter(f);
-				}
-			}
-        }
-    }
-
-    private Class<?> getModelType(Field<?> prop) {
-        if (prop instanceof AbstractField) {
-            AbstractField<?> abstractField = (AbstractField<?>) prop;
-            Converter<?, Object> converter = abstractField.getConverter();
-            if (converter != null) {
-                return converter.getModelType();
-            }
-        }
-
-        // otherwise, fallback to the property type
-        return prop.getType();
-
-    }
 
     class FindWindow extends Window {
     	
     	protected final FieldBinder<T> fieldBinder;
-//		FocusManager focusManager = new FocusManager();
-
 
 		public FindWindow(FieldBinder<T> fieldBinder, DataNavigation navigation) {
     		this.fieldBinder = fieldBinder;
@@ -158,18 +135,11 @@ public class TableFindStrategy<T> implements FindStrategy {
 
 			setContent(layout);
 
-//			focusManager.configure().constrainTab(fields);
-
-//			addActionHandler(focusManager);
-//			KeyBinder keyBinder = focusManager.getKeyBinder();
-//			keyBinder.setNavigation(navigation);
-//			addActionHandler(keyBinder);
     	}
 
 		@Override
 		public void setParent(HasComponents parent) {
 			super.setParent(parent);
-//			focusManager.focusCurrentGroup();
 		}
 
 		public FieldBinder<T> getFieldBinder() {
