@@ -48,6 +48,9 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     public void setContainer(Container.Ordered container) {
         this.container = container;
         this.currentItemId = null;
+        if (container == null || container.size() == 0) disableNavigation();
+        if (container instanceof Container.Filterable) enableFind();
+        else disableFind();
         first();
     }
 
@@ -240,7 +243,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
 
     @Override
     public void enableFind() {
-        this.findEnabled = true;
+        this.findEnabled = getContainer() instanceof Container.Filterable;
         getEventRouter().fireEvent(new FindEnabled.Event(this, findEnabled));
     }
 
@@ -294,7 +297,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
             throw new IllegalStateException("Cannot automatically assign a default behavior");
         }
 
-        DataNavigationStrategy strategy = navigationStrategyFactory.forContainer(container.getClass());
+        DataNavigationStrategy strategy = navigationStrategyFactory.forContainer(container);
 
         this.withCrudListenersFrom(strategy).withFindListenersFrom(strategy);
         this.addCurrentItemChangeListener(strategy);

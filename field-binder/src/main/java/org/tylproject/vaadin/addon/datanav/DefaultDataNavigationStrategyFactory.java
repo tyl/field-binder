@@ -1,5 +1,6 @@
 package org.tylproject.vaadin.addon.datanav;
 
+import com.vaadin.data.Container;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.strategies.DataNavigationStrategy;
 import org.tylproject.vaadin.addon.fieldbinder.strategies.ListDataNavigationStrategy;
@@ -17,15 +18,19 @@ public class DefaultDataNavigationStrategyFactory<U> implements DataNavigationSt
     }
 
     @Override
-    public <T extends DataNavigationStrategy> T forContainer(Class<?> containerType) {
-        switch (containerType.getCanonicalName()) {
-            case "org.vaadin.maddon.ListContainer":
-            case "org.vaadin.maddon.FilterableListContainer":
-                return (T) new ListDataNavigationStrategy<U>(fieldBinder);
-            case "org.tylproject.vaadin.addon.MongoContainer" :
-                return (T) new MongoDataNavigationStrategy<U>(fieldBinder);
+    public <T extends DataNavigationStrategy> T forContainer(Container container) {
+        if (container != null) {
+
+            switch (container.getClass().getCanonicalName()) {
+                case "org.vaadin.maddon.ListContainer":
+                case "org.vaadin.maddon.FilterableListContainer":
+                    return (T) new ListDataNavigationStrategy<U>(fieldBinder);
+                case "org.tylproject.vaadin.addon.MongoContainer":
+                    return (T) new MongoDataNavigationStrategy<U>(fieldBinder);
+            }
+
         }
 
-        throw new UnsupportedOperationException("Unknown container type: "+containerType.getCanonicalName());
+        throw new UnsupportedOperationException("Unknown container type: "+ container.getClass().getCanonicalName());
     }
 }

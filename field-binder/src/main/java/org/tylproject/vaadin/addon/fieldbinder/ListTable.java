@@ -29,6 +29,7 @@ public class ListTable<T> extends CustomField<List<T>> {
 
     public ListTable(Class<T> containedBeanClass) {
         table = new Table();
+        table.setBuffered(true);
         table.setSizeFull();
         table.setHeight("300px");
         table.setSelectable(true);
@@ -41,14 +42,20 @@ public class ListTable<T> extends CustomField<List<T>> {
         this.containedBeanClass = containedBeanClass;
 
 
-//        navigation.setContainer(table);
+        // when the value of this wrapper (the list of values!)
+        // changes, restore the table state:
+        // (selectable = true, select id = null)
         this.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                navigation.setCurrentItemId(event.getProperty().getValue());
+                navigation.setCurrentItemId(null);
+                table.select(null);
                 table.setSelectable(true);
             }
         });
+
+        // when someone selects an item on the actual table widget,
+        // then update the navigator accordingly
         table.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
@@ -59,12 +66,21 @@ public class ListTable<T> extends CustomField<List<T>> {
 
     }
 
+    /**
+     * Mimicks {@link com.vaadin.ui.Table} but automatically infer column names like a
+     * {@link com.vaadin.data.fieldgroup.FieldGroup} or a {@link org.tylproject.vaadin.addon.fieldbinder.FieldBinder}
+     */
     public void setVisibleColumns(Object ... visibleColumns) {
         this.visibleColumns = visibleColumns;
         table.setVisibleColumns(visibleColumns);
         setAllHeadersFromColumns(visibleColumns);
     }
 
+    /**
+     * Infers the column names from the column ids.
+     *
+     * Internally relies upon {@link com.vaadin.ui.DefaultFieldFactory}
+     */
     private void setAllHeadersFromColumns(Object[] columns) {
         String[] headers = new String[columns.length];
         for (int i = 0; i < columns.length; i++) {
@@ -79,6 +95,10 @@ public class ListTable<T> extends CustomField<List<T>> {
         return compositionRoot;
     }
 
+    /**
+     * Returns the actual {@link com.vaadin.ui.Table} instance
+     * @return
+     */
     public Table getTable() {
         return table;
     }
@@ -88,6 +108,9 @@ public class ListTable<T> extends CustomField<List<T>> {
         return List.class;
     }
 
+    /**
+     * return the type parameter for the List that this table contains
+     */
     /**
      * @return the data type contained by the list
      */
@@ -99,21 +122,26 @@ public class ListTable<T> extends CustomField<List<T>> {
     }
 
     @Override
-    protected void setInternalValue(List<T> newValue) {
-        List<T> list = newValue;
+    protected void setInternalValue(List<T> list) {
         // reset the navigation status
         navigation.setCurrentItemId(null);
 
         super.setInternalValue(list);
 
-        if (newValue == null) {
+        if (list == null) {
+            // clears the table contents
             table.setContainerDataSource(null);
+            table.select(null);
+            navigation.setContainer(null);
+
         } else {
             FilterableListContainer<T> listContainer = new FilterableListContainer<T>(containedBeanClass);
             listContainer.setCollection(list);
-            table.setContainerDataSource(listContainer);
-            navigation.setContainer(listContainer);
 
+            table.setContainerDataSource(listContainer);
+            // clear selection
+            table.select(null);
+            navigation.setContainer(listContainer);
 
             if (visibleColumns != null) {
                 this.setVisibleColumns(visibleColumns);
@@ -121,8 +149,6 @@ public class ListTable<T> extends CustomField<List<T>> {
                 setAllHeadersFromColumns(table.getVisibleColumns());
             }
 
-            // clear selection
-            table.select(null);
         }
     }
 
@@ -139,17 +165,9 @@ public class ListTable<T> extends CustomField<List<T>> {
     /**
      * @return adds a default button bar to the bottom right of this component
      */
-    public ListTable<T> withDefaultCrudBar() {
+    public ListTable<T> withDefaultEditorBar() {
         CrudButtonBar buttonBar = buildDefaultCrudBar();
         compositionRoot.setSizeFull();
-
-//        Label spacer = new Label("");
-//        HorizontalLayout inner = new HorizontalLayout(spacer, buttonBar);
-//        inner.setSizeFull();
-//        inner.setWidth("100%");
-//
-////        inner.setExpandRatio(spacer, 1);
-//        inner.setComponentAlignment(buttonBar, Alignment.BOTTOM_RIGHT);
 
         HorizontalLayout inner = new HorizontalLayout(buttonBar);
         inner.setSizeFull();
@@ -165,16 +183,7 @@ public class ListTable<T> extends CustomField<List<T>> {
      * @return
      */
     public CrudButtonBar buildDefaultCrudBar() {
-//        navigation.withCrudListenersFrom(new DefaultTableStrategy<T>(containedBeanClass, table));
-
-        final CrudButtonBar crudBar = new CrudButtonBar(getNavigation().withDefaultBehavior());
-//        navigation.addCurrentItemChangeListener(new CurrentItemChange.Listener() {
-//            @Override
-//            public void currentItemChange(CurrentItemChange.Event event) {
-//                table.select(event.getNewItemId());
-//            }
-//        });
-        return crudBar;
+        return new CrudButtonBar(getNavigation().withDefaultBehavior());
     }
 
     /**

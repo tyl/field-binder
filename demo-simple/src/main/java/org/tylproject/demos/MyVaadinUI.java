@@ -55,7 +55,7 @@ public class MyVaadinUI extends UI {
 
             ).withFullWidth().withMargin(true),
 
-            binder.buildListOf(Address.class, "addressList").withDefaultCrudBar()
+            binder.buildListOf(Address.class, "addressList").withDefaultEditorBar()
 
 
     ).withFullWidth().withMargin(true);
@@ -65,7 +65,6 @@ public class MyVaadinUI extends UI {
     protected void init(VaadinRequest request) {
         setContent(mainLayout);
     }
-
 
     private static FilterableListContainer<Person> makeDummyDataset() {
         FilterableListContainer<Person> dataSource = new FilterableListContainer<Person>(Person.class);

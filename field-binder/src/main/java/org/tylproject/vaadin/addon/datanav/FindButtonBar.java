@@ -1,5 +1,6 @@
 package org.tylproject.vaadin.addon.datanav;
 
+import com.vaadin.data.Container;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
 import org.tylproject.vaadin.addon.datanav.events.FindEnabled;
@@ -60,7 +61,15 @@ public class FindButtonBar extends AbstractButtonBar {
         @Override
         public void findEnabled(FindEnabled.Event event) {
             if (event.isFindEnabled()) {
-                enable(btnClearToFind);
+                Container.Ordered container = event.getSource().getContainer();
+                if (container instanceof Container.Filterable) {
+
+                    Container.Filterable filterable = (Container.Filterable) container;
+                    if (filterable.getContainerFilters().isEmpty()
+                            && filterable.size() > 0) {
+                        enable(btnClearToFind);
+                    }
+                }
             } else {
                 disable(findButtons);
             }
@@ -69,11 +78,34 @@ public class FindButtonBar extends AbstractButtonBar {
 
     @Override
     protected void updateButtonStatus() {
-        if (!nav().isFindEnabled() || nav().getCurrentItemId() != null) {
-            disable(btnFind);
-        } else {
-            enable(btnClearToFind, btnFind);
+
+        if (!nav().isFindEnabled()) {
+            disable(findButtons);
+            return;
         }
+
+        if (nav().isClearToFindMode()) {
+            enable(btnFind);
+            return;
+        }
+
+
+        if (nav().getContainer() == null) {
+            disable(findButtons);
+        } else {
+            disable(btnFind);
+            Container.Ordered container = nav().getContainer();
+
+            if (container instanceof Container.Filterable) {
+
+                Container.Filterable filterable = (Container.Filterable) container;
+                if (filterable.getContainerFilters().isEmpty()
+                        && filterable.size() == 0) {
+                    disable(btnClearToFind);
+                }
+            }
+        }
+        
     }
 
     public Button getClearToFindButton() {

@@ -32,10 +32,10 @@ public class NavigationLabel extends CustomComponent {
         navigation.addCurrentItemChangeListener(new CurrentItemChange.Listener() {
             @Override
             public void currentItemChange(CurrentItemChange.Event event) {
-                Object id = navigation.getCurrentItemId();
+                Object currentItemId = navigation.getCurrentItemId();
                 Container container = navigation.getContainer();
 
-                if ( id != null ) {
+                if ( container != null && !navigation.isClearToFindMode() ) {
                     if (! (container instanceof Container.Indexed)) {
                         throw new IllegalArgumentException(
                                 "Label cannot be updated: " +
@@ -44,7 +44,10 @@ public class NavigationLabel extends CustomComponent {
                     }
 
                     Container.Indexed indexedContainer = (Container.Indexed) container;
-                    int current = 1 + indexedContainer.indexOfId(navigation.getCurrentItemId());
+
+                    int currentIndex = (currentItemId == null)?
+                            0 :
+                            1 + indexedContainer.indexOfId(currentItemId);
 
                     String message = isFiltered(container) ?
                             recordCounterFiltered
@@ -52,7 +55,7 @@ public class NavigationLabel extends CustomComponent {
 
                     label.setValue(MessageFormat.format(
                             message,
-                            current,
+                            currentIndex,
                             indexedContainer.size()));
                 } else {
                     label.setValue("");

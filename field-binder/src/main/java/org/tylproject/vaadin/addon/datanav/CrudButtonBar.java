@@ -89,9 +89,9 @@ public class CrudButtonBar extends AbstractButtonBar {
 
     @Override
     protected void detachNavigation(@Nonnull DataNavigation nav) {
+        super.detachNavigation(nav);
         nav.removeCrudEnabledListener(buttonEnabler);
         nav.removeEditingModeChangeListener(editingListener);
-        super.detachNavigation(nav);
     }
 
     CrudEnabled.Listener buttonEnabler = new CrudEnabled.Listener() {
@@ -111,6 +111,7 @@ public class CrudButtonBar extends AbstractButtonBar {
                 enable(commitButton, discardButton);
             } else {
                 enable(createButton, editButton, removeButton);
+                disable(commitButton, discardButton);
             }
         }
     };
@@ -123,19 +124,25 @@ public class CrudButtonBar extends AbstractButtonBar {
             return;
         }
 
-        Object currentId = nav().getCurrentItemId();
+        if (nav().isEditingMode()) {
+            return;
+        }
 
-        if (nav().getContainer() != null) {
+
+        if (nav().getContainer() == null) {
+            disable(crudButtons);
+        } else {
+            enable(createButton);
+            disable(commitButton, discardButton);
             if (nav().getContainer().size() == 0) {
-                disable(editButton, commitButton, discardButton, removeButton);
-                enable(createButton);
+                disable(removeButton, editButton);
             } else {
-                enable(createButton);
-                if (currentId != null) {
-                    enable(editButton, commitButton, discardButton, removeButton);
+                if (nav().getCurrentItemId() != null) {
+                    enable(removeButton, editButton);
                 }
             }
         }
+
     }
 
 

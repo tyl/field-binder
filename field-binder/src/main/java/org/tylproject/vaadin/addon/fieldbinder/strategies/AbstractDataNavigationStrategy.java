@@ -3,6 +3,7 @@ package org.tylproject.vaadin.addon.fieldbinder.strategies;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.ui.Field;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
@@ -43,6 +44,9 @@ public abstract class AbstractDataNavigationStrategy<T> implements DataNavigatio
         Item currentItem = event.getSource().getCurrentItem();
         if (currentItem == null) {
             event.getSource().first();
+        } else {
+            // restore item again (so that also the tables get updated)
+            fieldBinder.setItemDataSource(currentItem);
         }
     }
 
@@ -62,7 +66,10 @@ public abstract class AbstractDataNavigationStrategy<T> implements DataNavigatio
     public void clearToFind(ClearToFind.Event event) {
         // if the navigator does not point to a valid id
         // FIXME I don't recall what this particular check was supposed to mean: it was a hack
-        if (event.getSource().getCurrentItemId() == null) {
+
+        DataNavigation nav = event.getSource();
+
+        if (nav.getCurrentItemId() == null) {
             fieldBinder.unbindAll();
             fieldBinder.setReadOnly(false);
             event.getSource().setCurrentItemId(null);
@@ -77,13 +84,13 @@ public abstract class AbstractDataNavigationStrategy<T> implements DataNavigatio
             for (Field<?> f : fieldBinder.getFields())
                 f.setValue(null);
 
-
-            if (!filterApplier.hasAppliedFilters()) {
-                filterApplier.restorePatterns(fieldBinder.getPropertyIdToFieldBindings());
-                filterApplier.clearPropertyIdToFilterPatterns();
-            }
-
         }
+
+        if (filterApplier.hasAppliedFilters()) {
+            filterApplier.restorePatterns(fieldBinder.getPropertyIdToFieldBindings());
+            filterApplier.clearPropertyIdToFilterPatterns();
+        }
+
 
         fieldBinder.focus();
     }

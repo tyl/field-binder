@@ -1,5 +1,6 @@
 package org.tylproject.vaadin.addon.datanav;
 
+import com.vaadin.data.Container;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.strategies.DataNavigationStrategy;
 
@@ -8,6 +9,5 @@ import org.tylproject.vaadin.addon.fieldbinder.strategies.DataNavigationStrategy
  */
 public interface DataNavigationStrategyFactory<T> {
 
-    <T extends DataNavigationStrategy> T forContainer(
-            Class<?> containerType);
+    <T extends DataNavigationStrategy> T forContainer(Container container);
 }

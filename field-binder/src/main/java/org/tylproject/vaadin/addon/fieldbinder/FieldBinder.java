@@ -107,17 +107,32 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
      */
     public <U> ListTable<U> buildListOf(Class<U> containedBeanClass, Object propertyId) {
         final Class<?> dataType = getPropertyType(propertyId);
-        final ListTable<U> field = getFieldFactory().createDetailField(dataType, containedBeanClass);
+        final ListTable<U> listTable = getFieldFactory().createDetailField(dataType, containedBeanClass);
 
-        bind(field, propertyId);
+        bind(listTable, propertyId);
 
-        field.getNavigation().addEditingModeChangeListener(new EditingModeSwitcher(navigation));
+//        listTable.getNavigation().addEditingModeChangeListener(new EditingModeSwitcher(navigation));
 
-        this.getNavigation().addEditingModeChangeListener(new EditingModeSwitcher(field
-                .getNavigation()));
+//        this.getNavigation().addEditingModeChangeListener(
+//                  new EditingModeSwitcher(listTable.getNavigation()));
 
 
-        return field;
+        this.getNavigation().addEditingModeChangeListener(new EditingModeChange.Listener() {
+            @Override
+            public void editingModeChange(EditingModeChange.Event event) {
+                DataNavigation nav = listTable.getNavigation();
+                if (event.isEnteringEditingMode()) {
+                    nav.enableCrud();
+                } else {
+                    nav.disableCrud();
+                }
+            }
+        });
+
+        listTable.getNavigation().disableCrud();
+
+
+        return listTable;
     }
 
     /**
