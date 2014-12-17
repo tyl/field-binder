@@ -61,14 +61,17 @@ public class FindButtonBar extends AbstractButtonBar {
         @Override
         public void findEnabled(FindEnabled.Event event) {
             if (event.isFindEnabled()) {
+                // default to disabling clearToFind
+                disable(btnClearToFind);
                 Container.Ordered container = event.getSource().getContainer();
-                if (container instanceof Container.Filterable) {
 
+                // if it is filterable
+                if (container instanceof Container.Filterable) {
                     Container.Filterable filterable = (Container.Filterable) container;
-                    if (filterable.getContainerFilters().isEmpty()
-                            && filterable.size() > 0) {
+                    if (filterable.size() > 0) { // and it contains values
                         enable(btnClearToFind);
                     }
+
                 }
             } else {
                 disable(findButtons);
@@ -94,14 +97,14 @@ public class FindButtonBar extends AbstractButtonBar {
             disable(findButtons);
         } else {
             disable(btnFind);
+            disable(btnClearToFind);
             Container.Ordered container = nav().getContainer();
 
             if (container instanceof Container.Filterable) {
 
                 Container.Filterable filterable = (Container.Filterable) container;
-                if (filterable.getContainerFilters().isEmpty()
-                        && filterable.size() == 0) {
-                    disable(btnClearToFind);
+                if (filterable.size() > 0) {
+                    enable(btnClearToFind);
                 }
             }
         }

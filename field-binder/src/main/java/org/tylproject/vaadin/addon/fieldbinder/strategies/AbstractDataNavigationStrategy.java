@@ -57,8 +57,7 @@ public abstract class AbstractDataNavigationStrategy<T> implements DataNavigatio
 
     @Override
     public void itemEdit(ItemEdit.Event event) {
-        boolean readOnly = fieldBinder.isReadOnly();
-        fieldBinder.setReadOnly(!readOnly);
+        fieldBinder.setReadOnly(false);
         fieldBinder.focus();
     }
 

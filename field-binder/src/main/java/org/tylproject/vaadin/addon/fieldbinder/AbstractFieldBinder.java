@@ -64,11 +64,17 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         return Collections.unmodifiableCollection(propertyIdToField.values());
     }
 
+    /**
+     * bind all the managed fields to the data source
+     */
     public void bindAll() {
         for (Object fid: this.getBindingPropertyIds())
             bind(propertyIdToField.get(fid), fid);
     }
 
+    /**
+     * unbinds all the managed fields from
+     */
     public void unbindAll() {
         for (Object fid: this.getBindingPropertyIds()) {
             Field<?> f = propertyIdToField.get(fid);
@@ -153,16 +159,40 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         return this.itemDataSource != null;
     }
 
+    /**
+     * Build automatically a Field for the given propertyId
+     *
+     * The mapping between propertyIds and field is given
+     * through a specialized {@link com.vaadin.ui.DefaultFieldFactory}
+     * ({@link org.tylproject.vaadin.addon.fieldbinder.FieldBinderFieldFactory})
+     *
+     * The mapping between propertyIds and types is given by
+     * overriding {@link #getPropertyType(Object)}
+     *
+     * Generates a caption as well, by splitting over
+     * camelCased property ids.
+     */
     public <T extends Field<?>> T build(Object propertyId) {
         String caption = DefaultFieldFactory
                 .createCaptionByPropertyId(propertyId);
         return (T) build(caption, propertyId);
     }
 
+
+    /**
+     * Build automatically a Field for the given propertyId, with the
+     * given caption.
+     *
+     */
     public <T extends Field<?>> T build(String caption, Object propertyId) {
         return (T) build(caption, propertyId, Field.class);
     }
 
+    /**
+     * Build a field of the given type, for the given propertyId,
+     * with the given caption,
+     *
+     */
     public <T extends Field<?>> T build(String caption, Object propertyId, Class<T> fieldType) {
         Class<?> dataType = getPropertyType(propertyId);
 
@@ -283,8 +313,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
      *            false to set them to read write
      */
     public void setReadOnly(boolean fieldsReadOnly) {
-        if (hasItemDataSource())
-            getFieldGroup().setReadOnly(fieldsReadOnly);
+        getFieldGroup().setReadOnly(fieldsReadOnly);
         for (Field<?> field : getFields()) {
             if (field.getPropertyDataSource() != null
                     && field.getPropertyDataSource().isReadOnly()) {

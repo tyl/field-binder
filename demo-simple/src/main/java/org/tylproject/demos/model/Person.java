@@ -19,6 +19,7 @@ public class Person {
     private String firstName;
     private String middleName;
     private String lastName;
+    @org.springframework.data.annotation.Transient
     private Integer age;
     private Date birthDate;
 
