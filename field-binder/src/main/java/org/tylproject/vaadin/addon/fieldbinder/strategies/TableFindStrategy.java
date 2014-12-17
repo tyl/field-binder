@@ -16,53 +16,18 @@ import java.util.logging.Logger;
 public class TableFindStrategy<T> implements FindStrategy {
 	
 	private final Table table;
-//	private final DataNavigation navigation;
 	private final Class<T> beanClass;
 	private FindWindow window;
 	private final FilterApplier filterApplier = new FilterApplier();
 
-	private static final Logger logger = Logger.getAnonymousLogger();
-//
-//	FilterFactory filterFactory = new DefaultFilterFactory();
-//
-//	/**
-//	 * maps fieldId to filter
-//	 */
-//	Map<Object, Object> propertyIdToFilterPattern = new HashMap<Object, Object>();
-//
-//	public Map<Object, Object> getPropertyIdToFilterPattern () {
-//		return propertyIdToFilterPattern;
-//	}
-//
-//
-//	private void clearPropertyIdToFilterPattern() {
-//		propertyIdToFilterPattern.clear();
-//	}
-//
-//
-//	private void restorePatterns(FieldBinder<?> fieldBinder,  Map<Object, Object> propertyIdToFilterPattern) {
-//		for (Map.Entry<Field<?>, Object> e : fieldBinder.getFieldToPropertyIdBindings().entrySet()) {
-//
-//			Field field = e.getKey(); // raw type
-//			Object propertyId = e.getValue();
-//			Object pattern = propertyIdToFilterPattern.get(propertyId);
-//
-//			field.setValue(pattern);
-//
-//		}
-//	}
 
 	public TableFindStrategy(Class<T> beanClass, Table table) {
 		this.beanClass = beanClass;
 		this.table = table;
-//		this.navigation = navigation;
-//		this.window = new FindWindow(new FieldBinder<T>(beanClass));
 	}
 
 
 	public void clearToFind(ClearToFind.Event event) {
-		// if the navigator does not point to a valid id
-		// FIXME I don't recall what this particular check was supposed to mean: it was a hack
 
 		FieldBinder<T> fieldBinder = new FieldBinder<T>(beanClass);
 //		this.window.fieldBinder.clear();
@@ -72,13 +37,9 @@ public class TableFindStrategy<T> implements FindStrategy {
 		UI.getCurrent().addWindow(window);
 		event.getSource().setCurrentItemId(null);
 
-
-		DataNavigation nav = event.getSource();
-
 		fieldBinder.unbindAll();
 		fieldBinder.setReadOnly(false);
 		event.getSource().setCurrentItemId(null);
-
 
 		if (filterApplier.hasAppliedFilters()) {
 			filterApplier.restorePatterns(fieldBinder.getPropertyIdToFieldBindings());
@@ -120,17 +81,9 @@ public class TableFindStrategy<T> implements FindStrategy {
 			VerticalLayout layout = new VerticalLayout();
 			layout.setMargin(true);
 
-			Field<?>[] fields = {
-					fieldBinder.build("city"),
-					fieldBinder.build("state"),
-					fieldBinder.build("street"),
-					fieldBinder.build("zipCode")
-			};
-
-
 			Button find = new FindButtonBar(navigation).getFindButton();
 
-			layout.addComponents(fields);
+			layout.addComponents(fieldBinder.buildAll().toArray(new Component[0]));
 			layout.addComponent(find);
 
 			setContent(layout);

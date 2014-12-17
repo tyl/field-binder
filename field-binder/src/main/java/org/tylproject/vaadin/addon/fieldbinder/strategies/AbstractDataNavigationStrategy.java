@@ -98,9 +98,9 @@ public abstract class AbstractDataNavigationStrategy<T> implements DataNavigatio
     @Override
     public void onFind(OnFind.Event event) {
         filterApplier.applyFilters(fieldBinder.getPropertyIdToFieldBindings(), (Container.Filterable) event.getSource().getContainer());
-        fieldBinder.bindAll();
-        fieldBinder.setReadOnly(true);
         event.getSource().first();
+        fieldBinder.setReadOnly(true);
+        fieldBinder.bindAll();
     }
 
 

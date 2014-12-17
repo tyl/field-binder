@@ -1,10 +1,7 @@
-package org.tylproject.vaadin.addon.datanav;
+package org.tylproject.vaadin.addon.fieldbinder.strategies;
 
 import com.vaadin.data.Container;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.fieldbinder.strategies.DataNavigationStrategy;
-import org.tylproject.vaadin.addon.fieldbinder.strategies.ListDataNavigationStrategy;
-import org.tylproject.vaadin.addon.fieldbinder.strategies.MongoDataNavigationStrategy;
 
 /**
  * Created by evacchi on 15/12/14.

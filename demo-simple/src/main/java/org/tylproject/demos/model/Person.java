@@ -4,8 +4,8 @@ package org.tylproject.demos.model;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +20,8 @@ public class Person {
     private String middleName;
     private String lastName;
     private Integer age;
+    private Date birthDate;
+
     private List<Address> addressList = new ArrayList<Address>();
 
     public Person() {}
@@ -58,12 +60,20 @@ public class Person {
         this.lastName = lastName;
     }
 
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
     public Integer getAge() {
         return age;
     }
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public void setBirthDate(Date birth) {
+        this.birthDate = birth;
     }
 
     public List<Address> getAddressList() {
@@ -80,7 +90,6 @@ public class Person {
                 "firstName='" + firstName + '\'' +
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", age=" + age +
                 '}';
     }
 }

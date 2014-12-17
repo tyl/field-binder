@@ -283,7 +283,8 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
      *            false to set them to read write
      */
     public void setReadOnly(boolean fieldsReadOnly) {
-        getFieldGroup().setReadOnly(fieldsReadOnly);
+        if (hasItemDataSource())
+            getFieldGroup().setReadOnly(fieldsReadOnly);
         for (Field<?> field : getFields()) {
             if (field.getPropertyDataSource() != null
                     && field.getPropertyDataSource().isReadOnly()) {

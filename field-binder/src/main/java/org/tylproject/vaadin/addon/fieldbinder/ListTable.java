@@ -6,10 +6,7 @@ import com.vaadin.ui.*;
 
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
-import org.tylproject.vaadin.addon.datanav.DataNavigation;
-import org.tylproject.vaadin.addon.datanav.TableNavigationStrategyFactory;
-import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
-import org.tylproject.vaadin.addon.fieldbinder.strategies.DefaultTableStrategy;
+import org.tylproject.vaadin.addon.fieldbinder.strategies.TableNavigationStrategyFactory;
 import org.vaadin.maddon.FilterableListContainer;
 
 import java.util.List;

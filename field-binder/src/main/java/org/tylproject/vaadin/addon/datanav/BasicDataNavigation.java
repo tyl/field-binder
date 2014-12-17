@@ -3,8 +3,8 @@ package org.tylproject.vaadin.addon.datanav;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import org.tylproject.vaadin.addon.datanav.events.*;
-import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.strategies.DataNavigationStrategy;
+import org.tylproject.vaadin.addon.fieldbinder.strategies.DataNavigationStrategyFactory;
 
 import javax.annotation.Nonnull;
 

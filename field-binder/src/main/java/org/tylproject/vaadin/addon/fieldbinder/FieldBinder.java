@@ -1,7 +1,6 @@
 package org.tylproject.vaadin.addon.fieldbinder;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Field;
@@ -9,7 +8,8 @@ import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.WrapDynaClass;
 import org.tylproject.vaadin.addon.datanav.*;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
-import org.tylproject.vaadin.addon.fieldbinder.strategies.DataNavigationStrategy;
+import org.tylproject.vaadin.addon.fieldbinder.strategies
+        .DefaultDataNavigationStrategyFactory;
 
 import java.util.*;
 
@@ -57,11 +57,20 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         this.navigation = null;
     }
 
+    /**
+     * Creates a FieldBinder that will use the given container as the backing
+     * for the values of its fields.
+     *
+     * {@link #getNavigation()} returns a controller on top of that container
+     *
+     *
+     * @param beanClass
+     * @param container
+     */
     public FieldBinder(Class<T> beanClass, Container.Ordered container) {
         super(new FieldGroup());
         this.beanClass = beanClass;
         this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
-
 
         BasicDataNavigation nav = new BasicDataNavigation(container);
         nav.setNavigationStrategyFactory(new DefaultDataNavigationStrategyFactory(this));
@@ -110,12 +119,6 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         final ListTable<U> listTable = getFieldFactory().createDetailField(dataType, containedBeanClass);
 
         bind(listTable, propertyId);
-
-//        listTable.getNavigation().addEditingModeChangeListener(new EditingModeSwitcher(navigation));
-
-//        this.getNavigation().addEditingModeChangeListener(
-//                  new EditingModeSwitcher(listTable.getNavigation()));
-
 
         this.getNavigation().addEditingModeChangeListener(new EditingModeChange.Listener() {
             @Override

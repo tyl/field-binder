@@ -13,15 +13,17 @@ import org.tylproject.vaadin.addon.MongoContainer;
 import org.tylproject.vaadin.addon.datanav.ButtonBar;
 import org.tylproject.vaadin.addon.datanav.NavigationLabel;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.ListTable;
 import org.vaadin.maddon.FilterableListContainer;
 import org.vaadin.maddon.layouts.MFormLayout;
 import org.vaadin.maddon.layouts.MVerticalLayout;
+import org.vaadin.spring.VaadinUI;
 
 import javax.servlet.annotation.WebServlet;
 import java.util.Arrays;
 
-
-@Theme("mytheme")
+@VaadinUI
+@Theme("valo")
 @SuppressWarnings("serial")
 public class MyVaadinUI extends UI {
 
@@ -41,6 +43,7 @@ public class MyVaadinUI extends UI {
 
     // initialize the FieldBinder for the masterDetail editor on the Person entity
     final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container);
+    final ListTable<Address> listTable;
 
 
     final VerticalLayout mainLayout = new MVerticalLayout(
@@ -50,12 +53,14 @@ public class MyVaadinUI extends UI {
             new MFormLayout(
                     binder.build("firstName"),
                     binder.build("lastName"),
+                    binder.build("birthDate"),
                     binder.build("age"),
                     new NavigationLabel(binder.getNavigation())
 
             ).withFullWidth().withMargin(true),
 
-            binder.buildListOf(Address.class, "addressList").withDefaultEditorBar()
+            listTable = binder.buildListOf(Address.class, "addressList").withDefaultEditorBar(),
+            new ButtonBar(listTable.getNavigation())
 
 
     ).withFullWidth().withMargin(true);

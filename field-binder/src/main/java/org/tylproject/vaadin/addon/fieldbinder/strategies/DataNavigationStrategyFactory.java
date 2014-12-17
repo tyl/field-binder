@@ -1,4 +1,4 @@
-package org.tylproject.vaadin.addon.datanav;
+package org.tylproject.vaadin.addon.fieldbinder.strategies;
 
 import com.vaadin.data.Container;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
