@@ -19,13 +19,6 @@ public class ListDataNavigationStrategy<T> extends AbstractDataNavigationStrateg
     public void itemCreate(ItemCreate.Event event) {
         super.itemCreate(event);
         T bean = createBean();
-        super.fieldBinder.setBeanDataSource(bean);
-    }
-
-    @Override
-    public void onCommit(OnCommit.Event event) {
-        super.onCommit(event);
-        T bean = super.fieldBinder.getBeanDataSource();
         ListContainer<T> container = ((ListContainer<T>) event.getSource().getContainer());
         container.addItem(bean);
         event.getSource().setCurrentItemId(bean);
