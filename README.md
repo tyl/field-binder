@@ -26,6 +26,7 @@ Features:
 * A FieldBinder can be bound to a Container. The `DataNavigation` interface provides commands to move an internal pointer to the next, previous, first and last Item in the Container (the Container must implement `Container.Ordered`)
 * The `DataNavigation` interface provides commands to scan through a dataset and retrieving the `Item` that it points to.
 * The `DataNavigation` interface provides standard behavior for performing CRUD operations (and, experimentally, lookup operations), which can be extended through a regular, Vaadin-style listener mechanism
+* `FieldBinder` comes with standard built-in CRUD for the ListContainer and the [Lazy Mongo Container](https://github.com/tyl/mongodbcontainer-addon). The ListContainer should already cover most Java Bean use-cases, including JPA. Support for the Vaadin's official JPAContainer is under development.  
 
 
 ## Maven
