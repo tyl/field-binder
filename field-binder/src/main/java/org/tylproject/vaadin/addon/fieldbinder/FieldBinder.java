@@ -1,6 +1,7 @@
 package org.tylproject.vaadin.addon.fieldbinder;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Field;
@@ -10,6 +11,7 @@ import org.tylproject.vaadin.addon.datanav.*;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
 import org.tylproject.vaadin.addon.fieldbinder.strategies
         .DefaultDataNavigationStrategyFactory;
+import org.vaadin.maddon.ListContainer;
 
 import java.util.*;
 
@@ -88,12 +90,31 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
     @Override
-    public BeanItem<T> getItemDataSource() {
-        return (BeanItem<T>) super.getItemDataSource();
+    public Item getItemDataSource() {
+        return super.getItemDataSource();
     }
 
     public T getBeanDataSource() {
-        return this.getItemDataSource().getBean();
+        Item item = getItemDataSource();
+        if (item instanceof BeanItem) {
+            return ((BeanItem<T>)this.getItemDataSource()).getBean();
+        } else {
+            BeanItem<T> beanItem = new BeanItem<T>(createBean());
+            for (Object propId: item.getItemPropertyIds()) {
+                Object value = item.getItemProperty(propId).getValue();
+                beanItem.getItemProperty(propId).setValue(value);
+            }
+            return beanItem.getBean();
+        }
+    }
+
+
+    protected T createBean() {
+        try {
+            return beanClass.newInstance();
+        } catch (Exception ex) {
+            throw new UnsupportedOperationException(ex);
+        }
     }
 
     /**
