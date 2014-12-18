@@ -42,10 +42,10 @@ Add `field-binder` to your Maven dependencies
 		</dependency>
 ```
 
-If you want to use the SNAPSHOT version, install the package and its dependencies locally, using the script:
+If you want to use the SNAPSHOT version, install the package locally with
 
 ```sh
-  $ ./download-and-install.sh 
+  $ mvn install 
 ```
 
 
