@@ -1,4 +1,4 @@
-package org.tylproject.demos;
+package org.tylproject.demos.fieldbinder;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.ExternalResource;

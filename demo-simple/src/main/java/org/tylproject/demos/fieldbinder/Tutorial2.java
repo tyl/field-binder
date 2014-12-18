@@ -1,4 +1,4 @@
-package org.tylproject.demos;
+package org.tylproject.demos.fieldbinder;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Container;
@@ -9,8 +9,8 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.joda.time.DateTime;
 import org.joda.time.Years;
-import org.tylproject.demos.model.Address;
-import org.tylproject.demos.model.Person;
+import org.tylproject.demos.fieldbinder.model.Address;
+import org.tylproject.demos.fieldbinder.model.Person;
 import org.tylproject.vaadin.addon.datanav.ButtonBar;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;

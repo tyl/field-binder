@@ -1,4 +1,4 @@
-package org.tylproject.demos.model;
+package org.tylproject.demos.fieldbinder.model;
 
 public class Address {
     private String street;

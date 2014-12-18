@@ -1,9 +1,9 @@
-package org.tylproject.demos;
+package org.tylproject.demos.fieldbinder;
 
 import com.mongodb.MongoClient;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.tylproject.demos.model.Address;
-import org.tylproject.demos.model.Person;
+import org.tylproject.demos.fieldbinder.model.Address;
+import org.tylproject.demos.fieldbinder.model.Person;
 import org.tylproject.vaadin.addon.MongoContainer;
 import org.vaadin.maddon.FilterableListContainer;
 

@@ -3,13 +3,13 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.test</groupId>
-	<artifactId>demo-2</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<groupId>org.tylproject.demos</groupId>
+	<artifactId>field-binder-demo</artifactId>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 
-	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>FieldBinder Demo</name>
+	<description>Demo project for FieldBinder Add-on</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -20,7 +20,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>demo.Application</start-class>
+		<start-class>org.tylproject.demos.fieldbinder.Application</start-class>
 		<java.version>1.7</java.version>
 	</properties>
 

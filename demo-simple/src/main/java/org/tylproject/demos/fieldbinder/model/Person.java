@@ -1,4 +1,4 @@
-package org.tylproject.demos.model;
+package org.tylproject.demos.fieldbinder.model;
 
 
 import org.bson.types.ObjectId;
