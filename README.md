@@ -2,6 +2,7 @@
 
 An advanced FieldGroup implementation with support for automated generation of Master/Detail forms.
 
+![Master-Detail Demo](http://i.imgur.com/TZy6Mth.png)
 
 ## Motivation
 
@@ -282,4 +283,3 @@ binder.getNavigation().addCurrentItemChangeListener(new CurrentItemChange.Listen
 
 ### Button Bars
 ...
-
