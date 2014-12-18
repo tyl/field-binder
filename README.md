@@ -2,11 +2,11 @@
 
 An advanced FieldGroup implementation with support for automated generation of Master/Detail forms.
 
-![Master-Detail Demo](http://i.imgur.com/TZy6Mth.png)
+![Master-Detail Demo](_ http://i.imgur.com/TZy6Mth.png)
 
-## Motivation
+## What is wrong with Good Ol' FieldGroup?
 
-Vaadin's `FieldGroup` and `BeanFieldGroup` are non-visual components that build and automatically bind `Field`s to a data source. The datasource may be an `Item` or a Java Bean. However, the standard `FieldGroup` implementation has quite a few limitations:
+Vaadin's `FieldGroup` and `BeanFieldGroup` are non-visual components that build and automatically bind `Field`s to a data source. The data source may be an `Item` or a Java Bean. However, `FieldGroup`s have quite a few limitations:
 
 * A FieldGroup only contains *bound* fields
 * If a field is not bound to a datasource (using `unbind()`), then it is automatically *removed* from the FieldGroup. The FieldGroup is then unaware that the field exists. Trying to `getField()` returns `null`.
@@ -41,9 +41,27 @@ Add `field-binder` to your Maven dependencies
 		</dependency>
 ```
 
+## Demo (for the impatient)
+
+Want to give an immediate look at the FieldBinder? Try the demo:
+
+```sh
+  $ cd demo
+  $ mvn package && java -jar target/field-binder-demo-1.0.jar  
+```
+
+or simply:
+
+```sh
+  $ cd demo
+  $ ./run.sh
+```
+
+The demo uses [vaadin4spring](https://github.com/peholmst/vaadin4spring) for convenience, and implements the two tutorials that follow.
+
 ## Short Tutorial
 We will create a simple Address Book, where each `Person` may have many `Address`es. 
-For conciseness, we will also use the `Maddon` addon, its `ListContainer` and its shorthand classes for layouts. You do not need to add any further dependencies to your `pom`, though. The `field-binder` add-on depends on `Maddon` already. Let us write the following bean class for the Addresses:
+For conciseness, we will also use the [Maddon](https://github.com/mstahv/maddon) addon, its `ListContainer` and the shorthand classes for Layouts. You do not need to add any further dependencies to your `pom`, though. The `field-binder` add-on depends on `Maddon` already. Let us write the following bean class for the Addresses:
 
 ```java
 public class Address {
@@ -248,6 +266,7 @@ Now restart the application and see the result.
 
 ## Architecture
 
+tbd
 
 
 ### DataNavigation
@@ -282,4 +301,4 @@ binder.getNavigation().addCurrentItemChangeListener(new CurrentItemChange.Listen
 ```
 
 ### Button Bars
-...
+tbd

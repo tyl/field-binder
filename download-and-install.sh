@@ -6,12 +6,6 @@ cd maddon
 mvn install -DskipTests
 cd ..
 
-echo Cloning and Installing MongoDB Container Snapshot...
-git clone https://github.com/tyl/mongodbcontainer-addon
-cd mongodbcontainer-addon
-mvn install -DskipTests
-cd ..
-
 mvn install
 
 echo
