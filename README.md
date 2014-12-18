@@ -151,14 +151,18 @@ public class ShortTutorial extends UI {
 }
 ```
 
-Start the Vaadin application: you have already a fully-functional master/detail editor in about 10 lines of actual code!
+Start the Vaadin application: you have already a fully-functional master/detail editor in about 10 lines of actual code! 
+
+Keep reading to know what happened under the hood, or skip to the next section for the extended tutorial.
 
 ### What You Have Done
 
-Most of the code you have written is your regular Vaadin UI code. Let us have a look to the `FieldBinder`-specific code.
+Most of the code you have written is your regular Vaadin UI code. You only wrote about 10 lines of code. But has happened under the hood?  Let us have a look at the `FieldBinder`-specific code.
+
+As you will see, you wrote very little, because a lot has been done already on your behalf!
 
 
-##### Automatic Binding to a data source 
+#### Automatic Binding to a data source 
 
 ```java
   final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container);
@@ -170,7 +174,7 @@ With this code you are generating a FieldBinder for a `Person` bean. The *option
   final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class);
 ```
 
-##### Automatic `Field` generation
+#### Automatic `Field` generation
 
 Similarly to the `FieldGroup`, you can automatically `build()` fields for a given `Person` property. The `FieldBinder` will automatically infer the type of field. In our `Person` bean we have defined the properties `firstName`, `lastName`, `birthDate` (we will get back the `addressList` in a moment). Then we can write:
 
@@ -201,7 +205,7 @@ the first argument is the type of the elements contained in the `List`. In our c
 `ListTable<T>` uses Maddon's `ListContainer<T>` internally.
 
 
-##### `DataNavigation` #####
+#### `DataNavigation` #####
 
 Each `FieldBinder` that has been created with a `container` instance includes a `DataNavigation` instance that you can get using:
 
@@ -263,7 +267,6 @@ You can also choose to pick only one; for instance, if you just want the buttons
 CrudButtonBar addressListBar = 
        new CrudButtonBar(addressList.getNavigation().withDefaultBehavior()),
 ```
-
 
 
 
@@ -384,14 +387,13 @@ don't forget to register the new event listeners:
   }
 ```
 
-Now restart the application and see the result. 
-
-## Architecture
-
-* `FieldBinderFieldFactory`
+Now restart the application and see the result. In the next section we will give more details on the architecture of the FieldBinder and the related component. In particular, we will focus on the `DataNavigation` component. 
 
 
-### DataNavigation
+
+
+
+## DataNavigation
 
 
 The `DataNavigation` interface implements navigation, CRUD (and experimentally) lookup methods for scanning through a Container. For instance, you can point to the first record
@@ -409,27 +411,29 @@ and then you can remove it
 The `DataNavigation` object wraps a `Container.Ordered` instance, and it maintains a pointer to the `currentItemId`. The `currentItemId` is `null` only when the `Container` is empty (`Container.size() == 0`) or when no container has been associated to the Navigator.
 
 
+The `DataNavigation.withDefaultBehavior()` method tries to guess the best predefined set of listeners for the container that it is currently bound to. In the case of this tutorial, you were using a `FilterableListContainer`. This is resolved through a `DataNavigationStrategyFactory` -- the terrible name will probably change in the future.
 
-The `DataNavigation.withDefaultBehavior()` tries to guess the best predefined set of listeners for the container that you are currently using. In the case of this tutorial, you are using a `FilterableListContainer`. You are not required to delve into the details of this right now. In this case the `FieldBinder` will use the listeners defined `ListDataNavigationStrategy`
 
+The `DataNavigation` interface defines several events that you can listen to.
 
-The `DataNavigation` interface defines several events that you can listen to 
-
-* Navigation Events:
+### Navigation Events
 	* FirstItem
 	* NextItem
 	* PrevItem
 	* LastItem
 	* CurrentItemChange
+	
 
 Because the DataNavigation object maintains an internal state, that is, a pointer to the "current" item id, for each other navigation event,  the `CurrentItemChange` event always fires. Therefore, if you want to hook into *every* navigation event, then you should listen to `CurrentItemChange`.
 
-* CRUD events
+### CRUD events
 	* ItemCreate
 	* ItemEdit
 	* ItemRemove
 	* AfterCommit, OnCommit, BeforeCommit
 	* OnDiscard
+	
+ 	
 
 For instance, in order to listen to the `CurrentItemChange` event on the `binder` component use:
 
@@ -442,5 +446,15 @@ binder.getNavigation().addCurrentItemChangeListener(new CurrentItemChange.Listen
 });
 ```
 
-### Button Bars
-tbd
+There is also a shorthand interface `CrudStrategy` that implements all of the following listeners: `ItemCreate`, `ItemEdit`, `ItemRemove`, `OnCommit`, `OnDiscard`. If you need all of them you can just write `class MyController implements CrudStrategy`. You can also tell a navigator to use all of the methods from a `CrudStrategy` at once using:
+
+```java
+   navigation.withStrategy(new MyController())
+```
+
+
+
+### Lookup events
+   * ClearToFind
+   * Find
+   

@@ -22,8 +22,8 @@ public class Tutorial1 extends UI {
     
     // setup a container instance; uncomment the following line to use an in-memory
     // container instead of Mongo
-    // final Container.Ordered container = MyDataSourceGenerator.makeDummyDataset();
-    final Container.Ordered container = MyDataSourceGenerator.makeMongoContainer();
+    final Container.Ordered container = MyDataSourceGenerator.makeDummyDataset();
+    // final Container.Ordered container = MyDataSourceGenerator.makeMongoContainer();
 
     // FIELD BINDER (MASTER/DETAIL EDITOR)
 
