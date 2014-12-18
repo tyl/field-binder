@@ -15,6 +15,15 @@
 	<developerConnection>scm:git:ssh://git@github.com:/tyl/field-binder</developerConnection>
 	<tag>FieldBinder add-on for Vaadin</tag>
     </scm>
+
+    
+    <repositories>
+        <repository>
+            <id>vaadin-addons</id>
+            <url>http://maven.vaadin.com/vaadin-addons</url>
+        </repository>
+    </repositories>
+
     
 
     <build>
