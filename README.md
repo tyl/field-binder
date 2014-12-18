@@ -1,57 +1,48 @@
-Master-Detail Addon
-===================
+# FieldBinder Add-on
 
-A Vaadin logic component (non-visual) to manage master/detail-type forms, by automatically wiring together regular Vaadin components.
+An advanced FieldGroup implementation with support for automated generation of Master/Detail forms.
 
-A Master-Detail is bound to a `Container` through a `CrudNavigation` controller class. A `CrudNavigation`  class wraps a `Container` and maintains a pointer to a `currentItemId`. When the pointer moves to a different element of the `Container` the detail is updated accordingly.
 
-The `CrudNavigation` component may be also used as stand-alone; it provides utility methods such as `next()`, `prev()`, `first()`, `last()`. It also provides hooks (Vaadin event listeners) to implement CRUD functionalities. This addon comes with default implementations for the most used containers.
+## Motivation
 
-The result is smart scaffolding of a master-detail form, with little to none code required.
+Vaadin's `FieldGroup` and `BeanFieldGroup` are non-visual components that build and automatically bind `Field`s to a data source. The datasource may be an `Item` or a Java Bean. However, the standard `FieldGroup` implementation has quite a few limitations:
 
-![Master-Detail Demo](https://bytebucket.org/evacchi/vaadin-masterdetail-addon/raw/16845e1d15321ac0e63c8b01498e177e4e91309c/readme-imgs/masterdetail-demo.png?token=951b7095d5439265892799b8e76a0607c88cebda)
+* A FieldGroup only contains *bound* fields
+* If a field is not bound to a datasource (using `unbind()`), then it is automatically *removed* from the FieldGroup. The FieldGroup is then unaware that the field exists. Trying to `getField()` returns `null`.
+* A FieldGroup cannot `buildAndBind()` fields with unrecognized values, but it is extensible through a Factory; however, unrecognized values include `Collection` types, such as `List`s, which are typical of forms of the Master/Detail-type  
+* There is no generic implementation of a standard Master/Detail editor (the JPAContainer `MasterDetailEditor` implementation is ad-hoc)
+* There is no way to bind a FieldGroup to a Container: a FieldGroup is bound to an Item. Thus, there is no simple way to scan through a collection of records and display their contents in a form
 
-## Demo (or, «The 0 Minutes Tutorial»)
-Install the packages with Maven using
+## Meet the FieldBinder
 
-```sh
-    $ mvn install
-```
+The `FieldBinder` add-on is an advanced FieldGroup implementation. 
 
-Then `cd` into the `masterdetail-demo` directory and launch with
+Features:
 
-```sh
-   $ mvn jetty:run
-```
+* A `FieldBinder<T>` binds to a Java Bean, like a BeanFieldGroup
+* Managed Fields (built using `build()`) can be always `bind()`'ed and `unbind()`'ed; the FieldBinder will always keep track of them
+* A FieldBinder can build() and bind() a component that displays a bean property even when it is a List<T>
+* A FieldBinder can be bound to a Container. The `DataNavigation` interface provides commands to move an internal pointer to the next, previous, first and last Item in the Container (the Container must implement `Container.Ordered`)
+* The `DataNavigation` interface provides commands to scan through a dataset and retrieving the `Item` that it points to.
+* The `DataNavigation` interface provides standard behavior for performing CRUD operations (and, experimentally, lookup operations), which can be extended through a regular, Vaadin-style listener mechanism
 
-Play with the code in `masterdetail-demo/src/main/java`
 
-## The 10 Minutes Tutorial
+## Maven
 
-Create a Vaadin project. If you use Maaven, use the Vaadin Archetype, and add this dependency to your `pom.xml`:
+
+Add `field-binder` to your Maven dependencies
 
 ```xml
 		<dependency>
 			<groupId>org.tylproject.vaadin.addon.masterdetail</groupId>
-			<artifactId>masterdetail-addon</artifactId>
+			<artifactId>field-binder</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 ```
 
-
-In this quick tutorial you will realize the demo in a step-by-step fashion.
-The tutorial consist of 6 simple steps:
-
-1. Define the data model using Java Beans
-2. Initialize a container for the master data source
-3. Create the `FieldGroup` for the Master, and the `Table` for the detail
-4. Create the `MasterDetail` instance, and bind it to the `FieldGroup` and the `Table`
-5. Add everything to the UI
-6. Create the (optional) button bars to control the Navigators for the Master and the Detail
-
-### Define The Model
-
-In this example, we will write a simple address book, where each `Person` may have many `Address`es. You would write the following bean class for the Addresses
+## Short Tutorial
+We will create a simple Address Book, where each `Person` may have many `Address`es. 
+For conciseness, we will also use the `Maddon` addon, its `ListContainer` and its shorthand classes for layouts. You do not need to add any further dependencies to your `pom`, though. The `field-binder` add-on depends on `Maddon` already. Let us write the following bean class for the Addresses:
 
 ```java
 public class Address {
@@ -70,6 +61,8 @@ and the Person entity:
 public class Person {
    private String firstName;
    private String lastName; 
+   private Integer age;
+   private Date birthDate;
    private List<Address> addressList = new ArrayList<Address>();
    public Person() {}
    public Person(String firstName, String lastName) {
@@ -81,141 +74,184 @@ public class Person {
 }
 ```
 
-If you plan to use  Mongo, you may also want to include an auto-generated `Id` field:
-```java
-   @Id private ObjectId id;
-```
-
-Once your model classes have been defined, then you can proceed to define the container from which you will pull instances of these classes.
-
-
-### Create The Container
- 
-You may use a `BeanItemContainer<Person>`. As a better alternative, please consider [Maddon](https://github.com/mstahv/maddon)'s `ListContainer`, a drop-in replacement for `BeanItemContainer`, with better APIs and performances. This add-on supports it out of the box.
-
-Define the ` masterDataSource` field in your UI class:
+Now you are ready to define your Vaadin `UI`
 
 ```java
-  final BeanItemContainer<Person> masterDataSource = 
-         new BeanItemContainer<Person>(Person.class, new ArrayList<Person>(Arrays.asList(
-                new Person("George", "Harrison"),
-                new Person("John", "Lennon"),
-                new Person("Paul", "McCartney"),
-                new Person("Ringo", "Starr")
-        )));
-```
-
-It is also possible to take advantage of the built-in support for the [Lazy MongoContainer Addon](https://github.com/tyl/mongodbcontainer-addon). In this case, you would write something along the lines of:
-
-
-```java
-  final MongoContainer<Person> masterDataSource  = // makeDummyDataset();
-        MongoContainer.Builder.forEntity(Person.class, makeMongoTemplate()).build();
+@Title("Short Tutorial")
+@Theme("valo")
+public class ShortTutorial extends UI {
   
-  private static MongoOperations makeMongoTemplate() {
-    try {
-      return new MongoTemplate(new MongoClient("localhost"), "test");
-    } catch (UnknownHostException ex) { throw new Error(ex); }
+  // CONTAINER
+  
+  // initialize an empty container
+  final FilterableListContainer<Person> container = 
+                                    new FilterableListContainer<Person>(Person.class);
+  
+  // FIELD BINDER 
+  // initialize the FieldBinder for the given container
+  final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container);
+
+  // initialize the layout, building the fields at the same time
+  final VerticalLayout mainLayout = new MVerticalLayout(
+
+      // auto-generates a button bar with the appropriate behavior
+      // for the underlying FilterableListContainer
+      new ButtonBar(binder.getNavigation().withDefaultBehavior()),
+
+      new MFormLayout(
+          binder.build("firstName"),
+          binder.build("lastName"),
+          binder.build("birthDate"),
+          binder.build("age"),
+          
+          // optional: display the index of the currentItem in the container
+          new NavigationLabel(binder.getNavigation()) 
+
+      ).withFullWidth().withMargin(true),
+
+      // initialize the addressList field with the built-in button bar
+      binder.buildListOf(Address.class, "addressList").withDefaultEditorBar()
+
+
+  ).withFullWidth().withMargin(true);
+
+
+  @Override
+  protected void init(VaadinRequest request) {
+    setContent(mainLayout);
   }
 
-```
-
-### Create And Bind The MasterDetail
-
-In your UI, define a `FieldGroup` to that will be bound to the `Person` objects, and the table that will be bound to the `List<Address>` of addresses.
-
-```java
-class MyVaadinUI extends UI {
-  ...
-  final FieldGroup fieldGroup = new FieldGroup();
-  final Table table = new Table();
-  ...
 }
 ```
 
-Bind the Table as the FieldGroup's detail using the syntax:
+Start the Vaadin application and have fun!
+
+## Extended Tutorial
+
+In this version of the tutorial we will extend the regular editing behavior of the `DataNavigation` component with custom logic, using the built-in event listener system.
+
+Let us start from the previous tutorial, in which we built a `Person` editor, with a detail view of the `Address` list. Each `Person` of the previous example contained an `age` field. As you have probably noticed, the `age` field is actually a function of the `birthDate` field: `age` is the difference in years between the current date and the `birthDate` of a `Person`. Let us implement a custom `BeforeCommit` listener that will update the `age` field with a computed value.
+ 
+In order to simplify the writing of the custom events, it is advisable to assign the generated Fields to instance variables of the class; so, refactor them out as follows:
 
 ```java
-  // generates the MasterDetail class
-  final MasterDetail masterDetail = MasterDetail.with(
+  final TextField firstName = binder.build("firstName");
+  final TextField lastName  = binder.build("lastName");
+  final DateField birthDate = binder.build("birthDate");
+  final TextField age       = binder.build("age");
+  
+  final ListTable<Address> addressList = binder.buildListOf(Address.class, "addressList")
+                                               .withDefaultEditorBar();
+```   
 
-   Master.of(Person.class)
-     .fromContainer(masterDataSource)
-     .boundTo(fieldGroup)
-     .withDefaultCrud(),
-     
-   Detail.collectionOf(Address.class)
-     .fromMasterProperty("addressList")
-     .boundTo(table)
-     .withDefaultCrud()
+Then, the layout should be updated accordingly:
 
-  ).build();
+```java
+  // initialize the layout
+  final VerticalLayout mainLayout = new MVerticalLayout(
+
+      new ButtonBar(binder.getNavigation().withDefaultBehavior()),
+
+      new MFormLayout(
+          firstName, lastName, birthDate, age,
+          new NavigationLabel(binder.getNavigation())
+      ).withFullWidth().withMargin(true),
+
+      addressList
+
+  ).withFullWidth().withMargin(true);
 ```
 
-### Initialize The Layout
 
-
-Generate your master form using the FieldGroup:
+Now, let us write the custom actions as event listener. For convenience, we may define a separate class. 
 
 ```java
-  final TextField firstName = (TextField) fieldGroup.buildAndBind("firstName");
-  final TextField lastName = (TextField) fieldGroup.buildAndBind("lastName");
-``` 
 
-Generate `ButtonBar`s to control the navigation and editing of the master/detail with default actions.
+class MyController implements BeforeCommit.Listener {
+  @Override
+  public void beforeCommit(BeforeCommit.Event event) {
+    // e.g., using JodaTime:
+    DateTime birthDateValue = new DateTime(birthDate.getValue());
+    int ageValue = Years.yearsBetween(birthDateValue, DateTime.now()).getYears();
 
-```java
-  final ButtonBar masterBar = ButtonBar.forNavigation(masterDetail.getMaster().getNavigation());
-  final ButtonBar detailBar = ButtonBar.forNavigation(masterDetail.getDetail().getNavigation());
+    age.setConvertedValue(ageValue);
+  } 
+}
+
 ```
 
-Finally, initialize the form by adding the components to a layout as usual. 
+then, let us add the event listener to the `DataNavigation` of the `FieldBinder`
 
 ```java
-    final VerticalLayout mainLayout = new VerticalLayout();
-    final FormLayout formLayout = new FormLayout();
+  @Override
+  protected void init(VaadinRequest request) {
+    setContent(mainLayout);
     
-    @Override
-    protected void init(VaadinRequest request) {
-        setupMainLayout();
-        setupFormLayout();
-        setupTable();
-        setContent(mainLayout);
-    }
-
-    private void setupMainLayout() {
-        mainLayout.setMargin(true);
-
-        mainLayout.addComponent(masterBar.getLayout());
-        mainLayout.addComponent(new Panel(formLayout));
-
-        mainLayout.addComponent(detailBar.getLayout());
-        mainLayout.addComponent(table);
-    }
-
-    private void setupFormLayout() {
-        formLayout.setMargin(true);
-        formLayout.setHeightUndefined();
-
-        formLayout.addComponent(firstName);
-        formLayout.addComponent(lastName);
-    }
-
-    private void setupTable() {
-        table.setSelectable(true);
-        table.setSizeFull();
-    }
+    DataNavigation dataNav = binder.getNavigation();
+    MyController controller = new MyController();
+    dataNav.addBeforeCommitListener(controller);
+  }
 ```
 
-Now, run with 
+Start the application, and you're set!
 
-```sh
-  $ mvn jetty:run
+### Final Touches
+
+Since `age` is now a computed field you may want to set the *age* field to read-only to prevent users from modifying it. In this case, you may want to hook into the `ItemEdit` and `ItemCreate` events, and update the `BeforeCommit` listener accordingly:
+
+```java
+class MyController implements ItemEdit.Listener, ItemCreate.Listener, BeforeCommit.Listener {
+
+  @Override
+  public void itemEdit(ItemEdit.Event event) {
+    age.setReadOnly(true);
+  }
+
+  @Override
+  public void itemCreate(ItemCreate.Event event) {
+    age.setReadOnly(true);
+  }
+
+  ...
+  @Override
+  public void beforeCommit(BeforeCommit.Event event) {
+    // e.g., using JodaTime:
+    DateTime birthDateValue = new DateTime(birthDate.getValue());
+    int ageValue = Years.yearsBetween(birthDateValue, DateTime.now()).getYears();
+
+    age.setReadOnly(false);
+    age.setConvertedValue(ageValue);
+    age.setReadOnly(true);
+      
+  }
+}
 ```
 
-## Hooking Into The Default Events
+don't forget to register the new event listeners:
 
-The `CrudNavigation` component defines several events that you can listen to 
+```java
+  @Override
+  protected void init(VaadinRequest request) {
+    setContent(mainLayout);
+    DataNavigation dataNav = binder.getNavigation();
+
+    MyController controller = new MyController();
+
+    dataNav.addItemEditListener(controller);
+    dataNav.addItemCreateListener(controller);
+    dataNav.addBeforeCommitListener(controller);
+  }
+```
+
+Now restart the application and see the result. 
+
+## Architecture
+
+
+
+### DataNavigation
+
+The `DataNavigation` interface defines several events that you can listen to 
 
 * Navigation Events:
 	* FirstItem
@@ -233,10 +269,10 @@ Because the Navigation object maintains an internal state, that is, a pointer to
 	* AfterCommit, OnCommit, BeforeCommit
 	* OnDiscard
 
-For instance, in order to listen to the `CurrentItemChange` event on the `Master` component use:
+For instance, in order to listen to the `CurrentItemChange` event on the `binder` component use:
 
 ```java
-masterDetail.getMaster().getNavigation().addCurrentItemChangeListener(new CurrentItemChange.Listener(){
+binder.getNavigation().addCurrentItemChangeListener(new CurrentItemChange.Listener(){
     public void currentItemChange(CurrentItemChange.Event event) {
        // display the updated current itemId in a notification
        Notification.show(event.getNewItemId());
@@ -244,13 +280,6 @@ masterDetail.getMaster().getNavigation().addCurrentItemChangeListener(new Curren
 });
 ```
 
-All the event listeners follow the same naming pattern, just substitute `CurrentItemChange` with the name of the event you want to listen to. If you want to hook into the navigation of a detail, just use `getDetail()` instead of `getMaster()`. For instance, listening to the `OnCommit` event of the detail, you would simply write:
+### Button Bars
+...
 
-
-```java
-masterDetail.getDetail().getNavigation().addOnCommitListener(new OnCommit.Listener(){
-    public void onCommit(OnCommit.Event event) {
-       Notification.show("Commit Done").
-    }
-});
-```

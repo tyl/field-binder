@@ -9,6 +9,14 @@
     <version>1.0-SNAPSHOT</version>
     <name>FieldBinder Addon</name>
 
+    <scm>
+	<url>git://github.com/tyl/field-binder</url>
+	<connection>scm:git:git://github.com/tyl/field-binder</connection>
+	<developerConnection>scm:git:ssh://git@github.com:/tyl/field-binder</developerConnection>
+	<tag>FieldBinder add-on for Vaadin</tag>
+    </scm>
+    
+
     <build>
         <plugins>
             <plugin>
