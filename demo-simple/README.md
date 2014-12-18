@@ -8,10 +8,9 @@ However, the standard `FieldGroup` implementation has quite a few limitations:
 * It is not possible to generate automatically a field for a bean property that is a collection type (e.g., a `java.util.List`)
 * There is no generic implementation of a standard Master/Detail editor (the JPAContainer `MasterDetailEditor` implementation is ad-hoc)
 
-...
 
-The FieldBinder is an advanced FieldGroup implementation.
- 
+The `FieldBinder` is an advanced FieldGroup implementationt. A `FieldBinder` can be used as a more flexible implementation of the `FieldGroup`, or it can be bound to a `Container` data source to enable automatic navigation of a data set, that can be hooked into through a  highly-customizable controller, called the `DataNavigation` component. The `DataNavigation` class wraps around a `Container.Ordered` implementation and enhances it with *state*. a `DataNavigation` maintains a `currentItemId`, which functions as a pointer to an `Item` of the underlying `Container` implementation. The `DataNavigation` provides commands to scan through a dataset and retrieving the `Item` that it points to. This is used by the `FieldBinder` to ...
+
 
 
 Features:

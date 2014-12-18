@@ -25,18 +25,16 @@
             <element id="module-output" name="masterdetail-demo" />
           </element>
           <element id="directory" name="lib">
-            <element id="library" level="project" name="Maven: com.vaadin:vaadin-server:7.3.4" />
+            <element id="library" level="project" name="Maven: com.vaadin:vaadin-server:7.3.6" />
             <element id="library" level="project" name="Maven: com.vaadin:vaadin-sass-compiler:0.9.10" />
             <element id="library" level="project" name="Maven: com.vaadin.external.flute:flute:1.3.0.gg2" />
-            <element id="library" level="project" name="Maven: com.vaadin:vaadin-shared:7.3.4" />
+            <element id="library" level="project" name="Maven: com.vaadin:vaadin-shared:7.3.6" />
             <element id="library" level="project" name="Maven: com.vaadin.external.streamhtmlparser:streamhtmlparser-jsilver:0.0.10.vaadin1" />
             <element id="library" level="project" name="Maven: com.vaadin.external.google:guava:16.0.1.vaadin1" />
             <element id="library" level="project" name="Maven: com.vaadin.external.json:json:0.0.20080701" />
             <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.6.3" />
-            <element id="library" level="project" name="Maven: com.vaadin:vaadin-client-compiled:7.3.4" />
-            <element id="archive" name="crud-navigation-addon-1.0-SNAPSHOT.jar">
-              <element id="module-output" name="crud-navigation-addon" />
-            </element>
+            <element id="library" level="project" name="Maven: com.vaadin:vaadin-client-compiled:7.3.6" />
+            <element id="library" level="project" name="Maven: org.tylproject.vaadin.addon.crudnav:crud-navigation-addon:1.0-SNAPSHOT" />
             <element id="library" level="project" name="Maven: com.google.code.findbugs:jsr305:2.0.1" />
             <element id="library" level="project" name="Maven: org.peimari:maddon:1.20-SNAPSHOT" />
             <element id="library" level="project" name="Maven: org.vaadin.addon:confirmdialog:2.1.2" />
@@ -46,7 +44,7 @@
             <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.1.1" />
             <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
             <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.3.2" />
-            <element id="library" level="project" name="Maven: org.tylproject.vaadin.addon.mongodbcontainer:mongodbcontainer-addon:0.9.2-beta.RELEASE" />
+            <element id="library" level="project" name="Maven: org.tylproject.vaadin.addon.mongodbcontainer:mongodbcontainer-addon:0.9.5-beta-SNAPSHOT" />
             <element id="library" level="project" name="Maven: org.springframework.data:spring-data-mongodb:1.6.1.RELEASE" />
             <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.0.7.RELEASE" />
             <element id="library" level="project" name="Maven: org.springframework:spring-context:4.0.7.RELEASE" />
@@ -57,24 +55,23 @@
             <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.0.7.RELEASE" />
             <element id="library" level="project" name="Maven: org.springframework.data:spring-data-commons:1.9.1.RELEASE" />
             <element id="library" level="project" name="Maven: org.mongodb:mongo-java-driver:2.12.3" />
-            <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.7" />
             <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.7" />
             <element id="library" level="project" name="Maven: junit:junit:4.11" />
             <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:1.3" />
-            <element id="archive" name="masterdetail-addon-1.0-SNAPSHOT.jar">
-              <element id="module-output" name="masterdetail-addon" />
-            </element>
+            <element id="library" level="project" name="Maven: org.tylproject.vaadin.addon.masterdetail:masterdetail-addon:1.0-SNAPSHOT" />
             <element id="library" level="project" name="Maven: com.vaadin.addon:jpacontainer-addon:3.0.0-SNAPSHOT" />
-            <element id="library" level="project" name="Maven: crud-navigation-addon:org.tylproject.vaadin.addon.crudnav:1.0-SNAPSHOT" />
             <element id="archive" name="field-binder-1.0-SNAPSHOT.jar">
               <element id="module-output" name="field-binder" />
             </element>
+            <element id="archive" name="data-navigation-addon-1.0-SNAPSHOT.jar">
+              <element id="module-output" name="data-navigation-addon" />
+            </element>
             <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.14.8" />
             <element id="library" level="project" name="Maven: org.w3c.css:sac:1.3" />
-            <element id="library" level="project" name="Maven: com.vaadin:vaadin-push:7.3.4" />
+            <element id="library" level="project" name="Maven: com.vaadin:vaadin-push:7.3.6" />
             <element id="library" level="project" name="Maven: com.vaadin.external.atmosphere:atmosphere-runtime:2.1.2.vaadin6" />
             <element id="library" level="project" name="Maven: com.vaadin.external.slf4j:vaadin-slf4j-jdk14:1.6.1" />
-            <element id="library" level="project" name="Maven: com.vaadin:vaadin-themes:7.3.4" />
+            <element id="library" level="project" name="Maven: com.vaadin:vaadin-themes:7.3.6" />
           </element>
         </element>
         <element id="directory" name="META-INF">
@@ -93,14 +90,118 @@
       <root id="root">
         <element id="directory" name="VAADIN">
           <element id="directory" name="widgetsets">
-            <element id="gwt-compiler-output" facet="crud-navigation-addon/gwt/GWT" />
+            <element id="gwt-compiler-output" facet="data-navigation-addon/gwt/GWT" />
+          </element>
+        </element>
+      </root>
+    </artifact>
+    <artifact type="war" name="demo-simple:war">
+      <output-path>$PROJECT_DIR$/demo-simple/target</output-path>
+      <root id="archive" name="demo-simple-1.0-SNAPSHOT.war">
+        <element id="artifact" artifact-name="demo-simple:war exploded" />
+      </root>
+    </artifact>
+    <artifact type="exploded-war" name="demo-simple:war exploded">
+      <output-path>$PROJECT_DIR$/demo-simple/target/demo-simple-1.0-SNAPSHOT</output-path>
+      <root id="root">
+        <element id="directory" name="WEB-INF">
+          <element id="directory" name="classes">
+            <element id="module-output" name="demo-simple" />
+          </element>
+          <element id="directory" name="lib">
+            <element id="library" level="project" name="Maven: com.vaadin:vaadin-server:7.3.6" />
+            <element id="library" level="project" name="Maven: com.vaadin:vaadin-sass-compiler:0.9.10" />
+            <element id="library" level="project" name="Maven: com.vaadin.external.flute:flute:1.3.0.gg2" />
+            <element id="library" level="project" name="Maven: com.vaadin:vaadin-shared:7.3.6" />
+            <element id="library" level="project" name="Maven: com.vaadin.external.streamhtmlparser:streamhtmlparser-jsilver:0.0.10.vaadin1" />
+            <element id="library" level="project" name="Maven: com.vaadin.external.google:guava:16.0.1.vaadin1" />
+            <element id="library" level="project" name="Maven: com.vaadin.external.json:json:0.0.20080701" />
+            <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.6.3" />
+            <element id="library" level="project" name="Maven: com.vaadin:vaadin-client-compiled:7.3.6" />
+            <element id="library" level="project" name="Maven: org.w3c.css:sac:1.3" />
+            <element id="library" level="project" name="Maven: javax.validation:validation-api:1.0.0.GA" />
+            <element id="library" level="project" name="Maven: com.vaadin:vaadin-push:7.3.6" />
+            <element id="library" level="project" name="Maven: com.vaadin.external.atmosphere:atmosphere-runtime:2.1.2.vaadin6" />
+            <element id="library" level="project" name="Maven: com.vaadin.external.slf4j:vaadin-slf4j-jdk14:1.6.1" />
+            <element id="library" level="project" name="Maven: com.vaadin:vaadin-themes:7.3.6" />
+            <element id="library" level="project" name="Maven: org.vaadin.spring:spring-boot-vaadin:0.0.4-SNAPSHOT" />
+            <element id="library" level="project" name="Maven: org.vaadin.spring:spring-vaadin:0.0.4-SNAPSHOT" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-web:4.1.3.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.1.3.RELEASE" />
+            <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+            <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-web:1.2.0.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-tomcat:1.2.0.RELEASE" />
+            <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:8.0.15" />
+            <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:8.0.15" />
+            <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-logging-juli:8.0.15" />
+            <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:8.0.15" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.4.4" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.4.4" />
+            <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.4.4" />
+            <element id="library" level="project" name="Maven: org.hibernate:hibernate-validator:5.1.3.Final" />
+            <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.1.3.GA" />
+            <element id="library" level="project" name="Maven: com.fasterxml:classmate:1.0.0" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.1.3.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-data-mongodb:1.2.0.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:1.2.0.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:1.2.0.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:1.2.0.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-logging:1.2.0.RELEASE" />
+            <element id="library" level="project" name="Maven: org.slf4j:jul-to-slf4j:1.7.7" />
+            <element id="library" level="project" name="Maven: org.slf4j:log4j-over-slf4j:1.7.7" />
+            <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.1.2" />
+            <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.1.2" />
+            <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.14" />
+            <element id="library" level="project" name="Maven: org.mongodb:mongo-java-driver:2.12.4" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-core:4.1.3.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.1.3.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.1.3.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework.data:spring-data-mongodb:1.6.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-context:4.1.3.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.1.3.RELEASE" />
+            <element id="library" level="project" name="Maven: org.springframework.data:spring-data-commons:1.9.1.RELEASE" />
+            <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.7" />
+            <element id="library" level="project" name="Maven: junit:junit:4.12" />
+            <element id="library" level="project" name="Maven: org.hamcrest:hamcrest-core:1.3" />
+            <element id="library" level="project" name="Maven: org.peimari:maddon:1.21-SNAPSHOT" />
+            <element id="library" level="project" name="Maven: org.vaadin.addon:confirmdialog:2.1.2" />
+            <element id="library" level="project" name="Maven: org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.0" />
+            <element id="library" level="project" name="Maven: commons-io:commons-io:2.4" />
+            <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.9.2" />
+            <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
+            <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.3.2" />
+            <element id="archive" name="field-fieldBinder-1.0-SNAPSHOT.jar">
+              <element id="module-output" name="field-binder" />
+            </element>
+            <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.7" />
+            <element id="library" level="project" name="Maven: org.tylproject.vaadin.addon.mongodbcontainer:mongodbcontainer-addon:0.9.5-beta" />
+            <element id="library" level="project" name="Maven: com.google.code.findbugs:jsr305:2.0.1" />
+          </element>
+        </element>
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/demo-simple/target/MANIFEST.MF" />
+        </element>
+        <element id="javaee-facet-resources" facet="demo-simple/web/Web" />
+        <element id="directory" name="VAADIN">
+          <element id="directory" name="widgetsets">
+            <element id="gwt-compiler-output" facet="demo-simple/gwt/GWT" />
+          </element>
+        </element>
+      </root>
+    </artifact>
+    <artifact name="data-navigation-addon:GWT">
+      <output-path>$PROJECT_DIR$/data-navigation-addon/src/main/webapp/VAADIN/widgetsets</output-path>
+      <root id="root">
+        <element id="directory" name="VAADIN">
+          <element id="directory" name="widgetsets">
+            <element id="gwt-compiler-output" facet="data-navigation-addon/gwt/GWT" />
           </element>
         </element>
       </root>
     </artifact>
   </component>
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="Javac" />
+    <option name="DEFAULT_COMPILER" value="Eclipse" />
     <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="!?*.java" />
@@ -122,16 +223,19 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="crud-navigation-addon" />
+        <module name="demo-simple" />
         <module name="field-binder" />
-        <module name="masterdetail-addon" />
         <module name="masterdetail-connector-mongo" />
-        <module name="masterdetail-demo" />
+        <module name="masterdetail-demo-simple" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="crud-navigation-addon" target="1.7" />
+      <module name="crud-navigation-addon" target="1.6" />
+      <module name="data-navigation-addon" target="1.6" />
+      <module name="demo-simple" target="1.7" />
+      <module name="field-binder" target="1.7" />
+      <module name="masterdetail-addon" target="1.7" />
       <module name="masterdetail-demo" target="1.6" />
-      <module name="org.tylproject.vaadin.addon.crudnav" target="1.7" />
     </bytecodeTargetLevel>
   </component>
   <component name="CopyrightManager" default="" />
@@ -140,6 +244,15 @@
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
     <file url="file://$PROJECT_DIR$/crud-navigation-addon" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/data-navigation-addon" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/demo-simple" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/strategies/AbstractDataNavigationStrategy.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/strategies/CrudStrategy.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/strategies/FilterApplier.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/strategies/FilterFactory.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/strategies/FindStrategy.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/strategies/MongoDataNavigationStrategy.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/field-binder/src/main/java/org/tylproject/vaadin/addon/fieldbinder/strategies/TableFindStrategy.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/masterdetail-demo" charset="UTF-8" />
   </component>
   <component name="EntryPointsManager">
@@ -147,30 +260,56 @@
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="gwt" url="file://$PROJECT_DIR$/crud-navigation-addon" />
+    <file type="gwt" url="file://$PROJECT_DIR$/data-navigation-addon" />
+    <file type="gwt" url="file://$PROJECT_DIR$/demo-simple" />
     <file type="gwt" url="file://$PROJECT_DIR$/masterdetail-demo" />
+    <file type="web" url="file://$PROJECT_DIR$/demo-simple" />
     <file type="web" url="file://$PROJECT_DIR$/masterdetail-demo" />
+  </component>
+  <component name="InspectionProjectProfileManager">
+    <profiles>
+      <profile version="1.0" is_locked="false">
+        <option name="myName" value="Project Default" />
+        <option name="myLocal" value="false" />
+        <inspection_tool class="HardCodedStringLiteral" enabled="true" level="WARNING" enabled_by_default="true">
+          <option name="ignoreForAssertStatements" value="true" />
+          <option name="ignoreForExceptionConstructors" value="true" />
+          <option name="ignoreForSpecifiedExceptionConstructors" value="" />
+          <option name="ignoreForJUnitAsserts" value="true" />
+          <option name="ignoreForClassReferences" value="true" />
+          <option name="ignoreForPropertyKeyReferences" value="true" />
+          <option name="ignoreForNonAlpha" value="true" />
+          <option name="ignoreAssignedToConstants" value="false" />
+          <option name="ignoreToString" value="false" />
+          <option name="nonNlsCommentPattern" value="NON-NLS" />
+        </inspection_tool>
+      </profile>
+    </profiles>
+    <option name="PROJECT_PROFILE" value="Project Default" />
+    <option name="USE_PROJECT_PROFILE" value="true" />
+    <version value="1.0" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/masterdetail-demo/pom.xml" />
         <option value="$PROJECT_DIR$/masterdetail-connector-mongo/pom.xml" />
         <option value="$PROJECT_DIR$/field-binder/pom.xml" />
+        <option value="$PROJECT_DIR$/masterdetail-demo-simple/pom.xml" />
+        <option value="$PROJECT_DIR$/demo-simple/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/data-navigation-addon/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
       </set>
     </option>
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/crud-navigation-addon/crud-navigation-addon.iml" filepath="$PROJECT_DIR$/crud-navigation-addon/crud-navigation-addon.iml" group="masterdetail and modules" />
+      <module fileurl="file://$PROJECT_DIR$/demo-simple/demo-simple.iml" filepath="$PROJECT_DIR$/demo-simple/demo-simple.iml" />
       <module fileurl="file://$PROJECT_DIR$/field-binder/field-binder.iml" filepath="$PROJECT_DIR$/field-binder/field-binder.iml" group="masterdetail and modules" />
-      <module fileurl="file://$PROJECT_DIR$/masterdetail-addon/masterdetail-addon.iml" filepath="$PROJECT_DIR$/masterdetail-addon/masterdetail-addon.iml" group="masterdetail and modules" />
-      <module fileurl="file://$PROJECT_DIR$/masterdetail-demo/masterdetail-demo.iml" filepath="$PROJECT_DIR$/masterdetail-demo/masterdetail-demo.iml" />
     </modules>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
@@ -191,6 +330,72 @@
         <root url="jar://$MAVEN_REPOSITORY$/aopalliance/aopalliance/1.0/aopalliance-1.0-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: ch.qos.logback:logback-classic:1.1.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/ch/qos/logback/logback-classic/1.1.2/logback-classic-1.1.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/ch/qos/logback/logback-classic/1.1.2/logback-classic-1.1.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/ch/qos/logback/logback-classic/1.1.2/logback-classic-1.1.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: ch.qos.logback:logback-core:1.1.2">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/ch/qos/logback/logback-core/1.1.2/logback-core-1.1.2.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/ch/qos/logback/logback-core/1.1.2/logback-core-1.1.2-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/ch/qos/logback/logback-core/1.1.2/logback-core-1.1.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.4.4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.4.4/jackson-annotations-2.4.4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.4.4/jackson-annotations-2.4.4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.4.4/jackson-annotations-2.4.4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.fasterxml.jackson.core:jackson-core:2.4.4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.4.4/jackson-core-2.4.4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.4.4/jackson-core-2.4.4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.4.4/jackson-core-2.4.4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.fasterxml.jackson.core:jackson-databind:2.4.4">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.4.4/jackson-databind-2.4.4.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.4.4/jackson-databind-2.4.4-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.4.4/jackson-databind-2.4.4-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: com.fasterxml:classmate:1.0.0">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/classmate/1.0.0/classmate-1.0.0.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/classmate/1.0.0/classmate-1.0.0-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/classmate/1.0.0/classmate-1.0.0-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: com.google.code.findbugs:jsr305:2.0.1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/com/google/code/findbugs/jsr305/2.0.1/jsr305-2.0.1.jar!/" />
@@ -200,28 +405,6 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/com/google/code/findbugs/jsr305/2.0.1/jsr305-2.0.1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: com.vaadin.addon:jpacontainer-addon:3.0.0-SNAPSHOT">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/addon/jpacontainer-addon/3.0.0-SNAPSHOT/jpacontainer-addon-3.0.0-20130221.074153-1.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/addon/jpacontainer-addon/3.0.0-SNAPSHOT/jpacontainer-addon-3.0.0-20130221.074153-1-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/addon/jpacontainer-addon/3.0.0-SNAPSHOT/jpacontainer-addon-3.0.0-20130221.074153-1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: com.vaadin.external.atmosphere:atmosphere-runtime:2.1.2.vaadin6">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/external/atmosphere/atmosphere-runtime/2.1.2.vaadin6/atmosphere-runtime-2.1.2.vaadin6.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/external/atmosphere/atmosphere-runtime/2.1.2.vaadin6/atmosphere-runtime-2.1.2.vaadin6-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/external/atmosphere/atmosphere-runtime/2.1.2.vaadin6/atmosphere-runtime-2.1.2.vaadin6-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: com.vaadin.external.flute:flute:1.3.0.gg2">
@@ -257,17 +440,6 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/external/json/json/0.0.20080701/json-0.0.20080701-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.vaadin.external.slf4j:vaadin-slf4j-jdk14:1.6.1">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/external/slf4j/vaadin-slf4j-jdk14/1.6.1/vaadin-slf4j-jdk14-1.6.1.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/external/slf4j/vaadin-slf4j-jdk14/1.6.1/vaadin-slf4j-jdk14-1.6.1-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/external/slf4j/vaadin-slf4j-jdk14/1.6.1/vaadin-slf4j-jdk14-1.6.1-sources.jar!/" />
-      </SOURCES>
-    </library>
     <library name="Maven: com.vaadin.external.streamhtmlparser:streamhtmlparser-jsilver:0.0.10.vaadin1">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/external/streamhtmlparser/streamhtmlparser-jsilver/0.0.10.vaadin1/streamhtmlparser-jsilver-0.0.10.vaadin1.jar!/" />
@@ -279,37 +451,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/external/streamhtmlparser/streamhtmlparser-jsilver/0.0.10.vaadin1/streamhtmlparser-jsilver-0.0.10.vaadin1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.vaadin:vaadin-client-compiled:7.3.4">
+    <library name="Maven: com.vaadin:vaadin-client-compiled:7.3.6">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client-compiled/7.3.4/vaadin-client-compiled-7.3.4.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client-compiled/7.3.6/vaadin-client-compiled-7.3.6.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client-compiled/7.3.4/vaadin-client-compiled-7.3.4-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client-compiled/7.3.6/vaadin-client-compiled-7.3.6-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client-compiled/7.3.4/vaadin-client-compiled-7.3.4-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: com.vaadin:vaadin-client:7.3.4">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client/7.3.4/vaadin-client-7.3.4.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client/7.3.4/vaadin-client-7.3.4-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client/7.3.4/vaadin-client-7.3.4-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: com.vaadin:vaadin-push:7.3.4">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-push/7.3.4/vaadin-push-7.3.4.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-push/7.3.4/vaadin-push-7.3.4-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-push/7.3.4/vaadin-push-7.3.4-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-client-compiled/7.3.6/vaadin-client-compiled-7.3.6-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: com.vaadin:vaadin-sass-compiler:0.9.10">
@@ -345,26 +495,15 @@
         <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-shared/7.3.4/vaadin-shared-7.3.4-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.vaadin:vaadin-themes:7.3.4">
+    <library name="Maven: com.vaadin:vaadin-themes:7.3.6">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-themes/7.3.4/vaadin-themes-7.3.4.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-themes/7.3.6/vaadin-themes-7.3.6.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-themes/7.3.4/vaadin-themes-7.3.4-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-themes/7.3.6/vaadin-themes-7.3.6-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-themes/7.3.4/vaadin-themes-7.3.4-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: commons-beanutils:commons-beanutils:1.9.1">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.9.1/commons-beanutils-1.9.1.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.9.1/commons-beanutils-1.9.1-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.9.1/commons-beanutils-1.9.1-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/com/vaadin/vaadin-themes/7.3.6/vaadin-themes-7.3.6-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: commons-beanutils:commons-beanutils:1.9.2">
@@ -411,50 +550,26 @@
         <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: crud-navigation-addon:org.tylproject.vaadin.addon.crudnav:1.0-SNAPSHOT">
+    <library name="Maven: javax.validation:validation-api:1.1.0.Final">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/crud-navigation-addon/org.tylproject.vaadin.addon.crudnav/1.0-SNAPSHOT/org.tylproject.vaadin.addon.crudnav-1.0-SNAPSHOT.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$PROJECT_DIR$/crud-navigation-addon/org.tylproject.vaadin.addon.crudnav-1.0-SNAPSHOT-javadoc.jar!/" />
-        <root url="jar://$MAVEN_REPOSITORY$/crud-navigation-addon/org.tylproject.vaadin.addon.crudnav/1.0-SNAPSHOT/org.tylproject.vaadin.addon.crudnav-1.0-SNAPSHOT-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$PROJECT_DIR$/crud-navigation-addon/org.tylproject.vaadin.addon.crudnav-1.0-SNAPSHOT-sources.jar!/" />
-        <root url="jar://$MAVEN_REPOSITORY$/crud-navigation-addon/org.tylproject.vaadin.addon.crudnav/1.0-SNAPSHOT/org.tylproject.vaadin.addon.crudnav-1.0-SNAPSHOT-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: javax.servlet:javax.servlet-api:3.0.1">
+    <library name="Maven: joda-time:joda-time:2.6">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/joda-time/joda-time/2.6/joda-time-2.6.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/joda-time/joda-time/2.6/joda-time-2.6-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: javax.validation:validation-api:1.0.0.GA">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar!/" />
-      </SOURCES>
-    </library>
-    <library name="Maven: javax.validation:validation-api:sources:1.0.0.GA">
-      <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar!/" />
-      </CLASSES>
-      <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-javadoc.jar!/" />
-      </JAVADOC>
-      <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/javax/validation/validation-api/1.0.0.GA/validation-api-1.0.0.GA-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/joda-time/joda-time/2.6/joda-time-2.6-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: junit:junit:4.11">
@@ -468,6 +583,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: junit:junit:4.12">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.apache.commons:commons-lang3:3.3.2">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar!/" />
@@ -477,6 +603,50 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.tomcat.embed:tomcat-embed-core:8.0.15">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/8.0.15/tomcat-embed-core-8.0.15.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/8.0.15/tomcat-embed-core-8.0.15-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-core/8.0.15/tomcat-embed-core-8.0.15-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.tomcat.embed:tomcat-embed-el:8.0.15">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-el/8.0.15/tomcat-embed-el-8.0.15.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-el/8.0.15/tomcat-embed-el-8.0.15-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-el/8.0.15/tomcat-embed-el-8.0.15-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.tomcat.embed:tomcat-embed-logging-juli:8.0.15">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-logging-juli/8.0.15/tomcat-embed-logging-juli-8.0.15.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-logging-juli/8.0.15/tomcat-embed-logging-juli-8.0.15-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-logging-juli/8.0.15/tomcat-embed-logging-juli-8.0.15-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:8.0.15">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-websocket/8.0.15/tomcat-embed-websocket-8.0.15.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-websocket/8.0.15/tomcat-embed-websocket-8.0.15-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/apache/tomcat/embed/tomcat-embed-websocket/8.0.15/tomcat-embed-websocket-8.0.15-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.0">
@@ -501,6 +671,39 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.hamcrest:hamcrest-library:1.3">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-library/1.3/hamcrest-library-1.3.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-library/1.3/hamcrest-library-1.3-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-library/1.3/hamcrest-library-1.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.hibernate:hibernate-validator:5.1.3.Final">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-validator/5.1.3.Final/hibernate-validator-5.1.3.Final.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-validator/5.1.3.Final/hibernate-validator-5.1.3.Final-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-validator/5.1.3.Final/hibernate-validator-5.1.3.Final-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.jboss.logging:jboss-logging:3.1.3.GA">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.1.3.GA/jboss-logging-3.1.3.GA.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.1.3.GA/jboss-logging-3.1.3.GA-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.1.3.GA/jboss-logging-3.1.3.GA-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.jsoup:jsoup:1.6.3">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.6.3/jsoup-1.6.3.jar!/" />
@@ -510,6 +713,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/jsoup/jsoup/1.6.3/jsoup-1.6.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.mockito:mockito-core:1.10.8">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-core/1.10.8/mockito-core-1.10.8.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-core/1.10.8/mockito-core-1.10.8-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-core/1.10.8/mockito-core-1.10.8-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.mongodb:mongo-java-driver:2.12.3">
@@ -523,26 +737,37 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/mongodb/mongo-java-driver/2.12.3/mongo-java-driver-2.12.3-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.peimari:maddon:1.20-SNAPSHOT">
+    <library name="Maven: org.mongodb:mongo-java-driver:2.12.4">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/peimari/maddon/1.20-SNAPSHOT/maddon-1.20-SNAPSHOT.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mongodb/mongo-java-driver/2.12.4/mongo-java-driver-2.12.4.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/peimari/maddon/1.20-SNAPSHOT/maddon-1.20-SNAPSHOT-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mongodb/mongo-java-driver/2.12.4/mongo-java-driver-2.12.4-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/peimari/maddon/1.20-SNAPSHOT/maddon-1.20-SNAPSHOT-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/mongodb/mongo-java-driver/2.12.4/mongo-java-driver-2.12.4-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.projectlombok:lombok:1.14.8">
+    <library name="Maven: org.objenesis:objenesis:2.1">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.14.8/lombok-1.14.8.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/objenesis/objenesis/2.1/objenesis-2.1.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.14.8/lombok-1.14.8-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/objenesis/objenesis/2.1/objenesis-2.1-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.14.8/lombok-1.14.8-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/objenesis/objenesis/2.1/objenesis-2.1-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.peimari:maddon:1.20">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/peimari/maddon/1.20/maddon-1.20.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/peimari/maddon/1.20/maddon-1.20-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/peimari/maddon/1.20/maddon-1.20-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.slf4j:jcl-over-slf4j:1.7.7">
@@ -556,6 +781,28 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/jcl-over-slf4j/1.7.7/jcl-over-slf4j-1.7.7-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.slf4j:jul-to-slf4j:1.7.7">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/jul-to-slf4j/1.7.7/jul-to-slf4j-1.7.7.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/jul-to-slf4j/1.7.7/jul-to-slf4j-1.7.7-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/jul-to-slf4j/1.7.7/jul-to-slf4j-1.7.7-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.slf4j:log4j-over-slf4j:1.7.7">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/log4j-over-slf4j/1.7.7/log4j-over-slf4j-1.7.7.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/log4j-over-slf4j/1.7.7/log4j-over-slf4j-1.7.7-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/log4j-over-slf4j/1.7.7/log4j-over-slf4j-1.7.7-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.slf4j:slf4j-api:1.7.7">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7.jar!/" />
@@ -565,6 +812,94 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.7/slf4j-api-1.7.7-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework.boot:spring-boot-autoconfigure:1.2.0.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/1.2.0.RELEASE/spring-boot-autoconfigure-1.2.0.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/1.2.0.RELEASE/spring-boot-autoconfigure-1.2.0.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/1.2.0.RELEASE/spring-boot-autoconfigure-1.2.0.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework.boot:spring-boot-starter-data-mongodb:1.2.0.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-data-mongodb/1.2.0.RELEASE/spring-boot-starter-data-mongodb-1.2.0.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-data-mongodb/1.2.0.RELEASE/spring-boot-starter-data-mongodb-1.2.0.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-data-mongodb/1.2.0.RELEASE/spring-boot-starter-data-mongodb-1.2.0.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework.boot:spring-boot-starter-logging:1.2.0.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-logging/1.2.0.RELEASE/spring-boot-starter-logging-1.2.0.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-logging/1.2.0.RELEASE/spring-boot-starter-logging-1.2.0.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-logging/1.2.0.RELEASE/spring-boot-starter-logging-1.2.0.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework.boot:spring-boot-starter-test:1.2.0.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-test/1.2.0.RELEASE/spring-boot-starter-test-1.2.0.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-test/1.2.0.RELEASE/spring-boot-starter-test-1.2.0.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-test/1.2.0.RELEASE/spring-boot-starter-test-1.2.0.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework.boot:spring-boot-starter-tomcat:1.2.0.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-tomcat/1.2.0.RELEASE/spring-boot-starter-tomcat-1.2.0.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-tomcat/1.2.0.RELEASE/spring-boot-starter-tomcat-1.2.0.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-tomcat/1.2.0.RELEASE/spring-boot-starter-tomcat-1.2.0.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework.boot:spring-boot-starter-web:1.2.0.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-web/1.2.0.RELEASE/spring-boot-starter-web-1.2.0.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-web/1.2.0.RELEASE/spring-boot-starter-web-1.2.0.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter-web/1.2.0.RELEASE/spring-boot-starter-web-1.2.0.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework.boot:spring-boot-starter:1.2.0.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter/1.2.0.RELEASE/spring-boot-starter-1.2.0.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter/1.2.0.RELEASE/spring-boot-starter-1.2.0.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-starter/1.2.0.RELEASE/spring-boot-starter-1.2.0.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework.boot:spring-boot:1.2.0.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot/1.2.0.RELEASE/spring-boot-1.2.0.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot/1.2.0.RELEASE/spring-boot-1.2.0.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot/1.2.0.RELEASE/spring-boot-1.2.0.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.springframework.data:spring-data-commons:1.9.1.RELEASE">
@@ -600,6 +935,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.0.7.RELEASE/spring-aop-4.0.7.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.springframework:spring-aop:4.1.3.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.3.RELEASE/spring-aop-4.1.3.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.3.RELEASE/spring-aop-4.1.3.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-aop/4.1.3.RELEASE/spring-aop-4.1.3.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.springframework:spring-beans:4.0.7.RELEASE">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.0.7.RELEASE/spring-beans-4.0.7.RELEASE.jar!/" />
@@ -609,6 +955,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.0.7.RELEASE/spring-beans-4.0.7.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework:spring-beans:4.1.3.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.3.RELEASE/spring-beans-4.1.3.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.3.RELEASE/spring-beans-4.1.3.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.3.RELEASE/spring-beans-4.1.3.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.springframework:spring-context:4.0.7.RELEASE">
@@ -622,6 +979,17 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.0.7.RELEASE/spring-context-4.0.7.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.springframework:spring-context:4.1.3.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.3.RELEASE/spring-context-4.1.3.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.3.RELEASE/spring-context-4.1.3.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/4.1.3.RELEASE/spring-context-4.1.3.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.springframework:spring-core:4.0.7.RELEASE">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.0.7.RELEASE/spring-core-4.0.7.RELEASE.jar!/" />
@@ -631,6 +999,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.0.7.RELEASE/spring-core-4.0.7.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework:spring-core:4.1.3.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.3.RELEASE/spring-core-4.1.3.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.3.RELEASE/spring-core-4.1.3.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.3.RELEASE/spring-core-4.1.3.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.springframework:spring-expression:4.0.7.RELEASE">
@@ -644,6 +1023,28 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.0.7.RELEASE/spring-expression-4.0.7.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.springframework:spring-expression:4.1.3.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.3.RELEASE/spring-expression-4.1.3.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.3.RELEASE/spring-expression-4.1.3.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-expression/4.1.3.RELEASE/spring-expression-4.1.3.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework:spring-test:4.1.3.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-test/4.1.3.RELEASE/spring-test-4.1.3.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-test/4.1.3.RELEASE/spring-test-4.1.3.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-test/4.1.3.RELEASE/spring-test-4.1.3.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.springframework:spring-tx:4.0.7.RELEASE">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.0.7.RELEASE/spring-tx-4.0.7.RELEASE.jar!/" />
@@ -655,15 +1056,72 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.0.7.RELEASE/spring-tx-4.0.7.RELEASE-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: org.tylproject.vaadin.addon.mongodbcontainer:mongodbcontainer-addon:0.9.2-beta.RELEASE">
+    <library name="Maven: org.springframework:spring-tx:4.1.3.RELEASE">
       <CLASSES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/mongodbcontainer/mongodbcontainer-addon/0.9.2-beta.RELEASE/mongodbcontainer-addon-0.9.2-beta.RELEASE.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.3.RELEASE/spring-tx-4.1.3.RELEASE.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/mongodbcontainer/mongodbcontainer-addon/0.9.2-beta.RELEASE/mongodbcontainer-addon-0.9.2-beta.RELEASE-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.3.RELEASE/spring-tx-4.1.3.RELEASE-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/mongodbcontainer/mongodbcontainer-addon/0.9.2-beta.RELEASE/mongodbcontainer-addon-0.9.2-beta.RELEASE-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.3.RELEASE/spring-tx-4.1.3.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework:spring-web:4.1.3.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.3.RELEASE/spring-web-4.1.3.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.3.RELEASE/spring-web-4.1.3.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.1.3.RELEASE/spring-web-4.1.3.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.springframework:spring-webmvc:4.1.3.RELEASE">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/4.1.3.RELEASE/spring-webmvc-4.1.3.RELEASE.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/4.1.3.RELEASE/spring-webmvc-4.1.3.RELEASE-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-webmvc/4.1.3.RELEASE/spring-webmvc-4.1.3.RELEASE-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.tylproject.vaadin.addon.crudnav:crud-navigation-addon:1.0-SNAPSHOT">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/crudnav/crud-navigation-addon/1.0-SNAPSHOT/crud-navigation-addon-1.0-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$PROJECT_DIR$/crud-navigation-addon/crud-navigation-addon-1.0-SNAPSHOT-javadoc.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/crudnav/crud-navigation-addon/1.0-SNAPSHOT/crud-navigation-addon-1.0-SNAPSHOT-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$PROJECT_DIR$/crud-navigation-addon/crud-navigation-addon-1.0-SNAPSHOT-sources.jar!/" />
+        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/crudnav/crud-navigation-addon/1.0-SNAPSHOT/crud-navigation-addon-1.0-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.tylproject.vaadin.addon.mongodbcontainer:mongodbcontainer-addon:0.9.5-beta-SNAPSHOT">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/mongodbcontainer/mongodbcontainer-addon/0.9.5-beta-SNAPSHOT/mongodbcontainer-addon-0.9.5-beta-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/mongodbcontainer/mongodbcontainer-addon/0.9.5-beta-SNAPSHOT/mongodbcontainer-addon-0.9.5-beta-SNAPSHOT-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/mongodbcontainer/mongodbcontainer-addon/0.9.5-beta-SNAPSHOT/mongodbcontainer-addon-0.9.5-beta-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.tylproject.vaadin.addon.mongodbcontainer:mongodbcontainer-addon:0.9.5.1-beta">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/mongodbcontainer/mongodbcontainer-addon/0.9.5.1-beta/mongodbcontainer-addon-0.9.5.1-beta.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/mongodbcontainer/mongodbcontainer-addon/0.9.5.1-beta/mongodbcontainer-addon-0.9.5.1-beta-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/tylproject/vaadin/addon/mongodbcontainer/mongodbcontainer-addon/0.9.5.1-beta/mongodbcontainer-addon-0.9.5.1-beta-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: org.vaadin.addon:confirmdialog:2.1.2">
@@ -677,6 +1135,28 @@
         <root url="jar://$MAVEN_REPOSITORY$/org/vaadin/addon/confirmdialog/2.1.2/confirmdialog-2.1.2-sources.jar!/" />
       </SOURCES>
     </library>
+    <library name="Maven: org.vaadin.spring:spring-boot-vaadin:0.0.4-SNAPSHOT">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/vaadin/spring/spring-boot-vaadin/0.0.4-SNAPSHOT/spring-boot-vaadin-0.0.4-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/vaadin/spring/spring-boot-vaadin/0.0.4-SNAPSHOT/spring-boot-vaadin-0.0.4-SNAPSHOT-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/vaadin/spring/spring-boot-vaadin/0.0.4-SNAPSHOT/spring-boot-vaadin-0.0.4-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.vaadin.spring:spring-vaadin:0.0.4-SNAPSHOT">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/vaadin/spring/spring-vaadin/0.0.4-SNAPSHOT/spring-vaadin-0.0.4-SNAPSHOT.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/vaadin/spring/spring-vaadin/0.0.4-SNAPSHOT/spring-vaadin-0.0.4-SNAPSHOT-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/vaadin/spring/spring-vaadin/0.0.4-SNAPSHOT/spring-vaadin-0.0.4-SNAPSHOT-sources.jar!/" />
+      </SOURCES>
+    </library>
     <library name="Maven: org.w3c.css:sac:1.3">
       <CLASSES>
         <root url="jar://$MAVEN_REPOSITORY$/org/w3c/css/sac/1.3/sac-1.3.jar!/" />
@@ -686,6 +1166,17 @@
       </JAVADOC>
       <SOURCES>
         <root url="jar://$MAVEN_REPOSITORY$/org/w3c/css/sac/1.3/sac-1.3-sources.jar!/" />
+      </SOURCES>
+    </library>
+    <library name="Maven: org.yaml:snakeyaml:1.14">
+      <CLASSES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.14/snakeyaml-1.14.jar!/" />
+      </CLASSES>
+      <JAVADOC>
+        <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.14/snakeyaml-1.14-javadoc.jar!/" />
+      </JAVADOC>
+      <SOURCES>
+        <root url="jar://$MAVEN_REPOSITORY$/org/yaml/snakeyaml/1.14/snakeyaml-1.14-sources.jar!/" />
       </SOURCES>
     </library>
   </component>
