@@ -2,7 +2,7 @@
 
 An advanced FieldGroup implementation with support for automated generation of Master/Detail forms.
 
-![Master-Detail Demo](_ http://i.imgur.com/TZy6Mth.png)
+![Master-Detail Demo](http://i.imgur.com/TZy6Mth.png)
 
 ## What is wrong with Good Ol' FieldGroup?
 
@@ -40,6 +40,13 @@ Add `field-binder` to your Maven dependencies
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 ```
+
+If you want to use the SNAPSHOT version, install the package and its dependencies locally, using the script:
+
+```sh
+  $ ./download-and-install.sh 
+```
+
 
 ## Demo (for the impatient)
 
