@@ -77,12 +77,12 @@
 		<dependency>
 			<groupId>org.tylproject.vaadin.addon.fieldbinder</groupId>
 			<artifactId>field-binder</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.tylproject.vaadin.addon.mongodbcontainer</groupId>
 			<artifactId>mongodbcontainer-addon</artifactId>
-			<version>0.9.5.4-beta-SNAPSHOT</version>
+			<version>0.9.5.4-beta</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>

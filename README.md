@@ -50,16 +50,22 @@ Features:
 Add `field-binder` to your Maven dependencies
 
 ```xml
-		<dependency>
-			<groupId>org.tylproject.vaadin.addon.fieldbinder</groupId>
-			<artifactId>field-binder</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
+<dependency>
+   <groupId>org.tylproject.vaadin.addon.fieldbinder</groupId>
+   <artifactId>field-binder</artifactId>
+   <version>1.0</version>
+</dependency>
+
+<repository>
+   <id>vaadin-addons</id>
+   <url>http://maven.vaadin.com/vaadin-addons</url>
+</repository>
 ```
 
-If you want to use the SNAPSHOT version, install the package locally with
+If you want to use the SNAPSHOT version, clone this repository and install the package locally with
 
 ```sh
+  $ git clone https://github.com/tyl/field-binder/
   $ mvn install 
 ```
 
