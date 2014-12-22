@@ -2,7 +2,7 @@
 
 An advanced FieldGroup implementation with support for automated generation of Master/Detail forms.
 
-![Master-Detail Demo](http://i.imgur.com/TZy6Mth.png)
+![Master-Detail Demo](http://i.imgur.com/TZdfj5P.png)
 
 ## What is wrong with Good Ol' FieldGroup?
 
@@ -27,7 +27,10 @@ Features:
 * The `DataNavigation` interface provides commands to scan through a dataset and retrieving the `Item` that it points to.
 * The `DataNavigation` interface provides standard behavior for performing CRUD operations (and, experimentally, lookup operations), which can be extended through a regular, Vaadin-style listener mechanism
 * `FieldBinder` comes with standard built-in CRUD for the ListContainer and the [Lazy Mongo Container](https://github.com/tyl/mongodbcontainer-addon). The ListContainer should already cover most Java Bean use-cases, including JPA. Support for the Vaadin's official JPAContainer is under development.  
+* The `ButtonBar` component (and its relatives, `NavButtonBar`, `CrudButtonBar`, `FindButtonBar`) may be bound  to a `DataNavigation` and automatically generate buttons for user interactions (automatic shortcut key bindings will come soon!)
+* The `ListTable` and `BeanTable` wrappers augment Vaadin's regular Table with default behavior for basic CRUD.
 
+![Detailed FieldBinder Taxonomy](http://i.imgur.com/RiFRfxJ.png)
 
 ## Maven
 
@@ -268,6 +271,9 @@ CrudButtonBar addressListBar =
        new CrudButtonBar(addressList.getNavigation().withDefaultBehavior()),
 ```
 
+#### NavigationLabel
+
+This optional component shows the index of the current item and the total count of the items in the container that the `DataNavigation` is controlling.
 
 
 ## Extended Tutorial
@@ -459,20 +465,25 @@ There is also a shorthand interface `CrudListeners` that implements all of the f
    
 The `DataNavigation` has experimental support for the *ClearToFind* and *Find* events. The ClearToFind event, "cleans" the fields of a FieldBinder for input, and makes it possible to perform a "search by example" (the same is obtained in a table using a pop-up window). These events can be attached using `ClearToFind.Listener` and `Find.Listener`, or both at once using `FindBehavior`.
 
+
+![ClearToFind](http://i.imgur.com/AfrRFlT.png)
+
+The default behavior for the ClearToFind event is to clear the fields when no filter has been applied; if a filter has been applied, the first click on the button will show the patterns that have been applied, and a second click will actually "clean" the search. Clicking the Find button will perform the search with the given criteria. For instance, in the example window of the picture, writing "Cor*" in the "First Name" field will find any Person whose name starts with the string "Cor"  
+
+![Find](http://i.imgur.com/1ls24gW.png) 
+
+When a filter has been applied (that is, `Container.getContainerFilters().isEmpty()` is false), the optional `NavigationLabel` displays an asterisk near the count.
+
 The user can input a textual pattern, which will be translated into a Vaadin `Container.Filter` automatically. Supported filters are currently:
 
-- `java.lang.Number`: Less, LessOrEqual, Greater, GreaterOrEqual
-  where pattern is, respectively: "<N", "<=N", ">N", ">=N". Where N is a number. For instance:
-  
-  >=10
-
-on a field called for property "age" will produce a `Compare.GreaterOrEqual("age", 10)`
- 
-- `java.lang.String`: `SimpleStringFilter`, with patterns:
+- for String-valued fields (`java.lang.String`) the following patterns generate a `SimpleStringFilter`:
   - `foo`: every string that starts with `foo`
   - `foo*`: same as above
   - `*foo*`: every string that contains `foo`
   - `*foo`: for a limitation in `SimpleStringFilter`, this is equivalent to `*foo*`.
+
+- for integer-valued fields the following expression will generate Less, LessOrEqual, Greater, GreaterOrEqual, respectively: "<N", "<=N", ">N", ">=N". Where N is a number. For instance `>=10` on the field for property "age" will produce a `Compare.GreaterOrEqual("age", 10)`
+ 
  
 For every other value, an exact match (`Equal`) is attempted.
 
