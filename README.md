@@ -28,6 +28,7 @@ Features:
 * The `DataNavigation` interface provides standard behavior for performing CRUD operations (and, experimentally, lookup operations), which can be extended through a regular, Vaadin-style listener mechanism
 * `FieldBinder` comes with standard built-in CRUD for the ListContainer and the [Lazy Mongo Container](https://github.com/tyl/mongodbcontainer-addon). The ListContainer should already cover most Java Bean use-cases, including JPA. Support for the Vaadin's official JPAContainer is under development.  
 * The `ButtonBar` component (and its relatives, `NavButtonBar`, `CrudButtonBar`, `FindButtonBar`) may be bound  to a `DataNavigation` and automatically generate buttons for user interactions (automatic shortcut key bindings will come soon!)
+* ButtonBars are i18n compliant through the standard Java `ResourceBundle` mechanism 
 * The `ListTable` and `BeanTable` wrappers augment Vaadin's regular Table with default behavior for basic CRUD.
 
 ![Detailed FieldBinder Taxonomy](http://i.imgur.com/RiFRfxJ.png)
