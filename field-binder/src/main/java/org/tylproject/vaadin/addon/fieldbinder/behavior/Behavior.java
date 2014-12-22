@@ -1,4 +1,4 @@
-package org.tylproject.vaadin.addon.fieldbinder.strategies;
+package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 
@@ -6,8 +6,8 @@ import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
  * A shorthand interface for common editing operations on a
  * {@link org.tylproject.vaadin.addon.datanav.DataNavigation}
  */
-public interface DataNavigationStrategy extends
+public interface Behavior extends
         CurrentItemChange.Listener,
-        CrudStrategy,
-        FindStrategy {
+        CrudListeners,
+        FindListeners {
 }

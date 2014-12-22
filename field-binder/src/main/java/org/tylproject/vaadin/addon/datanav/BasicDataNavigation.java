@@ -2,9 +2,11 @@ package org.tylproject.vaadin.addon.datanav;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
+import com.vaadin.data.Validator;
+import com.vaadin.event.ListenerMethod;
 import org.tylproject.vaadin.addon.datanav.events.*;
-import org.tylproject.vaadin.addon.fieldbinder.strategies.DataNavigationStrategy;
-import org.tylproject.vaadin.addon.fieldbinder.strategies.DataNavigationStrategyFactory;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.Behavior;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.BehaviorFactory;
 
 import javax.annotation.Nonnull;
 
@@ -20,7 +22,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     private boolean findEnabled = true;
     private boolean editingMode = false;
     private boolean clearToFindMode = false;
-    private DataNavigationStrategyFactory navigationStrategyFactory;
+    private BehaviorFactory navigationStrategyFactory;
 
 
 
@@ -34,7 +36,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
         setContainer(container);
     }
 
-    public void setNavigationStrategyFactory(DataNavigationStrategyFactory
+    public void setNavigationStrategyFactory(BehaviorFactory
                                                      navigationStrategyFactory) {
         this.navigationStrategyFactory = navigationStrategyFactory;
     }
@@ -142,6 +144,10 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
 
         } catch (RejectOperationException signal) {
             logger.info("Commit operation was interrupted by user");
+        } catch (ListenerMethod.MethodException ex) {
+            if (ex.getCause() instanceof Validator.InvalidValueException) {
+                // ignore: Vaadin has already took care of it!
+            } else throw ex; // otherwise propagate!
         }
     }
 
@@ -297,7 +303,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
             throw new IllegalStateException("Cannot automatically assign a default behavior");
         }
 
-        DataNavigationStrategy strategy = navigationStrategyFactory.forContainer(container);
+        Behavior strategy = navigationStrategyFactory.forContainer(container);
 
         this.withCrudListenersFrom(strategy).withFindListenersFrom(strategy);
         this.addCurrentItemChangeListener(strategy);

@@ -9,9 +9,7 @@ import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.WrapDynaClass;
 import org.tylproject.vaadin.addon.datanav.*;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
-import org.tylproject.vaadin.addon.fieldbinder.strategies
-        .DefaultDataNavigationStrategyFactory;
-import org.vaadin.maddon.ListContainer;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.FieldBinderBehaviorFactory;
 
 import java.util.*;
 
@@ -75,7 +73,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
 
         BasicDataNavigation nav = new BasicDataNavigation(container);
-        nav.setNavigationStrategyFactory(new DefaultDataNavigationStrategyFactory(this));
+        nav.setNavigationStrategyFactory(new FieldBinderBehaviorFactory(this));
 
         this.navigation = nav;
 

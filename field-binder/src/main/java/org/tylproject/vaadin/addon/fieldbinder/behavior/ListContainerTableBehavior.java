@@ -1,38 +1,40 @@
-package org.tylproject.vaadin.addon.fieldbinder.strategies;
+package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.events.*;
-import org.vaadin.maddon.ListContainer;
 
 import java.util.*;
 
 /**
- * Created by evacchi on 11/12/14.
+ * The table field factory defines the default CRUD behavior for a table. It also injects
+ * a modified TableFieldFactory that activates only one editable row at once.
  */
-public class DefaultTableStrategy<T> implements DataNavigationStrategy {
+public class ListContainerTableBehavior<T> implements Behavior {
 
     final Table table;
     final Class<T> beanClass;
-    final TableFindStrategy<T> findStrategy;
+    final TableFindBehavior<T> findStrategy;
 
     final Set<T> addedItems = new HashSet<>();
     final List<Field<?>> fields = new ArrayList<>();
 
-    public DefaultTableStrategy(final Class<T> beanClass, final Table table) {
+    public ListContainerTableBehavior(final Class<T> beanClass, final Table table) {
         this.beanClass = beanClass;
         this.table = table;
-        this.findStrategy = new TableFindStrategy<>(beanClass, table);
+        this.findStrategy = new TableFindBehavior<>(beanClass, table);
 
         table.setTableFieldFactory(new TableFieldFactory() {
             final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
             @Override
             public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
-                if (itemId == table.getValue()) {
+                if (itemId.equals(table.getValue())) {
                     Field<?> f = fieldFactory.createField(container, itemId, propertyId,
                             uiContext);
+                    if (f instanceof AbstractTextField) {
+                        ((AbstractTextField) f).setNullRepresentation("");
+                        ((AbstractTextField) f).setImmediate(true);
+                    }
                     f.setBuffered(true);
                     fields.add(f);
                     return f;

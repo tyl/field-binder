@@ -1,4 +1,4 @@
-package org.tylproject.vaadin.addon.fieldbinder.strategies;
+package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -10,7 +10,7 @@ import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 /**
  * Created by evacchi on 26/11/14.
  */
-public abstract class AbstractDataNavigationStrategy<T> implements DataNavigationStrategy {
+public abstract class AbstractBehavior<T> implements Behavior {
 
     protected final FieldBinder<T> fieldBinder;
     protected FilterApplier filterApplier = new FilterApplier();
@@ -20,7 +20,7 @@ public abstract class AbstractDataNavigationStrategy<T> implements DataNavigatio
         return beanClass;
     }
 
-    public AbstractDataNavigationStrategy(FieldBinder<T> fieldBinder) {
+    public AbstractBehavior(FieldBinder<T> fieldBinder) {
         this.fieldBinder = fieldBinder;
         this.beanClass = fieldBinder.getType();
         fieldBinder.setReadOnly(true);

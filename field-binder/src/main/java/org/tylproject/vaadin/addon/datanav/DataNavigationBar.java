@@ -12,4 +12,5 @@ public interface DataNavigationBar extends Serializable {
     Layout getLayout();
 
     void setNavigation(@Nonnull DataNavigation nav);
+    DataNavigation getNavigation();
 }

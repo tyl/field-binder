@@ -21,7 +21,11 @@ public class Main extends UI {
                     new Label("First steps using the Field Binder")),
             new VerticalLayout(
                 new Link("Tutorial 2", new ExternalResource("/tutorial-2")),
-                    new Label("An advanced example that hooks into the DataNavigation event handler"))
+                    new Label("An advanced example that hooks into the DataNavigation event handler")),
+            new VerticalLayout(
+                new Link("Tutorial 3", new ExternalResource("/tutorial-3")),
+                new Label("A stand-alone table with a DataNavigation controller"))
+
         ).withMargin(true).withFullWidth().alignAll(Alignment.MIDDLE_CENTER));
     }
 }

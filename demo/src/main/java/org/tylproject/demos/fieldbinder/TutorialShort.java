@@ -16,7 +16,7 @@ import org.vaadin.spring.VaadinUI;
 
 @VaadinUI( path = "/tutorial-1" )
 @Theme("valo")
-public class Tutorial1 extends UI {
+public class TutorialShort extends UI {
 
     // CONTAINER
     

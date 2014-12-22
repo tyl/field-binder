@@ -17,40 +17,39 @@ public abstract class AbstractButtonBar extends CustomComponent implements DataN
 
     private Panel focusPanel;
     private FocusManager focusManager;
+    private @Nonnull DataNavigation navigation;
 
-    @Override
-    public Layout getLayout() {
-        return buttonLayout;
-    }
-
-    private @Nonnull
-    DataNavigation nav;
-    protected static final ResourceBundle resourceBundle =
-            ResourceBundle.getBundle(Strings.class.getCanonicalName());
-
-
-    protected AbstractButtonBar(DataNavigation nav) {
-        this.nav = nav;
+    protected AbstractButtonBar(DataNavigation navigation) {
+        this.navigation = navigation;
         setCompositionRoot(this.getLayout());
         this.setSizeUndefined();
     }
 
 
 
-
-
-
     @Override
     public void setNavigation(@Nonnull DataNavigation nav) {
-        detachNavigation(this.nav);
-        this.nav = nav;
+        detachNavigation(this.navigation);
+        this.navigation = nav;
         attachNavigation(nav);
         updateButtonStatus();
     }
 
-    protected DataNavigation nav() {
-        return this.nav;
+    public DataNavigation getNavigation() {
+        return this.navigation;
     }
+
+
+
+    @Override
+    public Layout getLayout() {
+        return buttonLayout;
+    }
+
+    protected static final ResourceBundle resourceBundle =
+            ResourceBundle.getBundle(Strings.class.getCanonicalName());
+
+
 
 
     protected void detachNavigation(@Nonnull DataNavigation nav) {

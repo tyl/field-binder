@@ -21,6 +21,8 @@ public class FindButtonBar extends AbstractButtonBar {
             btnFind
     };
 
+    public FindButtonBar() { this(new BasicDataNavigation()); }
+
     public FindButtonBar(@Nonnull DataNavigation nav) {
         super(nav);
 
@@ -30,14 +32,14 @@ public class FindButtonBar extends AbstractButtonBar {
         btnClearToFind.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav().clearToFind();
+                getNavigation().clearToFind();
             }
         });
 
         btnFind.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav().find();
+                getNavigation().find();
             }
         });
 
@@ -53,6 +55,7 @@ public class FindButtonBar extends AbstractButtonBar {
 
     @Override
     protected void detachNavigation(@Nonnull DataNavigation nav) {
+        if (nav == null) return;
         nav.removeFindEnabledListener(buttonEnabler);
         super.detachNavigation(nav);
     }
@@ -62,51 +65,45 @@ public class FindButtonBar extends AbstractButtonBar {
         public void findEnabled(FindEnabled.Event event) {
             if (event.isFindEnabled()) {
                 // default to disabling clearToFind
-                disable(btnClearToFind);
-                Container.Ordered container = event.getSource().getContainer();
-
-                // if it is filterable
-                if (container instanceof Container.Filterable) {
-                    Container.Filterable filterable = (Container.Filterable) container;
-                    if (filterable.size() > 0) { // and it contains values
-                        enable(btnClearToFind);
-                    }
-
-                }
+                updateClearToFind(event.getSource().getContainer());
             } else {
                 disable(findButtons);
             }
         }
     };
 
+    private void updateClearToFind(Container container) {
+        disable(btnFind);
+        disable(btnClearToFind);
+        // if it is filterable
+        if (container instanceof Container.Filterable) {
+            Container.Filterable filterable = (Container.Filterable) container;
+            if (filterable.size() > 0 // and it contains values
+                    || !filterable.getContainerFilters().isEmpty()) { // when no filters have been applied
+                enable(btnClearToFind);
+            }
+
+        }
+    }
+
     @Override
     protected void updateButtonStatus() {
 
-        if (!nav().isFindEnabled()) {
+        if (!getNavigation().isFindEnabled()) {
             disable(findButtons);
             return;
         }
 
-        if (nav().isClearToFindMode()) {
+        if (getNavigation().isClearToFindMode()) {
             enable(btnFind);
             return;
         }
 
 
-        if (nav().getContainer() == null) {
+        if (getNavigation().getContainer() == null) {
             disable(findButtons);
         } else {
-            disable(btnFind);
-            disable(btnClearToFind);
-            Container.Ordered container = nav().getContainer();
-
-            if (container instanceof Container.Filterable) {
-
-                Container.Filterable filterable = (Container.Filterable) container;
-                if (filterable.size() > 0) {
-                    enable(btnClearToFind);
-                }
-            }
+            updateClearToFind(getNavigation().getContainer());
         }
         
     }

@@ -1,4 +1,4 @@
-package org.tylproject.vaadin.addon.fieldbinder.strategies;
+package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.converter.Converter;
@@ -15,7 +15,7 @@ import java.util.Map;
  * Keeps track of which fields were pulled from a collection of fields, and
  * is able to restore them back into the collection using properyIds as keys
  *
- * It internally uses a {@link org.tylproject.vaadin.addon.fieldbinder.strategies.FilterFactory}
+ * It internally uses a {@link org.tylproject.vaadin.addon.fieldbinder.behavior.FilterFactory}
  * to convert the patterns
  *
  */

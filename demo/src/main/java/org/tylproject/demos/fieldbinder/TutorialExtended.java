@@ -27,7 +27,7 @@ import org.vaadin.spring.VaadinUI;
 
 @VaadinUI(path = "/tutorial-2")
 @Theme("valo")
-public class Tutorial2 extends UI {
+public class TutorialExtended extends UI {
 
     // CONTAINER
 
@@ -84,7 +84,7 @@ public class Tutorial2 extends UI {
     }
 
 
-    class MyController implements ItemEdit.Listener, ItemCreate.Listener, BeforeCommit.Listener, CurrentItemChange.Listener {
+    public class MyController implements ItemEdit.Listener, ItemCreate.Listener, BeforeCommit.Listener, CurrentItemChange.Listener {
 
         @Override
         public void itemEdit(ItemEdit.Event event) {

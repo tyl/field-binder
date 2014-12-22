@@ -1,7 +1,6 @@
-package org.tylproject.vaadin.addon.fieldbinder.strategies;
+package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.FindButtonBar;
@@ -9,11 +8,7 @@ import org.tylproject.vaadin.addon.datanav.events.ClearToFind;
 import org.tylproject.vaadin.addon.datanav.events.OnFind;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
-
-public class TableFindStrategy<T> implements FindStrategy {
+public class TableFindBehavior<T> implements FindListeners {
 	
 	private final Table table;
 	private final Class<T> beanClass;
@@ -21,7 +16,7 @@ public class TableFindStrategy<T> implements FindStrategy {
 	private final FilterApplier filterApplier = new FilterApplier();
 
 
-	public TableFindStrategy(Class<T> beanClass, Table table) {
+	public TableFindBehavior(Class<T> beanClass, Table table) {
 		this.beanClass = beanClass;
 		this.table = table;
 	}

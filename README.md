@@ -411,10 +411,8 @@ and then you can remove it
 The `DataNavigation` object wraps a `Container.Ordered` instance, and it maintains a pointer to the `currentItemId`. The `currentItemId` is `null` only when the `Container` is empty (`Container.size() == 0`) or when no container has been associated to the Navigator.
 
 
-The `DataNavigation.withDefaultBehavior()` method tries to guess the best predefined set of listeners for the container that it is currently bound to. In the case of this tutorial, you were using a `FilterableListContainer`. This is resolved through a `DataNavigationStrategyFactory` -- the terrible name will probably change in the future.
-
-
 The `DataNavigation` interface defines several events that you can listen to.
+
 
 ### Navigation Events
 	* FirstItem
@@ -446,7 +444,7 @@ binder.getNavigation().addCurrentItemChangeListener(new CurrentItemChange.Listen
 });
 ```
 
-There is also a shorthand interface `CrudStrategy` that implements all of the following listeners: `ItemCreate`, `ItemEdit`, `ItemRemove`, `OnCommit`, `OnDiscard`. If you need all of them you can just write `class MyController implements CrudStrategy`. You can also tell a navigator to use all of the methods from a `CrudStrategy` at once using:
+There is also a shorthand interface `CrudListeners` that implements all of the following listeners: `ItemCreate`, `ItemEdit`, `ItemRemove`, `OnCommit`, `OnDiscard`. If you need all of them you can just write `class MyController implements CrudListeners`. You can also tell a navigator to use all of the methods from a `CrudListeners` at once using:
 
 ```java
    navigation.withStrategy(new MyController())
@@ -454,7 +452,72 @@ There is also a shorthand interface `CrudStrategy` that implements all of the fo
 
 
 
-### Lookup events
+### Lookup events (experimental)
+
    * ClearToFind
    * Find
    
+The `DataNavigation` has experimental support for the *ClearToFind* and *Find* events. The ClearToFind event, "cleans" the fields of a FieldBinder for input, and makes it possible to perform a "search by example" (the same is obtained in a table using a pop-up window). These events can be attached using `ClearToFind.Listener` and `Find.Listener`, or both at once using `FindBehavior`.
+
+The user can input a textual pattern, which will be translated into a Vaadin `Container.Filter` automatically. Supported filters are currently:
+
+- `java.lang.Number`: Less, LessOrEqual, Greater, GreaterOrEqual
+  where pattern is, respectively: "<N", "<=N", ">N", ">=N". Where N is a number. For instance:
+  
+  >=10
+
+on a field called for property "age" will produce a `Compare.GreaterOrEqual("age", 10)`
+ 
+- `java.lang.String`: `SimpleStringFilter`, with patterns:
+  - `foo`: every string that starts with `foo`
+  - `foo*`: same as above
+  - `*foo*`: every string that contains `foo`
+  - `*foo`: for a limitation in `SimpleStringFilter`, this is equivalent to `*foo*`.
+ 
+For every other value, an exact match (`Equal`) is attempted.
+
+The implementation of these conversions can be found in the `DefaultFilterFactory`, which implements a `FilterFactory`. This factory is used by a `FilterApplier`, which in turn applies filters over a container in a `DataNavigation`. The `FilterApplier` class is used by the default listeners that are created with `DataNavigation.withDefaultBehavior()`.
+
+
+### How the "withDefaultBehavior()" method works
+
+
+The `DataNavigation.withDefaultBehavior()` method tries to guess the best predefined set of listeners for the container that the `DataNavigation` is currently pointing to.
+We will now outline how the resolving mechanism works. Besides `CrudBehavior` and `FindBehavior` there is a *third* short-hand interface that mixes in both of these interface with, in addition, `CurrentItemChange.Listener`; this is called the `Behavior` interface.
+
+The `DataNavigation` contains a `BehaviorFactory` instance. This Factory tries to guess which collection of built-in listeners suits better the current configuration, depending whether the navigation controls a FieldBinder or a ListTable and depending on which container the navigation is currently wrapping.
+
+When the `DataNavigation` controls a `FieldBinder`, then the factory is usually a `FieldBinderBehaviorFactory`; when it controls a `ListTable`, then this factory is usually a `TableBehaviorFactory`. In the case of this tutorial, your FieldBinder was controlled by a DataNavigation connected to a `FilterableListContainer`; thus the collection of listeners is taken from the `ListContainerBehavior` class. 
+
+When the `DataNavigation.withDefaultBehavior()` method is invoked, the `BehaviorFactory` is given the current container (`DataNavigation.getContainer()`); if applicable, the factory returns an instance of the `Behavior` interface
+
+## Bonus: Tabular Forms with `BeanTable<T>`
+
+Because having forms with a lone Table is not uncommon, we also provide a stand-alone wrapper for a Table called a `BeanTable<T>`; it works similarly to the `ListTable<T>`, except it does not override the standard behavior of a table, with respect to selection. Methods `getValue()` and `setValue()` maintain their current semantics of "current selection". However, the `BeanTable` is a thin wrapper around Vaadin's Table which augment it with a `DataNavigation` instance, making it possible to obtain the same level of conciseness of the FieldBinder, but for a "Multi-occurrency"-type form:
+
+```java
+
+@Theme("valo")
+public class TutorialTable extends UI {
+
+  @Override
+  protected void init(VaadinRequest request) {
+    final Container.Ordered container = new ListTable<Person>(Person.class);
+
+    final BeanTable<Person> table = new BeanTable<Person>(Person.class, container);
+    table.setVisibleColumns("firstName", "lastName", "age", "birthDate");
+
+    final ButtonBar bar = new ButtonBar(table.getNavigation()
+                                             .withDefaultBehavior());
+
+    final VerticalLayout mainLayout = new MVerticalLayout(bar, table)
+                                      .withFullWidth()
+                                      .withMargin(true);
+
+    setContent(mainLayout);
+  }
+}
+
+```
+
+

@@ -40,28 +40,28 @@ public class NavButtonBar extends AbstractButtonBar {
         btnFirst.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav().first();
+                getNavigation().first();
             }
         });
 
         btnNext.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav().next();
+                getNavigation().next();
             }
         });
 
         btnPrev.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav().prev();
+                getNavigation().prev();
             }
         });
 
         btnLast.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav().last();
+                getNavigation().last();
             }
         });
 
@@ -89,15 +89,15 @@ public class NavButtonBar extends AbstractButtonBar {
 
     @Override
     protected  void updateButtonStatus() {
-        Container.Ordered ctr = nav().getContainer();
-        if (ctr == null || !nav().isNavigationEnabled()) {
+        Container.Ordered ctr = getNavigation().getContainer();
+        if (ctr == null || !getNavigation().isNavigationEnabled()) {
             disable(navButtons);
             return;
         } else {
             enable(navButtons);
         }
 
-        Object currentId = nav().getCurrentItemId();
+        Object currentId = getNavigation().getCurrentItemId();
         if (currentId == null) {
             disable(navButtons);
             return;

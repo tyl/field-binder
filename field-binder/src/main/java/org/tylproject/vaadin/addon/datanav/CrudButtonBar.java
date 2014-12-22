@@ -43,14 +43,14 @@ public class CrudButtonBar extends AbstractButtonBar {
         createButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav().create();
+                getNavigation().create();
             }
         });
 
         editButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav().edit();
+                getNavigation().edit();
             }
         });
 
@@ -58,21 +58,21 @@ public class CrudButtonBar extends AbstractButtonBar {
         removeButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav().remove();
+                getNavigation().remove();
             }
         });
 
         commitButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav().commit();
+                getNavigation().commit();
             }
         });
 
         discardButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                nav().discard();
+                getNavigation().discard();
             }
         });
 
@@ -119,25 +119,25 @@ public class CrudButtonBar extends AbstractButtonBar {
     @Override
     protected void updateButtonStatus() {
 
-        if (!nav().isCrudEnabled()) {
+        if (!getNavigation().isCrudEnabled()) {
             disable(crudButtons);
             return;
         }
 
-        if (nav().isEditingMode()) {
+        if (getNavigation().isEditingMode()) {
             return;
         }
 
 
-        if (nav().getContainer() == null) {
+        if (getNavigation().getContainer() == null) {
             disable(crudButtons);
         } else {
             enable(createButton);
             disable(commitButton, discardButton);
-            if (nav().getContainer().size() == 0) {
+            if (getNavigation().getContainer().size() == 0) {
                 disable(removeButton, editButton);
             } else {
-                if (nav().getCurrentItemId() != null) {
+                if (getNavigation().getCurrentItemId() != null) {
                     enable(removeButton, editButton);
                 }
             }

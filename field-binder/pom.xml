@@ -10,8 +10,8 @@
     <name>FieldBinder Addon</name>
 
     <scm>
-	<url>git://github.com/tyl/field-binder</url>
-	<connection>scm:git:git://github.com/tyl/field-binder</connection>
+	<url>https://github.com/tyl/field-binder</url>
+	<connection>scm:git:ssh://github.com/tyl/field-binder</connection>
 	<developerConnection>scm:git:ssh://git@github.com:/tyl/field-binder</developerConnection>
 	<tag>FieldBinder add-on for Vaadin</tag>
     </scm>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>org.tylproject.vaadin.addon.mongodbcontainer</groupId>
             <artifactId>mongodbcontainer-addon</artifactId>
-            <version>0.9.5.1-beta</version>
+            <version>0.9.5.2-beta-SNAPSHOT</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -66,6 +66,20 @@
             <artifactId>vaadin-server</artifactId>
             <version>7.3.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+
     </dependencies>
 
 

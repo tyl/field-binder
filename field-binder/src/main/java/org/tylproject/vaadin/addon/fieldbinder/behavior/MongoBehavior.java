@@ -1,17 +1,16 @@
-package org.tylproject.vaadin.addon.fieldbinder.strategies;
+package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import org.tylproject.vaadin.addon.MongoContainer;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
-import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
 import org.tylproject.vaadin.addon.datanav.events.OnCommit;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
 /**
  * Created by evacchi on 27/11/14.
  */
-public class MongoDataNavigationStrategy<M> extends AbstractDataNavigationStrategy<M> {
+public class MongoBehavior<M> extends AbstractBehavior<M> {
 
-    public MongoDataNavigationStrategy(FieldBinder<M> fieldBinder) {
+    public MongoBehavior(FieldBinder<M> fieldBinder) {
         super(fieldBinder);
     }
 

@@ -34,6 +34,13 @@ public class MyDataSourceGenerator {
         } catch (Exception ex) { throw new Error(ex); }
     }
 
-
+    public static MongoContainer<Person> makeBufferedMongoContainer() {
+        try {
+            return MongoContainer.Builder.forEntity(
+                    Person.class,
+                    new MongoTemplate(new MongoClient("localhost"), "scratch"))
+                    .buildBuffered();
+        } catch (Exception ex) { throw new Error(ex); }
+    }
 
 }

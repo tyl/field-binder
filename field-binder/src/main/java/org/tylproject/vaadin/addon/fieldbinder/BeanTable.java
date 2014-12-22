@@ -1,42 +1,60 @@
 package org.tylproject.vaadin.addon.fieldbinder;
 
+import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
-
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.TableBehaviorFactory;
-import org.vaadin.maddon.FilterableListContainer;
-
-import java.util.List;
 
 /**
- * A table wrapper where the value is a {@link java.util.List}
- *
- * Generally used together with {@link org.tylproject.vaadin.addon.fieldbinder.FieldBinder}
+ * Created by evacchi on 19/12/14.
  */
-public class ListTable<T> extends CustomField<List<T>> {
+public class BeanTable<T> extends CustomField<T> {
+
 
     protected final VerticalLayout compositionRoot = new VerticalLayout();
     protected final Table table;
-    protected final Class<T> containedBeanClass;
+    protected final Class<T> beanClass;
     private Object[] visibleColumns;
     private final BasicDataNavigation navigation;
 
-    public ListTable(Class<T> containedBeanClass) {
-        table = new Table();
+
+    /**
+     * Constructs a BeanTable for the given class, and the given container.
+     * Instantiates the underlying {@link com.vaadin.ui.Table} automatically
+     *
+     */
+    public BeanTable(final Class<T> beanClass, final Container.Ordered container) {
+
+        this(beanClass, container, new Table());
+
         table.setBuffered(true);
         table.setSizeFull();
-        table.setHeight("300px");
         table.setSelectable(true);
         table.setMultiSelect(false);
+        table.setContainerDataSource(container);
 
-        navigation = new BasicDataNavigation();
-        navigation.setNavigationStrategyFactory(new TableBehaviorFactory(containedBeanClass, table));
+    }
 
-        compositionRoot.addComponent(table);
-        this.containedBeanClass = containedBeanClass;
+    /**
+     * Constructs a BeanTable  for the given class, the given container,
+     * and the given table instance
+     *
+     * @param beanClass
+     * @param container
+     * @param table
+     */
+    public BeanTable(final Class<T> beanClass, final Container.Ordered container, final Table table) {
+
+        this.beanClass = beanClass;
+        this.table = table;
+
+        this.navigation = new BasicDataNavigation(container);
+        this.navigation.setNavigationStrategyFactory(new TableBehaviorFactory(beanClass, table));
+
+        this.compositionRoot.addComponent(table);
 
 
         // when the value of this wrapper (the list of values!)
@@ -45,9 +63,9 @@ public class ListTable<T> extends CustomField<List<T>> {
         this.addValueChangeListener(new ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                navigation.setCurrentItemId(null);
-                table.select(null);
-                table.setSelectable(true);
+                Object itemId = event.getProperty().getValue();
+                navigation.setCurrentItemId(itemId);
+                table.select(itemId);
             }
         });
 
@@ -59,8 +77,15 @@ public class ListTable<T> extends CustomField<List<T>> {
                 navigation.setCurrentItemId(event.getProperty().getValue());
             }
         });
+    }
 
+    public void setContainerDataSource(Container container) {
+        this.table.setContainerDataSource(container);
+        this.select(null);
+    }
 
+    public Container getContainerDataSource() {
+        return this.table.getContainerDataSource();
     }
 
     public void select(Object itemId) {
@@ -73,10 +98,10 @@ public class ListTable<T> extends CustomField<List<T>> {
      * {@link com.vaadin.data.fieldgroup.FieldGroup} or a {@link org.tylproject.vaadin.addon.fieldbinder.FieldBinder}
      */
     public void setVisibleColumns(Object ... visibleColumns) {
-    this.visibleColumns = visibleColumns;
-    table.setVisibleColumns(visibleColumns);
-    setAllHeadersFromColumns(visibleColumns);
-}
+        this.visibleColumns = visibleColumns;
+        table.setVisibleColumns(visibleColumns);
+        setAllHeadersFromColumns(visibleColumns);
+    }
 
     /**
      * Infers the column names from the column ids.
@@ -107,16 +132,8 @@ public class ListTable<T> extends CustomField<List<T>> {
 
     @Override
     public Class getType() {
-        return List.class;
+        return beanClass;
     }
-
-    /**
-     * return the type parameter for the List that this table contains
-     */
-    /**
-     * @return the data type contained by the list
-     */
-    public Class<T> getListType() { return containedBeanClass; }
 
     @Override
     public void focus() {
@@ -124,34 +141,8 @@ public class ListTable<T> extends CustomField<List<T>> {
     }
 
     @Override
-    protected void setInternalValue(List<T> list) {
-        // reset the navigation status
-        navigation.setCurrentItemId(null);
-
-        super.setInternalValue(list);
-
-        if (list == null) {
-            // clears the table contents
-            table.setContainerDataSource(null);
-            table.select(null);
-            navigation.setContainer(null);
-
-        } else {
-            FilterableListContainer<T> listContainer = new FilterableListContainer<T>(containedBeanClass);
-            listContainer.setCollection(list);
-
-            table.setContainerDataSource(listContainer);
-            // clear selection
-            table.select(null);
-            navigation.setContainer(listContainer);
-
-            if (visibleColumns != null) {
-                this.setVisibleColumns(visibleColumns);
-            } else {
-                setAllHeadersFromColumns(table.getVisibleColumns());
-            }
-
-        }
+    protected void setInternalValue(T value) {
+        table.setValue(value);
     }
 
     @Override
@@ -167,7 +158,7 @@ public class ListTable<T> extends CustomField<List<T>> {
     /**
      * @return adds a default button bar to the bottom right of this component
      */
-    public ListTable<T> withDefaultEditorBar() {
+    public BeanTable<T> withDefaultEditorBar() {
         CrudButtonBar buttonBar = buildDefaultCrudBar();
         compositionRoot.setSizeFull();
 
@@ -194,5 +185,4 @@ public class ListTable<T> extends CustomField<List<T>> {
     public BasicDataNavigation getNavigation() {
         return navigation;
     }
-
 }
