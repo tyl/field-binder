@@ -33,6 +33,17 @@ Features:
 
 ![Detailed FieldBinder Taxonomy](http://i.imgur.com/RiFRfxJ.png)
 
+## Table of Contents
+
+* [Maven](#maven)
+* [Demo](#demo-for-the-impatient)
+* [Short Tutorial](#short-tutorial)
+   * [What You Have Done](#what-you-have-done)
+* [Extended Tutorial](#extended-tutorial)
+   * [Final Touches](#final-touches)
+* [DataNavigation](#datanavigation-1)
+* [Bonus: Tabular Forms with `BeanTable<T>`](#bonus-tabular-forms-with-beantablet)
+
 ## Maven
 
 
