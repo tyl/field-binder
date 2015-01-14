@@ -92,7 +92,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
 
         BasicDataNavigation nav = new BasicDataNavigation(container);
-        nav.setNavigationStrategyFactory(new FieldBinderBehaviorFactory(this));
+        nav.setBehaviorFactory(new FieldBinderBehaviorFactory(this));
 
         this.navigation = nav;
 

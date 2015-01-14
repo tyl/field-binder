@@ -20,10 +20,7 @@
 package org.tylproject.vaadin.addon.fieldbinder;
 
 import com.vaadin.data.fieldgroup.DefaultFieldGroupFieldFactory;
-import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.AbstractTextField;
-import com.vaadin.ui.DefaultFieldFactory;
-import com.vaadin.ui.Field;
+import com.vaadin.ui.*;
 
 /**
  * An extended {@link com.vaadin.data.fieldgroup.FieldGroupFieldFactory}
@@ -37,13 +34,31 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
         return f;
     }
 
-        @Override
+    @Override
+    protected AbstractSelect createCompatibleSelect(
+            Class<? extends AbstractSelect> fieldType) {
+        if (fieldType.isAssignableFrom(ComboBox.class)) {
+            AbstractSelect select;
+            select = new ComboBox();
+            select.setImmediate(true);
+            select.setNullSelectionAllowed(false);
+            return select;
+        }
+        else {
+            return super.createCompatibleSelect(fieldType);
+        }
+    }
+
+
+    @Override
     protected <T extends AbstractTextField> T createAbstractTextField(
             Class<T> fieldType) {
         T field = super.createAbstractTextField(fieldType);
         field.setNullRepresentation("");
         return field;
     }
+
+
 
     public <T> ListTable<T> createDetailField(Class<?> dataType, Class<T> containedBeanClass) {
         return new ListTable<T>(containedBeanClass);

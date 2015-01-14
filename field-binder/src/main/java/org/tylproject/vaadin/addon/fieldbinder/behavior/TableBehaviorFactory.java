@@ -37,10 +37,9 @@ public class TableBehaviorFactory<U> implements BehaviorFactory<U> {
 
 
     @Override
-    public <T extends Behavior> T forContainer(Container container) {
-        if (container != null) {
-
-            switch (container.getClass().getCanonicalName()) {
+    public <T extends Behavior> T forContainerType(Class<? extends Container>
+                                                               containerClass) {
+            switch (containerClass.getCanonicalName()) {
                 case "org.vaadin.maddon.ListContainer":
                 case "org.vaadin.maddon.FilterableListContainer":
                     return (T) new ListContainerTableBehavior<U>(beanClass, table);
@@ -48,9 +47,9 @@ public class TableBehaviorFactory<U> implements BehaviorFactory<U> {
                     return (T) new BufferedMongoContainerTableBehavior<U>(beanClass, table);
             }
 
-        }
-
-        throw new UnsupportedOperationException("Unknown container type: "+ container.getClass().getCanonicalName());
+        throw new UnsupportedOperationException("Unknown container type: "+ containerClass.getCanonicalName());
     }
+
+
 
 }

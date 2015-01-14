@@ -71,7 +71,7 @@ public class BeanTable<T> extends CustomField<T> {
         this.table = table;
 
         this.navigation = new BasicDataNavigation(container);
-        this.navigation.setNavigationStrategyFactory(new TableBehaviorFactory(beanClass, table));
+        this.navigation.setBehaviorFactory(new TableBehaviorFactory(beanClass, table));
 
         this.compositionRoot.addComponent(table);
 

@@ -26,5 +26,5 @@ import com.vaadin.data.Container;
  */
 public interface BehaviorFactory<T> {
 
-    <T extends Behavior> T forContainer(Container container);
+    <T extends Behavior> T forContainerType(Class<? extends Container> containerClass);
 }

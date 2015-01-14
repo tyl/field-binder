@@ -52,7 +52,8 @@ public class ListTable<T> extends CustomField<List<T>> {
         table.setMultiSelect(false);
 
         navigation = new BasicDataNavigation();
-        navigation.setNavigationStrategyFactory(new TableBehaviorFactory(containedBeanClass, table));
+        navigation.setBehaviorFactory(new TableBehaviorFactory(containedBeanClass, table));
+        navigation.restrictContainerType(FilterableListContainer.class);
 
         compositionRoot.addComponent(table);
         this.containedBeanClass = containedBeanClass;

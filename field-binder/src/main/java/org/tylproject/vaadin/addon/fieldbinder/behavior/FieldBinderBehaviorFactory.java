@@ -34,19 +34,22 @@ public class FieldBinderBehaviorFactory<U> implements BehaviorFactory<U> {
     }
 
     @Override
-    public <T extends Behavior> T forContainer(Container container) {
-        if (container != null) {
+    public <T extends Behavior> T forContainerType(Class<? extends Container>
+                                                               containerClass) {
+        if (containerClass != null) {
 
-            switch (container.getClass().getCanonicalName()) {
+            switch (containerClass.getCanonicalName()) {
                 case "org.vaadin.maddon.ListContainer":
                 case "org.vaadin.maddon.FilterableListContainer":
                     return (T) new ListContainerBehavior<U>(fieldBinder);
                 case "org.tylproject.vaadin.addon.MongoContainer":
                     return (T) new MongoBehavior<U>(fieldBinder);
+                case "com.vaadin.addon.jpacontainer.JPAContainer":
+                    return (T) new JPAContainerBehavior<U>(fieldBinder);
             }
 
         }
 
-        throw new UnsupportedOperationException("Unknown container type: "+ container.getClass().getCanonicalName());
+        throw new UnsupportedOperationException("Unknown container type: "+ containerClass.getCanonicalName());
     }
 }

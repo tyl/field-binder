@@ -41,12 +41,14 @@ public class ListContainerTableBehavior<T> implements Behavior {
     public ListContainerTableBehavior(final Class<T> beanClass, final Table table) {
         this.beanClass = beanClass;
         this.table = table;
-        this.findStrategy = new TableFindBehavior<>(beanClass, table);
+        this.findStrategy = new TableFindBehavior<>(beanClass);
 
         table.setTableFieldFactory(new TableFieldFactory() {
-            final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
+//            final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
+            final TableFieldFactory fieldFactory = table.getTableFieldFactory();
             @Override
             public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
+//                TableFieldFactory fieldFactory = table.getTableFieldFactory();
                 if (itemId.equals(table.getValue())) {
                     Field<?> f = fieldFactory.createField(container, itemId, propertyId,
                             uiContext);

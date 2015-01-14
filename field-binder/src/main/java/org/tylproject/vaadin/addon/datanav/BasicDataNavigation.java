@@ -28,6 +28,7 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.Behavior;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.BehaviorFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by evacchi on 19/11/14.
@@ -35,13 +36,15 @@ import javax.annotation.Nonnull;
 final public class BasicDataNavigation extends AbstractDataNavigation implements DataNavigation {
 
     private @Nonnull Container.Ordered container;
+    private @Nullable Class<? extends Container.Ordered> restrictedContainerType = null;
+
     private Object currentItemId;
     private boolean navigationEnabled = true;
     private boolean crudEnabled = true;
     private boolean findEnabled = true;
     private boolean editingMode = false;
     private boolean clearToFindMode = false;
-    private BehaviorFactory navigationStrategyFactory;
+    private BehaviorFactory behaviorFactory;
 
 
 
@@ -55,9 +58,8 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
         setContainer(container);
     }
 
-    public void setNavigationStrategyFactory(BehaviorFactory
-                                                     navigationStrategyFactory) {
-        this.navigationStrategyFactory = navigationStrategyFactory;
+    public void setBehaviorFactory(BehaviorFactory behaviorFactory) {
+        this.behaviorFactory = behaviorFactory;
     }
 
     @Override
@@ -65,8 +67,48 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
         return container;
     }
 
+    public void restrictContainerType(Class<? extends Container.Ordered> restrictedContainerType) {
+        if (container != null) {
+            // container.getClass() must be a subtype of restrictedContainerType
+            container.getClass().isAssignableFrom(restrictedContainerType);
+            throw new IllegalStateException(
+                    "Cannot restrict container type to "+restrictedContainerType.getCanonicalName() +":"+
+                            " a container of type " + container.getClass().getCanonicalName() +
+                            " is currently attached"
+            );
+        }
+        this.restrictedContainerType = restrictedContainerType;
+    }
+
+    protected void assertAssignableContainer(@Nonnull Container.Ordered container) {
+        if (! (container == null ||
+                restrictedContainerType == null ||
+                container.getClass().isAssignableFrom(restrictedContainerType) ) ) {
+            throw new AssertionError(
+                    "Allowed container type is "+restrictedContainerType +", "+
+                            container.getClass() + " was given"
+            );
+        }
+    }
+
+    public Class<? extends Container.Ordered> getContainerType() {
+        if (container != null) {
+            return container.getClass();
+        }
+        else if (restrictedContainerType != null) {
+            return restrictedContainerType;
+        }
+        else {
+            throw new IllegalStateException("The container type is currently unknown: " +
+                    "a container must be set with setContainer(), " +
+                    "or an upper bound must be given with restrictContainerType()");
+        }
+    }
+
     @Override
     public void setContainer(Container.Ordered container) {
+        assertAssignableContainer(container);
+
         this.container = container;
         this.currentItemId = null;
         if (container == null || container.size() == 0) disableNavigation();
@@ -316,18 +358,30 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
         return this;
     }
 
-    public <T> BasicDataNavigation withDefaultBehavior() {
+    public BasicDataNavigation withBehavior(Behavior behavior) {
+        this.withCrudListenersFrom(behavior).withFindListenersFrom(behavior);
+        this.addCurrentItemChangeListener(behavior);
+        return this;
+    }
 
-        if (navigationStrategyFactory == null) {
-            throw new IllegalStateException("Cannot automatically assign a default behavior");
+    public BasicDataNavigation withDefaultBehavior() {
+
+        if (behaviorFactory == null) {
+            throw new IllegalStateException(
+                    "Cannot automatically assign a default behavior: no BehaviorFactory");
         }
 
-        Behavior strategy = navigationStrategyFactory.forContainer(container);
+        try {
+            Class<? extends Container.Ordered> containerClass = getContainerType();
+            Behavior strategy = behaviorFactory.forContainerType(containerClass);
+            return this.withBehavior(strategy);
 
-        this.withCrudListenersFrom(strategy).withFindListenersFrom(strategy);
-        this.addCurrentItemChangeListener(strategy);
+        } catch (IllegalStateException ex) {
+            throw new IllegalStateException(
+                    "Cannot automatically assign a default behavior.", ex);
+        }
 
-        return this;
+
     }
 
 }
