@@ -4,7 +4,7 @@
 
     <groupId>org.tylproject.vaadin.addon.fieldbinder</groupId>
     <artifactId>field-binder</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.1</version>
     <name>FieldBinder Addon</name>
 
     <scm>
