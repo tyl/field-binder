@@ -73,9 +73,9 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.peimari</groupId>
-            <artifactId>maddon</artifactId>
-            <version>1.21</version>
+            <groupId>org.vaadin</groupId>
+            <artifactId>viritin</artifactId>
+            <version>1.22</version>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>

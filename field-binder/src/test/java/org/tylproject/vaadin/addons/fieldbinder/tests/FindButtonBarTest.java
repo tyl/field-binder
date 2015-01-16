@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.FindButtonBar;
-import org.vaadin.maddon.FilterableListContainer;
+import org.vaadin.viritin.FilterableListContainer;
 
 import java.util.ArrayList;
 import java.util.Collection;

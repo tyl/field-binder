@@ -21,7 +21,7 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.vaadin.maddon.ListContainer;
+import org.vaadin.viritin.ListContainer;
 
 /**
  * Created by evacchi on 15/12/14.
