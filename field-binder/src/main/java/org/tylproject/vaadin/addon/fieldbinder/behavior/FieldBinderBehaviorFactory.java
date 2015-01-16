@@ -39,8 +39,8 @@ public class FieldBinderBehaviorFactory<U> implements BehaviorFactory<U> {
         if (containerClass != null) {
 
             switch (containerClass.getCanonicalName()) {
-                case "org.vaadin.maddon.ListContainer":
-                case "org.vaadin.maddon.FilterableListContainer":
+                case "org.vaadin.viritin.ListContainer":
+                case "org.vaadin.viritin.FilterableListContainer":
                     return (T) new ListContainerBehavior<U>(fieldBinder);
                 case "org.tylproject.vaadin.addon.MongoContainer":
                     return (T) new MongoBehavior<U>(fieldBinder);

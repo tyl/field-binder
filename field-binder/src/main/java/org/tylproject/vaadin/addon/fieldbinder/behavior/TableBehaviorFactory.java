@@ -40,8 +40,8 @@ public class TableBehaviorFactory<U> implements BehaviorFactory<U> {
     public <T extends Behavior> T forContainerType(Class<? extends Container>
                                                                containerClass) {
             switch (containerClass.getCanonicalName()) {
-                case "org.vaadin.maddon.ListContainer":
-                case "org.vaadin.maddon.FilterableListContainer":
+                case "org.vaadin.viritin.ListContainer":
+                case "org.vaadin.viritin.FilterableListContainer":
                     return (T) new ListContainerTableBehavior<U>(beanClass, table);
                 case "org.tylproject.vaadin.addon.BufferedMongoContainer":
                     return (T) new BufferedMongoContainerTableBehavior<U>(beanClass, table);
