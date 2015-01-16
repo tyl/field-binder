@@ -90,7 +90,7 @@ The demo uses [vaadin4spring](https://github.com/peholmst/vaadin4spring) for con
 
 ## Short Tutorial
 We will create a simple Address Book, where each `Person` may have many `Address`es. 
-For conciseness, we will also use the [Maddon](https://github.com/mstahv/maddon) addon, its `ListContainer` and the shorthand classes for Layouts. You do not need to add any further dependencies to your `pom`, though. The `field-binder` add-on depends on `Maddon` already. Now, let us write the following bean class for the Addresses:
+For conciseness, we will also use the [Viritin](https://github.com/viritin/viritin) addon, its `ListContainer` and the shorthand classes for Layouts. You do not need to add any further dependencies to your `pom`, though. The `field-binder` add-on depends on `Viritin` already. Now, let us write the following bean class for the Addresses:
 
 ```java
 public class Address {
@@ -223,7 +223,7 @@ Fields for `List` types must be generated using the method
 
 the first argument is the type of the elements contained in the `List`. In our case, these are `Address`es; the second argument is the name of the property the contains the `List<Address>`, which, in our `Person` bean is called `addressList`. This method generates  `ListTable<Address>`, which is a thin wrapper around Vaadin's standard `Table`. The `ListTable<Address>` is a `Field` that differs slightly from Vaadin's `Table`. In  Vaadin's `Table`, `getValue()` returns the currently selected element, and `setValue(Object)` changes the currently selected item. In the `ListTable`, the  "value" is the *list of the values contained in the underlying Table*.
 
-`ListTable<T>` uses Maddon's `ListContainer<T>` internally.
+`ListTable<T>` uses Viritin's `ListContainer<T>` internally.
 
 
 #### `DataNavigation` #####
