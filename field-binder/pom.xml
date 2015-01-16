@@ -4,7 +4,7 @@
 
     <groupId>org.tylproject.vaadin.addon.fieldbinder</groupId>
     <artifactId>field-binder</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <name>FieldBinder Addon</name>
 
     <scm>
@@ -94,6 +94,12 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin.addon</groupId>
+            <artifactId>jpacontainer</artifactId>
+            <version>3.2.0</version>
+            <optional>true</optional>
         </dependency>
 
     </dependencies>

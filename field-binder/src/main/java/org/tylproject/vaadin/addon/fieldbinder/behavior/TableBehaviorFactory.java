@@ -45,6 +45,8 @@ public class TableBehaviorFactory<U> implements BehaviorFactory<U> {
                     return (T) new ListContainerTableBehavior<U>(beanClass, table);
                 case "org.tylproject.vaadin.addon.BufferedMongoContainer":
                     return (T) new BufferedMongoContainerTableBehavior<U>(beanClass, table);
+                case "com.vaadin.addon.jpacontainer.JPAContainer":
+                    return (T) new JPAContainerTableBehavior<U>(beanClass, table);
             }
 
         throw new UnsupportedOperationException("Unknown container type: "+ containerClass.getCanonicalName());

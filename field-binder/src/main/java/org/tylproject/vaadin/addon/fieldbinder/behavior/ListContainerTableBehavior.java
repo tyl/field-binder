@@ -35,7 +35,7 @@ public class ListContainerTableBehavior<T> implements Behavior {
     final Class<T> beanClass;
     final TableFindBehavior<T> findStrategy;
 
-    final Set<T> addedItems = new HashSet<>();
+    protected T newEntity = null;
     final List<Field<?>> fields = new ArrayList<>();
 
     public ListContainerTableBehavior(final Class<T> beanClass, final Table table) {
@@ -65,13 +65,13 @@ public class ListContainerTableBehavior<T> implements Behavior {
         });
     }
 
-    private void commitFields() {
+    protected void commitFields() {
         for (Field<?> f: fields) {
             f.commit();
         }
         fields.clear();
     }
-    private void discardFields() {
+    protected void discardFields() {
         for (Field<?> f: fields) {
             f.discard();
         }
@@ -91,7 +91,6 @@ public class ListContainerTableBehavior<T> implements Behavior {
     @Override
     public void itemCreate(ItemCreate.Event event) {
         T bean = createBean();
-        addedItems.add(bean);
 
         event.getSource().getContainer().addItem(bean);
         event.getSource().setCurrentItemId(bean);
@@ -106,7 +105,7 @@ public class ListContainerTableBehavior<T> implements Behavior {
     protected T createBean() {
         try {
             T bean = beanClass.newInstance();
-            addedItems.add(bean);
+            newEntity = bean;
             return bean;
         } catch (Exception ex) {
             throw new UnsupportedOperationException(ex);
@@ -120,9 +119,8 @@ public class ListContainerTableBehavior<T> implements Behavior {
         this.table.setEditable(false);
 
         this.table.setSelectable(true);
-        Object currentBean = event.getSource().getCurrentItemId();
-        if (addedItems.contains(currentBean)) {
-            addedItems.remove(event.getSource().getCurrentItemId());
+        if (newEntity != null) {
+            newEntity = null;
             event.getSource().remove();
         }
     }
@@ -135,7 +133,7 @@ public class ListContainerTableBehavior<T> implements Behavior {
 
         this.table.setSelectable(true);
 
-        addedItems.remove(event.getSource().getCurrentItemId());
+        newEntity = null;
     }
 
     public void itemRemove(ItemRemove.Event event) {
