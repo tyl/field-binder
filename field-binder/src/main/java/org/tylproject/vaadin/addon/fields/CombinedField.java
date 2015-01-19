@@ -1,13 +1,21 @@
 package org.tylproject.vaadin.addon.fields;
 
+import com.vaadin.data.Buffered;
+import com.vaadin.data.Property;
+import com.vaadin.data.Validator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.util.Collection;
+
 /**
- * Created by evacchi on 16/01/15.
+ * It is also possible to override validate(), setInternalValue(), commit(),
+ * setPropertyDataSource, isEmpty() and other methods to implement different
+ * functionalities in the field. Methods overriding setInternalValue() should call the
+ * superclass method.
  */
-public class CombinedField<T> extends CustomField<T> {
+public class CombinedField<T> extends FieldDecorator<T, TextField, String> {
     final CssLayout rootLayout = new CssLayout();
     final TextField textField;
     final Button button;
@@ -15,6 +23,7 @@ public class CombinedField<T> extends CustomField<T> {
 
     public CombinedField(final TextField textField, final Button button, final Class<T>
             type) {
+        super(textField);
         this.textField = textField;
         this.button = button;
         this.type = type;
@@ -36,9 +45,14 @@ public class CombinedField<T> extends CustomField<T> {
         return type;
     }
 
+    @Override
+    public T getValue() {
+        return (T) textField.getConvertedValue();
+    }
 
     @Override
-    protected void setInternalValue(T value) {
-        textField.setConvertedValue(value);
+    public void setValue(T newValue) throws ReadOnlyException {
+        textField.setConvertedValue(newValue);
     }
+
 }
