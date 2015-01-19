@@ -3,35 +3,35 @@ package org.tylproject.vaadin.addon.fields;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.server.Resource;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.CustomField;
-import com.vaadin.ui.Field;
 
 import java.util.Collection;
 
 /**
  * Created by evacchi on 19/01/15.
  */
-public abstract class FieldDecorator<Type, VField extends Field<FieldType>, FieldType> extends CustomField<Type> {
+public abstract class FieldDecorator<T, F extends AbstractField<FT>, FT> extends CustomField<T> {
 
-    VField backingField;
-    public FieldDecorator(VField backingField) {
+    F backingField;
+    public FieldDecorator(F backingField) {
         super();
         this.backingField = backingField;
     }
 
-    public VField getBackingField() {
+    public F getBackingField() {
         return backingField;
     }
 
 
     @Override
-    public abstract Class<? extends Type> getType();
+    public abstract Class<? extends T> getType();
 
     @Override
-    public abstract Type getValue();
+    public abstract T getValue();
 
     @Override
-    public abstract void setValue(Type newValue) throws ReadOnlyException ;
+    public abstract void setValue(T newValue) throws ReadOnlyException ;
 
 
     @Override
@@ -482,5 +482,11 @@ public abstract class FieldDecorator<Type, VField extends Field<FieldType>, Fiel
     @Override
     public void setTabIndex(int tabIndex) {
         getBackingField().setTabIndex(tabIndex);
+    }
+
+    @Override
+    public void setImmediate(boolean immediate) {
+        super.setImmediate(immediate);
+        getBackingField().setImmediate(immediate);
     }
 }
