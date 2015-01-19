@@ -20,6 +20,7 @@
 package org.tylproject.vaadin.addon.fieldbinder;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
@@ -109,8 +110,16 @@ public class BeanTable<T> extends CustomField<T> {
 
     public void select(Object itemId) {
         table.select(itemId);
+        navigation.setCurrentItemId(itemId);
     }
 
+    public Object getSelectedItemId() {
+        return this.getNavigation().getCurrentItemId();
+    }
+
+    public Item getSelectedItem() {
+        return this.getNavigation().getCurrentItem();
+    }
 
     /**
      * Mimicks {@link com.vaadin.ui.Table} but automatically infer column names like a

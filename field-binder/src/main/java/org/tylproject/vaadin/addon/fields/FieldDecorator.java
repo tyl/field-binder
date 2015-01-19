@@ -2,6 +2,7 @@ package org.tylproject.vaadin.addon.fields;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.CustomField;

@@ -35,6 +35,10 @@ public class CombinedField<T> extends FieldDecorator<T, TextField, String> {
 
     }
 
+    public Button getButton() {
+        return button;
+    }
+
     @Override
     protected Component initContent() {
         return rootLayout;
@@ -47,7 +51,10 @@ public class CombinedField<T> extends FieldDecorator<T, TextField, String> {
 
     @Override
     public T getValue() {
-        return (T) textField.getConvertedValue();
+        Object value = textField.getConvertedValue();
+        // special-casing bug in TextField
+        if (("").equals(value)) return null;
+        else return (T) value;
     }
 
     @Override
