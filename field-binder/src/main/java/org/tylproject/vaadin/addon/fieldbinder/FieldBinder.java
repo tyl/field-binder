@@ -184,9 +184,9 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         return new ZoomField<U>(field, (Class<U>) getPropertyType(propertyId));
     }
 
-    public <U> ZoomField<U> buildZoomField(Object propertyId, BeanTable<?> beanTable) {
-        return this.<U>buildZoomField(propertyId).withZoomOnTable(beanTable);
-    }
+//    public <U> ZoomField<U> buildZoomField(Object propertyId, BeanTable<?> beanTable) {
+//        return this.<U>buildZoomField(propertyId).withZoomOnTable(beanTable);
+//    }
     /**
      * focus first component
      */

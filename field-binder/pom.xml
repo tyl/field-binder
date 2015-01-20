@@ -80,7 +80,7 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-server</artifactId>
-            <version>7.3.4</version>
+            <version>7.4.0.beta2</version>
         </dependency>
 
         <dependency>

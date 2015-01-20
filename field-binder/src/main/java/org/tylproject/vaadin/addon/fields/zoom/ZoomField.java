@@ -46,16 +46,6 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         return this;
     }
 
-    /**
-     * "fluent" shorthand to <code>setZoomDialog(new TableZoomDialog<T>(beanTable))</code>
-     * @param beanTable
-     * @return
-     */
-    public ZoomField<T> withZoomOnTable(BeanTable<?> beanTable) {
-        this.setZoomDialog(new TableZoomDialog<T>(beanTable));
-        return this;
-    }
-
     static class ButtonClickListener<T> implements Button.ClickListener {
         final ZoomField<T> field;
         public ButtonClickListener(ZoomField<T> field) {
@@ -111,10 +101,11 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
             btnSelect.addStyleName(ValoTheme.BUTTON_PRIMARY);
             content.addStyleName(ValoTheme.PANEL_BORDERLESS);
             Component dialogContents = field.getZoomDialog();
-            dialogContents.setWidth("100%");
-            dialogContents.setHeightUndefined();
+//            dialogContents.setWidth("100%");
+//            dialogContents.setHeightUndefined();
             content.setContent(dialogContents);
             content.setSizeFull();
+            rootLayout.setMargin(true);
 
             buttonBar.setStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
             buttonBar.setWidth("100%");
@@ -128,7 +119,7 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         }
 
         public void show() {
-            field.getZoomDialog().show(this.field.getValue());
+//            field.getZoomDialog().show(this.field.getValue());
             UI.getCurrent().addWindow(this);
             center();
         }
