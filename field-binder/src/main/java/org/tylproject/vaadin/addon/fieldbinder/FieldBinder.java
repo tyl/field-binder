@@ -23,12 +23,15 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Field;
+import com.vaadin.ui.TextField;
 import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.WrapDynaClass;
 import org.tylproject.vaadin.addon.datanav.*;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.FieldBinderBehaviorFactory;
+import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
 
 import java.util.*;
 
@@ -176,6 +179,14 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         return listTable;
     }
 
+    public <U> ZoomField<U> buildZoomField(Object propertyId) {
+        TextField field = super.build(null, propertyId, TextField.class);
+        return new ZoomField<U>(field, (Class<U>) getPropertyType(propertyId));
+    }
+
+    public <U> ZoomField<U> buildZoomField(Object propertyId, BeanTable<?> beanTable) {
+        return this.<U>buildZoomField(propertyId).withZoomOnTable(beanTable);
+    }
     /**
      * focus first component
      */

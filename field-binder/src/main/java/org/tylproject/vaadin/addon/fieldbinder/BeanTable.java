@@ -51,7 +51,10 @@ public class BeanTable<T> extends CustomField<T> {
         this(beanClass, container, new Table());
 
         table.setBuffered(true);
-        table.setSizeFull();
+        table.setWidth("100%");
+        table.setHeight("300px");
+
+
         table.setSelectable(true);
         table.setMultiSelect(false);
         table.setContainerDataSource(container);

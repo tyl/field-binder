@@ -46,7 +46,14 @@ public class Strings extends ListResourceBundle {
             {"find", "Find"},
 
             {"recordCounter", "{0} of {1}"},
-            {"recordCounterFiltered", "{0} of {1} (*)"}
+            {"recordCounterFiltered", "{0} of {1} (*)"},
+
+            // confirm dialogs
+            {"ok", "OK"},
+            {"cancel", "Cancel"},
+
+            {"select", "Select"},
+            {"selectNone", "Select None"},
 
     };
 

@@ -12,9 +12,9 @@ import java.util.Collection;
 /**
  * Created by evacchi on 19/01/15.
  */
-public abstract class FieldDecorator<T, F extends AbstractField<FT>, FT> extends CustomField<T> {
+public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends CustomField<T> {
 
-    F backingField;
+    private final F backingField;
     public FieldDecorator(F backingField) {
         super();
         this.backingField = backingField;

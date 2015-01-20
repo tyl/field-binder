@@ -15,23 +15,21 @@ import java.util.Collection;
  * functionalities in the field. Methods overriding setInternalValue() should call the
  * superclass method.
  */
-public class CombinedField<T> extends FieldDecorator<T, TextField, String> {
-    final CssLayout rootLayout = new CssLayout();
-    final TextField textField;
-    final Button button;
-    final Class<T> type;
+public class CombinedField<T, FT, F extends AbstractField<FT>> extends FieldDecorator<T, FT, F> {
+    final private CssLayout rootLayout = new CssLayout();
+    final private Button button;
+    final private Class<T> type;
 
-    public CombinedField(final TextField textField, final Button button, final Class<T>
+    public CombinedField(final F field, final Button button, final Class<T>
             type) {
-        super(textField);
-        this.textField = textField;
+        super(field);
         this.button = button;
         this.type = type;
 
-        this.textField.setConverter(type);
+        this.getBackingField().setConverter(type);
 
         rootLayout.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        rootLayout.addComponents(textField, button);
+        rootLayout.addComponents(field, button);
 
     }
 
@@ -51,7 +49,7 @@ public class CombinedField<T> extends FieldDecorator<T, TextField, String> {
 
     @Override
     public T getValue() {
-        Object value = textField.getConvertedValue();
+        Object value = getBackingField().getConvertedValue();
         // special-casing bug in TextField
         if (("").equals(value)) return null;
         else return (T) value;
@@ -59,7 +57,7 @@ public class CombinedField<T> extends FieldDecorator<T, TextField, String> {
 
     @Override
     public void setValue(T newValue) throws ReadOnlyException {
-        textField.setConvertedValue(newValue);
+        getBackingField().setConvertedValue(newValue);
     }
 
 }
