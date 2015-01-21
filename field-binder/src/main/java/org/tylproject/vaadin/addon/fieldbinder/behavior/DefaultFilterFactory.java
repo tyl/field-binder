@@ -25,9 +25,6 @@ import com.vaadin.data.util.filter.And;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.MonthDay;
-import org.joda.time.Months;
 
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -180,34 +177,58 @@ public class DefaultFilterFactory implements FilterFactory {
     protected final static Pattern monthDatePattern = Pattern.compile("(\\d\\d)(?:"+dateSepPattern+")((\\d\\d)?\\d\\d)");
     protected final static Pattern yearPattern = Pattern.compile("\\d{4}");
 
+
+    private static enum RangeEndpoint {
+        Min, Max;
+    }
+
+    private static class Range<T> {
+        private final T left;
+        private final T right;
+
+        public Range(T left, T right) {
+            this.left = left;
+            this.right = right;
+        }
+
+        public T getLeft() {
+            return left;
+        }
+
+        public T getRight() {
+            return right;
+        }
+    }
+
+
     protected Date leftRange(String pattern) {
         String[] range = pattern.split(dateRangeSepRegex);
-        return stringToDate(range[0], -1);
+        return stringToDate(range[0], RangeEndpoint.Min);
     }
 
     protected Date rightRange(String pattern) {
         String[] range = pattern.split(dateRangeSepRegex);
-        if (range.length == 1) return stringToDate(range[0], 1);
-        return stringToDate(range[1], 1);
+        if (range.length == 1) return stringToDate(range[0], RangeEndpoint.Max);
+        return stringToDate(range[1], RangeEndpoint.Max);
     }
 
-    private static Date stringToDate(String pattern, int leftOrRight) {
+    private static Date stringToDate(String pattern, RangeEndpoint rangeEndpoint) {
 
         System.out.println(pattern);
 
         Matcher m = fullDatePattern.matcher(pattern);
-        if (m.matches()) return fullDatePatternToDate(m, leftOrRight);
+        if (m.matches()) return fullDatePatternToDate(m, rangeEndpoint);
 
         m = monthDatePattern.matcher(pattern);
-        if (m.matches()) return monthDatePatternToDate(m, leftOrRight);
+        if (m.matches()) return monthDatePatternToDate(m, rangeEndpoint);
 
         m = yearPattern.matcher(pattern);
-        if (m.matches()) return yearToDate(m, leftOrRight);
+        if (m.matches()) return yearToDate(m, rangeEndpoint);
 
         return null;
     }
 
-    private static Date fullDatePatternToDate(Matcher m, int leftOrRight) {
+    private static Date fullDatePatternToDate(Matcher m, RangeEndpoint rangeEndpoint) {
         DateTime t = DateTime.now();
 
         String maybeDay = m.group(1);
@@ -231,7 +252,7 @@ public class DefaultFilterFactory implements FilterFactory {
                 maybeDayVal   = 1;
 
                 dt = new DateTime(maybeYearVal, maybeMonthVal, maybeDayVal, 0,0);
-                if (leftOrRight > 0) dt = dt.dayOfMonth().withMaximumValue();
+                if (rangeEndpoint == RangeEndpoint.Max) dt = dt.dayOfMonth().withMaximumValue();
             } else {
 
                 dt = new DateTime(maybeYearVal, maybeMonthVal, maybeDayVal, 0,0);
@@ -256,19 +277,19 @@ public class DefaultFilterFactory implements FilterFactory {
         return dt.toDate();
     }
 
-    private static Date monthDatePatternToDate(Matcher m, int leftOrRight) {
+    private static Date monthDatePatternToDate(Matcher m, RangeEndpoint rangeEndpoint) {
         int y = Integer.parseInt(m.group(2));
         int mm = Integer.parseInt(m.group(1));
 
         DateTime dt = new DateTime(y, mm, 1, 0, 0);
-        return leftOrRight < 0 ? dt.toDate()
+        return rangeEndpoint == RangeEndpoint.Min ? dt.toDate()
             : new DateTime(y, mm, dt.dayOfMonth().getMaximumValue(), 23, 59, 59).toDate();
     }
 
 
-    private static Date yearToDate(Matcher m, int leftOrRight) {
+    private static Date yearToDate(Matcher m, RangeEndpoint rangeEndpoint) {
         int y = Integer.parseInt(m.group(0));
-        if (leftOrRight < 0) return new DateTime(y, 1, 1, 0, 0).toDate();
+        if (rangeEndpoint == RangeEndpoint.Min) return new DateTime(y, 1, 1, 0, 0).toDate();
         else return new DateTime(y, 12, 31, 23, 59, 59).toDate();
 
     }

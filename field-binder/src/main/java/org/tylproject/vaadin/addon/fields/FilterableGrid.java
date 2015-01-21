@@ -79,51 +79,6 @@ public class FilterableGrid extends Grid {
     }
 
     protected Field<?> makeFilterField(final Object propertyId, Container.Filterable container) {
-//        final Button clearBtn = new Button(FontAwesome.TIMES_CIRCLE);
-//
-//
-//        final TextField textField = new TextField();
-//        textField.setNullRepresentation("");
-//        textField.setImmediate(true);
-//        textField.addTextChangeListener(new FieldEvents.TextChangeListener() {
-//            @Override
-//            public void textChange(FieldEvents.TextChangeEvent event) {
-//                String text = event.getText();
-//
-//                Container.Filterable container = (Container.Filterable)
-//                getContainerDataSource();
-//
-//                Object oldFilter = textField.getData();
-//                container.removeContainerFilter((Container.Filter) oldFilter);
-//                clearBtn.setVisible(false);
-//
-//
-//                if (text != null && !text.isEmpty()) {
-//                    Container.Filter newFilter = new SimpleStringFilter(propertyId,
-//                    text, true, false);
-//                    textField.setData(newFilter);
-//                    container.addContainerFilter(newFilter);
-//
-//                    clearBtn.setVisible(true);
-//
-//                }
-//            }
-//        });
-//
-//        clearBtn.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                textField.setValue(null);
-//                Object oldFilter = textField.getData();
-//                Container.Filterable container = (Container.Filterable)
-//                        getContainerDataSource();
-//                container.removeContainerFilter((Container.Filter) oldFilter);
-//            }
-//        });
-//
-//
-//        CombinedField<String, String, TextField> searchField = new CombinedField<>(textField, clearBtn, String.class);
-//        textField.setWidth("100%");
         return new FilterExpressionField(propertyId, container.getType(propertyId), container);
     }
 
