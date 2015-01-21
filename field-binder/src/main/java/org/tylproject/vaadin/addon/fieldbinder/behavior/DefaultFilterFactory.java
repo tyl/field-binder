@@ -173,7 +173,7 @@ public class DefaultFilterFactory implements FilterFactory {
 
     protected final static String dateRangeSepRegex = "\\.\\.";
     protected final static Pattern dateSepPattern = Pattern.compile("[/.-]");
-    protected final static Pattern fullDatePattern = Pattern.compile("(\\d\\d)(?:"+dateSepPattern+")(\\d\\d)(\\2((\\d\\d)?\\d\\d))?");
+    protected final static Pattern fullDatePattern = Pattern.compile("(\\d\\d)("+dateSepPattern+")(\\d\\d)\\2((:?\\d\\d)?\\d\\d)");
     protected final static Pattern monthDatePattern = Pattern.compile("(\\d\\d)(?:"+dateSepPattern+")((\\d\\d)?\\d\\d)");
     protected final static Pattern yearPattern = Pattern.compile("\\d{4}");
 
@@ -231,9 +231,9 @@ public class DefaultFilterFactory implements FilterFactory {
     private static Date fullDatePatternToDate(Matcher m, RangeEndpoint rangeEndpoint) {
         DateTime t = DateTime.now();
 
-        String maybeDay = m.group(1);
+        String maybeDay   = m.group(1);
         String maybeMonth = m.group(3);
-        String maybeYear = m.group(5);
+        String maybeYear  = m.group(4);
         int maybeMonthVal, maybeDayVal, maybeYearVal;
 
         maybeDayVal = Integer.parseInt(maybeDay);
@@ -289,8 +289,9 @@ public class DefaultFilterFactory implements FilterFactory {
 
     private static Date yearToDate(Matcher m, RangeEndpoint rangeEndpoint) {
         int y = Integer.parseInt(m.group(0));
-        if (rangeEndpoint == RangeEndpoint.Min) return new DateTime(y, 1, 1, 0, 0).toDate();
-        else return new DateTime(y, 12, 31, 23, 59, 59).toDate();
+        return (rangeEndpoint == RangeEndpoint.Min) ?
+             new DateTime(y, 1, 1, 0, 0).toDate()
+             : new DateTime(y, 12, 31, 23, 59, 59).toDate();
 
     }
 }
