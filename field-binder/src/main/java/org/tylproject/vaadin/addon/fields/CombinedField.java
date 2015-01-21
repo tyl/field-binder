@@ -20,8 +20,7 @@ public class CombinedField<T, FT, F extends AbstractField<FT>> extends FieldDeco
     final private Button button;
     final private Class<T> type;
 
-    public CombinedField(final F field, final Button button, final Class<T>
-            type) {
+    public CombinedField(final F field, final Button button, final Class<T> type) {
         super(field);
         this.button = button;
         this.type = type;

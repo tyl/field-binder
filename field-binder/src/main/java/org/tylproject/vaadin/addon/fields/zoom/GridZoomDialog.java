@@ -1,25 +1,40 @@
 package org.tylproject.vaadin.addon.fields.zoom;
 
+import com.vaadin.data.Item;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.VerticalLayout;
 
 /**
  * Created by evacchi on 20/01/15.
  */
-public class GridZoomDialog<T> extends CustomComponent implements ZoomDialog<T> {
+public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
 
     private final Grid grid;
+    private final Object propertyId;
 
-    public GridZoomDialog(Grid grid) {
+
+    public GridZoomDialog(Grid grid, Object propertyId) {
         this.grid = grid;
+        this.propertyId = propertyId;
+
         if (!(grid.getSelectionModel() instanceof Grid.SingleSelectionModel)) {
-            throw new AssertionError("Selection mode must be "+Grid.SelectionMode.SINGLE.getClass()+", "+grid.getSelectionModel().getClass() +" was given");
+            throw new AssertionError(
+                "Selection mode must be "+Grid.SelectionMode.SINGLE.getClass()+", "+
+                grid.getSelectionModel().getClass() +" was given");
         }
-        setCompositionRoot(grid);
+
+        setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
+        addComponent(grid);
+        setExpandRatio(getGrid(), 1f);
+        setSizeFull();
     }
 
-    public GridZoomDialog(Grid grid, String caption) {
-        this(grid);
+
+
+    public GridZoomDialog(Grid grid, Object propertyId, String caption) {
+        this(grid, propertyId);
         this.setCaption(caption);
     }
 
@@ -35,14 +50,17 @@ public class GridZoomDialog<T> extends CustomComponent implements ZoomDialog<T> 
      */
     @Override
     public void show(T value) {
-        getGrid().select(value);
+
     }
 
     /**
-     * Returns the current selected itemId
+     * Returns the current selected value
      */
     @Override
     public T dismiss() {
-        return (T) getGrid().getSelectedRow();
+        Object itemId = getGrid().getSelectedRow();
+        if (itemId == null) return null;
+        Item item = getGrid().getContainerDataSource().getItem(itemId);
+        return (T) item.getItemProperty(propertyId).getValue();
     }
 }

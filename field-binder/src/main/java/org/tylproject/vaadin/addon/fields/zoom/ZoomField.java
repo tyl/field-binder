@@ -2,6 +2,7 @@ package org.tylproject.vaadin.addon.fields.zoom;
 
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.tylproject.vaadin.addon.datanav.resources.Strings;
@@ -28,6 +29,7 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
 
     public ZoomField(Class<T> type) {
         this(new TextField(), type);
+        getBackingField().setNullRepresentation("");
     }
 
     public ZoomDialog<T> getZoomDialog() {
@@ -82,7 +84,7 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
             makeLayout(field);
 
             setContent(rootLayout);
-            setWidth("400px");
+            setWidth("700px");
             setHeight("400px");
 
             this.field = field;
@@ -101,11 +103,10 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
             btnSelect.addStyleName(ValoTheme.BUTTON_PRIMARY);
             content.addStyleName(ValoTheme.PANEL_BORDERLESS);
             Component dialogContents = field.getZoomDialog();
-//            dialogContents.setWidth("100%");
-//            dialogContents.setHeightUndefined();
+
             content.setContent(dialogContents);
             content.setSizeFull();
-            rootLayout.setMargin(true);
+//            rootLayout.setMargin(true);
 
             buttonBar.setStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
             buttonBar.setWidth("100%");
@@ -114,6 +115,7 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
 
             rootLayout.setSizeFull();
             rootLayout.setExpandRatio(content, 1);
+            rootLayout.setMargin(new MarginInfo(true, false, true, false));
 
             return rootLayout;
         }
@@ -122,6 +124,7 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
 //            field.getZoomDialog().show(this.field.getValue());
             UI.getCurrent().addWindow(this);
             center();
+            focus();
         }
 
         @Override
