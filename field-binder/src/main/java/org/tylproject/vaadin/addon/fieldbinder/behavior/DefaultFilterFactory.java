@@ -25,6 +25,9 @@ import com.vaadin.data.util.filter.And;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.MonthDay;
+import org.joda.time.Months;
 
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -45,12 +48,14 @@ public class DefaultFilterFactory implements FilterFactory {
 
     @Override
     public Container.Filter createFilter(Class<?> targetType, Object targetPropertyId, Object pattern) {
-        if (String.class.isAssignableFrom(targetType)) {
+        if (String.class.isAssignableFrom(targetType) || java.lang.Enum.class.isAssignableFrom(targetType)) {
             return filterForString(targetPropertyId, pattern.toString());
-        } else
-        if (Number.class.isAssignableFrom(targetType)) {
+        } else if (Number.class.isAssignableFrom(targetType)) {
             return filterForNumber(targetPropertyId, pattern.toString());
+        } else if (Date.class.isAssignableFrom(targetType) || DateTime.class.isAssignableFrom(targetType)) {
+            return filterForDateRange(targetPropertyId, pattern.toString());
         } else {
+            // fallback to equality
             return new Compare.Equal(targetPropertyId, pattern);
         }
     }
@@ -171,8 +176,8 @@ public class DefaultFilterFactory implements FilterFactory {
 
     protected final static String dateRangeSepRegex = "\\.\\.";
     protected final static Pattern dateSepPattern = Pattern.compile("[/.-]");
-    protected final static Pattern fullDatePattern = Pattern.compile("(\\d\\d)("+dateSepPattern+")(\\d\\d)(\\2((\\d\\d)?\\d\\d))?");
-    protected final static Pattern monthDatePattern = Pattern.compile("(\\d\\d)("+dateSepPattern+")((\\d\\d)?\\d\\d)");
+    protected final static Pattern fullDatePattern = Pattern.compile("(\\d\\d)(?:"+dateSepPattern+")(\\d\\d)(\\2((\\d\\d)?\\d\\d))?");
+    protected final static Pattern monthDatePattern = Pattern.compile("(\\d\\d)(?:"+dateSepPattern+")((\\d\\d)?\\d\\d)");
     protected final static Pattern yearPattern = Pattern.compile("\\d{4}");
 
     protected Date leftRange(String pattern) {
@@ -255,7 +260,9 @@ public class DefaultFilterFactory implements FilterFactory {
         int y = Integer.parseInt(m.group(2));
         int mm = Integer.parseInt(m.group(1));
 
-        return null;
+        DateTime dt = new DateTime(y, mm, 1, 0, 0);
+        return leftOrRight < 0 ? dt.toDate()
+            : new DateTime(y, mm, dt.dayOfMonth().getMaximumValue(), 23, 59, 59).toDate();
     }
 
 
