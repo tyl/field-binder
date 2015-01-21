@@ -84,7 +84,7 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
             makeLayout(field);
 
             setContent(rootLayout);
-            setWidth("700px");
+            setWidth("1200px");
             setHeight("400px");
 
             this.field = field;
