@@ -93,8 +93,9 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
             btnSelectNone.addClickListener(this);
             btnCancel.addClickListener(this);
 
-            setCloseShortcut(ShortcutAction.KeyCode.ESCAPE, null);
-
+            btnCancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
+            btnSelect.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+            btnSelectNone.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.SHIFT);
 
         }
 
