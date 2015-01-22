@@ -13,27 +13,24 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.FilterFactory;
  */
 public class FilterExpressionField extends CombinedField<String, String, TextField> {
 
-    private Container.Filter lastAppliedFilter;
-    private final Container.Filterable targetContainer;
     private static final FilterFactory filterFactory = new DefaultFilterFactory();
 
+    private Container.Filter lastAppliedFilter;
+    private Container.Filterable targetContainer;
+    private final Object targetPropertyId;
+    private final Class<?> targetPropertyType;
 
 
-    public FilterExpressionField(final Object propertyId, final Class<?> propertyType, final Container.Filterable targetContainer) {
+    public FilterExpressionField(final Object propertyId, final Class<?> propertyType) {
         super(new TextField(), new Button(FontAwesome.TIMES_CIRCLE), String.class);
-        this.targetContainer = targetContainer;
         final Button clearBtn = getButton();
         final TextField textField = getBackingField();
 
+        this.targetPropertyId = propertyId;
+        this.targetPropertyType = propertyType;
 
         textField.setNullRepresentation("");
         textField.setImmediate(true);
-        textField.addTextChangeListener(new FieldEvents.TextChangeListener() {
-            @Override
-            public void textChange(FieldEvents.TextChangeEvent event) {
-                applyFilterPattern(propertyType, propertyId, event.getText(), targetContainer);
-            }
-        });
 
         clearBtn.addClickListener(new Button.ClickListener() {
             @Override
@@ -43,16 +40,40 @@ public class FilterExpressionField extends CombinedField<String, String, TextFie
         });
     }
 
+
+    public FilterExpressionField(final Object propertyId, final Class<?> propertyType,
+                                 final Container.Filterable targetContainer) {
+        this(propertyId, propertyType);
+        setTargetContainer(targetContainer);
+    }
+
+    public void setTargetContainer(Container.Filterable targetContainer) {
+        if (!getBackingField().getListeners(
+                FieldEvents.TextChangeEvent.class).contains(textChangeListener)) {
+            getBackingField().addTextChangeListener(textChangeListener);
+        }
+        this.targetContainer = targetContainer;
+    }
+
+    public Container.Filterable getTargetContainer() {
+        return targetContainer;
+    }
+
+
     public void setLastAppliedFilter(Container.Filter filter) {
         this.lastAppliedFilter = filter;
     }
 
+    public Container.Filter getFilterFromValue() {
+        return filterFactory.createFilter(targetPropertyType, targetPropertyId, getValue());
+    }
 
-    public Container.Filter getLastAppliedFilter() {
+
+    protected Container.Filter getLastAppliedFilter() {
         return this.lastAppliedFilter;
     }
 
-    public Container.Filter
+    protected Container.Filter
             applyFilterPattern(Class<?> propertyType,
                                 Object propertyId,
                                 String pattern,
@@ -62,7 +83,7 @@ public class FilterExpressionField extends CombinedField<String, String, TextFie
         filterableContainer.removeContainerFilter(oldFilter);
 
         if (pattern != null && !pattern.isEmpty()) {
-            Container.Filter newFilter = filterFactory.createFilter(propertyType, propertyId, pattern);
+            Container.Filter newFilter = getFilterFromValue();
             setLastAppliedFilter(newFilter);
             filterableContainer.addContainerFilter(newFilter);
         }
@@ -74,9 +95,20 @@ public class FilterExpressionField extends CombinedField<String, String, TextFie
         setValue(null);
         Container.Filter oldFilter = getLastAppliedFilter();
         setLastAppliedFilter(null);
-        targetContainer.removeContainerFilter(oldFilter);
-
+        Container.Filterable c = getTargetContainer();
+        if (c != null) c.removeContainerFilter(oldFilter);
     }
+
+    private final FieldEvents.TextChangeListener textChangeListener = new FieldEvents.TextChangeListener() {
+        @Override
+        public void textChange(FieldEvents.TextChangeEvent event) {
+            applyFilterPattern(
+                    targetPropertyType,
+                    targetPropertyId,
+                    event.getText(),
+                    getTargetContainer());
+        }
+    };
 
 
 }

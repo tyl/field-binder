@@ -36,6 +36,7 @@ import java.util.*;
 public abstract class AbstractFieldBinder<T extends FieldGroup> implements Serializable {
     private final T fieldGroup;
     private final Map<Object, Field<?>> propertyIdToField;
+    private final Map<Object, Class<?>> propertyIdToType;
     private final Map<Field<?>, Object> fieldToPropertyId;
 
     private Item itemDataSource = null;
@@ -46,7 +47,9 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
     public AbstractFieldBinder(T fieldGroup) {
         this.fieldGroup = fieldGroup;
         this.propertyIdToField = new LinkedHashMap<Object, Field<?>>();
+        this.propertyIdToType  = new LinkedHashMap<Object, Class<?>>();
         this.fieldToPropertyId = new LinkedHashMap<Field<?>, Object>();
+
     }
 
     public T getFieldGroup() {
@@ -66,6 +69,12 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
     public Map<Object, Field<?>> getPropertyIdToFieldBindings() {
         return Collections.unmodifiableMap(propertyIdToField);
     }
+
+
+    public Map<Object, Class<?>> getPropertyIdToTypeBindings() {
+        return Collections.unmodifiableMap(propertyIdToType);
+    }
+
 
     public Field<?> getField(Object propertyId) {
         return propertyIdToField.get(propertyId);
@@ -149,6 +158,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
     public void bind(Field<?> field, Object propertyId) {
         propertyIdToField.put(propertyId, field);
         fieldToPropertyId.put(field, propertyId);
+        propertyIdToType.put(propertyId, field.getType());
 
         if (field instanceof AbstractField<?>) {
             ((AbstractField) field).setValidationVisible(false);

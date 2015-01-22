@@ -70,10 +70,10 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
 //        getBackingField().attach();
 //    }
 
-    @Override
-    public String getCaption() {
-        return getBackingField().getCaption();
-    }
+//    @Override
+//    public String getCaption() {
+//        return getBackingField().getCaption();
+//    }
 
     @Override
     public String getDescription() {
@@ -140,10 +140,10 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
         getBackingField().removeStyleName(style);
     }
 
-    @Override
-    public void setCaption(String caption) {
-        getBackingField().setCaption(caption);
-    }
+//    @Override
+//    public void setCaption(String caption) {
+//        getBackingField().setCaption(caption);
+//    }
 
     @Override
     public void setEnabled(boolean enabled) {
