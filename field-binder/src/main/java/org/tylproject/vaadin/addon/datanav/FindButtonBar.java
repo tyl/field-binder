@@ -52,6 +52,7 @@ public class FindButtonBar extends AbstractButtonBar {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 getNavigation().clearToFind();
+                enable(btnFind);
             }
         });
 

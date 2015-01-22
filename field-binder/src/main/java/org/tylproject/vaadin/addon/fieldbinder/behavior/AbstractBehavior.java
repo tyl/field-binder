@@ -82,34 +82,20 @@ public abstract class AbstractBehavior<T> implements Behavior {
 
 
     public void clearToFind(ClearToFind.Event event) {
-        // if the navigator does not point to a valid id
-        // FIXME I don't recall what this particular check was supposed to mean: it was a hack
 
-        DataNavigation nav = event.getSource();
-
-        if (nav.getCurrentItemId() == null) {
+        if (fieldBinder.hasItemDataSource()) {
             fieldBinder.unbindAll();
-            fieldBinder.setReadOnly(false);
-            event.getSource().setCurrentItemId(null);
-
-
-
-        } else {
-            // fields are already unbound, then
-            // jus clear their contents
-            fieldBinder.setReadOnly(false);
-            event.getSource().setCurrentItemId(null);
-            for (Field<?> f : fieldBinder.getFields())
-                f.setValue(null);
-
         }
+
+        event.getSource().setCurrentItemId(null);
+        fieldBinder.setReadOnly(false);
 
         if (filterApplier.hasAppliedFilters()) {
             filterApplier.restorePatterns(fieldBinder.getPropertyIdToFieldBindings());
             filterApplier.clearPropertyIdToFilterPatterns();
         }
-
-
+//
+//
         fieldBinder.focus();
     }
 
