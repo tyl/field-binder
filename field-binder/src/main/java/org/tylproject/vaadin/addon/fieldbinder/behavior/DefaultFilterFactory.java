@@ -45,6 +45,8 @@ public class DefaultFilterFactory implements FilterFactory {
 
     @Override
     public Container.Filter createFilter(Class<?> targetType, Object targetPropertyId, Object pattern) {
+        if (pattern == null) return null;
+
         if (String.class.isAssignableFrom(targetType) || java.lang.Enum.class.isAssignableFrom(targetType)) {
             return filterForString(targetPropertyId, pattern.toString());
         } else if (Number.class.isAssignableFrom(targetType)) {
