@@ -9,16 +9,17 @@ import org.tylproject.vaadin.addon.fields.FilterExpressionField;
 import java.util.*;
 
 /**
- * Created by evacchi on 22/01/15.
+ * A form that automatically produces a collection of Filters
  */
 public class SearchForm extends FormLayout {
     final Map<Object, Class<?>> propertyIdToType = new LinkedHashMap<>();
     final Map<Object, FilterExpressionField> propertyIdToFilterExpressionField = new LinkedHashMap<>();
 
-
+    /**
+     * Create a SearchForm for the fields of a FieldBinder
+     */
     public SearchForm(FieldBinder<?> fieldBinder) {
         final Map<Object, Class<?>> propertyIdToType = fieldBinder.getPropertyIdToTypeBindings();
-//        final Map<Object, Field<?>> propertyIdToFieldBindings = fieldBinder.getPropertyIdToFieldBindings();
 
         for (Map.Entry<Object, Class<?>> e: propertyIdToType.entrySet()) {
             Object propertyId = e.getKey();
@@ -37,6 +38,9 @@ public class SearchForm extends FormLayout {
 
     }
 
+    /**
+     * Create a SearchForm for pairs of the form (propertyId, type)
+     */
     public SearchForm(Map<Object, Class<?>> propertyIdToType) {
         this.propertyIdToType.putAll(propertyIdToType);
         makeAllFields(propertyIdToType);
@@ -46,6 +50,9 @@ public class SearchForm extends FormLayout {
         }
     }
 
+    /**
+     * add a field to the SearchForm for the given propertyId, propertyType
+     */
     public void addProperty(Object propertyId, Class<?> propertyType) {
         this.propertyIdToType.put(propertyId, propertyType);
         FilterExpressionField f = makeField(propertyId, propertyType);
@@ -53,6 +60,9 @@ public class SearchForm extends FormLayout {
         this.addComponent(f);
     }
 
+    /**
+     * Return the inferred filters for the values currently in the form fields
+     */
     public Map<Object, Container.Filter> getFiltersFromValues() {
         final Map<Object, Container.Filter> filtersFromValues = new LinkedHashMap<>();
         for (Map.Entry<Object, FilterExpressionField> e : getPropertyIdToFilterExpressionField().entrySet()) {

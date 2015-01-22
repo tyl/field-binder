@@ -1,6 +1,7 @@
 package org.tylproject.vaadin.addon.fields;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Property;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
@@ -9,7 +10,9 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultFilterFactory;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.FilterFactory;
 
 /**
- * Created by evacchi on 21/01/15.
+ * A Field that returns a filter for a given text pattern; it also immediately applies the
+ * filter to a Container instance, if it is given
+ *
  */
 public class FilterExpressionField extends CombinedField<String, String, TextField> {
 
@@ -21,6 +24,11 @@ public class FilterExpressionField extends CombinedField<String, String, TextFie
     private final Class<?> targetPropertyType;
 
 
+    /**
+     *
+     * @param propertyId the propertyId of the Filter
+     * @param propertyType the type of the property in the Filter
+     */
     public FilterExpressionField(final Object propertyId, final Class<?> propertyType) {
         super(new TextField(), new Button(FontAwesome.TIMES_CIRCLE), String.class);
         final Button clearBtn = getButton();
@@ -41,12 +49,21 @@ public class FilterExpressionField extends CombinedField<String, String, TextFie
     }
 
 
+    /**
+     *
+     * @param propertyId the propertyId of the Filter
+     * @param propertyType the type of the property in the Filter
+     * @param targetContainer the container the Filter should be applied to
+     */
     public FilterExpressionField(final Object propertyId, final Class<?> propertyType,
                                  final Container.Filterable targetContainer) {
         this(propertyId, propertyType);
         setTargetContainer(targetContainer);
     }
 
+    /**
+     * set a container instance onto which the filter should be applied
+     */
     public void setTargetContainer(Container.Filterable targetContainer) {
         if (!getBackingField().getListeners(
                 FieldEvents.TextChangeEvent.class).contains(textChangeListener)) {
@@ -59,11 +76,13 @@ public class FilterExpressionField extends CombinedField<String, String, TextFie
         return targetContainer;
     }
 
-
-    public void setLastAppliedFilter(Container.Filter filter) {
+    protected void setLastAppliedFilter(Container.Filter filter) {
         this.lastAppliedFilter = filter;
     }
 
+    /**
+     * Get the filter for the current value of the field
+     */
     public Container.Filter getFilterFromValue() {
         return filterFactory.createFilter(targetPropertyType, targetPropertyId, getValue());
     }
@@ -79,24 +98,43 @@ public class FilterExpressionField extends CombinedField<String, String, TextFie
                                 String pattern,
                                 Container.Filterable filterableContainer) {
 
+        // remove last applied filter from the container
         Container.Filter oldFilter = getLastAppliedFilter();
         filterableContainer.removeContainerFilter(oldFilter);
 
+        // if the pattern is non-empty
         if (pattern != null && !pattern.isEmpty()) {
-            Container.Filter newFilter = getFilterFromValue();
-            setLastAppliedFilter(newFilter);
+            Container.Filter newFilter = this.getFilterFromValue();
             filterableContainer.addContainerFilter(newFilter);
+            setLastAppliedFilter(newFilter);
         }
 
         return oldFilter;
     }
 
-    public void clear() {
-        setValue(null);
+
+    /**
+     * Sets the new value to field, and applies the filter on the target container (if any).
+     *
+     * If the given value is null, then it only clears the filter on the container.
+     */
+    @Override
+    public void setValue(String newValue) throws ReadOnlyException {
+        super.setValue(newValue);
+        if (newValue != null) return;
+
         Container.Filter oldFilter = getLastAppliedFilter();
         setLastAppliedFilter(null);
         Container.Filterable c = getTargetContainer();
         if (c != null) c.removeContainerFilter(oldFilter);
+
+    }
+
+    /**
+     * equivalent to setValue(null)
+     */
+    public void clear() {
+        this.setValue(null);
     }
 
     private final FieldEvents.TextChangeListener textChangeListener = new FieldEvents.TextChangeListener() {

@@ -6,7 +6,7 @@ import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fields.FilterExpressionField;
 
 /**
- * Created by evacchi on 22/01/15.
+ * A window that wraps a SearchForm
  */
 public class SearchWindow extends Window {
     final SearchForm searchForm;
