@@ -163,8 +163,6 @@ public class DefaultFilterFactory implements FilterFactory {
 
 
     // experimental date range filters.
-    // Currently not supported nor exposed due to internal
-    // limitations of the DateField (cannot access raw text value)
 
     protected Container.Filter filterForDateRange(Object propertyId, String pattern) {
         return new And(new Compare.GreaterOrEqual(propertyId, leftRange(pattern)),
@@ -182,25 +180,6 @@ public class DefaultFilterFactory implements FilterFactory {
         Min, Max;
     }
 
-    private static class Range<T> {
-        private final T left;
-        private final T right;
-
-        public Range(T left, T right) {
-            this.left = left;
-            this.right = right;
-        }
-
-        public T getLeft() {
-            return left;
-        }
-
-        public T getRight() {
-            return right;
-        }
-    }
-
-
     protected Date leftRange(String pattern) {
         String[] range = pattern.split(dateRangeSepRegex);
         return stringToDate(range[0], RangeEndpoint.Min);
@@ -213,9 +192,6 @@ public class DefaultFilterFactory implements FilterFactory {
     }
 
     private static Date stringToDate(String pattern, RangeEndpoint rangeEndpoint) {
-
-        System.out.println(pattern);
-
         Matcher m = fullDatePattern.matcher(pattern);
         if (m.matches()) return fullDatePatternToDate(m, rangeEndpoint);
 
@@ -283,7 +259,7 @@ public class DefaultFilterFactory implements FilterFactory {
 
         DateTime dt = new DateTime(y, mm, 1, 0, 0);
         return rangeEndpoint == RangeEndpoint.Min ? dt.toDate()
-            : new DateTime(y, mm, dt.dayOfMonth().getMaximumValue(), 23, 59, 59).toDate();
+            : new DateTime(y, mm, dt.dayOfMonth().getMaximumValue(), 23, 59, 59, 999).toDate();
     }
 
 
@@ -291,7 +267,7 @@ public class DefaultFilterFactory implements FilterFactory {
         int y = Integer.parseInt(m.group(0));
         return (rangeEndpoint == RangeEndpoint.Min) ?
              new DateTime(y, 1, 1, 0, 0).toDate()
-             : new DateTime(y, 12, 31, 23, 59, 59).toDate();
+             : new DateTime(y, 12, 31, 23, 59, 59, 999).toDate();
 
     }
 }
