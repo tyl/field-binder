@@ -50,6 +50,8 @@ public class DefaultFilterFactory implements FilterFactory {
         } else if (Number.class.isAssignableFrom(targetType)) {
             return filterForNumber(targetPropertyId, pattern.toString());
         } else if (Date.class.isAssignableFrom(targetType) || DateTime.class.isAssignableFrom(targetType)) {
+            Container.Filter filter = filterForCompareDate(targetPropertyId, pattern.toString());
+            if (filter != null) return filter;
             return filterForDateRange(targetPropertyId, pattern.toString());
         } else {
             // fallback to equality
@@ -135,7 +137,7 @@ public class DefaultFilterFactory implements FilterFactory {
         }
     }
 
-    protected final Pattern intRangePattern = Pattern.compile("^(\\d+)-(\\d+)$");
+    protected final Pattern intRangePattern = Pattern.compile("^(\\d+)..(\\d+)$");
     protected Container.Filter intRange(Object propertyId, String pattern) {
         Matcher matcher = intRangePattern.matcher(pattern);
         if (!matcher.find()) return null;
@@ -163,6 +165,26 @@ public class DefaultFilterFactory implements FilterFactory {
 
 
     // experimental date range filters.
+    protected final Pattern comparePattern = Pattern.compile("^((?:<|>)=?)(.+)");
+    protected Container.Filter filterForCompareDate(Object propertyId, String pattern) {
+        Matcher matcher = comparePattern.matcher(pattern);
+        if (!matcher.find())
+            return null;
+        String op = matcher.group(1);
+        String rest = matcher.group(2);
+
+        Date value = leftRange(rest);
+
+        switch (op) {
+            case ">": return new Compare.Greater(propertyId, value);
+            case ">=": return new Compare.GreaterOrEqual(propertyId, value);
+            case "<": return new Compare.Less(propertyId, value);
+            case "<=": return new Compare.LessOrEqual(propertyId, value);
+        }
+
+        return null;
+
+    }
 
     protected Container.Filter filterForDateRange(Object propertyId, String pattern) {
         return new And(new Compare.GreaterOrEqual(propertyId, leftRange(pattern)),
@@ -171,8 +193,16 @@ public class DefaultFilterFactory implements FilterFactory {
 
     protected final static String dateRangeSepRegex = "\\.\\.";
     protected final static Pattern dateSepPattern = Pattern.compile("[/.-]");
-    protected final static Pattern fullDatePattern = Pattern.compile("(\\d\\d)("+dateSepPattern+")(\\d\\d)\\2((:?\\d\\d)?\\d\\d)");
-    protected final static Pattern monthDatePattern = Pattern.compile("(\\d\\d)(?:"+dateSepPattern+")((\\d\\d)?\\d\\d)");
+
+    // dd..dd
+    // dd-mm..dd-mm
+    // dd-mm-YYYY..dd-mm-YYYY
+    protected final static Pattern fullDatePattern =
+            Pattern.compile(
+                "^(\\d\\d)(?:(" + dateSepPattern.pattern() + ")(\\d\\d)(?:\\2(\\d\\d\\d\\d))?)?"
+            );
+    protected final static Pattern monthDatePattern =
+            Pattern.compile("(\\d\\d)(?:"+dateSepPattern+")((\\d\\d)?\\d\\d)");
     protected final static Pattern yearPattern = Pattern.compile("\\d{4}");
 
 
@@ -187,75 +217,71 @@ public class DefaultFilterFactory implements FilterFactory {
 
     protected Date rightRange(String pattern) {
         String[] range = pattern.split(dateRangeSepRegex);
-        if (range.length == 1) return stringToDate(range[0], RangeEndpoint.Max);
-        return stringToDate(range[1], RangeEndpoint.Max);
+        String value = (range.length == 1)? range[0] : range[1];
+        return stringToDate(value, RangeEndpoint.Max);
     }
 
     private static Date stringToDate(String pattern, RangeEndpoint rangeEndpoint) {
         Matcher m = fullDatePattern.matcher(pattern);
-        if (m.matches()) return fullDatePatternToDate(m, rangeEndpoint);
+        if (m.matches()) return fullDatePatternToDate(pattern, rangeEndpoint);
 
         m = monthDatePattern.matcher(pattern);
-        if (m.matches()) return monthDatePatternToDate(m, rangeEndpoint);
+        if (m.matches()) return monthDatePatternToDate(pattern, rangeEndpoint);
 
         m = yearPattern.matcher(pattern);
-        if (m.matches()) return yearToDate(m, rangeEndpoint);
+        if (m.matches()) return yearToDate(pattern, rangeEndpoint);
 
         return null;
     }
 
-    private static Date fullDatePatternToDate(Matcher m, RangeEndpoint rangeEndpoint) {
+
+    private static Date fullDatePatternToDate(String pattern, RangeEndpoint rangeEndpoint) {
         DateTime t = DateTime.now();
+        int currentYear = t.getYear();
+        int currentMonth = t.getMonthOfYear();
 
-        String maybeDay   = m.group(1);
-        String maybeMonth = m.group(3);
-        String maybeYear  = m.group(4);
-        int maybeMonthVal, maybeDayVal, maybeYearVal;
+        /*
+         * Try to parse a date in format
+         *          dd
+         *          dd-mm
+         *          dd-mm-YYYY
+         *
+         */
 
-        maybeDayVal = Integer.parseInt(maybeDay);
-        maybeMonthVal = Integer.parseInt(maybeMonth);
-        maybeYearVal = t.year().get();
+        String[] patternComponents = pattern.split(dateSepPattern.pattern());
+        int day, month, year;
 
-        DateTime dt ;
+        // first element is day
+        day = Integer.parseInt(patternComponents[0]);
+        month = currentMonth;
+        year = currentYear;
 
-        if (maybeYear == null) {
-
-            // if month > 12 then it's a 2-digits year
-            if (maybeMonthVal > 12) {
-                // not necessarily true! depends on the locale
-                maybeYearVal = maybeMonthVal ;
-                maybeMonthVal  = maybeDayVal;
-                maybeDayVal   = 1;
-
-                dt = new DateTime(maybeYearVal, maybeMonthVal, maybeDayVal, 0,0);
-                if (rangeEndpoint == RangeEndpoint.Max) dt = dt.dayOfMonth().withMaximumValue();
-            } else {
-
-                dt = new DateTime(maybeYearVal, maybeMonthVal, maybeDayVal, 0,0);
-            }
-
-        } else {
-            maybeYearVal = Integer.parseInt(maybeYear);
-            if (maybeYearVal < 100) {
-                if (maybeYearVal > t.year().get()) {
-                    maybeYearVal += 1900;
-                } else {
-                    maybeYearVal += 2000;
-                }
-            }
-
-            dt = new DateTime(maybeYearVal, maybeMonthVal, maybeDayVal, 0,0);
-
+        // format is dd-mm
+        if (patternComponents.length >= 2) {
+            month = Integer.parseInt(patternComponents[1]);
+        }
+        // format is dd-mm-YYYY
+        if (patternComponents.length == 3) {
+            year = Integer.parseInt(patternComponents[2]);
         }
 
+        DateTime dt = null;
 
+        switch (rangeEndpoint) {
+            case Min:
+                dt = new DateTime(year, month, day, 0, 0, 0, 0); break;
+            case Max:
+                dt = new DateTime(year, month, day, 23, 59, 59, 999); break;
+        }
 
         return dt.toDate();
+
     }
 
-    private static Date monthDatePatternToDate(Matcher m, RangeEndpoint rangeEndpoint) {
-        int y = Integer.parseInt(m.group(2));
-        int mm = Integer.parseInt(m.group(1));
+    private static Date monthDatePatternToDate(String pattern, RangeEndpoint rangeEndpoint) {
+        String[] patternComponents = pattern.split(dateSepPattern.pattern());
+        int y = Integer.parseInt(patternComponents[1]);
+        int mm = Integer.parseInt(patternComponents[0]);
 
         DateTime dt = new DateTime(y, mm, 1, 0, 0);
         return rangeEndpoint == RangeEndpoint.Min ? dt.toDate()
@@ -263,8 +289,8 @@ public class DefaultFilterFactory implements FilterFactory {
     }
 
 
-    private static Date yearToDate(Matcher m, RangeEndpoint rangeEndpoint) {
-        int y = Integer.parseInt(m.group(0));
+    private static Date yearToDate(String pattern, RangeEndpoint rangeEndpoint) {
+        int y = Integer.parseInt(pattern);
         return (rangeEndpoint == RangeEndpoint.Min) ?
              new DateTime(y, 1, 1, 0, 0).toDate()
              : new DateTime(y, 12, 31, 23, 59, 59, 999).toDate();

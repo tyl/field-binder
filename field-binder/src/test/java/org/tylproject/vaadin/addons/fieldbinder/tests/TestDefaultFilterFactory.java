@@ -30,7 +30,8 @@ public class TestDefaultFilterFactory {
                 new Compare.LessOrEqual(DATE_PROPID, new DateTime(2014, 12, 31, 23, 59, 59, 999).toDate()));
 
         Container.Filter filter = filterFactory.createFilter(Date.class, DATE_PROPID, "2014");
-
+        log.info(filterToString(expected));
+        log.info(filterToString(filter));
         assertEquals(expected, filter);
     }
 
@@ -74,6 +75,156 @@ public class TestDefaultFilterFactory {
         assertEquals(expected, filter);
 
     }
+
+    @Test
+    public void testDate_dd_mm_yyyy() {
+
+        Container.Filter expected = new And(
+                new Compare.GreaterOrEqual(DATE_PROPID, new DateTime(2010, 1, 1, 0, 0, 0).toDate()),
+                new Compare.LessOrEqual(DATE_PROPID, new DateTime(2010, 1, 1, 23, 59, 59, 999).toDate()));
+
+        Container.Filter filter = filterFactory.createFilter(Date.class, DATE_PROPID, "01-01-2010");
+
+
+        log.info(filterToString(expected));
+        log.info(filterToString(filter));
+        assertEquals(expected, filter);
+    }
+
+    @Test
+    public void testDate_dd_mm_yyyy_Range() {
+
+        Container.Filter expected = new And(
+                new Compare.GreaterOrEqual(DATE_PROPID, new DateTime(2010, 1, 1, 0, 0, 0).toDate()),
+                new Compare.LessOrEqual(DATE_PROPID, new DateTime(2010, 1, 31, 23, 59, 59, 999).toDate()));
+
+        Container.Filter filter = filterFactory.createFilter(Date.class, DATE_PROPID, "01-01-2010..31-01-2010");
+
+
+        log.info(filterToString(expected));
+        log.info(filterToString(filter));
+        assertEquals(expected, filter);
+    }
+
+    @Test
+    public void testDate_dd_mm() {
+
+        DateTime today = DateTime.now();
+        int year = today.getYear();
+
+        Container.Filter expected = new And(
+                new Compare.GreaterOrEqual(DATE_PROPID, new DateTime(year, 1, 1, 0, 0, 0).toDate()),
+                new Compare.LessOrEqual(DATE_PROPID, new DateTime(year, 1, 1, 23, 59, 59, 999).toDate()));
+
+        Container.Filter filter = filterFactory.createFilter(Date.class, DATE_PROPID, "01-01");
+
+
+        log.info(filterToString(expected));
+        log.info(filterToString(filter));
+        assertEquals(expected, filter);
+    }
+
+
+    @Test
+    public void testDate_dd_mm_Range() {
+
+        DateTime today = DateTime.now();
+        int year = today.getYear();
+
+        Container.Filter expected = new And(
+                new Compare.GreaterOrEqual(DATE_PROPID, new DateTime(year, 1, 1, 0, 0, 0).toDate()),
+                new Compare.LessOrEqual(DATE_PROPID, new DateTime(year, 1, 31, 23, 59, 59, 999).toDate()));
+
+        Container.Filter filter = filterFactory.createFilter(Date.class, DATE_PROPID, "01-01..31-01");
+
+
+        log.info(filterToString(expected));
+        log.info(filterToString(filter));
+        assertEquals(expected, filter);
+    }
+
+
+    @Test
+    public void testDate_dd() {
+
+        DateTime today = DateTime.now();
+        int year = today.getYear(), month = today.getMonthOfYear();
+
+        Container.Filter expected = new And(
+                new Compare.GreaterOrEqual(DATE_PROPID, new DateTime(year, month, 1, 0, 0, 0).toDate()),
+                new Compare.LessOrEqual(DATE_PROPID, new DateTime(year, month, 1, 23, 59, 59, 999).toDate()));
+
+        Container.Filter filter = filterFactory.createFilter(Date.class, DATE_PROPID, "01");
+
+
+        log.info(filterToString(expected));
+        log.info(filterToString(filter));
+        assertEquals(expected, filter);
+    }
+
+
+    @Test
+    public void testDate_dd_Range() {
+
+        DateTime today = DateTime.now();
+        int year = today.getYear(), month = today.getMonthOfYear();
+        int maxDay = today.dayOfMonth().getMaximumValue();
+
+        Container.Filter expected = new And(
+                new Compare.GreaterOrEqual(DATE_PROPID, new DateTime(year, month, 1, 0, 0, 0).toDate()),
+                new Compare.LessOrEqual(DATE_PROPID, new DateTime(year, month, maxDay, 23, 59, 59, 999).toDate()));
+
+        Container.Filter filter = filterFactory.createFilter(Date.class, DATE_PROPID, "01.." + maxDay);
+
+
+        log.info(filterToString(expected));
+        log.info(filterToString(filter));
+        assertEquals(expected, filter);
+    }
+
+    @Test
+    public void testDate_compare() {
+        DateTime today = DateTime.now();
+        int year = today.getYear(), month = today.getMonthOfYear();
+        int maxDay = today.dayOfMonth().getMaximumValue();
+
+        Container.Filter filter, expected;
+
+        filter = filterFactory.createFilter(Date.class, DATE_PROPID, ">=01");
+        expected =
+            new Compare.GreaterOrEqual(DATE_PROPID, new DateTime(year, month, 1, 0, 0, 0).toDate());
+
+        assertEquals(expected, filter);
+
+
+        filter = filterFactory.createFilter(Date.class, DATE_PROPID, ">01-10");
+        expected =
+                new Compare.Greater(DATE_PROPID, new DateTime(year, 10, 1, 0, 0, 0).toDate());
+
+        assertEquals(expected, filter);
+
+
+        filter = filterFactory.createFilter(Date.class, DATE_PROPID, "<=11-2010");
+        expected =
+                new Compare.LessOrEqual(DATE_PROPID, new DateTime(2010, 11, 1, 0, 0, 0).toDate());
+
+        assertEquals(expected, filter);
+
+        filter = filterFactory.createFilter(Date.class, DATE_PROPID, "<2014");
+        expected =
+                new Compare.Less(DATE_PROPID, new DateTime(2014, 1, 1, 0, 0, 0).toDate());
+
+        assertEquals(expected, filter);
+
+
+        filter = filterFactory.createFilter(Date.class, DATE_PROPID, "<11-11-2014");
+        expected =
+                new Compare.Less(DATE_PROPID, new DateTime(2014, 11, 11, 0, 0, 0).toDate());
+
+        assertEquals(expected, filter);
+    }
+
+
 
 
     public String filterToString(Container.Filter filter) {
