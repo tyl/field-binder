@@ -7,7 +7,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
-import org.springframework.data.mongodb.core.MongoTemplate; 
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.tylproject.demos.fieldbinder.model.Address;
 import org.tylproject.demos.fieldbinder.model.Person;
 import org.tylproject.vaadin.addon.MongoContainer;
