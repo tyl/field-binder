@@ -53,7 +53,7 @@ Add `field-binder` to your Maven dependencies
 <dependency>
    <groupId>org.tylproject.vaadin.addon.fieldbinder</groupId>
    <artifactId>field-binder</artifactId>
-   <version>1.0</version>
+   <version>1.1</version>
 </dependency>
 
 <repository>
