@@ -6,9 +6,7 @@
 	<groupId>org.tylproject.demos</groupId>
 	<artifactId>field-binder-demo</artifactId>
 	<version>1.0</version>
-	<modules>
-		<module>../demo-clean</module>
-	</modules>
+
 	<packaging>pom</packaging>
 
 	<name>FieldBinder Demo</name>
