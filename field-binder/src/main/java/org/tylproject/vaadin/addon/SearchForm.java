@@ -2,7 +2,9 @@ package org.tylproject.vaadin.addon;
 
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.fields.FilterExpressionField;
+import org.tylproject.vaadin.addon.fields.FilterPatternComboBox;
+import org.tylproject.vaadin.addon.fields.FilterPatternField;
+import org.tylproject.vaadin.addon.fields.FilterPatternTextField;
 import org.tylproject.vaadin.addon.fields.SearchPattern;
 
 import java.util.*;
@@ -12,7 +14,7 @@ import java.util.*;
  */
 public class SearchForm extends FormLayout {
     final Map<Object, Class<?>> propertyIdToType = new LinkedHashMap<>();
-    final Map<Object, FilterExpressionField> propertyIdToFilterExpressionField = new LinkedHashMap<>();
+    final Map<Object, FilterPatternField> propertyIdToFilterExpressionField = new LinkedHashMap<>();
 
     /**
      * Create a SearchForm for the fields of a FieldBinder
@@ -44,7 +46,7 @@ public class SearchForm extends FormLayout {
         this.propertyIdToType.putAll(propertyIdToType);
         makeAllFields(propertyIdToType);
 
-        for (FilterExpressionField f : propertyIdToFilterExpressionField.values()) {
+        for (FilterPatternField f : propertyIdToFilterExpressionField.values()) {
             this.addComponent(f);
         }
     }
@@ -54,7 +56,7 @@ public class SearchForm extends FormLayout {
      */
     public void addProperty(Object propertyId, Class<?> propertyType) {
         this.propertyIdToType.put(propertyId, propertyType);
-        FilterExpressionField f = makeField(propertyId, propertyType);
+        FilterPatternField f = makeField(propertyId, propertyType);
         this.propertyIdToFilterExpressionField.put(propertyId, f);
         this.addComponent(f);
     }
@@ -65,7 +67,7 @@ public class SearchForm extends FormLayout {
     public Map<Object, SearchPattern> getPatternsFromValues() {
         final Map<Object, SearchPattern> filtersFromValues = new LinkedHashMap<>();
 
-        for (Map.Entry<Object, FilterExpressionField> e : getPropertyIdToFilterExpressionField().entrySet()) {
+        for (Map.Entry<Object, FilterPatternField> e : getPropertyIdToFilterExpressionField().entrySet()) {
 
             SearchPattern searchPattern = e.getValue().getPatternFromValue();
             if (searchPattern.isEmpty()) continue;
@@ -80,7 +82,7 @@ public class SearchForm extends FormLayout {
         return Collections.unmodifiableMap(propertyIdToType);
     }
 
-    public Map<Object, FilterExpressionField> getPropertyIdToFilterExpressionField() {
+    public Map<Object, FilterPatternField> getPropertyIdToFilterExpressionField() {
         return Collections.unmodifiableMap(propertyIdToFilterExpressionField);
     }
 
@@ -88,20 +90,25 @@ public class SearchForm extends FormLayout {
         for (Map.Entry<Object, Class<?>> e: propertyIdToType.entrySet()) {
             Object propertyId = e.getKey();
             Class<?> type =  e.getValue();
-            FilterExpressionField f = makeField(propertyId, type);
+            FilterPatternField f = makeField(propertyId, type);
             propertyIdToFilterExpressionField.put(propertyId,f);
         }
     }
 
-    private FilterExpressionField makeField(Object propertyId, Class<?> type) {
-        FilterExpressionField f = new FilterExpressionField(propertyId, type);
+    private FilterPatternField makeField(Object propertyId, Class<?> type) {
+        FilterPatternField f ;
+        if (java.lang.Enum.class.isAssignableFrom(type)) {
+            f = new FilterPatternComboBox(propertyId, (Class<java.lang.Enum>)type);
+        } else {
+            f = new FilterPatternTextField(propertyId, type);
+        }
         f.setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
         return f;
     }
 
 
     public void clear() {
-        for (FilterExpressionField f: getPropertyIdToFilterExpressionField().values()) {
+        for (FilterPatternField f: getPropertyIdToFilterExpressionField().values()) {
             f.clear();
         }
     }

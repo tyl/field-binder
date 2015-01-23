@@ -1,6 +1,5 @@
 package org.tylproject.vaadin.addon;
 
-import org.tylproject.vaadin.addon.fields.FilterExpressionField;
 import org.tylproject.vaadin.addon.fields.SearchPattern;
 
 import java.util.Collection;

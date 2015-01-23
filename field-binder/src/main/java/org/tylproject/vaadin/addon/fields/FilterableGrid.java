@@ -79,7 +79,7 @@ public class FilterableGrid extends Grid {
     }
 
     protected Field<?> makeFilterField(final Object propertyId, Container.Filterable container) {
-        return new FilterExpressionField(propertyId, container.getType(propertyId), container);
+        return new FilterPatternTextField(propertyId, container.getType(propertyId), container);
     }
 
     protected void prepareFilterHeader(Collection<?> propertyIds, Map<Object, Field<?>>
