@@ -1,10 +1,9 @@
 package org.tylproject.vaadin.addon;
 
-import com.vaadin.data.Container;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fields.FilterExpressionField;
+import org.tylproject.vaadin.addon.fields.SearchPattern;
 
 import java.util.*;
 
@@ -63,11 +62,16 @@ public class SearchForm extends FormLayout {
     /**
      * Return the inferred filters for the values currently in the form fields
      */
-    public Map<Object, Container.Filter> getFiltersFromValues() {
-        final Map<Object, Container.Filter> filtersFromValues = new LinkedHashMap<>();
+    public Map<Object, SearchPattern> getPatternsFromValues() {
+        final Map<Object, SearchPattern> filtersFromValues = new LinkedHashMap<>();
+
         for (Map.Entry<Object, FilterExpressionField> e : getPropertyIdToFilterExpressionField().entrySet()) {
-            Container.Filter filter = e.getValue().getFilterFromValue();
-            filtersFromValues.put(e.getKey(), filter);
+
+            SearchPattern searchPattern = e.getValue().getPatternFromValue();
+            if (searchPattern.isEmpty()) continue;
+
+            filtersFromValues.put(e.getKey(), searchPattern);
+
         }
         return Collections.unmodifiableMap(filtersFromValues);
     }
@@ -101,4 +105,6 @@ public class SearchForm extends FormLayout {
             f.clear();
         }
     }
+
+
 }

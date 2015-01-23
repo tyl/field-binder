@@ -1,11 +1,14 @@
 package org.tylproject.vaadin.addon.fields;
 
 import com.vaadin.data.Buffered;
+import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultFilterFactory;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.FilterFactory;
 
 import java.util.Collection;
 

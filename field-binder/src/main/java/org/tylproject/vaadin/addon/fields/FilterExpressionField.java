@@ -1,7 +1,6 @@
 package org.tylproject.vaadin.addon.fields;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Property;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
@@ -18,7 +17,7 @@ public class FilterExpressionField extends CombinedField<String, String, TextFie
 
     private static final FilterFactory filterFactory = new DefaultFilterFactory();
 
-    private Container.Filter lastAppliedFilter;
+    private SearchPattern lastAppliedSearchPattern;
     private Container.Filterable targetContainer;
     private final Object targetPropertyId;
     private final Class<?> targetPropertyType;
@@ -76,40 +75,46 @@ public class FilterExpressionField extends CombinedField<String, String, TextFie
         return targetContainer;
     }
 
-    protected void setLastAppliedFilter(Container.Filter filter) {
-        this.lastAppliedFilter = filter;
-    }
-
-    /**
-     * Get the filter for the current value of the field
-     */
-    public Container.Filter getFilterFromValue() {
-        return filterFactory.createFilter(targetPropertyType, targetPropertyId, getValue());
+    protected void setLastAppliedSearchPattern(SearchPattern searchPattern) {
+        this.lastAppliedSearchPattern = searchPattern;
     }
 
 
-    protected Container.Filter getLastAppliedFilter() {
-        return this.lastAppliedFilter;
+
+
+
+    protected SearchPattern getLastAppliedSearchPattern() {
+        return this.lastAppliedSearchPattern;
     }
 
-    protected Container.Filter
+    protected SearchPattern
             applyFilterPattern(Class<?> propertyType,
                                 Object propertyId,
-                                String pattern,
+                                String stringPattern,
                                 Container.Filterable filterableContainer) {
 
         // remove last applied filter from the container
-        Container.Filter oldFilter = getLastAppliedFilter();
-        filterableContainer.removeContainerFilter(oldFilter);
+        SearchPattern lastPattern = getLastAppliedSearchPattern();
+        filterableContainer.removeContainerFilter(lastPattern.getFilter());
 
-        // if the pattern is non-empty
-        if (pattern != null && !pattern.isEmpty()) {
-            Container.Filter newFilter = this.getFilterFromValue();
-            filterableContainer.addContainerFilter(newFilter);
-            setLastAppliedFilter(newFilter);
+        // if the stringPattern is non-empty
+        if (stringPattern != null && !stringPattern.isEmpty()) {
+            SearchPattern newPattern = getPattern(stringPattern);
+
+            filterableContainer.addContainerFilter(newPattern.getFilter());
+            setLastAppliedSearchPattern(newPattern);
         }
 
-        return oldFilter;
+        return lastPattern;
+    }
+
+    public SearchPattern getPatternFromValue() {
+        return getPattern(getValue());
+    }
+
+    private SearchPattern getPattern(String stringPattern) {
+        if (stringPattern == null || stringPattern.isEmpty()) return SearchPattern.Empty;
+        else return SearchPattern.of(stringPattern, filterFactory.createFilter(targetPropertyType, targetPropertyId, stringPattern));
     }
 
 
@@ -123,10 +128,10 @@ public class FilterExpressionField extends CombinedField<String, String, TextFie
         super.setValue(newValue);
         if (newValue != null) return;
 
-        Container.Filter oldFilter = getLastAppliedFilter();
-        setLastAppliedFilter(null);
+        SearchPattern lastPattern = getLastAppliedSearchPattern();
+        setLastAppliedSearchPattern(null);
         Container.Filterable c = getTargetContainer();
-        if (c != null) c.removeContainerFilter(oldFilter);
+        if (c != null) c.removeContainerFilter(lastPattern.getFilter());
 
     }
 
@@ -147,6 +152,11 @@ public class FilterExpressionField extends CombinedField<String, String, TextFie
                     getTargetContainer());
         }
     };
+
+
+
+
+
 
 
 }
