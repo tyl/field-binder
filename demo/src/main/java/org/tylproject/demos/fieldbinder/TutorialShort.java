@@ -2,6 +2,8 @@ package org.tylproject.demos.fieldbinder;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Container;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -10,13 +12,16 @@ import org.tylproject.demos.fieldbinder.model.Person;
 import org.tylproject.vaadin.addon.datanav.ButtonBar;
 import org.tylproject.vaadin.addon.datanav.NavigationLabel;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.vaadin.maddon.layouts.MFormLayout;
-import org.vaadin.maddon.layouts.MVerticalLayout;
+import org.vaadin.viritin.layouts.MFormLayout;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinUI;
+import org.vaadin.spring.navigator.VaadinView;
 
-@VaadinUI( path = "/tutorial-1" )
+@VaadinView(name = "/simple")
+@UIScope
 @Theme("valo")
-public class TutorialShort extends UI {
+public class TutorialShort extends MVerticalLayout implements View {
 
     // CONTAINER
     
@@ -34,31 +39,29 @@ public class TutorialShort extends UI {
     // for conciseness, we use Maddon.
     // Maddon wraps common Vaadin classes with fluent APIs
     // for the most common options
-    final VerticalLayout mainLayout = new MVerticalLayout(
+    {
+        with(
 
-            new ButtonBar(binder.getNavigation().withDefaultBehavior()),
+                new ButtonBar(binder.getNavigation().withDefaultBehavior()),
 
-            new MFormLayout(
-                    binder.build("firstName"),
-                    binder.build("lastName"),
-                    binder.build("birthDate"),
-                    binder.build("age"),
-                    new NavigationLabel(binder.getNavigation())
+                new MFormLayout(
+                        binder.build("firstName"),
+                        binder.build("lastName"),
+                        binder.build("birthDate"),
+                        binder.build("age"),
+                        new NavigationLabel(binder.getNavigation())
 
-            ).withFullWidth().withMargin(true),
+                ).withFullWidth().withMargin(true),
 
-            // initialize the addressList field with the built-in button bar
-            binder.buildListOf(Address.class, "addressList").withDefaultEditorBar()
-
-
-    ).withFullWidth().withMargin(true);
+                // initialize the addressList field with the built-in button bar
+                binder.buildListOf(Address.class, "addressList").withDefaultEditorBar()
 
 
-    @Override
-    protected void init(VaadinRequest request) {
-        setContent(mainLayout);
+        ).withFullWidth().withMargin(true);
     }
 
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
 
-
+    }
 }

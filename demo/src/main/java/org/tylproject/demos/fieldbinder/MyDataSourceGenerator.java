@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.tylproject.demos.fieldbinder.model.Address;
 import org.tylproject.demos.fieldbinder.model.Person;
 import org.tylproject.vaadin.addon.MongoContainer;
-import org.vaadin.maddon.FilterableListContainer;
+import org.vaadin.viritin.FilterableListContainer;
 
 import java.util.Arrays;
 
