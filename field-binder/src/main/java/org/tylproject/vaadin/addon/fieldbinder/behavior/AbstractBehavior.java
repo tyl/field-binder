@@ -87,8 +87,8 @@ public abstract class AbstractBehavior<T> implements Behavior {
             fieldBinder.unbindAll();
         }
 
-        event.getSource().setCurrentItemId(null);
         fieldBinder.setReadOnly(false);
+        event.getSource().setCurrentItemId(null);
 
         if (filterApplier.hasAppliedFilters()) {
             filterApplier.restorePatterns(fieldBinder.getPropertyIdToFieldBindings());

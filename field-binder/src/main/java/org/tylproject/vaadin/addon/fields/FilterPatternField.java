@@ -59,12 +59,9 @@ public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> exten
     /**
      * set a container instance onto which the filter should be applied
      */
-    public void setTargetContainer(Container.Filterable targetContainer) {
-        addDefaultBackingFieldListeners(targetContainer);
+    public final void setTargetContainer(Container.Filterable targetContainer) {
         this.targetContainer = targetContainer;
     }
-
-    protected abstract void addDefaultBackingFieldListeners(Container.Filterable targetContainer);
 
     public Container.Filterable getTargetContainer() {
         return targetContainer;
@@ -100,11 +97,15 @@ public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> exten
 
         // remove last applied filter from the container
         SearchPattern lastPattern = getLastAppliedSearchPattern();
-        filterableContainer.removeContainerFilter(lastPattern.getFilter());
+        if (lastPattern != null)
+            filterableContainer.removeContainerFilter(lastPattern.getFilter());
 
         // if the objectPattern is non-empty
         if (objectPattern != null
-            && objectPattern instanceof String && !((String)objectPattern).isEmpty()) {
+            && (
+              (!(objectPattern instanceof String))
+              || !((String)objectPattern).isEmpty())
+            ) {
 
             SearchPattern newPattern = getPattern(objectPattern);
 
@@ -139,6 +140,7 @@ public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> exten
 
         SearchPattern lastPattern = getLastAppliedSearchPattern();
         setLastAppliedSearchPattern(null);
+        if (lastPattern == null) return;
         Container.Filterable c = getTargetContainer();
         if (c != null) c.removeContainerFilter(lastPattern.getFilter());
 

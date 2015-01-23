@@ -20,6 +20,7 @@ public class FilterPatternTextField extends FilterPatternField<String, String, T
     public FilterPatternTextField(Object propertyId, Class<?> propertyType, Container.Filterable targetContainer) {
         super(new TextField(), String.class, propertyId, propertyType, targetContainer);
         setFieldDefaults(getBackingField());
+        addDefaultBackingFieldListeners(getTargetContainer());
     }
 
     private void setFieldDefaults(TextField backingField) {
@@ -27,8 +28,7 @@ public class FilterPatternTextField extends FilterPatternField<String, String, T
         backingField.setImmediate(true);
     }
 
-    @Override
-    protected void addDefaultBackingFieldListeners(Container.Filterable targetContainer) {
+    private void addDefaultBackingFieldListeners(Container.Filterable targetContainer) {
         if (!getBackingField().getListeners(
                 FieldEvents.TextChangeEvent.class).contains(textChangeListener)) {
             getBackingField().addTextChangeListener(textChangeListener);

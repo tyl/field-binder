@@ -79,7 +79,17 @@ public class FilterableGrid extends Grid {
     }
 
     protected Field<?> makeFilterField(final Object propertyId, Container.Filterable container) {
-        return new FilterPatternTextField(propertyId, container.getType(propertyId), container);
+        FilterPatternField f ;
+
+        Class<?> type = container.getType(propertyId);
+
+        if (java.lang.Enum.class.isAssignableFrom(type)) {
+            f = new FilterPatternComboBox(propertyId, (Class<java.lang.Enum>)type, container);
+        } else {
+            f = new FilterPatternTextField(propertyId, type, container);
+        }
+
+        return f;
     }
 
     protected void prepareFilterHeader(Collection<?> propertyIds, Map<Object, Field<?>>

@@ -25,6 +25,7 @@ public class FilterPatternComboBox extends FilterPatternField<Object, Object, Co
             .Filterable targetContainer) {
         super(new ComboBox(), Object.class, propertyId, propertyType, targetContainer);
         setFieldDefaults(getBackingField());
+        addDefaultBackingFieldListeners(targetContainer);
     }
 
     private void setFieldDefaults(ComboBox backingField) {
@@ -45,8 +46,7 @@ public class FilterPatternComboBox extends FilterPatternField<Object, Object, Co
         }
     }
 
-    @Override
-    protected void addDefaultBackingFieldListeners(Container.Filterable targetContainer) {
+    private void addDefaultBackingFieldListeners(Container.Filterable targetContainer) {
         if (!getBackingField().getListeners(
                 FieldEvents.TextChangeEvent.class).contains(valueChangeListener)) {
             getBackingField().addValueChangeListener(valueChangeListener);
