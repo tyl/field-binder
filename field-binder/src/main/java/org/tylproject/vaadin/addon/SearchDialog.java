@@ -15,5 +15,6 @@ public interface SearchDialog {
 
     Collection<SearchPattern> getSearchPatterns();
     void clear();
-    void close();
+    void cancel();
+
 }

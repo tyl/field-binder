@@ -2,7 +2,6 @@ package org.tylproject.vaadin.addon;
 
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fields.FilterExpressionField;
@@ -12,12 +11,16 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A window that wraps a SearchForm
  */
 public class SearchWindow extends Window implements SearchDialog {
     final SearchForm searchForm;
+    final Map<Object, SearchPattern> propertyIdToPatterns = new LinkedHashMap<>();
+
 
     final VerticalLayout rootLayout = new VerticalLayout();
 
@@ -27,6 +30,8 @@ public class SearchWindow extends Window implements SearchDialog {
     final Button btnCancel = new Button("Cancel");
 
     final HorizontalLayout buttonLayout = new HorizontalLayout(spacer, btnApply, btnClear, btnCancel);
+
+
 
     public SearchWindow(final SearchForm searchForm) {
         this.searchForm = searchForm;
@@ -64,23 +69,23 @@ public class SearchWindow extends Window implements SearchDialog {
         btnCancel.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                close();
+                cancel();
             }
         });
     }
 
     public SearchWindow(FieldBinder<?> fieldBinder) {
         this(new SearchForm(fieldBinder));
-        callFindOnApply(fieldBinder.getNavigation());
+        callFindOnClose(fieldBinder.getNavigation());
     }
 
     /**
      * Set to automatically invoke navigation.find() when the apply() button is clicked
      */
-    public SearchWindow callFindOnApply(final DataNavigation navigation) {
-        this.addApplyListener(new SearchWindow.ApplyListener() {
+    public SearchWindow callFindOnClose(final DataNavigation navigation) {
+        this.addCloseListener(new SearchWindow.CloseListener() {
             @Override
-            public void searchWindowApply(SearchWindow.ApplyEvent e) {
+            public void windowClose(Window.CloseEvent e) {
                 navigation.find();
             }
         });
@@ -93,14 +98,48 @@ public class SearchWindow extends Window implements SearchDialog {
 
     @Override
     public void show() {
+        restorePatternsIntoFields();
         UI.getCurrent().addWindow(this);
     }
 
     @Override
-    public void apply() {
-        fireApply();
+    public void cancel() {
+        restorePatternsIntoFields();
         close();
     }
+
+    private void restorePatternsIntoFields() {
+        for (Map.Entry<Object, FilterExpressionField> e:
+                searchForm.getPropertyIdToFilterExpressionField().entrySet()) {
+            final SearchPattern searchPattern = propertyIdToPatterns.get(e.getKey());
+            if (searchPattern == null) {
+                e.getValue().setValue(null);
+            } else {
+                e.getValue().setValue(searchPattern.getStringPattern());
+
+            }
+        }
+    }
+
+    @Override
+    public void apply() {
+        backupPatternsFromFields();
+        close();
+    }
+    private void backupPatternsFromFields() {
+        propertyIdToPatterns.clear();
+        for (Map.Entry<Object, FilterExpressionField> e:
+                searchForm.getPropertyIdToFilterExpressionField().entrySet()) {
+            propertyIdToPatterns.put(e.getKey(), e.getValue().getPatternFromValue());
+        }
+    }
+
+    @Override
+    public void clear() {
+        getSearchForm().clear();
+    }
+
+
 
     @Override
     public Collection<SearchPattern> getSearchPatterns() {
@@ -108,10 +147,6 @@ public class SearchWindow extends Window implements SearchDialog {
         .values());
     }
 
-    @Override
-    public void clear() {
-        getSearchForm().clear();
-    }
 
     private static final Method SEARCH_WINDOW_APPLY_METHOD;
     static {
