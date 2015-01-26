@@ -5,6 +5,7 @@ import com.vaadin.data.Container;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.tylproject.demos.fieldbinder.model.Address;
@@ -35,6 +36,8 @@ public class TutorialShort extends MVerticalLayout implements View {
     // initialize the FieldBinder for the masterDetail editor on the Person entity
     final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container);
 
+    final DateField birthDate;
+
     // initialize the layout, building the fields at the same time
     // for conciseness, we use Maddon.
     // Maddon wraps common Vaadin classes with fluent APIs
@@ -47,7 +50,7 @@ public class TutorialShort extends MVerticalLayout implements View {
                 new MFormLayout(
                         binder.build("firstName"),
                         binder.build("lastName"),
-                        binder.build("birthDate"),
+                        birthDate = binder.build("birthDate"),
                         binder.build("age"),
                         new NavigationLabel(binder.getNavigation())
 
@@ -58,6 +61,8 @@ public class TutorialShort extends MVerticalLayout implements View {
 
 
         ).withFullWidth().withMargin(true);
+
+        birthDate.setDateFormat("dd-MM-yyyy");
     }
 
     @Override

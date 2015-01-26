@@ -72,6 +72,8 @@ public class TutorialExtended extends MVerticalLayout implements View {
 
         this.withFullWidth().withMargin(true);
 
+        birthDate.setDateFormat("dd-MM-yyyy");
+
     }
 
     @Override
@@ -106,7 +108,11 @@ public class TutorialExtended extends MVerticalLayout implements View {
 
         @Override
         public void currentItemChange(CurrentItemChange.Event event) {
-            calcAge();
+            if (event.getNewItemId() == null) {
+                age.setValue(null);
+            } else {
+                calcAge();
+            }
         }
 
         private void calcAge() {

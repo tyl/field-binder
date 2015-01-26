@@ -37,6 +37,11 @@ public class Person {
         this.addressList.add(address);
     }
 
+    public Person(String firstName, String lastName, Date birthDate, Address address) {
+        this(firstName, lastName, address);
+        this.birthDate = birthDate;
+    }
+
     public String getFirstName() {
         return firstName;
     }
