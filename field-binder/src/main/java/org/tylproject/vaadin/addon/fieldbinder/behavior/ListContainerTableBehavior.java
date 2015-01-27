@@ -19,9 +19,14 @@
 
 package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
+import com.vaadin.addon.jpacontainer.fieldfactory.FieldFactory;
 import com.vaadin.data.Container;
+import com.vaadin.data.fieldgroup.FieldGroupFieldFactory;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.events.*;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinderFieldFactory;
+import org.tylproject.vaadin.addon.fieldbinder.TableFieldManager;
 
 import java.util.*;
 
@@ -34,49 +39,20 @@ public class ListContainerTableBehavior<T> implements Behavior {
     final Table table;
     final Class<T> beanClass;
     final TableFindBehavior<T> findStrategy;
+    final TableFieldManager fieldManager;
 
     protected T newEntity = null;
-    final List<Field<?>> fields = new ArrayList<>();
+//    final List<Field<?>> fields = new ArrayList<>();
 
     public ListContainerTableBehavior(final Class<T> beanClass, final Table table) {
         this.beanClass = beanClass;
         this.table = table;
         this.findStrategy = new TableFindBehavior<>(beanClass);
+        this.fieldManager = new TableFieldManager(table);
 
-        table.setTableFieldFactory(new TableFieldFactory() {
-//            final DefaultFieldFactory fieldFactory = DefaultFieldFactory.get();
-            final TableFieldFactory fieldFactory = table.getTableFieldFactory();
-            @Override
-            public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
-//                TableFieldFactory fieldFactory = table.getTableFieldFactory();
-                if (itemId.equals(table.getValue())) {
-                    Field<?> f = fieldFactory.createField(container, itemId, propertyId,
-                            uiContext);
-                    if (f instanceof AbstractTextField) {
-                        ((AbstractTextField) f).setNullRepresentation("");
-                        ((AbstractTextField) f).setImmediate(true);
-                    }
-                    f.setBuffered(true);
-                    fields.add(f);
-                    return f;
-                }
-                else return null;
-            }
-        });
+        table.setTableFieldFactory(fieldManager);
     }
 
-    protected void commitFields() {
-        for (Field<?> f: fields) {
-            f.commit();
-        }
-        fields.clear();
-    }
-    protected void discardFields() {
-        for (Field<?> f: fields) {
-            f.discard();
-        }
-        fields.clear();
-    }
 
 
 
@@ -115,7 +91,7 @@ public class ListContainerTableBehavior<T> implements Behavior {
     public void onDiscard(OnDiscard.Event event) {
         this.table.discard();
 
-        discardFields();
+        fieldManager.discardFields();
         this.table.setEditable(false);
 
         this.table.setSelectable(true);
@@ -126,9 +102,9 @@ public class ListContainerTableBehavior<T> implements Behavior {
     }
 
     public void onCommit(OnCommit.Event event) {
-        this.table.commit();
 
-        commitFields();
+        fieldManager.commitFields();
+        this.table.commit();
         this.table.setEditable(false);
 
         this.table.setSelectable(true);
