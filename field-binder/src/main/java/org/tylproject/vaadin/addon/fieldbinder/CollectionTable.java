@@ -19,6 +19,7 @@
 
 package org.tylproject.vaadin.addon.fieldbinder;
 
+import com.vaadin.data.Buffered;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
@@ -27,6 +28,8 @@ import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.TableBehaviorFactory;
 import org.vaadin.viritin.FilterableListContainer;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,6 +46,7 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
     protected final Class<U> collectionType;
     private Object[] visibleColumns;
     private final BasicDataNavigation navigation;
+    private FilterableListContainer<T> listContainer;
 
     public CollectionTable(Class<T> containedBeanClass, Class<U> collectionType) {
         this.containedBeanClass = containedBeanClass;
@@ -154,14 +158,24 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
         super.setInternalValue(collection);
 
         if (collection == null) {
-            // clears the table contents
-            table.setContainerDataSource(null);
-            table.select(null);
-            navigation.setContainer(null);
-
+            this.setContainerDataSource(null);
         } else {
             FilterableListContainer<T> listContainer = new FilterableListContainer<T>(containedBeanClass);
             listContainer.setCollection(collection);
+
+            this.setContainerDataSource(listContainer);
+        }
+    }
+
+    protected void setContainerDataSource(FilterableListContainer<T> listContainer) {
+        this.listContainer = listContainer;
+        if (listContainer == null) {
+            // clears the table contents
+
+            table.setContainerDataSource(null);
+            table.select(null);
+            navigation.setContainer(null);
+        } else {
 
             table.setContainerDataSource(listContainer);
             // clear selection
@@ -173,12 +187,82 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
             } else {
                 setAllHeadersFromColumns(table.getVisibleColumns());
             }
-
         }
     }
 
+    public FilterableListContainer<T> getContainerDataSource() {
+        return listContainer;
+    }
+
+    @Override
+    public U getValue() {
+        // the super implementation invokes getInternalValue() (via getFieldValue())
+        // but only if (dataSource == null || isBuffered() || isModified())
+        // otherwise it calls convertFromModel(getDataSourceValue())
+        // which is a *private* pass-through for propertyDataSource.getValue()
+
+        if (getPropertyDataSource() == null || isBuffered() || isModified()) {
+            // return the buffered value
+            return getInternalValue();
+        }
+
+        // not buffered, nor modified, just return the underlying value
+        // no conversion is needed
+        return (U) getPropertyDataSource().getValue();
+    }
+
+
+    /*
+     * return the actual value, pulling it from the container
+     */
+    @Override
+    protected U getInternalValue() {
+
+        FilterableListContainer<T> container = getContainerDataSource();
+        if (container == null) return super.getInternalValue();
+
+        Collection<T> allItems = container.getItemIds();
+        U propertyCollection = super.getInternalValue();
+
+        // if they are the same instance, no need to copy the values over
+        if (propertyCollection == allItems) return propertyCollection;
+
+        propertyCollection.clear();
+        propertyCollection.addAll(container.getItemIds());
+
+        return propertyCollection;
+
+//        try {
+//            // create an empty collection of the same type
+//            Constructor<U> constructor = collectionType.getConstructor();
+//            U collection = constructor.newInstance();
+//
+//            // fill it with the elements in the table
+//            collection.addAll(allItems);
+//
+//            // set it to the internal value
+//            super.setInternalValue(collection);
+//
+//            // return the value, via super call
+//            return super.getInternalValue();
+//        } catch (InvocationTargetException
+//                | NoSuchMethodException
+//                | InstantiationException
+//                | IllegalAccessException e) {
+//            throw new Buffered.SourceException(this, e);
+//        }
+    }
+
+
+    public Object getConvertedValue() {
+        // no need to convert
+        return getValue();
+    }
+
+
     @Override
     public void commit() throws SourceException, Validator.InvalidValueException {
+        super.commit();
         table.commit();
     }
 
