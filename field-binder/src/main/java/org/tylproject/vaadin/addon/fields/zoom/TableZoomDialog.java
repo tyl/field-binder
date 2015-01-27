@@ -1,5 +1,6 @@
 package org.tylproject.vaadin.addon.fields.zoom;
 
+import com.vaadin.data.Item;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.tylproject.vaadin.addon.datanav.resources.Strings;
@@ -14,6 +15,7 @@ import java.util.ResourceBundle;
 public class TableZoomDialog<T> extends CustomComponent implements ZoomDialog<T> {
 
     private final BeanTable<?> beanTable;
+    private Object propertyId;
 
     public TableZoomDialog(BeanTable<?> beanTable) {
         this.beanTable = beanTable;
@@ -31,6 +33,11 @@ public class TableZoomDialog<T> extends CustomComponent implements ZoomDialog<T>
     }
 
 
+    public TableZoomDialog<T> withPropertyId(Object propertyId) {
+        this.propertyId = propertyId;
+        return this;
+    }
+
     /**
      * Assumes the given value to be an itemId; tries to select it
      * in the table. A null value clears the selection
@@ -46,6 +53,8 @@ public class TableZoomDialog<T> extends CustomComponent implements ZoomDialog<T>
      */
     @Override
     public T dismiss() {
-        return (T) getTable().getSelectedItemId();
-    }
-}
+        Object itemId = beanTable.getSelectedItemId();
+        if (itemId == null) return null;
+        Item item = beanTable.getContainerDataSource().getItem(itemId);
+        return (T) item.getItemProperty(propertyId).getValue();
+    }}

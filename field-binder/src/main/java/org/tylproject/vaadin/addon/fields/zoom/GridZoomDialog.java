@@ -12,31 +12,41 @@ import com.vaadin.ui.VerticalLayout;
 public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
 
     private final Grid grid;
-    private final Object propertyId;
+    private Object propertyId;
 
 
-    public GridZoomDialog(Grid grid, Object propertyId) {
+    public GridZoomDialog(Grid grid) {
         this.grid = grid;
-        this.propertyId = propertyId;
 
         if (!(grid.getSelectionModel() instanceof Grid.SingleSelectionModel)) {
             throw new AssertionError(
-                "Selection mode must be "+Grid.SelectionMode.SINGLE.getClass()+", "+
-                grid.getSelectionModel().getClass() +" was given");
+                    "Selection mode must be "+Grid.SelectionMode.SINGLE.getClass()+", "+
+                            grid.getSelectionModel().getClass() +" was given");
         }
 
         setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
         addComponent(grid);
         setExpandRatio(getGrid(), 1f);
         setSizeFull();
+
     }
 
 
+    public GridZoomDialog(Grid grid, Object propertyId) {
+        this(grid);
+        this.propertyId = propertyId;
+    }
 
     public GridZoomDialog(Grid grid, Object propertyId, String caption) {
         this(grid, propertyId);
         this.setCaption(caption);
     }
+
+    public GridZoomDialog withPropertyId(Object propertyId) {
+        this.propertyId = propertyId;
+        return this;
+    }
+
 
     public Grid getGrid() {
         return grid;

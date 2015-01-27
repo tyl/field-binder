@@ -8,4 +8,5 @@ import com.vaadin.ui.Component;
 public interface ZoomDialog<T> extends Component {
     public T dismiss();
     public void show(T value);
+    public ZoomDialog<T> withPropertyId(Object propertyId);
 }

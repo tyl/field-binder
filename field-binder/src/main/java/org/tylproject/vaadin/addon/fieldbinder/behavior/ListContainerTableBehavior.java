@@ -42,7 +42,6 @@ public class ListContainerTableBehavior<T> implements Behavior {
     final TableFieldManager fieldManager;
 
     protected T newEntity = null;
-//    final List<Field<?>> fields = new ArrayList<>();
 
     public ListContainerTableBehavior(final Class<T> beanClass, final Table table) {
         this.beanClass = beanClass;
