@@ -52,7 +52,11 @@ public abstract class AbstractBehavior<T> implements Behavior {
 
     @Override
     public void onCommit(OnCommit.Event event) {
+
+
+
         fieldBinder.commit();
+
         fieldBinder.setReadOnly(true);
     }
 

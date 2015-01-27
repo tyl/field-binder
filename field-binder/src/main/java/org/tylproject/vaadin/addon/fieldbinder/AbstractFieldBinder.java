@@ -22,7 +22,6 @@ package org.tylproject.vaadin.addon.fieldbinder;
 import com.vaadin.data.Item;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroupFieldFactory;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
@@ -38,6 +37,8 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
     private final Map<Object, Field<?>> propertyIdToField;
     private final Map<Object, Class<?>> propertyIdToType;
     private final Map<Field<?>, Object> fieldToPropertyId;
+    private final Map<Object, CollectionTable<?, ?>> collectionFields = new
+    LinkedHashMap<Object, CollectionTable<?, ?>>();
 
     private Item itemDataSource = null;
 
@@ -78,6 +79,14 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
 
     public Field<?> getField(Object propertyId) {
         return propertyIdToField.get(propertyId);
+    }
+
+    public boolean isCollectionField(Object propertyId) {
+        return collectionFields.containsKey(propertyId);
+    }
+
+    public Map<Object, ? extends CollectionTable<?,?>> getCollectionFields() {
+        return Collections.unmodifiableMap(collectionFields);
     }
 
     public Object getPropertyId(Field<?> field) {
@@ -161,6 +170,10 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
 
         if (field instanceof AbstractField<?>) {
             ((AbstractField) field).setValidationVisible(false);
+        }
+
+        if (field instanceof CollectionTable) {
+            collectionFields.put(propertyId, (CollectionTable<?,?>) field);
         }
 
         if (hasItemDataSource())

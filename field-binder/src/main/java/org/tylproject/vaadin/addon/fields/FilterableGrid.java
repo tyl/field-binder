@@ -32,8 +32,13 @@ public class FilterableGrid extends Grid {
 
     public <T extends Container.Indexed & Container.Filterable>
         FilterableGrid(String caption, T dataSource) {
-
         super(caption, dataSource);
+
+        setSelectionMode(Grid.SelectionMode.SINGLE);
+        setSizeFull();
+        setWidth("100%");
+        setHeight("100%");
+
         makeFilters(dataSource, dataSource.getContainerPropertyIds(), filterRow);
     }
 

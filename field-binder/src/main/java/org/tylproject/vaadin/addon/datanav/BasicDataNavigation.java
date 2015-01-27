@@ -67,6 +67,13 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
         return container;
     }
 
+    /**
+     * Assign an upper bound for the container that this Navigation may wrap.
+     *
+     * It is used in order to automatically infer assign a Behavior class when calling
+     * {@link #withDefaultBehavior()}.
+     *
+     */
     public void restrictContainerType(Class<? extends Container.Ordered> restrictedContainerType) {
         if (container != null) {
             // container.getClass() must be a subtype of restrictedContainerType
@@ -93,6 +100,12 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
         }
     }
 
+    /**
+     * Return the (expected) container type for this DataNavigation
+     *
+     * Return the actual type if a container is set, or the restrictedContainerType
+     * if an upper bound was set with {@link #restrictContainerType(Class)}
+     */
     public Class<? extends Container.Ordered> getContainerType() {
         if (container != null) {
             return container.getClass();
@@ -337,6 +350,9 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
         return this.findEnabled;
     }
 
+    /**
+     * assign all CRUD-related listeners defined in the given object
+     */
     public <X extends OnDiscard.Listener
             & OnCommit.Listener
             & ItemRemove.Listener
@@ -352,6 +368,9 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
         return this;
     }
 
+    /**
+     * assign Find and ClearToFind listeners defined in the given object
+     */
     public <X extends
             ClearToFind.Listener
             & OnFind.Listener> BasicDataNavigation withFindListenersFrom(X findListenersObject) {
@@ -360,12 +379,29 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
         return this;
     }
 
+    /**
+     * "fluent" alias to
+     * {@link #addCurrentItemChangeListener(org.tylproject.vaadin.addon.datanav.events.CurrentItemChange.Listener)}
+     */
+    public <X extends
+            CurrentItemChange.Listener> BasicDataNavigation
+            withCurrentItemChangeListenerFrom(X itemChangeListenerObject) {
+            this.addCurrentItemChangeListener(itemChangeListenerObject);
+            return this;
+    }
+
+    /**
+     * associate all the listeners defined in the given behavior object
+     */
     public BasicDataNavigation withBehavior(Behavior behavior) {
         this.withCrudListenersFrom(behavior).withFindListenersFrom(behavior);
         this.addCurrentItemChangeListener(behavior);
         return this;
     }
 
+    /**
+     * assign a default behavior according to the current known container type
+     */
     public BasicDataNavigation withDefaultBehavior() {
 
         if (behaviorFactory == null) {

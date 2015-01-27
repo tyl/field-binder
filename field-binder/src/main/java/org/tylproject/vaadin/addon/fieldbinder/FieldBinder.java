@@ -29,6 +29,7 @@ import com.vaadin.ui.TextField;
 import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.WrapDynaClass;
 import org.tylproject.vaadin.addon.datanav.*;
+import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.FieldBinderBehaviorFactory;
 import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
@@ -38,7 +39,7 @@ import java.util.*;
 /**
  * An enhanced version of Vaadin's standard {@link com.vaadin.data.fieldgroup.FieldGroup}
  *
- * The FieldBinder mimicks the FieldGroup interface, but it supports more methods, and
+ * The FieldBinder mimics the FieldGroup interface, but it supports more methods, and
  * it behaves in a slightly different way.
  *
  * It supports binding and unbinding elements, while still keeping track of which
@@ -155,28 +156,23 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
      * @param <U>
      * @return
      */
+    public <U,C extends Collection<U>> CollectionTable<U,C> buildCollectionOf(Class<U> containedBeanClass, Object propertyId) {
+        final Class<C> dataType = (Class<C>) getPropertyType(propertyId);
+        final CollectionTable<U,C> collectionTable = getFieldFactory().createDetailField(dataType, containedBeanClass);
+
+        bind(collectionTable, propertyId);
+
+        this.getNavigation().addEditingModeChangeListener(
+            new EditingModeSwitcher(collectionTable.getNavigation()));
+
+        collectionTable.getNavigation().disableCrud();
+
+
+        return collectionTable;
+    }
+
     public <U> ListTable<U> buildListOf(Class<U> containedBeanClass, Object propertyId) {
-        final Class<?> dataType = getPropertyType(propertyId);
-        final ListTable<U> listTable = getFieldFactory().createDetailField(dataType, containedBeanClass);
-
-        bind(listTable, propertyId);
-
-        this.getNavigation().addEditingModeChangeListener(new EditingModeChange.Listener() {
-            @Override
-            public void editingModeChange(EditingModeChange.Event event) {
-                DataNavigation nav = listTable.getNavigation();
-                if (event.isEnteringEditingMode()) {
-                    nav.enableCrud();
-                } else {
-                    nav.disableCrud();
-                }
-            }
-        });
-
-        listTable.getNavigation().disableCrud();
-
-
-        return listTable;
+        return (ListTable<U>) this.<U,List<U>>buildCollectionOf(containedBeanClass, propertyId);
     }
 
     public <U> ZoomField<U> buildZoomField(Object propertyId) {
@@ -249,7 +245,11 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
     @Override
     protected Class<?> getPropertyType(Object propertyId) {
-        return dynaClass.getDynaProperty(propertyId.toString()).getType();
+        DynaProperty dynaProperty = dynaClass.getDynaProperty(propertyId.toString());
+        if (dynaProperty == null) {
+            throw new IllegalArgumentException("Unknown property "+propertyId);
+        }
+        return dynaProperty.getType();
     }
 
     public BasicDataNavigation getNavigation() {
@@ -264,21 +264,23 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         EditingModeSwitcher(DataNavigation other) {
             this.otherNavigation = other;
         }
-
-        @Override
         public void editingModeChange(EditingModeChange.Event event) {
             if (event.isEnteringEditingMode()) {
-                otherNavigation.disableNavigation();
-                otherNavigation.disableCrud();
-                otherNavigation.disableFind();
-            } else {
-                otherNavigation.enableNavigation();
                 otherNavigation.enableCrud();
-                otherNavigation.enableFind();
+            } else {
+                otherNavigation.disableCrud();
             }
         }
     }
 
-
+    private final CurrentItemChange.Listener defaultItemChangeListener = new CurrentItemChange.Listener() {
+        @Override
+        public void currentItemChange(CurrentItemChange.Event event) {
+            FieldBinder.this.setItemDataSource(event.getNewItem());
+        }
+    };
+    public CurrentItemChange.Listener defaultItemChangeListener() {
+        return this.defaultItemChangeListener;
+    }
 
 }

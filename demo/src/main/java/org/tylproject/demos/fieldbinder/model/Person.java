@@ -4,9 +4,7 @@ package org.tylproject.demos.fieldbinder.model;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by evacchi on 20/11/14.
@@ -23,7 +21,8 @@ public class Person {
     private Integer age;
     private Date birthDate;
 
-    private List<Address> addressList = new ArrayList<Address>();
+    private Set<Address> addressSet = new HashSet<>();
+//    private List<Address> addressList = new ArrayList<Address>();
 
     public Person() {}
 
@@ -34,7 +33,7 @@ public class Person {
 
     public Person(String firstName, String lastName, Address address) {
         this(firstName, lastName);
-        this.addressList.add(address);
+        this.addressSet.add(address);
     }
 
     public String getFirstName() {
@@ -77,13 +76,15 @@ public class Person {
         this.birthDate = birth;
     }
 
-    public List<Address> getAddressList() {
-        return addressList;
+    public Set<Address> getAddressSet() {
+        return addressSet;
     }
+    public void setAddressSet(Set<Address> addressSet) { this.addressSet = addressSet;}
 
-    public void setAddressList(List<Address> addressList) {
-        this.addressList = addressList;
-    }
+    //
+//    public void setAddressList(List<Address> addressList) {
+//        this.addressList = addressList;
+//    }
 
     @Override
     public String toString() {

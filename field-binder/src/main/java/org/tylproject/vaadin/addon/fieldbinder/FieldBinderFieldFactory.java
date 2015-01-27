@@ -22,6 +22,9 @@ package org.tylproject.vaadin.addon.fieldbinder;
 import com.vaadin.data.fieldgroup.DefaultFieldGroupFieldFactory;
 import com.vaadin.ui.*;
 
+import java.util.Collection;
+import java.util.List;
+
 /**
  * An extended {@link com.vaadin.data.fieldgroup.FieldGroupFieldFactory}
  * that supports {@link org.tylproject.vaadin.addon.fieldbinder.ListTable}
@@ -60,7 +63,14 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
 
 
 
-    public <T> ListTable<T> createDetailField(Class<?> dataType, Class<T> containedBeanClass) {
-        return new ListTable<T>(containedBeanClass);
+    public <T,U extends Collection<T>> CollectionTable<T,U>
+        createDetailField(Class<U> dataType, Class<T> containedBeanClass) {
+        if (List.class.isAssignableFrom(dataType)) {
+            return (CollectionTable<T, U>) new ListTable<T>(containedBeanClass);
+        } else
+        if (Collection.class.isAssignableFrom(dataType)) {
+            return new CollectionTable<T,U>(containedBeanClass, dataType);
+        }
+        else throw new UnsupportedOperationException("Unsupported type "+ dataType);
     }
 }
