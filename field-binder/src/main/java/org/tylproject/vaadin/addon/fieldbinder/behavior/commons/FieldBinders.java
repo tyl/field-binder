@@ -14,6 +14,9 @@ import org.tylproject.vaadin.addon.fields.search.SearchPattern;
  */
 public class FieldBinders {
 
+    /**
+     * Link field data sources to the DataNavigation instance
+     */
     public static class CurrentItemChangeListener<T> implements CurrentItemChange.Listener {
         private final FieldBinder<T> fieldBinder;
 
@@ -27,6 +30,14 @@ public class FieldBinders {
         }
     }
 
+    /**
+     * Base behavior for all containers.
+     *
+     * Container-specific implementations should extend this class.
+     * In most cases only {@link org.tylproject.vaadin.addon.fieldbinder.behavior.commons.FieldBinders.BaseCrud#itemCreate(org.tylproject.vaadin.addon.datanav.events.ItemCreate.Event)}
+     * must be overridden
+     *
+     */
     public static class BaseCrud<T> implements CrudListeners {
 
         protected final FieldBinder<T> fieldBinder;
@@ -96,6 +107,13 @@ public class FieldBinders {
 
     }
 
+    /**
+     * Default implementation for FindListeners. It replaces
+     * the fields in the form with custom text inputs
+     *
+     * @see org.tylproject.vaadin.addon.fields.search.FilterPatternField
+     *
+     */
     public static class Find<T> implements FindListeners {
         boolean clearToFindMode = false;
         final FieldBinder<T> binder;

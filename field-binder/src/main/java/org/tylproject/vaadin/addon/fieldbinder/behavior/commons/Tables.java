@@ -1,16 +1,24 @@
 package org.tylproject.vaadin.addon.fieldbinder.behavior.commons;
 
-import com.vaadin.ui.Table;
+import com.vaadin.data.Container;
+import com.vaadin.data.fieldgroup.FieldGroupFieldFactory;
+import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.events.*;
-import org.tylproject.vaadin.addon.fieldbinder.TableFieldManager;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinderFieldFactory;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base behavior for Tables
  */
 public class Tables {
 
+    /**
+     * Link Table selection to the DataNavigation instance
+     */
     public static class CurrentItemChangeListener implements CurrentItemChange.Listener {
         private final Table table;
 
@@ -25,10 +33,18 @@ public class Tables {
 
     }
 
+    /**
+     * Base CRUD behavior for tabular data.
+     *
+     * Implementations may extend this class. In most cases, only
+     * {@link org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables.BaseCrud#itemCreate(org.tylproject.vaadin.addon.datanav.events.ItemCreate.Event)}
+     * must be overridden
+     *
+     */
     public static class BaseCrud<T> implements CrudListeners {
         final protected Table table;
         final protected Class<T> beanClass;
-        final protected TableFieldManager fieldManager;
+        final protected FieldManager fieldManager;
 
         protected T newEntity = null;
         protected FindListeners findListeners;
@@ -37,7 +53,7 @@ public class Tables {
             this.beanClass = beanClass;
             this.table = table;
 
-            this.fieldManager = new TableFieldManager(table);
+            this.fieldManager = new FieldManager(table);
 
             table.setTableFieldFactory(fieldManager);
         }
@@ -100,5 +116,54 @@ public class Tables {
                 throw new UnsupportedOperationException(ex);
             }
         }
+    }
+
+    /**
+     * Mimics a (lighter-weight) FieldBinder for Table inline-editing
+     */
+    public static class FieldManager implements TableFieldFactory {
+        final FieldGroupFieldFactory fieldFactory ;
+        final List<Field<?>> fields = new ArrayList<>();
+        final Table table;
+
+
+        public FieldManager(Table table) {
+            this(table, new FieldBinderFieldFactory());
+        }
+
+        public FieldManager(Table table, FieldGroupFieldFactory fieldFactory) {
+            this.fieldFactory = fieldFactory;
+            this.table = table;
+        }
+
+        @Override
+        public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
+            if (itemId == null || !itemId.equals(table.getValue())) return null;
+
+            Class<?> dataType = container.getType(propertyId);
+            Field<?> f = fieldFactory.createField(dataType, Field.class);
+            if (f instanceof AbstractTextField) {
+                ((AbstractTextField) f).setNullRepresentation("");
+                ((AbstractTextField) f).setImmediate(true);
+            }
+            f.setBuffered(true);
+            fields.add(f);
+            return f;
+        }
+
+
+        public void commitFields() {
+            for (Field<?> f: fields) {
+                f.commit();
+            }
+            fields.clear();
+        }
+        public void discardFields() {
+            for (Field<?> f: fields) {
+                f.discard();
+            }
+            fields.clear();
+        }
+
     }
 }

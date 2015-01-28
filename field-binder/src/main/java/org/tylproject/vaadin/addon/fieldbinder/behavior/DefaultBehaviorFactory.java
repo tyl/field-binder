@@ -30,6 +30,10 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontainer
 .ListContainerCrud;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.mongocontainer.MongoCrud;
 
+
+
+import javax.annotation.Nonnull;
+
 /**
  * Created by evacchi on 15/12/14.
  */
@@ -42,38 +46,34 @@ public class DefaultBehaviorFactory<U> implements BehaviorFactory<U> {
     }
 
     @Override
-    public Behavior forContainerType(Class<? extends Container> containerClass) {
+    public Behavior forContainerType(@Nonnull Class<? extends Container> containerClass) {
+        if (containerClass == null) throw new AssertionError("containerClass cannot be null");
 
         final CrudListeners crudListeners;
         final FindListeners findListeners = new FieldBinders.Find<>(fieldBinder);
         final CurrentItemChange.Listener currentItemListener = new FieldBinders.CurrentItemChangeListener<>(fieldBinder);
 
-        if (containerClass != null) {
+        switch (containerClass.getCanonicalName()) {
+            case "org.vaadin.viritin.ListContainer":
+            case "org.vaadin.viritin.FilterableListContainer":
+                crudListeners = new ListContainerCrud<>(fieldBinder);
+                break;
 
-            switch (containerClass.getCanonicalName()) {
-                case "org.vaadin.viritin.ListContainer":
-                case "org.vaadin.viritin.FilterableListContainer":
-                    crudListeners = new ListContainerCrud<>(fieldBinder);
-                    break;
+            case "org.tylproject.vaadin.addon.MongoContainer":
+                crudListeners = new MongoCrud<>(fieldBinder);
+                break;
 
-                case "org.tylproject.vaadin.addon.MongoContainer":
-                    crudListeners = new MongoCrud<>(fieldBinder);
-                    break;
+            case "com.vaadin.addon.jpacontainer.JPAContainer":
+                crudListeners = new JPAContainerCrud<>(fieldBinder);
+                break;
 
-                case "com.vaadin.addon.jpacontainer.JPAContainer":
-                    crudListeners = new JPAContainerCrud<>(fieldBinder);
-                    break;
-
-                default:
-                    throw new UnsupportedOperationException(
-                        "Unknown container type: "+ containerClass.getCanonicalName());
-            }
-
-
-            return new BehaviorFacade(currentItemListener, crudListeners, findListeners);
-
+            default:
+                throw new UnsupportedOperationException(
+                    "Unknown container type: "+ containerClass.getCanonicalName());
         }
 
-        throw new UnsupportedOperationException("Unknown container type: "+ containerClass.getCanonicalName());
+
+        return new BehaviorFacade(currentItemListener, crudListeners, findListeners);
+
     }
 }

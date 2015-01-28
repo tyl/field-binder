@@ -21,10 +21,11 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import com.vaadin.data.Container;
 
+import javax.annotation.Nonnull;
+
 /**
  * Created by evacchi on 15/12/14.
  */
 public interface BehaviorFactory<T> {
-
-    Behavior forContainerType(Class<? extends Container> containerClass);
+    Behavior forContainerType(@Nonnull Class<? extends Container> containerClass);
 }

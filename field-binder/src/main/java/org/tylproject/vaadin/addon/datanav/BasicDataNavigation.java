@@ -106,7 +106,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
      * Return the actual type if a container is set, or the restrictedContainerType
      * if an upper bound was set with {@link #restrictContainerType(Class)}
      */
-    public Class<? extends Container.Ordered> getContainerType() {
+    public @Nonnull Class<? extends Container.Ordered> getContainerType() {
         if (container != null) {
             return container.getClass();
         }

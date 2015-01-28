@@ -3,10 +3,10 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 import com.vaadin.data.Container;
 import com.vaadin.ui.Table;
 import org.tylproject.vaadin.addon.datanav.events.*;
-import org.tylproject.vaadin.addon.fieldbinder.TableFieldManager;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.Behavior;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.SearchWindowFindListeners;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 import org.tylproject.vaadin.addon.fields.search.SearchForm;
 import org.tylproject.vaadin.addon.fields.search.SearchWindow;
 
@@ -23,7 +23,7 @@ public abstract class AbstractTableBehavior<T> implements Behavior {
     final protected Class<T> beanClass;
 //    final protected TableFindListeners<T> findListeners;
     final protected SearchForm searchForm;
-    final protected TableFieldManager fieldManager;
+    final protected Tables.FieldManager fieldManager;
 
     protected T newEntity = null;
     protected FindListeners findListeners;
@@ -38,7 +38,7 @@ public abstract class AbstractTableBehavior<T> implements Behavior {
                 Arrays.asList(table.getVisibleColumns())));
 
 
-        this.fieldManager = new TableFieldManager(table);
+        this.fieldManager = new Tables.FieldManager(table);
 
         table.setTableFieldFactory(fieldManager);
     }
