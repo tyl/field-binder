@@ -17,18 +17,10 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
-import com.vaadin.addon.jpacontainer.fieldfactory.FieldFactory;
-import com.vaadin.data.Container;
-import com.vaadin.data.fieldgroup.FieldGroupFieldFactory;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.events.*;
-import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.fieldbinder.FieldBinderFieldFactory;
-import org.tylproject.vaadin.addon.fieldbinder.TableFieldManager;
-
-import java.util.*;
 
 /**
  * The table field factory defines the default CRUD behavior for a table. It also injects

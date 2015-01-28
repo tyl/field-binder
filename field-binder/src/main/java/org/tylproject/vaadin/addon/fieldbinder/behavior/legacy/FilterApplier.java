@@ -17,12 +17,14 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Field;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultFilterFactory;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.FilterFactory;
 
 import java.util.HashMap;
 import java.util.Map;

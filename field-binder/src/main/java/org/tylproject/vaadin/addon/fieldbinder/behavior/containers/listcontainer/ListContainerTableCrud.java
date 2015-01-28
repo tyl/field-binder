@@ -17,26 +17,33 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontainer;
 
+import com.vaadin.ui.Table;
 import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
-import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.vaadin.viritin.ListContainer;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 
 /**
- * Created by evacchi on 15/12/14.
+ * The table field factory defines the default CRUD behavior for a table. It also injects
+ * a modified TableFieldFactory that activates only one editable row at once.
  */
-public class ListContainerBehavior<T> extends AbstractBehavior<T> {
-    public ListContainerBehavior(FieldBinder<T> fieldBinder) {
-        super(fieldBinder);
+public class ListContainerTableCrud<T> extends Tables.BaseCrud<T> {
+
+    protected T newEntity = null;
+
+    public ListContainerTableCrud(final Class<T> beanClass, final Table table) {
+        super(beanClass, table);
     }
+
 
     @Override
     public void itemCreate(ItemCreate.Event event) {
-        super.itemCreate(event);
         T bean = createBean();
-        ListContainer<T> container = ((ListContainer<T>) event.getSource().getContainer());
-        container.addItem(bean);
+
+        event.getSource().getContainer().addItem(bean);
         event.getSource().setCurrentItemId(bean);
+
+        super.itemCreate(event);
     }
+
 }

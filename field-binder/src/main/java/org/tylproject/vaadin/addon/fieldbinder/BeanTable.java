@@ -26,7 +26,7 @@ import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.TableBehaviorFactory;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.legacy.TableBehaviorFactory;
 
 /**
  * Created by evacchi on 19/12/14.

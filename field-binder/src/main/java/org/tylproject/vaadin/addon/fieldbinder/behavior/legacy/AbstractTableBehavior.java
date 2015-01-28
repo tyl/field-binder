@@ -1,9 +1,12 @@
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
 import com.vaadin.data.Container;
 import com.vaadin.ui.Table;
 import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.TableFieldManager;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.Behavior;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.SearchWindowFindListeners;
 import org.tylproject.vaadin.addon.fields.search.SearchForm;
 import org.tylproject.vaadin.addon.fields.search.SearchWindow;
 

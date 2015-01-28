@@ -19,19 +19,15 @@
 
 package org.tylproject.vaadin.addon.fieldbinder;
 
-import com.vaadin.data.Buffered;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.TableBehaviorFactory;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultTableBehaviorFactory;
 import org.vaadin.viritin.FilterableListContainer;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * A table wrapper where the value is a {@link java.util.List}
@@ -60,7 +56,7 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
         table.setMultiSelect(false);
 
         navigation = new BasicDataNavigation();
-        navigation.setBehaviorFactory(new TableBehaviorFactory<T>(containedBeanClass, table));
+        navigation.setBehaviorFactory(new DefaultTableBehaviorFactory(containedBeanClass, table));
         navigation.restrictContainerType(FilterableListContainer.class);
 
         compositionRoot.addComponent(table);
@@ -232,25 +228,6 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
 
         return propertyCollection;
 
-//        try {
-//            // create an empty collection of the same type
-//            Constructor<U> constructor = collectionType.getConstructor();
-//            U collection = constructor.newInstance();
-//
-//            // fill it with the elements in the table
-//            collection.addAll(allItems);
-//
-//            // set it to the internal value
-//            super.setInternalValue(collection);
-//
-//            // return the value, via super call
-//            return super.getInternalValue();
-//        } catch (InvocationTargetException
-//                | NoSuchMethodException
-//                | InstantiationException
-//                | IllegalAccessException e) {
-//            throw new Buffered.SourceException(this, e);
-//        }
     }
 
 

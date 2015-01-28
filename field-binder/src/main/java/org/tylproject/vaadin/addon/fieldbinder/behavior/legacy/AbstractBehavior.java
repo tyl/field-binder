@@ -17,14 +17,14 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Item;
-import com.vaadin.ui.Field;
-import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.Behavior;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.legacy.LegacyFindListeners;
 
 /**
  * Created by evacchi on 26/11/14.

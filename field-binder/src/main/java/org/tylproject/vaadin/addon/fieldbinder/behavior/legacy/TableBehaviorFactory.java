@@ -17,39 +17,43 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
 import com.vaadin.data.Container;
-import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import com.vaadin.ui.Table;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.Behavior;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.BehaviorFactory;
 
 /**
  * Created by evacchi on 15/12/14.
  */
-public class FieldBinderBehaviorFactory<U> implements BehaviorFactory<U> {
+public class TableBehaviorFactory<U> implements BehaviorFactory<U> {
 
-    final FieldBinder<U> fieldBinder;
+    final Class<U> beanClass;
+    final Table table;
 
-    public FieldBinderBehaviorFactory(FieldBinder<U> fieldBinder) {
-        this.fieldBinder = fieldBinder;
+    public TableBehaviorFactory(Class<U> beanClass, Table table) {
+        this.beanClass = beanClass;
+        this.table = table;
     }
+
 
     @Override
     public Behavior forContainerType(Class<? extends Container>
                                                                containerClass) {
-        if (containerClass != null) {
-
             switch (containerClass.getCanonicalName()) {
                 case "org.vaadin.viritin.ListContainer":
                 case "org.vaadin.viritin.FilterableListContainer":
-                    return new ListContainerBehavior<U>(fieldBinder);
-                case "org.tylproject.vaadin.addon.MongoContainer":
-                    return new MongoBehavior<U>(fieldBinder);
+                    return new ListContainerTableBehavior<U>(beanClass, table);
+                case "org.tylproject.vaadin.addon.BufferedMongoContainer":
+                    return new BufferedMongoContainerTableBehavior<U>(beanClass, table);
                 case "com.vaadin.addon.jpacontainer.JPAContainer":
-                    return new JPAContainerBehavior<U>(fieldBinder);
+                    return new JPAContainerTableBehavior<U>(beanClass, table);
             }
-
-        }
 
         throw new UnsupportedOperationException("Unknown container type: "+ containerClass.getCanonicalName());
     }
+
+
+
 }

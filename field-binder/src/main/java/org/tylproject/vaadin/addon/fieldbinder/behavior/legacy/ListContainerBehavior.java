@@ -17,29 +17,26 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
-import org.tylproject.vaadin.addon.MongoContainer;
-import org.tylproject.vaadin.addon.datanav.DataNavigation;
-import org.tylproject.vaadin.addon.datanav.events.OnCommit;
+import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.vaadin.viritin.ListContainer;
 
 /**
- * Created by evacchi on 27/11/14.
+ * Created by evacchi on 15/12/14.
  */
-public class MongoBehavior<M> extends AbstractBehavior<M> {
-
-    public MongoBehavior(FieldBinder<M> fieldBinder) {
+public class ListContainerBehavior<T> extends AbstractBehavior<T> {
+    public ListContainerBehavior(FieldBinder<T> fieldBinder) {
         super(fieldBinder);
     }
 
     @Override
-    public void onCommit(OnCommit.Event event) {
-        super.onCommit(event);
-        DataNavigation nav = event.getSource();
-        M bean = fieldBinder.getBeanDataSource();
-        MongoContainer<M> container = (MongoContainer<M>) nav.getContainer();
-        Object id = container.addEntity(bean);
-        nav.setCurrentItemId(id);
+    public void itemCreate(ItemCreate.Event event) {
+        super.itemCreate(event);
+        T bean = createBean();
+        ListContainer<T> container = ((ListContainer<T>) event.getSource().getContainer());
+        container.addItem(bean);
+        event.getSource().setCurrentItemId(bean);
     }
 }

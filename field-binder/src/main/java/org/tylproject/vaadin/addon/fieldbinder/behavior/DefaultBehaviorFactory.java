@@ -22,8 +22,13 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior;
 import com.vaadin.data.Container;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.fields.search.SearchForm;
-import org.tylproject.vaadin.addon.fields.search.SearchWindow;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.FieldBinders;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.SearchWindowFindListeners;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.jpacontainer.JPAContainerCrud;
+
+import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontainer
+.ListContainerCrud;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.mongocontainer.MongoCrud;
 
 /**
  * Created by evacchi on 15/12/14.
@@ -37,25 +42,27 @@ public class DefaultBehaviorFactory<U> implements BehaviorFactory<U> {
     }
 
     @Override
-    public Behavior forContainerType(
-                                    Class<? extends Container> containerClass) {
+    public Behavior forContainerType(Class<? extends Container> containerClass) {
 
         final CrudListeners crudListeners;
-        final FindListeners findListeners = new SearchWindowFindListeners(fieldBinder);
-        final CurrentItemChange.Listener currentItemListener = new FieldBinderCurrentItemChangeListener<>(fieldBinder);
+        final FindListeners findListeners = new FieldBinders.Find<>(fieldBinder);
+        final CurrentItemChange.Listener currentItemListener = new FieldBinders.CurrentItemChangeListener<>(fieldBinder);
 
         if (containerClass != null) {
 
             switch (containerClass.getCanonicalName()) {
-//                case "org.vaadin.viritin.ListContainer":
-//                case "org.vaadin.viritin.FilterableListContainer":
-//                    return (T) new ListContainerBehavior<U>(fieldBinder);
-                case "org.tylproject.vaadin.addon.MongoContainer":
-                    crudListeners = new MongoCrud<U>(fieldBinder);
+                case "org.vaadin.viritin.ListContainer":
+                case "org.vaadin.viritin.FilterableListContainer":
+                    crudListeners = new ListContainerCrud<>(fieldBinder);
                     break;
 
-//                case "com.vaadin.addon.jpacontainer.JPAContainer":
-//                    return (T) new JPAContainerBehavior<U>(fieldBinder);
+                case "org.tylproject.vaadin.addon.MongoContainer":
+                    crudListeners = new MongoCrud<>(fieldBinder);
+                    break;
+
+                case "com.vaadin.addon.jpacontainer.JPAContainer":
+                    crudListeners = new JPAContainerCrud<>(fieldBinder);
+                    break;
 
                 default:
                     throw new UnsupportedOperationException(

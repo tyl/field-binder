@@ -17,18 +17,19 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.containers.mongocontainer;
 
 import com.vaadin.ui.Table;
 import org.bson.types.ObjectId;
 import org.tylproject.vaadin.addon.BufferedMongoContainer;
 import org.tylproject.vaadin.addon.datanav.events.*;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 
 /**
  * Created by evacchi on 19/12/14.
  */
-public class BufferedMongoContainerTableBehavior<T> extends AbstractTableBehavior<T> {
-    public BufferedMongoContainerTableBehavior(Class<T> beanClass, Table table) {
+public class BufferedMongoTableCrud<T> extends Tables.BaseCrud<T> {
+    public BufferedMongoTableCrud(Class<T> beanClass, Table table) {
         super(beanClass, table);
     }
 

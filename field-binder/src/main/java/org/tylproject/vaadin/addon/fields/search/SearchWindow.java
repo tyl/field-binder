@@ -77,16 +77,30 @@ public class SearchWindow extends Window implements SearchDialog {
         callFindOnClose(fieldBinder.getNavigation());
     }
 
+    private DataNavigation closeListenerNavigation;
+    private Window.CloseListener closeListener ;
+
     /**
      * Set to automatically invoke navigation.find() when the apply() button is clicked
      */
     public SearchWindow callFindOnClose(final DataNavigation navigation) {
-        this.addCloseListener(new SearchWindow.CloseListener() {
+        // if same as previous, prevent enqueueing twice
+        if (closeListenerNavigation == navigation) return this;
+
+        // if not the first time, remove old listener
+        if (closeListenerNavigation != null) {
+            this.removeCloseListener(this.closeListener);
+        }
+
+        this.closeListenerNavigation = navigation;
+        this.closeListener = new Window.CloseListener() {
             @Override
             public void windowClose(Window.CloseEvent e) {
                 navigation.find();
             }
-        });
+        };
+        this.addCloseListener(closeListener);
+
         return this;
     }
 

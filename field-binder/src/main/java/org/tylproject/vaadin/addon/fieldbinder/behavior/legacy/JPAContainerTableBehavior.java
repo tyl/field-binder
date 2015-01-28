@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import com.vaadin.ui.Table;

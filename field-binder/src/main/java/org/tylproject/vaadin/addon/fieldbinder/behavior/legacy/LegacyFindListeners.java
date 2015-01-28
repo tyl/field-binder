@@ -1,9 +1,10 @@
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
 import com.vaadin.data.Container;
 import org.tylproject.vaadin.addon.datanav.events.ClearToFind;
 import org.tylproject.vaadin.addon.datanav.events.OnFind;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
 
 /**
  * Created by evacchi on 28/01/15.

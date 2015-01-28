@@ -1,12 +1,13 @@
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.containers.jpacontainer;
 
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.events.OnCommit;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.FieldBinders;
 
-public class JPAContainerBehavior<T> extends AbstractBehavior<T> {
-    public JPAContainerBehavior(FieldBinder<T> fieldBinder) {
+public class JPAContainerCrud<T> extends FieldBinders.BaseCrud<T> {
+    public JPAContainerCrud(FieldBinder<T> fieldBinder) {
         super(fieldBinder);
     }
 

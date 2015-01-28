@@ -31,7 +31,6 @@ import org.tylproject.vaadin.addon.datanav.*;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultBehaviorFactory;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.FieldBinderBehaviorFactory;
 import org.tylproject.vaadin.addon.fields.drilldown.DrillDownField;
 import org.tylproject.vaadin.addon.fields.zoom.ZoomDialog;
 import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
@@ -98,7 +97,6 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
 
         BasicDataNavigation nav = new BasicDataNavigation(container);
-//        nav.setBehaviorFactory(new FieldBinderBehaviorFactory(this));
         nav.setBehaviorFactory(new DefaultBehaviorFactory(this));
 
         this.navigation = nav;
