@@ -1,9 +1,7 @@
-package org.tylproject.vaadin.addon.fields;
+package org.tylproject.vaadin.addon.fields.filterpattern;
 
 import com.vaadin.data.Container;
 import com.vaadin.event.FieldEvents;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.TextField;
 
 /**

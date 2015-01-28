@@ -1,4 +1,4 @@
-package org.tylproject.vaadin.addon.fields;
+package org.tylproject.vaadin.addon.fields.filterpattern;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -53,7 +53,7 @@ public class FilterPatternComboBox extends FilterPatternField<Object, Object, Co
         }
     }
 
-    private final ValueChangeListener valueChangeListener = new ValueChangeListener() {
+    private final Property.ValueChangeListener valueChangeListener = new Property.ValueChangeListener() {
         @Override
         public void valueChange(Property.ValueChangeEvent event) {
             applyFilterPattern(

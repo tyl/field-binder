@@ -4,7 +4,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.fields.FilterPatternField;
+import org.tylproject.vaadin.addon.fields.filterpattern.FilterPatternField;
 import org.tylproject.vaadin.addon.fields.SearchPattern;
 
 import java.io.Serializable;
@@ -110,7 +110,7 @@ public class SearchWindow extends Window implements SearchDialog {
 
     private void restorePatternsIntoFields() {
         for (Map.Entry<Object, FilterPatternField> e:
-                searchForm.getPropertyIdToFilterExpressionField().entrySet()) {
+                searchForm.getSearchFieldManager().getPropertyIdToFilterExpressionField().entrySet()) {
             final SearchPattern searchPattern = propertyIdToPatterns.get(e.getKey());
             if (searchPattern == null) {
                 e.getValue().setValue(null);
@@ -129,14 +129,14 @@ public class SearchWindow extends Window implements SearchDialog {
     private void backupPatternsFromFields() {
         propertyIdToPatterns.clear();
         for (Map.Entry<Object, FilterPatternField> e:
-                searchForm.getPropertyIdToFilterExpressionField().entrySet()) {
+                searchForm.getSearchFieldManager().getPropertyIdToFilterExpressionField().entrySet()) {
             propertyIdToPatterns.put(e.getKey(), e.getValue().getPatternFromValue());
         }
     }
 
     @Override
     public void clear() {
-        getSearchForm().clear();
+        getSearchForm().getSearchFieldManager().clear();
     }
 
 
