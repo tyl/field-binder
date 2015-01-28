@@ -19,12 +19,27 @@
 
 package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
-import com.vaadin.data.Container;
+import org.tylproject.vaadin.addon.MongoContainer;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
+import org.tylproject.vaadin.addon.datanav.events.OnCommit;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
 /**
- * Created by evacchi on 15/12/14.
+ * Created by evacchi on 27/11/14.
  */
-public interface BehaviorFactory<T> {
+public class MongoCrud<M> extends BaseCrud<M> {
 
-    Behavior forContainerType(Class<? extends Container> containerClass);
+    public MongoCrud(FieldBinder<M> fieldBinder) {
+        super(fieldBinder);
+    }
+
+    @Override
+    public void onCommit(OnCommit.Event event) {
+        super.onCommit(event);
+        DataNavigation nav = event.getSource();
+        M bean = fieldBinder.getBeanDataSource();
+        MongoContainer<M> container = (MongoContainer<M>) nav.getContainer();
+        Object id = container.addEntity(bean);
+        nav.setCurrentItemId(id);
+    }
 }

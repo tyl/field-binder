@@ -19,27 +19,21 @@
 
 package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Item;
-import com.vaadin.ui.Field;
-import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
 /**
  * Created by evacchi on 26/11/14.
  */
-public abstract class AbstractBehavior<T> implements Behavior {
+public class BaseCrud<T> implements CrudListeners {
 
     protected final FieldBinder<T> fieldBinder;
     private final Class<T> beanClass;
-    private final FindListeners findListenersDelegate;
 
-    public AbstractBehavior(FieldBinder<T> fieldBinder) {
+    public BaseCrud(FieldBinder<T> fieldBinder) {
         this.fieldBinder = fieldBinder;
         this.beanClass = fieldBinder.getType();
-        this.findListenersDelegate = new LegacyFindListeners<>(fieldBinder);
-
         fieldBinder.setReadOnly(true);
     }
 
@@ -51,14 +45,6 @@ public abstract class AbstractBehavior<T> implements Behavior {
         return fieldBinder;
     }
 
-    public FindListeners getFindListenersDelegate() {
-        return findListenersDelegate;
-    }
-
-    @Override
-    public void currentItemChange(CurrentItemChange.Event event) {
-        fieldBinder.setItemDataSource(event.getNewItem());
-    }
 
     @Override
     public void onCommit(OnCommit.Event event) {
@@ -98,16 +84,6 @@ public abstract class AbstractBehavior<T> implements Behavior {
         fieldBinder.setBeanDataSource(bean);
     }
 
-
-    @Override
-    public void clearToFind(ClearToFind.Event event) {
-        findListenersDelegate.clearToFind(event);
-    }
-
-    @Override
-    public void onFind(OnFind.Event event) {
-        findListenersDelegate.onFind(event);
-    }
 
     protected T createBean() {
         try {
