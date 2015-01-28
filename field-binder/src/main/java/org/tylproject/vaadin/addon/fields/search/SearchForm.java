@@ -1,11 +1,8 @@
-package org.tylproject.vaadin.addon;
+package org.tylproject.vaadin.addon.fields.search;
 
+import com.vaadin.data.Container;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.fields.filterpattern.FilterPatternComboBox;
-import org.tylproject.vaadin.addon.fields.filterpattern.FilterPatternField;
-import org.tylproject.vaadin.addon.fields.filterpattern.FilterPatternTextField;
-import org.tylproject.vaadin.addon.fields.SearchPattern;
 
 import java.util.*;
 
@@ -20,11 +17,7 @@ public class SearchForm extends FormLayout {
      */
     public SearchForm(FieldBinder<?> fieldBinder) {
         this.searchFieldManager = new SearchFieldManager(fieldBinder);
-
-
-        for (FilterPatternField f : searchFieldManager.getPropertyIdToFilterExpressionField().values()) {
-            this.addComponent(f);
-        }
+        addFieldsToLayout();
     }
 
     /**
@@ -32,8 +25,15 @@ public class SearchForm extends FormLayout {
      */
     public SearchForm(Map<Object, Class<?>> propertyIdToType) {
         this.searchFieldManager = new SearchFieldManager(propertyIdToType);
+        addFieldsToLayout();
+    }
 
+    public SearchForm(Container container) {
+        this.searchFieldManager = new SearchFieldManager(container);
+        addFieldsToLayout();
+    }
 
+    private void addFieldsToLayout() {
         for (FilterPatternField f : searchFieldManager.getPropertyIdToFilterExpressionField().values()) {
             this.addComponent(f);
         }

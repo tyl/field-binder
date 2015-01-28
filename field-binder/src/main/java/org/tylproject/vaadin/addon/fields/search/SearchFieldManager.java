@@ -1,14 +1,11 @@
-package org.tylproject.vaadin.addon;
+package org.tylproject.vaadin.addon.fields.search;
 
+import com.vaadin.data.Container;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.HasComponents;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.fields.SearchPattern;
-import org.tylproject.vaadin.addon.fields.filterpattern.FilterPatternComboBox;
-import org.tylproject.vaadin.addon.fields.filterpattern.FilterPatternField;
-import org.tylproject.vaadin.addon.fields.filterpattern.FilterPatternTextField;
 
 import java.util.*;
 
@@ -49,6 +46,14 @@ public class SearchFieldManager {
         this.propertyIdToType.putAll(propertyIdToType);
         makeAllFields(propertyIdToType);
     }
+
+    public SearchFieldManager(Container container) {
+        for (Object propertyId: container.getContainerPropertyIds()) {
+            this.propertyIdToType.put(propertyId, container.getType(propertyId));
+        }
+        makeAllFields(propertyIdToType);
+    }
+
 
     /**
      * add a field to the SearchForm for the given propertyId, propertyType

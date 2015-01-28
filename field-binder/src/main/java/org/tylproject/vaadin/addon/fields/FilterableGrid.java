@@ -3,9 +3,9 @@ package org.tylproject.vaadin.addon.fields;
 import com.vaadin.data.Container;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Grid;
-import org.tylproject.vaadin.addon.fields.filterpattern.FilterPatternComboBox;
-import org.tylproject.vaadin.addon.fields.filterpattern.FilterPatternField;
-import org.tylproject.vaadin.addon.fields.filterpattern.FilterPatternTextField;
+import org.tylproject.vaadin.addon.fields.search.FilterPatternComboBox;
+import org.tylproject.vaadin.addon.fields.search.FilterPatternField;
+import org.tylproject.vaadin.addon.fields.search.FilterPatternTextField;
 
 import java.util.*;
 

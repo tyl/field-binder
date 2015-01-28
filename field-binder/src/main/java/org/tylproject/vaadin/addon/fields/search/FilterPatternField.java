@@ -1,15 +1,12 @@
-package org.tylproject.vaadin.addon.fields.filterpattern;
+package org.tylproject.vaadin.addon.fields.search;
 
 import com.vaadin.data.Container;
-import com.vaadin.event.FieldEvents;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.TextField;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultFilterFactory;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.FilterFactory;
 import org.tylproject.vaadin.addon.fields.CombinedField;
-import org.tylproject.vaadin.addon.fields.SearchPattern;
 
 /**
  * A Field that returns a filter for a given text pattern; it also immediately applies the

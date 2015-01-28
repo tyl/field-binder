@@ -311,6 +311,9 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
             getEventRouter().fireEvent(new BeforeFind.Event(this));
             getEventRouter().fireEvent(new OnFind.Event(this));
             getEventRouter().fireEvent(new AfterFind.Event(this));
+
+            this.first();
+
         } catch (RejectOperationException signal) {
             logger.info("Find operation was interrupted by user");
         }

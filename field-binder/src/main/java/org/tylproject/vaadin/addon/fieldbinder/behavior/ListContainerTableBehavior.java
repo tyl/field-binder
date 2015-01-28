@@ -34,32 +34,12 @@ import java.util.*;
  * The table field factory defines the default CRUD behavior for a table. It also injects
  * a modified TableFieldFactory that activates only one editable row at once.
  */
-public class ListContainerTableBehavior<T> implements Behavior {
-
-    final Table table;
-    final Class<T> beanClass;
-    final TableFindBehavior<T> findStrategy;
-    final TableFieldManager fieldManager;
+public class ListContainerTableBehavior<T> extends AbstractTableBehavior<T> {
 
     protected T newEntity = null;
 
     public ListContainerTableBehavior(final Class<T> beanClass, final Table table) {
-        this.beanClass = beanClass;
-        this.table = table;
-        this.findStrategy = new TableFindBehavior<>(beanClass);
-        this.fieldManager = new TableFieldManager(table);
-
-        table.setTableFieldFactory(fieldManager);
-    }
-
-
-
-
-    @Override
-    public void itemEdit(ItemEdit.Event event) {
-        table.setEditable(true);
-        table.setSelectable(false);
-        table.focus();
+        super(beanClass, table);
     }
 
 
@@ -69,64 +49,8 @@ public class ListContainerTableBehavior<T> implements Behavior {
 
         event.getSource().getContainer().addItem(bean);
         event.getSource().setCurrentItemId(bean);
-        table.select(bean);
-        table.setEditable(true);
-        table.setSelectable(false);
-        table.focus();
 
-
+        super.itemCreate(event);
     }
 
-    protected T createBean() {
-        try {
-            T bean = beanClass.newInstance();
-            newEntity = bean;
-            return bean;
-        } catch (Exception ex) {
-            throw new UnsupportedOperationException(ex);
-        }
-    }
-
-    public void onDiscard(OnDiscard.Event event) {
-        this.table.discard();
-
-        fieldManager.discardFields();
-        this.table.setEditable(false);
-
-        this.table.setSelectable(true);
-        if (newEntity != null) {
-            newEntity = null;
-            event.getSource().remove();
-        }
-    }
-
-    public void onCommit(OnCommit.Event event) {
-
-        fieldManager.commitFields();
-        this.table.commit();
-        this.table.setEditable(false);
-
-        this.table.setSelectable(true);
-
-        newEntity = null;
-    }
-
-    public void itemRemove(ItemRemove.Event event) {
-        this.table.removeItem(event.getSource().getCurrentItemId());
-    }
-
-    @Override
-    public void currentItemChange(CurrentItemChange.Event event) {
-        table.select(event.getNewItemId());
-    }
-
-    @Override
-    public void onFind(OnFind.Event event) {
-        findStrategy.onFind(event);
-    }
-
-    @Override
-    public void clearToFind(ClearToFind.Event event) {
-        findStrategy.clearToFind(event);
-    }
 }

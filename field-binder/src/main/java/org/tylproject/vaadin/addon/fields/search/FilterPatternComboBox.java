@@ -1,4 +1,4 @@
-package org.tylproject.vaadin.addon.fields.filterpattern;
+package org.tylproject.vaadin.addon.fields.search;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;

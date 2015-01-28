@@ -1,6 +1,4 @@
-package org.tylproject.vaadin.addon;
-
-import org.tylproject.vaadin.addon.fields.SearchPattern;
+package org.tylproject.vaadin.addon.fields.search;
 
 import java.util.Collection;
 

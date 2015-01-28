@@ -27,7 +27,7 @@ import org.tylproject.vaadin.addon.datanav.events.*;
 /**
  * Created by evacchi on 19/12/14.
  */
-public class BufferedMongoContainerTableBehavior<T> extends ListContainerTableBehavior<T> {
+public class BufferedMongoContainerTableBehavior<T> extends AbstractTableBehavior<T> {
     public BufferedMongoContainerTableBehavior(Class<T> beanClass, Table table) {
         super(beanClass, table);
     }
@@ -52,9 +52,8 @@ public class BufferedMongoContainerTableBehavior<T> extends ListContainerTableBe
 
         event.getSource().setCurrentItemId(itemId);
 
-        table.setEditable(true);
-        table.setSelectable(false);
-        table.focus();
+
+       super.itemCreate(event);
 
 
     }

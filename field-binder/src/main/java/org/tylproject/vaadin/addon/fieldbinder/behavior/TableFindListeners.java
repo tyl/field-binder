@@ -27,18 +27,18 @@ import org.tylproject.vaadin.addon.datanav.events.ClearToFind;
 import org.tylproject.vaadin.addon.datanav.events.OnFind;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
-public class TableFindBehavior<T> implements FindListeners {
+public class TableFindListeners<T> implements FindListeners {
 
 	private final Class<T> beanClass;
 	private FindWindow window;
 	private final FilterApplier filterApplier = new FilterApplier();
 
 
-	public TableFindBehavior(Class<T> beanClass) {
+	public TableFindListeners(Class<T> beanClass) {
 		this.beanClass = beanClass;
 	}
 	@Deprecated
-	public TableFindBehavior(Class<T> beanClass, Table table) {
+	public TableFindListeners(Class<T> beanClass, Table table) {
 		this(beanClass);
 	}
 

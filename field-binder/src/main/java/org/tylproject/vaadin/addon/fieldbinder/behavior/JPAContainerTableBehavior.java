@@ -26,7 +26,7 @@ import org.tylproject.vaadin.addon.datanav.events.*;
 /**
  * Created by evacchi on 19/12/14.
  */
-public class JPAContainerTableBehavior<T> extends ListContainerTableBehavior<T> {
+public class JPAContainerTableBehavior<T> extends AbstractTableBehavior<T> {
     public JPAContainerTableBehavior(Class<T> beanClass, Table table) {
         super(beanClass, table);
     }
@@ -40,10 +40,7 @@ public class JPAContainerTableBehavior<T> extends ListContainerTableBehavior<T> 
 
         event.getSource().setCurrentItemId(itemId);
 
-
-        table.setEditable(true);
-        table.setSelectable(false);
-        table.focus();
+        super.itemCreate(event);
     }
 
     @Override
@@ -62,7 +59,6 @@ public class JPAContainerTableBehavior<T> extends ListContainerTableBehavior<T> 
 
     @Override
     public void onDiscard(OnDiscard.Event event) {
-
         super.onDiscard(event);
         JPAContainer<T> jc = (JPAContainer<T>) event.getSource().getContainer();
 

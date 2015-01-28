@@ -1,11 +1,9 @@
-package org.tylproject.vaadin.addon;
+package org.tylproject.vaadin.addon.fields.search;
 
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.fields.filterpattern.FilterPatternField;
-import org.tylproject.vaadin.addon.fields.SearchPattern;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
