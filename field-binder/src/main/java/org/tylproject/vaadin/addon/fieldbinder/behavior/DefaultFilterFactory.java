@@ -26,6 +26,8 @@ import com.vaadin.data.util.filter.Compare;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import org.joda.time.DateTime;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -185,6 +187,15 @@ public class DefaultFilterFactory implements FilterFactory {
 
     private Number parseNumericValue(String numericString, Class<?> numberType) {
         try {
+
+            if (numberType == BigDecimal.class) {
+                return new BigDecimal(numericString);
+            } else if (numberType == BigInteger.class) {
+                return new BigInteger(numericString);
+            }
+
+            // otherwise
+
             Double value = Double.parseDouble(numericString);
 
             if (numberType == double.class || numberType == Double.class) {

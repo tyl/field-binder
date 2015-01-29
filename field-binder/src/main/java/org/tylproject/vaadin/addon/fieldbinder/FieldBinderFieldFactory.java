@@ -32,19 +32,32 @@ import java.util.List;
 public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
 
     public <T extends Field> T createField(Class<?> type, Class<T> fieldType) {
-        T f = super.createField(type, fieldType);
+        Field<?> f;
+        if (AbstractSelect.class.isAssignableFrom(fieldType)) {
+            f = createCompatibleSelect((Class<AbstractSelect>) fieldType);
+        } else {
+            f = super.createField(type, fieldType);
+        }
         ((AbstractField<?>) f).setImmediate(true);
-        return f;
+        return (T)f;
     }
 
     @Override
     protected AbstractSelect createCompatibleSelect(
             Class<? extends AbstractSelect> fieldType) {
+
+        AbstractSelect select;
+
         if (fieldType.isAssignableFrom(ComboBox.class)) {
-            AbstractSelect select;
             select = new ComboBox();
             select.setImmediate(true);
             select.setNullSelectionAllowed(false);
+            return select;
+        }
+        else
+        if (OptionGroup.class.isAssignableFrom(fieldType)){
+            select = new OptionGroup();
+            select.setMultiSelect(false);
             return select;
         }
         else {
