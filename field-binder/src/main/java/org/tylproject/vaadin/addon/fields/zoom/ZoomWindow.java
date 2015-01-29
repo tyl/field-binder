@@ -93,7 +93,7 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
     }
 
     public void show() {
-//            field.getZoomDialog().show(this.field.getValue());
+        field.getZoomDialog().show(this.field.getValue());
         UI.getCurrent().addWindow(this);
         center();
         focus();
