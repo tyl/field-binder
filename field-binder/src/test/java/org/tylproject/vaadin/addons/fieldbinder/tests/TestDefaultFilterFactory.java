@@ -1,6 +1,9 @@
 package org.tylproject.vaadin.addons.fieldbinder.tests;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Item;
+import com.vaadin.data.util.ObjectProperty;
+import com.vaadin.data.util.PropertysetItem;
 import com.vaadin.data.util.filter.And;
 import com.vaadin.data.util.filter.Compare;
 import org.joda.time.DateTime;
@@ -13,6 +16,8 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by evacchi on 22/01/15.
@@ -22,8 +27,33 @@ public class TestDefaultFilterFactory {
     Logger log = Logger.getAnonymousLogger();
 
     private static final String DATE_PROPID = "date";
+    private static final String INT_PROPID = "count";
 
     @Test
+    public void testIntRange() {
+        Container.Filter expected = new Compare.Greater(INT_PROPID, 100);
+        Container.Filter filter = filterFactory.createFilter(int.class, INT_PROPID, ">100");
+        assertEquals(expected, filter);
+
+        Item target = new PropertysetItem();
+        target.addItemProperty(INT_PROPID, new ObjectProperty(110));
+        assertTrue(filter.passesFilter(0, target));
+
+        target.getItemProperty(INT_PROPID).setValue(90);
+        assertFalse(filter.passesFilter(0, target));
+
+    }
+
+
+    @Test
+    public void testDoubleRange() {
+        Container.Filter expected = new Compare.Greater(INT_PROPID, 100.0);
+        Container.Filter filter = filterFactory.createFilter(double.class, INT_PROPID, ">100");
+        assertEquals(expected, filter);
+
+    }
+
+        @Test
     public void testDateYear() {
         Container.Filter expected = new And(
                 new Compare.GreaterOrEqual(DATE_PROPID, new DateTime(2014, 1, 1, 0, 0, 0).toDate()),

@@ -49,9 +49,11 @@ public class DefaultFilterFactory implements FilterFactory {
 
         if (String.class.isAssignableFrom(targetType) || java.lang.Enum.class.isAssignableFrom(targetType)) {
             return filterForString(targetPropertyId, pattern.toString());
-        } else if (Number.class.isAssignableFrom(targetType)) {
-            return filterForNumber(targetPropertyId, pattern.toString());
-        } else if (Date.class.isAssignableFrom(targetType) || DateTime.class.isAssignableFrom(targetType)) {
+        } else
+        if (isNumberClass(targetType)) {
+            return filterForNumber(targetPropertyId, targetType, pattern.toString());
+        } else
+        if (Date.class.isAssignableFrom(targetType) || DateTime.class.isAssignableFrom(targetType)) {
             Container.Filter filter = filterForCompareDate(targetPropertyId, pattern.toString());
             if (filter != null) return filter;
             return filterForDateRange(targetPropertyId, pattern.toString());
@@ -59,6 +61,17 @@ public class DefaultFilterFactory implements FilterFactory {
             // fallback to equality
             return new Compare.Equal(targetPropertyId, pattern);
         }
+    }
+
+    private boolean isNumberClass(Class<?> targetType) {
+        return Number.class.isAssignableFrom(targetType)
+            || targetType == int.class
+            || targetType == long.class
+            || targetType == byte.class
+            || targetType == double.class
+            || targetType == float.class
+//            || targetType == char.class
+            ;
     }
 
 
@@ -94,15 +107,15 @@ public class DefaultFilterFactory implements FilterFactory {
         return new SimpleStringFilter(propertyId, pattern, true, true);
     }
 
-    protected Container.Filter filterForNumber(Object propertyId, String pattern) {
+    protected Container.Filter filterForNumber(Object propertyId, Class<?> targetType, String pattern) {
         Container.Filter filter = numberEqual(propertyId, pattern);
         if (filter != null) return filter;
 
-        filter = intRange(propertyId, pattern);
+        filter = numericRange(propertyId, targetType, pattern);
 
         if (filter != null) return filter;
 
-        filter = intCompare(propertyId, pattern);
+        filter = numberCompare(propertyId, targetType, pattern);
 
         if (filter != null) return filter;
 
@@ -112,22 +125,83 @@ public class DefaultFilterFactory implements FilterFactory {
     }
 
 
-    protected final Pattern intComparePattern = Pattern.compile("^((?:<|>)=?)(\\d+)$");
-    protected Container.Filter intCompare(Object propertyId, String pattern) {
-        Matcher matcher = intComparePattern.matcher(pattern);
+    final String Digits     = "(\\p{Digit}+)";
+    final String HexDigits  = "(\\p{XDigit}+)";
+    // an exponent is 'e' or 'E' followed by an optionally
+    // signed decimal integer.
+    final String Exp        = "[eE][+-]?"+Digits;
+    final String fpRegex    =
+            ("[\\x00-\\x20]*"+  // Optional leading "whitespace"
+                    "[+-]?(" + // Optional sign character
+                    "NaN|" +           // "NaN" string
+                    "Infinity|" +      // "Infinity" string
+
+                    // A decimal floating-point string representing a finite positive
+                    // number without a leading sign has at most five basic pieces:
+                    // Digits . Digits ExponentPart FloatTypeSuffix
+                    //
+                    // Since this method allows integer-only strings as input
+                    // in addition to strings of floating-point literals, the
+                    // two sub-patterns below are simplifications of the grammar
+                    // productions from section 3.10.2 of
+                    // The Java™ Language Specification.
+
+                    // Digits ._opt Digits_opt ExponentPart_opt FloatTypeSuffix_opt
+                    "((("+Digits+"(\\.)?("+Digits+"?)("+Exp+")?)|"+
+
+                    // . Digits ExponentPart_opt FloatTypeSuffix_opt
+                    "(\\.("+Digits+")("+Exp+")?)|"+
+
+                    // Hexadecimal strings
+                    "((" +
+                    // 0[xX] HexDigits ._opt BinaryExponent FloatTypeSuffix_opt
+                    "(0[xX]" + HexDigits + "(\\.)?)|" +
+
+                    // 0[xX] HexDigits_opt . HexDigits BinaryExponent FloatTypeSuffix_opt
+                    "(0[xX]" + HexDigits + "?(\\.)" + HexDigits + ")" +
+
+                    ")[pP][+-]?" + Digits + "))" +
+                    "[fFdD]?))" +
+                    "[\\x00-\\x20]*");// Optional trailing "whitespace"
+
+    protected final Pattern numberComparePattern = Pattern.compile("^((?:<|>)=?)(" + fpRegex + ")$");
+    protected Container.Filter numberCompare(Object propertyId, Class<?> numberType, String pattern) {
+        Matcher matcher = numberComparePattern.matcher(pattern);
         if (!matcher.find()) return null;
 
         String op = matcher.group(1);
-        int value = Integer.parseInt(matcher.group(2));
+
+        Number numberValue = parseNumericValue(matcher.group(2), numberType);
 
         switch (op) {
-            case ">": return new Compare.Greater(propertyId, value);
-            case ">=": return new Compare.GreaterOrEqual(propertyId, value);
-            case "<": return new Compare.Less(propertyId, value);
-            case "<=": return new Compare.LessOrEqual(propertyId, value);
+            case ">": return new Compare.Greater(propertyId, numberValue);
+            case ">=": return new Compare.GreaterOrEqual(propertyId, numberValue);
+            case "<": return new Compare.Less(propertyId, numberValue);
+            case "<=": return new Compare.LessOrEqual(propertyId, numberValue);
         }
 
         return null;
+    }
+
+    private Number parseNumericValue(String numericString, Class<?> numberType) {
+        try {
+            Double value = Double.parseDouble(numericString);
+
+            if (numberType == double.class || numberType == Double.class) {
+                return value;
+            } else if (numberType == int.class || numberType == Integer.class) {
+                return value.intValue();
+            } else if (numberType == long.class || numberType == Long.class) {
+                return value.longValue();
+            } else if (numberType == byte.class || numberType == Byte.class) {
+                return value.byteValue();
+            } else if (numberType == float.class || numberType == Float.class) {
+                return value.floatValue();
+            } else return null;
+
+        } catch(NumberFormatException ex) {
+            return null;
+        }
     }
 
     protected Container.Filter numberEqual(Object propertyId, String pattern) {
@@ -139,17 +213,18 @@ public class DefaultFilterFactory implements FilterFactory {
         }
     }
 
-    protected final Pattern intRangePattern = Pattern.compile("^(\\d+)..(\\d+)$");
-    protected Container.Filter intRange(Object propertyId, String pattern) {
-        Matcher matcher = intRangePattern.matcher(pattern);
+    protected final Pattern numericRangePattern = Pattern.compile("^("+fpRegex+")..("+fpRegex+")$");
+    protected Container.Filter numericRange(Object propertyId, Class<?> numberClass,
+    String pattern) {
+        Matcher matcher = numericRangePattern.matcher(pattern);
         if (!matcher.find()) return null;
         String left = matcher.group(1);
         String right = matcher.group(2);
         try {
-            int i = Integer.parseInt(left);
-            int j = Integer.parseInt(right);
+            Number i = parseNumericValue(left, numberClass);
+            Number j = parseNumericValue(right, numberClass);
 
-            if (i>j) {
+            if (i.doubleValue() > j.doubleValue()) {
                 throw new Validator.InvalidValueException(
                         String.format("The given range '%s' is invalid", pattern));
             }
