@@ -46,11 +46,8 @@ public class SearchFieldManager {
             Class<?> type = e.getValue();
 
             // ignore fields for "detail" type elements
-            if (List.class.isAssignableFrom(type)
-                    || Collection.class.isAssignableFrom(type)
-                    || Map.class.isAssignableFrom(type)) {
+            if (fieldBinder.getCollectionFields().keySet().contains(propertyId))
                 continue;
-            }
 
             addProperty(propertyId, type);
 
@@ -142,6 +139,7 @@ public class SearchFieldManager {
 
             // this should be moved somewhere else
             replacement.setCaption(original.getCaption());
+            replacement.setWidth(original.getWidth(), original.getWidthUnits());
 
             replace(original, replacement);
         }
