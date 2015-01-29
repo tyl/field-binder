@@ -96,10 +96,12 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
      * {@link com.vaadin.data.fieldgroup.FieldGroup} or a {@link FieldBinder}
      */
     public void setVisibleColumns(Object ... visibleColumns) {
-    this.visibleColumns = visibleColumns;
-    table.setVisibleColumns(visibleColumns);
-    setAllHeadersFromColumns(visibleColumns);
-}
+        this.visibleColumns = visibleColumns;
+        // delay until a data source is available
+        if (table.getContainerDataSource() == null) return;
+        table.setVisibleColumns(visibleColumns);
+        setAllHeadersFromColumns(visibleColumns);
+    }
 
     /**
      * Infers the column names from the column ids.
