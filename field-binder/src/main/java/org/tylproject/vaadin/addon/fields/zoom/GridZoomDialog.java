@@ -19,11 +19,13 @@
 
 package org.tylproject.vaadin.addon.fields.zoom;
 
+import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.VerticalLayout;
+import org.tylproject.vaadin.addon.fields.FilterableGrid;
 
 /**
  * Created by evacchi on 20/01/15.
@@ -36,7 +38,10 @@ public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
 
     public GridZoomDialog(Grid grid) {
         this.grid = grid;
+        setupDialog(grid);
+    }
 
+    private void setupDialog(Grid grid) {
         if (!(grid.getSelectionModel() instanceof Grid.SingleSelectionModel)) {
             throw new AssertionError(
                     "Selection mode must be "+Grid.SelectionMode.SINGLE.getClass()+", "+
@@ -46,7 +51,6 @@ public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
         addComponent(grid);
         setExpandRatio(getGrid(), 1f);
         setSizeFull();
-
     }
 
 
@@ -54,15 +58,34 @@ public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
         this(grid);
         this.propertyId = propertyId;
         setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
+    }
+
+    public <C extends Container.Indexed & Container.Filterable>
+        GridZoomDialog(C container) {
+
+        FilterableGrid grid = new FilterableGrid(container);
+
+        grid.setSelectionMode(Grid.SelectionMode.SINGLE);
+        grid.setSizeFull();
+        grid.setWidth("100%");
+        grid.setHeight("100%");
+        grid.setVisibileColumns("firstName", "lastName", "birthDate");
+
+        this.grid = grid;
+
+        setupDialog(grid);
 
     }
+
+
+
 
     public GridZoomDialog(Grid grid, Object propertyId, String caption) {
         this(grid, propertyId);
         this.setCaption(caption);
     }
 
-    public GridZoomDialog withPropertyId(Object propertyId) {
+    public GridZoomDialog<T> withPropertyId(Object propertyId) {
         this.propertyId = propertyId;
         return this;
     }
@@ -73,11 +96,6 @@ public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
     }
 
 
-    /**
-     * Assumes the given value to be an itemId; tries to select it
-     * in the table. A null value clears the selection
-     *
-     */
     @Override
     public void show(T value) {
 
