@@ -21,8 +21,7 @@ public class Person {
     private Integer age;
     private Date birthDate;
 
-    private Set<Address> addressSet = new HashSet<>();
-//    private List<Address> addressList = new ArrayList<Address>();
+    private List<Address> addressList = new ArrayList<Address>();
 
     public Person() {}
 
@@ -33,7 +32,7 @@ public class Person {
 
     public Person(String firstName, String lastName, Address address) {
         this(firstName, lastName);
-        this.addressSet.add(address);
+        this.addressList.add(address);
     }
 
     public Person(String firstName, String lastName, Date birthDate, Address address) {
@@ -81,15 +80,13 @@ public class Person {
         this.birthDate = birth;
     }
 
-    public Set<Address> getAddressSet() {
-        return addressSet;
+    public List<Address> getAddressList() {
+        return addressList;
     }
-    public void setAddressSet(Set<Address> addressSet) { this.addressSet = addressSet;}
 
-    //
-//    public void setAddressList(List<Address> addressList) {
-//        this.addressList = addressList;
-//    }
+    public void setAddressList(List<Address> addressList) {
+        this.addressList = addressList;
+    }
 
     @Override
     public String toString() {

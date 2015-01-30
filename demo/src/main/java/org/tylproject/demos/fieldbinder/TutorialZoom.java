@@ -36,32 +36,6 @@ public class TutorialZoom extends MFormLayout implements View {
         grid.setHeight("100%");
         grid.setVisibileColumns("firstName", "lastName", "birthDate");
 
-//        grid.setVisibileColumns("shortName", "discriminator", "createdDate");
-//
-//        grid.getColumn("createdDate").setConverter(new Converter<String, DateTime>() {
-//
-//            @Override
-//            public DateTime convertToModel(String value, Class<? extends DateTime>
-//            targetType, Locale locale) throws Converter.ConversionException {
-//                if (value == null) return null;
-//                else return DateTime.parse(value);
-//            }
-//
-//            @Override
-//            public String convertToPresentation(DateTime value, Class<? extends String> targetType, Locale locale) throws ConversionException {
-//                return value == null? null : value.toString();
-//            }
-//
-//            @Override
-//            public Class<DateTime> getModelType() {
-//                return DateTime.class;
-//            }
-//
-//            @Override
-//            public Class<String> getPresentationType() {
-//                return String.class;
-//            }
-//        });
         final ZoomField<Person> zoomField =
                 new ZoomField<Person>(Person.class)
                     .withZoomDialog(new GridZoomDialog<Person>(grid, "firstName"));
