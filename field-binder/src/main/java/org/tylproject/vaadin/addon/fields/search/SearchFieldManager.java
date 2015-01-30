@@ -36,14 +36,6 @@ public class SearchFieldManager {
     final Map<Object, FilterPatternField> propertyIdToFilterExpressionField = new LinkedHashMap<>();
 
     /**
-     * Create a SearchForm for the fields of a FieldBinder
-     */
-    public SearchFieldManager(FieldBinder<?> fieldBinder) {
-        makeSearchFieldsFromFieldBinder(fieldBinder);
-
-    }
-
-    /**
      * Create a SearchForm for pairs of the form (propertyId, type)
      */
     public SearchFieldManager(Map<Object, Class<?>> propertyIdToType) {
@@ -94,22 +86,6 @@ public class SearchFieldManager {
     }
 
 
-    private void makeSearchFieldsFromFieldBinder(FieldBinder<?> fieldBinder) {
-        final Map<Object, Class<?>> propertyIdToType = fieldBinder.getPropertyIdToTypeBindings();
-
-        for (Map.Entry<Object, Class<?>> e: propertyIdToType.entrySet()) {
-            Object propertyId = e.getKey();
-            Class<?> type = e.getValue();
-
-            // ignore fields for "detail" type elements
-            if (fieldBinder.getCollectionFields().keySet().contains(propertyId))
-                continue;
-
-            addProperty(propertyId, type);
-
-        }
-    }
-
     private FilterPatternField makeField(Object propertyId, Class<?> type) {
         FilterPatternField f ;
         if (java.lang.Enum.class.isAssignableFrom(type)) {
@@ -124,40 +100,6 @@ public class SearchFieldManager {
     public void clear() {
         for (FilterPatternField f: getPropertyIdToFilterExpressionField().values()) {
             f.clear();
-        }
-    }
-
-    public void replaceFields(FieldBinder<?> fieldBinder) {
-        for (Map.Entry<Object, FilterPatternField> e : getPropertyIdToFilterExpressionField().entrySet()) {
-            Object propertyId = e.getKey();
-            Field<?> replacement = e.getValue();
-            Field<?> original = fieldBinder.getPropertyIdToFieldBindings().get(propertyId);
-
-            // this should be moved somewhere else
-            replacement.setCaption(original.getCaption());
-            replacement.setWidth(original.getWidth(), original.getWidthUnits());
-
-            replace(original, replacement);
-        }
-    }
-
-    public void restoreFields(FieldBinder<?> fieldBinder) {
-        for (Map.Entry<Object, FilterPatternField> e : getPropertyIdToFilterExpressionField().entrySet()) {
-            Object propertyId = e.getKey();
-            Field<?> replacement = e.getValue();
-            Field<?> original = fieldBinder.getPropertyIdToFieldBindings().get(propertyId);
-            replace(replacement, original);
-        }
-    }
-
-    private void replace(Field<?> original, Field<?> replacement) {
-        HasComponents parent = original.getParent();
-        if (parent instanceof ComponentContainer) {
-            ((ComponentContainer) parent).replaceComponent(original, replacement);
-        } else {
-            throw new UnsupportedOperationException(
-                "Cannot replace Field "+original +
-                "; the parent does not support component replacement");
         }
     }
 

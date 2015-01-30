@@ -25,6 +25,7 @@ import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
+import org.tylproject.vaadin.addon.fields.search.FieldBinderSearchFieldManager;
 import org.tylproject.vaadin.addon.fields.search.SearchFieldManager;
 import org.tylproject.vaadin.addon.fields.search.SearchPattern;
 
@@ -136,10 +137,10 @@ public class FieldBinders {
     public static class Find<T> implements FindListeners {
         boolean clearToFindMode = false;
         final FieldBinder<T> binder;
-        final SearchFieldManager searchFieldManager;
+        final FieldBinderSearchFieldManager searchFieldManager;
         public Find(FieldBinder<T> binder) {
             this.binder = binder;
-            this.searchFieldManager = new SearchFieldManager(binder);
+            this.searchFieldManager = new FieldBinderSearchFieldManager(binder);
         }
 
 
@@ -154,7 +155,7 @@ public class FieldBinders {
 
             ((Container.Filterable)event.getSource().getContainer()).removeAllContainerFilters();
 
-            searchFieldManager.replaceFields(binder);
+            searchFieldManager.replaceFields();
 
         }
 
@@ -168,7 +169,7 @@ public class FieldBinders {
                     .addContainerFilter(sp.getFilter());
             }
 
-            searchFieldManager.restoreFields(binder);
+            searchFieldManager.restoreFields();
             binder.getNavigation().first();
 
         }
