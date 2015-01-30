@@ -43,7 +43,6 @@ public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
                             grid.getSelectionModel().getClass() +" was given");
         }
 
-        setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
         addComponent(grid);
         setExpandRatio(getGrid(), 1f);
         setSizeFull();
@@ -54,6 +53,8 @@ public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
     public GridZoomDialog(Grid grid, Object propertyId) {
         this(grid);
         this.propertyId = propertyId;
+        setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
+
     }
 
     public GridZoomDialog(Grid grid, Object propertyId, String caption) {
