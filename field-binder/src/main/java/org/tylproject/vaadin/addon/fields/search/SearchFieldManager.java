@@ -39,19 +39,7 @@ public class SearchFieldManager {
      * Create a SearchForm for the fields of a FieldBinder
      */
     public SearchFieldManager(FieldBinder<?> fieldBinder) {
-        final Map<Object, Class<?>> propertyIdToType = fieldBinder.getPropertyIdToTypeBindings();
-
-        for (Map.Entry<Object, Class<?>> e: propertyIdToType.entrySet()) {
-            Object propertyId = e.getKey();
-            Class<?> type = e.getValue();
-
-            // ignore fields for "detail" type elements
-            if (fieldBinder.getCollectionFields().keySet().contains(propertyId))
-                continue;
-
-            addProperty(propertyId, type);
-
-        }
+        makeSearchFieldsFromFieldBinder(fieldBinder);
 
     }
 
@@ -59,15 +47,15 @@ public class SearchFieldManager {
      * Create a SearchForm for pairs of the form (propertyId, type)
      */
     public SearchFieldManager(Map<Object, Class<?>> propertyIdToType) {
-        this.propertyIdToType.putAll(propertyIdToType);
-        makeAllFields(propertyIdToType);
+        for (Map.Entry<Object, Class<?>> e: propertyIdToType.entrySet()) {
+            addProperty(e.getKey(), e.getValue());
+        }
     }
 
     public SearchFieldManager(Container container) {
         for (Object propertyId: container.getContainerPropertyIds()) {
-            this.propertyIdToType.put(propertyId, container.getType(propertyId));
+            addProperty(propertyId, container.getType(propertyId));
         }
-        makeAllFields(propertyIdToType);
     }
 
 
@@ -105,12 +93,20 @@ public class SearchFieldManager {
         return Collections.unmodifiableMap(propertyIdToFilterExpressionField);
     }
 
-    private void makeAllFields(Map<Object, Class<?>> propertyIdToType) {
+
+    private void makeSearchFieldsFromFieldBinder(FieldBinder<?> fieldBinder) {
+        final Map<Object, Class<?>> propertyIdToType = fieldBinder.getPropertyIdToTypeBindings();
+
         for (Map.Entry<Object, Class<?>> e: propertyIdToType.entrySet()) {
             Object propertyId = e.getKey();
-            Class<?> type =  e.getValue();
-            FilterPatternField f = makeField(propertyId, type);
-            propertyIdToFilterExpressionField.put(propertyId,f);
+            Class<?> type = e.getValue();
+
+            // ignore fields for "detail" type elements
+            if (fieldBinder.getCollectionFields().keySet().contains(propertyId))
+                continue;
+
+            addProperty(propertyId, type);
+
         }
     }
 
