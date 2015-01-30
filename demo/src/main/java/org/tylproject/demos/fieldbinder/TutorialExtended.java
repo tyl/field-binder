@@ -71,9 +71,6 @@ public class TutorialExtended extends MVerticalLayout implements View {
                 new CrudButtonBar(addressList.getNavigation().withDefaultBehavior()));
 
         this.withFullWidth().withMargin(true);
-
-        birthDate.setDateFormat("dd-MM-yyyy");
-
     }
 
     @Override

@@ -22,8 +22,12 @@ package org.tylproject.vaadin.addon.fieldbinder;
 import com.vaadin.data.fieldgroup.DefaultFieldGroupFieldFactory;
 import com.vaadin.ui.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * An extended {@link com.vaadin.data.fieldgroup.FieldGroupFieldFactory}
@@ -38,6 +42,24 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
         } else {
             f = super.createField(type, fieldType);
         }
+
+        if (Date.class.isAssignableFrom(type)) {
+            // try to assign a locale-specific date pattern
+            DateFormat dateFormat =
+                DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+
+
+
+            if (dateFormat instanceof SimpleDateFormat) {
+                String pattern = ((SimpleDateFormat)dateFormat).toLocalizedPattern();
+                DateField dateField = (DateField) f;
+
+                // hack: turn 2-digits year into 4-digits year
+                dateField.setDateFormat(pattern.replace("yy", "yyyy"));
+            }
+        }
+
+
         ((AbstractField<?>) f).setImmediate(true);
         return (T)f;
     }

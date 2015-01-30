@@ -37,8 +37,6 @@ public class TutorialAlternativeFind extends MVerticalLayout implements View {
     // initialize the FieldBinder for the masterDetail editor on the Person entity
     final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container);
 
-    DateField dateField;
-
     // initialize the layout, building the fields at the same time
     // for conciseness, we use Maddon.
     // Maddon wraps common Vaadin classes with fluent APIs
@@ -52,7 +50,7 @@ public class TutorialAlternativeFind extends MVerticalLayout implements View {
                 new MFormLayout(
                         binder.build("firstName"),
                         binder.build("lastName"),
-                        dateField = binder.build("birthDate"),
+                        binder.build("birthDate"),
                         binder.build("age"),
                         new NavigationLabel(binder.getNavigation())
 
@@ -69,8 +67,6 @@ public class TutorialAlternativeFind extends MVerticalLayout implements View {
             .withCurrentItemChangeListenerFrom(new FieldBinders.CurrentItemChangeListener<>(binder))
             .withCrudListenersFrom(new ListContainerCrud<>(binder))
             .withFindListenersFrom(new SearchWindowFindListeners(binder));
-
-        dateField.setDateFormat("dd-MM-yyyy");
 
     }
 

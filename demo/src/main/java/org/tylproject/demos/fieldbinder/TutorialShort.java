@@ -36,8 +36,6 @@ public class TutorialShort extends MVerticalLayout implements View {
     // initialize the FieldBinder for the masterDetail editor on the Person entity
     final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container);
 
-    final DateField birthDate;
-
     // initialize the layout, building the fields at the same time
     // for conciseness, we use Maddon.
     // Maddon wraps common Vaadin classes with fluent APIs
@@ -50,7 +48,7 @@ public class TutorialShort extends MVerticalLayout implements View {
                 new MFormLayout(
                         binder.build("firstName"),
                         binder.build("lastName"),
-                        birthDate = binder.build("birthDate"),
+                        binder.build("birthDate"),
                         binder.build("age"),
                         new NavigationLabel(binder.getNavigation())
 
@@ -61,8 +59,6 @@ public class TutorialShort extends MVerticalLayout implements View {
 
 
         ).withFullWidth().withMargin(true);
-
-        birthDate.setDateFormat("dd-MM-yyyy");
     }
 
     @Override
