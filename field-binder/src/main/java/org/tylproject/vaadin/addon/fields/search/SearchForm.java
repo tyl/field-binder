@@ -35,7 +35,7 @@ public class SearchForm extends FormLayout {
      * Create a SearchForm for the fields of a FieldBinder
      */
     public SearchForm(FieldBinder<?> fieldBinder) {
-        this.searchFieldManager = new FieldBinderSearchFieldManager (fieldBinder);
+        this.searchFieldManager = new FieldBinderSearchFieldManager(fieldBinder);
         addFieldsToLayout();
     }
 

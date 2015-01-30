@@ -39,6 +39,7 @@ public class FieldBinderSearchFieldManager extends SearchFieldManager {
     public FieldBinderSearchFieldManager(FieldBinder<?> fieldBinder) {
         super(Collections.<Object,Class<?>>emptyMap());
         this.fieldBinder = fieldBinder;
+        makeSearchFieldsFromFieldBinder();
     }
 
     private void makeSearchFieldsFromFieldBinder() {

@@ -146,6 +146,8 @@ public class FieldBinders {
 
         @Override
         public void clearToFind(ClearToFind.Event event) {
+            event.getSource().setCurrentItemId(null);
+
             if (clearToFindMode) {
                 searchFieldManager.clear();
                 return;
