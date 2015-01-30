@@ -2,6 +2,8 @@ package org.tylproject.demos.fieldbinder;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Container;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
@@ -21,13 +23,16 @@ import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
 import org.tylproject.vaadin.addon.datanav.events.ItemEdit;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.ListTable;
-import org.vaadin.maddon.layouts.MFormLayout;
-import org.vaadin.maddon.layouts.MVerticalLayout;
+import org.vaadin.viritin.layouts.MFormLayout;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinUI;
+import org.vaadin.spring.navigator.VaadinView;
 
-@VaadinUI(path = "/tutorial-2")
+@VaadinView(name = "/custom-events")
+@UIScope
 @Theme("valo")
-public class TutorialExtended extends UI {
+public class TutorialExtended extends MVerticalLayout implements View {
 
     // CONTAINER
 
@@ -49,30 +54,31 @@ public class TutorialExtended extends UI {
     final ListTable<Address> addressList =
             binder.buildListOf(Address.class, "addressList");
 
-    // initialize the layout
-    final VerticalLayout mainLayout = new MVerticalLayout(
+    {
+        addComponents(new ButtonBar(binder.getNavigation().withDefaultBehavior()),
 
-            new ButtonBar(binder.getNavigation().withDefaultBehavior()),
+                new MFormLayout(
+                        firstName,
+                        lastName,
+                        birthDate,
+                        age,
+                        new NavigationLabel(binder.getNavigation())
+                ).withFullWidth().withMargin(true),
 
-            new MFormLayout(
-                    firstName,
-                    lastName,
-                    birthDate,
-                    age,
-                    new NavigationLabel(binder.getNavigation())
-            ).withFullWidth().withMargin(true),
+                addressList,
 
-            addressList,
+                // create and position a button bar
+                new CrudButtonBar(addressList.getNavigation().withDefaultBehavior()));
 
-            // create and position a button bar
-            new CrudButtonBar(addressList.getNavigation().withDefaultBehavior())
+        this.withFullWidth().withMargin(true);
 
-    ).withFullWidth().withMargin(true);
+        birthDate.setDateFormat("dd-MM-yyyy");
 
+    }
 
     @Override
-    protected void init(VaadinRequest request) {
-        setContent(mainLayout);
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
+
         DataNavigation dataNav = binder.getNavigation();
 
         MyController controller = new MyController();
@@ -83,8 +89,7 @@ public class TutorialExtended extends UI {
         dataNav.addCurrentItemChangeListener(controller);
     }
 
-
-    public class MyController implements ItemEdit.Listener, ItemCreate.Listener, BeforeCommit.Listener, CurrentItemChange.Listener {
+    private class MyController implements ItemEdit.Listener, ItemCreate.Listener, BeforeCommit.Listener, CurrentItemChange.Listener {
 
         @Override
         public void itemEdit(ItemEdit.Event event) {
@@ -103,7 +108,11 @@ public class TutorialExtended extends UI {
 
         @Override
         public void currentItemChange(CurrentItemChange.Event event) {
-            calcAge();
+            if (event.getNewItemId() == null) {
+                age.setValue(null);
+            } else {
+                calcAge();
+            }
         }
 
         private void calcAge() {
