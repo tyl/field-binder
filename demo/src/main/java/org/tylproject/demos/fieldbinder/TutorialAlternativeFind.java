@@ -1,24 +1,20 @@
 package org.tylproject.demos.fieldbinder;
 
-import com.mongodb.MongoClient;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Container;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.*;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import com.vaadin.ui.DateField;
 import org.tylproject.demos.fieldbinder.model.Address;
 import org.tylproject.demos.fieldbinder.model.Person;
-import org.tylproject.vaadin.addon.MongoContainer;
 import org.tylproject.vaadin.addon.datanav.ButtonBar;
 import org.tylproject.vaadin.addon.datanav.NavigationLabel;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.fieldbinder.FieldBinderFieldFactory;
-import org.tylproject.vaadin.addon.fieldbinder.ListTable;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.Behavior;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.FieldBinders;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.SearchWindowFindListeners;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontainer
+.ListContainerCrud;
 import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.viritin.layouts.MFormLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
@@ -48,9 +44,10 @@ public class TutorialAlternativeFind extends MVerticalLayout implements View {
     // Maddon wraps common Vaadin classes with fluent APIs
     // for the most common options
     {
+
         with(
 
-                new ButtonBar(binder.getNavigation().withDefaultBehavior()),
+                new ButtonBar(binder.getNavigation()),
 
                 new MFormLayout(
                         binder.build("firstName"),
@@ -67,6 +64,11 @@ public class TutorialAlternativeFind extends MVerticalLayout implements View {
 
         ).withFullWidth().withMargin(true);
 
+
+        binder.getNavigation()
+            .withCurrentItemChangeListenerFrom(new FieldBinders.CurrentItemChangeListener<>(binder))
+            .withCrudListenersFrom(new ListContainerCrud<>(binder))
+            .withFindListenersFrom(new SearchWindowFindListeners(binder));
 
         dateField.setDateFormat("dd-MM-yyyy");
 

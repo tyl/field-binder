@@ -28,21 +28,11 @@ public class TutorialZoom extends MFormLayout implements View {
     {
         final FilterableListContainer<Person> container = MyDataSourceGenerator.makeDummyDataset();
 
-        final FilterableGrid grid = new FilterableGrid(container);
-
-        grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-        grid.setSizeFull();
-        grid.setWidth("100%");
-        grid.setHeight("100%");
-        grid.setVisibileColumns("firstName", "lastName", "birthDate");
-
         final ZoomField<Person> zoomField =
-                new ZoomField<Person>(Person.class)
-                    .withZoomDialog(new GridZoomDialog<Person>(grid, "firstName"));
+                new ZoomField<>(Person.class)
+                    .withZoomDialog(new GridZoomDialog<Person>(container).withPropertyId("firstName"));
 
-        addComponents(
-            zoomField
-        );
+        addComponents(zoomField);
     }
 
 
