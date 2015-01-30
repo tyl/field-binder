@@ -23,6 +23,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.TextField;
 import org.apache.commons.beanutils.DynaProperty;
@@ -32,8 +33,10 @@ import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultBehaviorFactory;
 import org.tylproject.vaadin.addon.fields.drilldown.DrillDownField;
+import org.tylproject.vaadin.addon.fields.zoom.TableZoomDialog;
 import org.tylproject.vaadin.addon.fields.zoom.ZoomDialog;
 import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
+import org.tylproject.vaadin.addon.fields.zoom.TextZoomField;
 
 import java.util.*;
 
@@ -73,6 +76,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     private final WrapDynaClass dynaClass ;
     private final Class<T> beanClass;
     private final BasicDataNavigation navigation;
+    private boolean gridSupportEnabled = false;
 
     public FieldBinder(Class<T> beanClass) {
         super(new FieldGroup());
@@ -101,6 +105,11 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
         this.navigation = nav;
 
+    }
+
+    public FieldBinder<T> withGridSupport() {
+        this.gridSupportEnabled = true;
+        return this;
     }
 
     public void setItemDataSource(BeanItem<T> itemDataSource) {
@@ -176,11 +185,24 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         return (ListTable<U>) this.<U,List<U>>buildCollectionOf(containedBeanClass, propertyId);
     }
 
-    public <U> ZoomFieldBuilder<U> zoomField(Object propertyId) {
-        TextField field = super.build(null, propertyId, TextField.class);
-        ZoomField<U> zf = new ZoomField<U>(field, (Class<U>) getPropertyType(propertyId));
-        return new ZoomFieldBuilder<>(zf, propertyId);
+
+    public TextZoomField buildZoomField(Object propertyId, Container.Ordered zoomCollection) {
+
+        String caption = DefaultFieldFactory
+                .createCaptionByPropertyId(propertyId);
+
+        TextField textField = super.build(caption, propertyId, TextField.class);
+        TextZoomField field = new TextZoomField(textField);
+        field.withZoomDialog(new TableZoomDialog(propertyId, zoomCollection));
+
+        return field;
     }
+
+    public TextZoomField buildDrillDownField(Object propertyId, Container.Ordered zoomCollection) {
+        return this.buildZoomField(propertyId, zoomCollection).drillDownOnly();
+    }
+
+
 
 //    public <U> ZoomField<U> buildZoomField(Object propertyId, BeanTable<?> beanTable) {
 //        return this.<U>buildZoomField(propertyId).withZoomOnTable(beanTable);
@@ -283,42 +305,6 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     };
     public CurrentItemChange.Listener defaultItemChangeListener() {
         return this.defaultItemChangeListener;
-    }
-
-    public static class ZoomFieldBuilder<U> {
-        private final ZoomField<U> zoomField;
-        private final Object propertyId;
-
-        private ZoomFieldBuilder(ZoomField<U> zf, Object propertyId) {
-            this.zoomField = zf;
-            this.propertyId = propertyId;
-        }
-        public ZoomFieldBuilder<U> withZoomDialog(ZoomDialog<U> zoomDialog) {
-            zoomDialog.withPropertyId(propertyId);
-            zoomField.withZoomDialog(zoomDialog);
-            return this;
-        }
-        public ZoomField<U> build() {
-            return zoomField;
-        }
-    }
-
-    public static class DrillDownBuilder<U> {
-        private final DrillDownField<U> drillDown;
-        private final Object propertyId;
-
-        private DrillDownBuilder(DrillDownField<U> zf, Object propertyId) {
-            this.drillDown = zf;
-            this.propertyId = propertyId;
-        }
-        public DrillDownBuilder<U> withDrillDownDialog(ZoomDialog<U> zoomDialog) {
-            zoomDialog.withPropertyId(propertyId);
-            drillDown.withDrillDownDialog(zoomDialog);
-            return this;
-        }
-        public DrillDownField<U> build() {
-            return drillDown;
-        }
     }
 
 }

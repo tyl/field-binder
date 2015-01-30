@@ -102,7 +102,7 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
     @Override
     public void buttonClick(Button.ClickEvent event) {
         if (event.getSource() == btnSelect) {
-            field.setValue(field.getZoomDialog().dismiss());
+            field.setValue((T)field.getZoomDialog().dismiss());
         } else
         if (event.getSource() == btnSelectNone) {
             field.setValue(null);

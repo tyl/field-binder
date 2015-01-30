@@ -51,6 +51,7 @@ public class Strings extends ListResourceBundle {
             // confirm dialogs
             {"ok", "OK"},
             {"cancel", "Cancel"},
+            {"close", "Close"},
 
             {"select", "Select"},
             {"selectNone", "Select None"},

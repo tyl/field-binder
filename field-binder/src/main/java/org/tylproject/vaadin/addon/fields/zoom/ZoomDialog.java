@@ -24,8 +24,8 @@ import com.vaadin.ui.Component;
 /**
  * Created by evacchi on 19/01/15.
  */
-public interface ZoomDialog<T> extends Component {
-    public T dismiss();
-    public void show(T value);
-    public ZoomDialog<T> withPropertyId(Object propertyId);
+public interface ZoomDialog extends Component {
+    public Object dismiss();
+    public void show(Object value);
+    public ZoomDialog withPropertyId(Object propertyId);
 }

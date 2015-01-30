@@ -30,7 +30,7 @@ import org.tylproject.vaadin.addon.fields.FilterableGrid;
 /**
  * Created by evacchi on 20/01/15.
  */
-public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
+public class GridZoomDialog extends VerticalLayout implements ZoomDialog {
 
     private final Grid grid;
     private Object propertyId;
@@ -61,7 +61,8 @@ public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
     }
 
     public <C extends Container.Indexed & Container.Filterable>
-        GridZoomDialog(C container) {
+        GridZoomDialog(Object propertyId, C container) {
+        withPropertyId(propertyId);
 
         FilterableGrid grid = new FilterableGrid(container);
 
@@ -85,19 +86,19 @@ public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
         this.setCaption(caption);
     }
 
-    public GridZoomDialog<T> withPropertyId(Object propertyId) {
+    public final GridZoomDialog withPropertyId(Object propertyId) {
         this.propertyId = propertyId;
         return this;
     }
 
 
-    public Grid getGrid() {
+    public final Grid getGrid() {
         return grid;
     }
 
 
     @Override
-    public void show(T value) {
+    public void show(Object value) {
 
     }
 
@@ -105,10 +106,10 @@ public class GridZoomDialog<T> extends VerticalLayout implements ZoomDialog<T> {
      * Returns the current selected value
      */
     @Override
-    public T dismiss() {
+    public Object dismiss() {
         Object itemId = getGrid().getSelectedRow();
         if (itemId == null) return null;
         Item item = getGrid().getContainerDataSource().getItem(itemId);
-        return (T) item.getItemProperty(propertyId).getValue();
+        return item.getItemProperty(propertyId).getValue();
     }
 }

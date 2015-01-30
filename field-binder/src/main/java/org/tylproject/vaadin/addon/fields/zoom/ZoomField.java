@@ -27,6 +27,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.tylproject.vaadin.addon.datanav.resources.Strings;
 import org.tylproject.vaadin.addon.fieldbinder.BeanTable;
 import org.tylproject.vaadin.addon.fields.CombinedField;
+import org.tylproject.vaadin.addon.fields.drilldown.DrillDownWindow;
 
 import java.util.ResourceBundle;
 
@@ -72,11 +73,12 @@ import java.util.ResourceBundle;
  */
 public class ZoomField<T> extends CombinedField<T, String, TextField> {
 
-    private ZoomDialog<T> dialog;
+    private ZoomDialog dialog;
+    private boolean drillDownOnly = false;
 
     public ZoomField(TextField field, Class<T> type) {
         super(field, new Button(FontAwesome.SEARCH), type);
-        getButton().addClickListener(new ButtonClickListener<>(this));
+        getButton().addClickListener(new ButtonClickListener());
     }
 
     public ZoomField(Class<T> type) {
@@ -84,32 +86,36 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         getBackingField().setNullRepresentation("");
     }
 
-    public ZoomDialog<T> getZoomDialog() {
+    public ZoomDialog getZoomDialog() {
         return dialog;
     }
 
-    public void setZoomDialog(ZoomDialog<T> dialog) {
+    public void setZoomDialog(ZoomDialog dialog) {
         this.dialog = dialog;
     }
 
     /**
      * "fluent" alias to {@link #setZoomDialog(ZoomDialog)}
      */
-    public ZoomField<T> withZoomDialog(ZoomDialog<T> dialog) {
+    public ZoomField<T> withZoomDialog(ZoomDialog dialog) {
         this.setZoomDialog(dialog);
         return this;
     }
 
-    static class ButtonClickListener<T> implements Button.ClickListener {
-        final ZoomField<T> field;
+    public ZoomField<T> drillDownOnly() {
+        this.drillDownOnly = true;
+        getButton().setIcon(FontAwesome.ELLIPSIS_H);
+        return this;
+    }
 
-        public ButtonClickListener(ZoomField<T> field) {
-            this.field = field;
-        }
-
+    class ButtonClickListener implements Button.ClickListener {
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            new ZoomWindow<>(field).show();
+            if (drillDownOnly) {
+                new DrillDownWindow<>(ZoomField.this).show();
+            } else {
+                new ZoomWindow<>(ZoomField.this).show();
+            }
         }
     }
 

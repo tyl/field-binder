@@ -23,6 +23,7 @@ import com.vaadin.data.Buffered;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
