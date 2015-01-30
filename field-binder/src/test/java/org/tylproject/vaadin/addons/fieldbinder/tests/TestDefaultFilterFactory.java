@@ -30,7 +30,7 @@ public class TestDefaultFilterFactory {
     private static final String INT_PROPID = "count";
 
     @Test
-    public void testIntRange() {
+    public void testIntGt() {
         Container.Filter expected = new Compare.Greater(INT_PROPID, 100);
         Container.Filter filter = filterFactory.createFilter(int.class, INT_PROPID, ">100");
         assertEquals(expected, filter);
@@ -46,14 +46,37 @@ public class TestDefaultFilterFactory {
 
 
     @Test
-    public void testDoubleRange() {
+    public void testDoubleGt() {
         Container.Filter expected = new Compare.Greater(INT_PROPID, 100.0);
         Container.Filter filter = filterFactory.createFilter(double.class, INT_PROPID, ">100");
         assertEquals(expected, filter);
-
     }
 
-        @Test
+    @Test
+    public void testIntRange() {
+        Container.Filter expected = new And(
+                new Compare.GreaterOrEqual(INT_PROPID, 10),
+                new Compare.LessOrEqual(INT_PROPID, 100));
+
+        Container.Filter filter = filterFactory.createFilter(int.class, INT_PROPID, "10..100");
+        log.info(filterToString(expected));
+        log.info(filterToString(filter));
+        assertEquals(expected, filter);
+    }
+
+    @Test
+    public void testDoubleRange() {
+        Container.Filter expected = new And(
+                new Compare.GreaterOrEqual(INT_PROPID, 10.1),
+                new Compare.LessOrEqual(INT_PROPID, 100.2));
+
+        Container.Filter filter = filterFactory.createFilter(double.class, INT_PROPID, "10.1..100.2");
+        log.info(filterToString(expected));
+        log.info(filterToString(filter));
+        assertEquals(expected, filter);
+    }
+
+    @Test
     public void testDateYear() {
         Container.Filter expected = new And(
                 new Compare.GreaterOrEqual(DATE_PROPID, new DateTime(2014, 1, 1, 0, 0, 0).toDate()),

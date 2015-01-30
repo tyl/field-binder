@@ -166,6 +166,7 @@ public class DefaultFilterFactory implements FilterFactory {
                     "[fFdD]?))" +
                     "[\\x00-\\x20]*");// Optional trailing "whitespace"
 
+    protected final Pattern fpPattern = Pattern.compile(fpRegex);
     protected final Pattern numberComparePattern = Pattern.compile("^((?:<|>)=?)(" + fpRegex + ")$");
     protected Container.Filter numberCompare(Object propertyId, Class<?> numberType, String pattern) {
         Matcher matcher = numberComparePattern.matcher(pattern);
@@ -224,14 +225,16 @@ public class DefaultFilterFactory implements FilterFactory {
         }
     }
 
-    protected final Pattern numericRangePattern = Pattern.compile("^("+fpRegex+")..("+fpRegex+")$");
+    protected final Pattern numericRangePattern = Pattern.compile("^(.+)\\.\\.(.+)$");
     protected Container.Filter numericRange(Object propertyId, Class<?> numberClass,
     String pattern) {
         Matcher matcher = numericRangePattern.matcher(pattern);
         if (!matcher.find()) return null;
         String left = matcher.group(1);
         String right = matcher.group(2);
-        try {
+
+        if (fpPattern.matcher(left).matches() && fpPattern.matcher(right).matches()) {
+
             Number i = parseNumericValue(left, numberClass);
             Number j = parseNumericValue(right, numberClass);
 
@@ -244,11 +247,9 @@ public class DefaultFilterFactory implements FilterFactory {
                     new Compare.GreaterOrEqual(propertyId, i),
                     new Compare.LessOrEqual(propertyId, j)
             );
-
-        } catch (NumberFormatException ex) {
-            return null;
         }
 
+        return null;
     }
 
 
