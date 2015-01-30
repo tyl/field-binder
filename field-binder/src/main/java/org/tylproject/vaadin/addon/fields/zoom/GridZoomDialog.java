@@ -60,8 +60,7 @@ public class GridZoomDialog extends VerticalLayout implements ZoomDialog {
         setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
     }
 
-    public <C extends Container.Indexed & Container.Filterable>
-        GridZoomDialog(Object propertyId, C container) {
+    public GridZoomDialog(Object propertyId, Container.Indexed container) {
         withPropertyId(propertyId);
 
         FilterableGrid grid = new FilterableGrid(container);

@@ -1,38 +1,36 @@
 package org.tylproject.demos.fieldbinder;
 
-import com.mongodb.MongoClient;
-import com.vaadin.data.Container;
-import com.vaadin.data.util.converter.Converter;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.Grid;
-import org.joda.time.DateTime;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.tylproject.demos.fieldbinder.model.Person;
-import org.tylproject.vaadin.addon.MongoContainer;
-import org.tylproject.vaadin.addon.fields.FilterableGrid;
 import org.tylproject.vaadin.addon.fields.zoom.GridZoomDialog;
-import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
+import org.tylproject.vaadin.addon.fields.zoom.TableZoomDialog;
+import org.tylproject.vaadin.addon.fields.zoom.TextZoomField;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
 import org.vaadin.viritin.FilterableListContainer;
-import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.layouts.MFormLayout;
-
-import java.util.Locale;
 
 @VaadinView(name = "/zoom")
 @UIScope
 public class TutorialZoom extends MFormLayout implements View {
 
+    private static final String TARGET_PROPERTY_ID = "firstName";
+
     {
         final FilterableListContainer<Person> container = MyDataSourceGenerator.makeDummyDataset();
 
-        final ZoomField<Person> zoomField =
-                new ZoomField<>(Person.class)
-                    .withZoomDialog(new GridZoomDialog<Person>(container).withPropertyId("firstName"));
+        final TextZoomField zoomField =
+                new TextZoomField()
+                    .withZoomDialog(new TableZoomDialog(TARGET_PROPERTY_ID, container));
 
-        addComponents(zoomField);
+        final TextZoomField drillDownField =
+                new TextZoomField()
+                    .drillDownOnly()
+                    .withZoomDialog(new GridZoomDialog(TARGET_PROPERTY_ID, container));
+
+
+        addComponents(zoomField, drillDownField);
     }
 
 

@@ -32,11 +32,7 @@ import org.tylproject.vaadin.addon.datanav.*;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultBehaviorFactory;
-import org.tylproject.vaadin.addon.fields.drilldown.DrillDownField;
-import org.tylproject.vaadin.addon.fields.zoom.TableZoomDialog;
-import org.tylproject.vaadin.addon.fields.zoom.ZoomDialog;
-import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
-import org.tylproject.vaadin.addon.fields.zoom.TextZoomField;
+import org.tylproject.vaadin.addon.fields.zoom.*;
 
 import java.util.*;
 
@@ -186,20 +182,28 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
 
-    public TextZoomField buildZoomField(Object propertyId, Container.Ordered zoomCollection) {
+    public TextZoomField buildZoomField(Object propertyId, Container.Indexed zoomCollection) {
 
         String caption = DefaultFieldFactory
                 .createCaptionByPropertyId(propertyId);
 
         TextField textField = super.build(caption, propertyId, TextField.class);
         TextZoomField field = new TextZoomField(textField);
-        field.withZoomDialog(new TableZoomDialog(propertyId, zoomCollection));
+        field.withZoomDialog(makeDefaultZoomDialog(propertyId, zoomCollection));
 
         return field;
     }
 
-    public TextZoomField buildDrillDownField(Object propertyId, Container.Ordered zoomCollection) {
+    public TextZoomField buildDrillDownField(Object propertyId, Container.Indexed zoomCollection) {
         return this.buildZoomField(propertyId, zoomCollection).drillDownOnly();
+    }
+
+    protected ZoomDialog makeDefaultZoomDialog(Object propertyId, Container.Indexed zoomCollection) {
+        if (gridSupportEnabled) {
+            return new GridZoomDialog(propertyId, zoomCollection);
+        } else {
+            return new TableZoomDialog(propertyId, zoomCollection);
+        }
     }
 
 

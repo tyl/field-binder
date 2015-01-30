@@ -46,22 +46,23 @@ public class FilterableGrid extends Grid {
         this(caption, null);
     }
 
-    public <T extends Container.Indexed & Container.Filterable>
-        FilterableGrid(T dataSource) {
-
+    public FilterableGrid(Container.Indexed dataSource) {
         this(null, dataSource);
     }
 
-    public <T extends Container.Indexed & Container.Filterable>
-        FilterableGrid(String caption, T dataSource) {
+    public FilterableGrid(String caption, Container.Indexed dataSource) {
         super(caption, dataSource);
+
+        if (!(dataSource instanceof Container.Filterable)) {
+            throw new IllegalArgumentException("Container must be Filterable");
+        }
 
         setSelectionMode(Grid.SelectionMode.SINGLE);
         setSizeFull();
         setWidth("100%");
         setHeight("100%");
 
-        makeFilters(dataSource, dataSource.getContainerPropertyIds(), filterRow);
+        makeFilters((Container.Filterable)dataSource, dataSource.getContainerPropertyIds(), filterRow);
     }
 
     public void setVisibileColumns(Object... propertyIds) {
