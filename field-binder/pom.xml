@@ -6,7 +6,7 @@
     <artifactId>field-binder</artifactId>
     <version>1.2-SNAPSHOT</version>
     <name>FieldBinder Addon</name>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <vaadin.min.version>7.3.0</vaadin.min.version>

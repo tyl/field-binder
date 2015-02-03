@@ -269,15 +269,15 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
         getBackingField().valueChange(event);
     }
 
-    @Override
-    public Property getPropertyDataSource() {
-        return getBackingField().getPropertyDataSource();
-    }
-
-    @Override
-    public void setPropertyDataSource(Property newDataSource) {
-        getBackingField().setPropertyDataSource(newDataSource);
-    }
+//    @Override
+//    public Property getPropertyDataSource() {
+//        return getBackingField().getPropertyDataSource();
+//    }
+//
+//    @Override
+//    public void setPropertyDataSource(Property newDataSource) {
+//        getBackingField().setPropertyDataSource(newDataSource);
+//    }
 
     @Override
     public void focus() {

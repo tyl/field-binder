@@ -23,6 +23,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
@@ -122,6 +123,17 @@ public class BeanTable<T> extends CustomField<T> {
 
     public Item getSelectedItem() {
         return this.getNavigation().getCurrentItem();
+    }
+
+    public T getSelectedBean() {
+        Item selectedItem = getSelectedItem();
+
+        if (selectedItem == null) return null;
+
+        if (selectedItem instanceof BeanItem) {
+            return (T) ((BeanItem) selectedItem).getBean();
+        }
+        throw new UnsupportedOperationException("Unsupported Item type " + selectedItem.getClass());
     }
 
     /**

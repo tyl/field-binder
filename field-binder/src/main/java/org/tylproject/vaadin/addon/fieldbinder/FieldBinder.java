@@ -182,20 +182,20 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
 
-    public TextZoomField buildZoomField(Object propertyId, Container.Indexed zoomCollection) {
+    public TextZoomField buildZoomField(Object bindingPropertyId, Object containerPropertyId, Container.Indexed zoomCollection) {
 
         String caption = DefaultFieldFactory
-                .createCaptionByPropertyId(propertyId);
+                .createCaptionByPropertyId(bindingPropertyId);
 
-        TextField textField = super.build(caption, propertyId, TextField.class);
+        TextField textField = super.build(null, bindingPropertyId, TextField.class);
         TextZoomField field = new TextZoomField(textField);
-        field.withZoomDialog(makeDefaultZoomDialog(propertyId, zoomCollection));
+        field.withZoomDialog(makeDefaultZoomDialog(containerPropertyId, zoomCollection));
 
         return field;
     }
 
-    public TextZoomField buildDrillDownField(Object propertyId, Container.Indexed zoomCollection) {
-        return this.buildZoomField(propertyId, zoomCollection).drillDownOnly();
+    public TextZoomField buildDrillDownField(Object propertyId,  Object containerPropertyId, Container.Indexed zoomCollection) {
+        return this.buildZoomField(propertyId, containerPropertyId, zoomCollection).drillDownOnly();
     }
 
     protected ZoomDialog makeDefaultZoomDialog(Object propertyId, Container.Indexed zoomCollection) {
@@ -275,6 +275,12 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     protected Class<?> getPropertyType(Object propertyId) {
         DynaProperty dynaProperty = dynaClass.getDynaProperty(propertyId.toString());
         if (dynaProperty == null) {
+            Container container = getNavigation().getContainer();
+            if (container != null) {
+                Class<?> type = container.getType(propertyId);
+                if (type != null) return type;
+            }
+
             throw new IllegalArgumentException("Unknown property "+propertyId);
         }
         return dynaProperty.getType();
