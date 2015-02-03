@@ -32,7 +32,7 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.FilterFactory;
 import java.util.Collection;
 
 /**
- * Created by evacchi on 19/01/15.
+ * A Field implementation that delegates most of its methods to a backingField
  */
 public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends CustomField<T> {
 
@@ -86,16 +86,6 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
     public void addStyleName(String style) {
         getBackingField().addStyleName(style);
     }
-//
-//    @Override
-//    public void attach() {
-//        getBackingField().attach();
-//    }
-
-//    @Override
-//    public String getCaption() {
-//        return getBackingField().getCaption();
-//    }
 
     @Override
     public String getDescription() {
@@ -106,21 +96,6 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
     public Resource getIcon() {
         return getBackingField().getIcon();
     }
-//
-//    @Override
-//    public String getId() {
-//        return getBackingField().getId();
-//    }
-//
-//    @Override
-//    public Locale getLocale() {
-//        return getBackingField().getLocale();
-//    }
-//
-//    @Override
-//    public HasComponents getParent() {
-//        return getBackingField().getParent();
-//    }
 
     @Override
     public String getPrimaryStyleName() {
@@ -131,11 +106,6 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
     public String getStyleName() {
         return getBackingField().getStyleName();
     }
-//
-//    @Override
-//    public UI getUI() {
-//        return getBackingField().getUI();
-//    }
 
     @Override
     public boolean isEnabled() {
@@ -162,11 +132,6 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
         getBackingField().removeStyleName(style);
     }
 
-//    @Override
-//    public void setCaption(String caption) {
-//        getBackingField().setCaption(caption);
-//    }
-
     @Override
     public void setEnabled(boolean enabled) {
         getBackingField().setEnabled(enabled);
@@ -181,11 +146,6 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
     public void setId(String id) {
         getBackingField().setId(id);
     }
-
-//    @Override
-//    public void setParent(HasComponents parent) {
-//        getBackingField().setParent(parent);
-//    }
 
     @Override
     public void setPrimaryStyleName(String style) {
@@ -206,179 +166,6 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
     public void setVisible(boolean visible) {
         getBackingField().setVisible(visible);
     }
-
-//    @Override
-//    public void addAttachListener(AttachListener listener) {
-//        getBackingField().addAttachListener(listener);
-//    }
-//
-//    @Override
-//    public void addDetachListener(DetachListener listener) {
-//        getBackingField().addDetachListener(listener);
-//    }
-//
-//    @Override
-//    public void beforeClientResponse(boolean initial) {
-//        getBackingField().beforeClientResponse(initial);
-//    }
-//
-//    @Override
-//    public void detach() {
-//        getBackingField().detach();
-//    }
-//
-//    @Override
-//    public JSONObject encodeState() throws JSONException {
-//        return getBackingField().encodeState();
-//    }
-//
-//    @Override
-//    public ErrorHandler getErrorHandler() {
-//        return getBackingField().getErrorHandler();
-//    }
-//
-//    @Override
-//    public Collection<Extension> getExtensions() {
-//        return getBackingField().getExtensions();
-//    }
-//
-//    @Override
-//    public ServerRpcManager<?> getRpcManager(String rpcInterfaceName) {
-//        return getBackingField().getRpcManager(rpcInterfaceName);
-//    }
-//
-//    @Override
-//    public Class<? extends SharedState> getStateType() {
-//        return getBackingField().getStateType();
-//    }
-//
-//    @Override
-//    public boolean handleConnectorRequest(VaadinRequest request, VaadinResponse
-//            response, String path) throws IOException {
-//        return getBackingField().handleConnectorRequest(request, response, path);
-//    }
-//
-//    @Override
-//    public boolean isAttached() {
-//        return getBackingField().isAttached();
-//    }
-//
-//    @Override
-//    public boolean isConnectorEnabled() {
-//        return getBackingField().isConnectorEnabled();
-//    }
-//
-//    @Override
-//    public void markAsDirty() {
-//        getBackingField().markAsDirty();
-//    }
-//
-//    @Override
-//    public void markAsDirtyRecursive() {
-//        getBackingField().markAsDirtyRecursive();
-//    }
-//
-//    @Override
-//    public void removeAttachListener(AttachListener listener) {
-//        getBackingField().removeAttachListener(listener);
-//    }
-//
-//    @Override
-//    public void removeDetachListener(DetachListener listener) {
-//        getBackingField().removeDetachListener(listener);
-//    }
-//
-//    @Override
-//    public void removeExtension(Extension extension) {
-//        getBackingField().removeExtension(extension);
-//    }
-//
-//    @Override
-//    @Deprecated
-//    public void requestRepaint() {
-//        getBackingField().requestRepaint();
-//    }
-//
-//    @Override
-//    @Deprecated
-//    public void requestRepaintAll() {
-//        getBackingField().requestRepaintAll();
-//    }
-//
-//    @Override
-//    public List<ClientMethodInvocation> retrievePendingRpcCalls() {
-//        return getBackingField().retrievePendingRpcCalls();
-//    }
-//
-//    @Override
-//    public void setErrorHandler(ErrorHandler errorHandler) {
-//        getBackingField().setErrorHandler(errorHandler);
-//    }
-//
-//    @Override
-//    public String getConnectorId() {
-//        return getBackingField().getConnectorId();
-//    }
-//
-//    @Override
-//    public float getHeight() {
-//        return getBackingField().getHeight();
-//    }
-//
-//    @Override
-//    public Unit getHeightUnits() {
-//        return getBackingField().getHeightUnits();
-//    }
-//
-//    @Override
-//    public float getWidth() {
-//        return getBackingField().getWidth();
-//    }
-//
-//    @Override
-//    public Unit getWidthUnits() {
-//        return getBackingField().getWidthUnits();
-//    }
-//
-//    @Override
-//    public void setHeight(float height, Unit unit) {
-//        getBackingField().setHeight(height, unit);
-//    }
-//
-//    @Override
-//    public void setHeight(String height) {
-//        getBackingField().setHeight(height);
-//    }
-//
-//    @Override
-//    public void setHeightUndefined() {
-//        getBackingField().setHeightUndefined();
-//    }
-//
-//    @Override
-//    public void setSizeFull() {
-//        getBackingField().setSizeFull();
-//    }
-//
-//    @Override
-//    public void setSizeUndefined() {
-//        getBackingField().setSizeUndefined();
-//    }
-//
-//    @Override
-//    public void setWidth(float width, Unit unit) {
-//        getBackingField().setWidth(width, unit);
-//    }
-//
-//    @Override
-//    public void setWidth(String width) {
-//        getBackingField().setWidth(width);
-//    }
-//
-//    @Override
-//    public void setWidthUndefined() {
-//        getBackingField().setWidthUndefined();
-//    }
 
     @Override
     public boolean isInvalidCommitted() {

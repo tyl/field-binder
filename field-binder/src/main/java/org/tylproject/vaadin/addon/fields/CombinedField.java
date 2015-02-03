@@ -33,10 +33,7 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.FilterFactory;
 import java.util.Collection;
 
 /**
- * It is also possible to override validate(), setInternalValue(), commit(),
- * setPropertyDataSource, isEmpty() and other methods to implement different
- * functionalities in the field. Methods overriding setInternalValue() should call the
- * superclass method.
+ * A Generic Field with a Button component on its right
  */
 public class CombinedField<T, FT, F extends AbstractField<FT>> extends FieldDecorator<T, FT, F> {
     final private CssLayout rootLayout = new CssLayout();

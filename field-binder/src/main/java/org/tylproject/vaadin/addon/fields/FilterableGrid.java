@@ -29,7 +29,7 @@ import org.tylproject.vaadin.addon.fields.search.FilterPatternTextField;
 import java.util.*;
 
 /**
- * Created by evacchi on 21/01/15.
+ * Extensions to the Grid that supports default filters
  */
 public class FilterableGrid extends Grid {
 
@@ -65,6 +65,10 @@ public class FilterableGrid extends Grid {
         makeFilters((Container.Filterable)dataSource, dataSource.getContainerPropertyIds(), filterRow);
     }
 
+    /**
+     * shorthand à la {@link com.vaadin.ui.Table} to set visible grids
+     * @param propertyIds
+     */
     public void setVisibileColumns(Object... propertyIds) {
         assertAllPropertyIdsExist(getContainerDataSource().getContainerPropertyIds(), propertyIds);
         removeAllColumns();
