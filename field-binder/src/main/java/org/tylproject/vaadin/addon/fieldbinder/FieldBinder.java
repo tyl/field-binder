@@ -72,13 +72,30 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     private final WrapDynaClass dynaClass ;
     private final Class<T> beanClass;
     private final BasicDataNavigation navigation;
-    private boolean gridSupportEnabled = false;
+    private final GridSupport gridSupport;
 
     public FieldBinder(Class<T> beanClass) {
-        super(new FieldGroup());
+        this(beanClass, GridSupport.UseTable);
+    }
+
+    public FieldBinder(Class<T> beanClass, GridSupport support) {
+        super(new FieldGroup(), new FieldBinderFieldFactory(support));
         this.beanClass = beanClass;
         this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
         this.navigation = null;
+        this.gridSupport = support;
+    }
+
+    public FieldBinder(Class<T> beanClass, Container.Ordered container, GridSupport gridSupport) {
+        super(new FieldGroup(), new FieldBinderFieldFactory(gridSupport));
+        this.beanClass = beanClass;
+        this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
+
+        BasicDataNavigation nav = new BasicDataNavigation(container);
+        nav.setBehaviorFactory(new DefaultBehaviorFactory(this));
+
+        this.navigation = nav;
+        this.gridSupport = gridSupport;
     }
 
     /**
@@ -92,22 +109,9 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
      * @param container
      */
     public FieldBinder(Class<T> beanClass, Container.Ordered container) {
-        super(new FieldGroup());
-        this.beanClass = beanClass;
-        this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
-
-        BasicDataNavigation nav = new BasicDataNavigation(container);
-        nav.setBehaviorFactory(new DefaultBehaviorFactory(this));
-
-        this.navigation = nav;
+        this(beanClass, container, GridSupport.UseTable);
 
     }
-
-    public FieldBinder<T> withGridSupport() {
-        this.gridSupportEnabled = true;
-        return this;
-    }
-
     public void setItemDataSource(BeanItem<T> itemDataSource) {
         super.setItemDataSource(itemDataSource);
     }
@@ -199,18 +203,17 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
     protected ZoomDialog makeDefaultZoomDialog(Object propertyId, Container.Indexed zoomCollection) {
-        if (gridSupportEnabled) {
-            return new GridZoomDialog(propertyId, zoomCollection);
-        } else {
-            return new TableZoomDialog(propertyId, zoomCollection);
+        switch (gridSupport) {
+            case UseGrid:
+                return new GridZoomDialog(propertyId, zoomCollection);
+            case UseTable:
+                return new TableZoomDialog(propertyId, zoomCollection);
+            default:
+                // this will never actually happen, unless gridSupport is null...
+                throw new IllegalArgumentException("Unknown value "+gridSupport);
         }
     }
 
-
-
-//    public <U> ZoomField<U> buildZoomField(Object propertyId, BeanTable<?> beanTable) {
-//        return this.<U>buildZoomField(propertyId).withZoomOnTable(beanTable);
-//    }
     /**
      * focus first component
      */

@@ -35,6 +35,16 @@ import java.util.Locale;
  */
 public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
 
+    private final GridSupport gridSupport;
+
+    public FieldBinderFieldFactory(GridSupport gridSupport) {
+        this.gridSupport = gridSupport;
+    }
+
+    public FieldBinderFieldFactory() {
+        this.gridSupport = GridSupport.UseTable;
+    }
+
     public <T extends Field> T createField(Class<?> type, Class<T> fieldType) {
         Field<?> f;
         if (AbstractSelect.class.isAssignableFrom(fieldType)) {

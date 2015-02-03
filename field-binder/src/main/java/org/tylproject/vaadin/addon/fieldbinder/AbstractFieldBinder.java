@@ -43,13 +43,14 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
     private Item itemDataSource = null;
 
 
-    private FieldBinderFieldFactory fieldFactory = new FieldBinderFieldFactory();
+    private final FieldBinderFieldFactory fieldFactory;
 
-    public AbstractFieldBinder(T fieldGroup) {
+    public AbstractFieldBinder(T fieldGroup, FieldBinderFieldFactory fieldFactory) {
         this.fieldGroup = fieldGroup;
         this.propertyIdToField = new LinkedHashMap<Object, Field<?>>();
         this.propertyIdToType  = new LinkedHashMap<Object, Class<?>>();
         this.fieldToPropertyId = new LinkedHashMap<Field<?>, Object>();
+        this.fieldFactory = fieldFactory;
 
     }
 
@@ -423,17 +424,6 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
      */
     public FieldBinderFieldFactory getFieldFactory() {
         return fieldFactory;
-    }
-
-    /**
-     * Sets the field factory for the {@link FieldGroup}. The field factory is
-     * only used when {@link FieldGroup} creates a new field.
-     *
-     * @param fieldFactory
-     *            The field factory to use
-     */
-    public void FieldBinderFieldFactory(FieldBinderFieldFactory fieldFactory) {
-        this.fieldFactory = fieldFactory;
     }
 
 }
