@@ -111,7 +111,7 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
     class ButtonClickListener implements Button.ClickListener {
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            if (drillDownOnly) {
+            if (drillDownOnly || isReadOnly()) {
                 new DrillDownWindow<>(ZoomField.this).show();
             } else {
                 new ZoomWindow<>(ZoomField.this).show();
