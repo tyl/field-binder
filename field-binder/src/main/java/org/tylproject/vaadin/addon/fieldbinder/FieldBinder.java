@@ -27,6 +27,7 @@ import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.TextField;
 import org.apache.commons.beanutils.DynaProperty;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.WrapDynaClass;
 import org.tylproject.vaadin.addon.datanav.*;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
@@ -34,6 +35,7 @@ import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultBehaviorFactory;
 import org.tylproject.vaadin.addon.fields.zoom.*;
 
+import java.beans.PropertyDescriptor;
 import java.util.*;
 
 /**
@@ -271,20 +273,60 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         return beanClass;
     }
 
-    @Override
-    protected Class<?> getPropertyType(Object propertyId) {
-        DynaProperty dynaProperty = dynaClass.getDynaProperty(propertyId.toString());
-        if (dynaProperty == null) {
-            Container container = getNavigation().getContainer();
-            if (container != null) {
-                Class<?> type = container.getType(propertyId);
-                if (type != null) return type;
-            }
 
-            throw new IllegalArgumentException("Unknown property "+propertyId);
+    /**
+     * Retrieves the type of the property with the given name of the given
+     * Class.
+     *
+     * Supports nested properties following bean naming convention.
+     * e.g., "foo.bar.name"
+     *
+     * @see PropertyUtils#getPropertyDescriptors(Class)
+     * @return Null if no property exists.
+     */
+    public Class<?> getPropertyType(Object propertyId) {
+        if (propertyId == null)
+            throw new IllegalArgumentException("PropertyName must not be null.");
+
+        final String propertyName = propertyId.toString();
+
+        final String[] path = propertyName.split("\\.");
+
+
+        Class<?> propClass = beanClass;
+
+        for (int i = 0; i < path.length; i++) {
+            String propertyFragment = path[i];
+            final PropertyDescriptor[] propDescs =
+                PropertyUtils.getPropertyDescriptors(propClass);
+
+            for (final PropertyDescriptor propDesc : propDescs)
+                if (propDesc.getName().equals(propertyFragment)) {
+                    propClass = propDesc.getPropertyType();
+                    if (i == path.length - 1)
+                        return propClass;
+                }
         }
-        return dynaProperty.getType();
+
+        return null;
     }
+
+
+
+//    @Override
+//    protected Class<?> getPropertyType(Object propertyId) {
+//        DynaProperty dynaProperty = dynaClass.getDynaProperty(propertyId.toString());
+//        if (dynaProperty == null) {
+//            Container container = getNavigation().getContainer();
+//            if (container != null) {
+//                Class<?> type = container.getType(propertyId);
+//                if (type != null) return type;
+//            }
+//
+//            throw new IllegalArgumentException("Unknown property "+propertyId);
+//        }
+//        return dynaProperty.getType();
+//    }
 
     public BasicDataNavigation getNavigation() {
         if (navigation == null)
