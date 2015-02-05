@@ -35,17 +35,18 @@ import java.util.Collection;
 /**
  * A Generic Field with a Button component on its right
  */
-public class CombinedField<T, FT, F extends AbstractField<FT>> extends FieldDecorator<T, FT, F> {
+public abstract class CombinedField<T, FT, F extends AbstractField<FT>> extends FieldDecorator<T, FT, F> {
     final private CssLayout rootLayout = new CssLayout();
     final private Button button;
     final private Class<T> type;
+    private Object value;
 
     public CombinedField(final F field, final Button button, final Class<T> type) {
         super(field);
         this.button = button;
         this.type = type;
 
-        this.getBackingField().setConverter(type);
+//        this.getBackingField().setConverter(type);
 
         rootLayout.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         rootLayout.addComponents(field, button);
@@ -68,15 +69,17 @@ public class CombinedField<T, FT, F extends AbstractField<FT>> extends FieldDeco
 
     @Override
     public T getValue() {
-        Object value = getBackingField().getConvertedValue();
-        // special-casing bug in TextField
-        if (("").equals(value)) return null;
-        else return (T) value;
+        return (T) value;
     }
 
     @Override
     public void setValue(T newValue) throws ReadOnlyException {
-        getBackingField().setConvertedValue(newValue);
+        if (value == newValue || value != null && value.equals(newValue)) {
+            fireValueChange(true);
+        } else {
+            this.value = newValue;
+            fireValueChange(false);
+        }
     }
 
 }

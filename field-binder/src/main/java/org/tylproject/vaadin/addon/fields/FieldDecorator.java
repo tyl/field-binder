@@ -76,11 +76,11 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
     public void setRequiredError(String requiredMessage) {
         getBackingField().setRequiredError(requiredMessage);
     }
-
-    @Override
-    public void addListener(Listener listener) {
-        getBackingField().addListener(listener);
-    }
+//
+//    @Override
+//    public void addListener(Listener listener) {
+//        getBackingField().addListener(listener);
+//    }
 
     @Override
     public void addStyleName(String style) {
@@ -112,20 +112,20 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
         return getBackingField().isEnabled();
     }
 
-    @Override
-    public boolean isReadOnly() {
-        return getBackingField().isReadOnly();
-    }
+//    @Override
+//    public boolean isReadOnly() {
+//        return getBackingField().isReadOnly();
+//    }
 
     @Override
     public boolean isVisible() {
         return getBackingField().isVisible();
     }
 
-    @Override
-    public void removeListener(Listener listener) {
-        getBackingField().removeListener(listener);
-    }
+//    @Override
+//    public void removeListener(Listener listener) {
+//        getBackingField().removeListener(listener);
+//    }
 
     @Override
     public void removeStyleName(String style) {
@@ -154,6 +154,7 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
 
     @Override
     public void setReadOnly(boolean readOnly) {
+        super.setReadOnly(readOnly);
         getBackingField().setReadOnly(readOnly);
     }
 
@@ -241,33 +242,33 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
     public void validate() throws Validator.InvalidValueException {
         getBackingField().validate();
     }
-
-    @Override
-    @Deprecated
-    public void addListener(ValueChangeListener listener) {
-        getBackingField().addListener(listener);
-    }
-
-    @Override
-    public void addValueChangeListener(ValueChangeListener listener) {
-        getBackingField().addValueChangeListener(listener);
-    }
-
-    @Override
-    @Deprecated
-    public void removeListener(ValueChangeListener listener) {
-        getBackingField().removeListener(listener);
-    }
-
-    @Override
-    public void removeValueChangeListener(ValueChangeListener listener) {
-        getBackingField().removeValueChangeListener(listener);
-    }
-
-    @Override
-    public void valueChange(Property.ValueChangeEvent event) {
-        getBackingField().valueChange(event);
-    }
+//
+//    @Override
+//    @Deprecated
+//    public void addListener(ValueChangeListener listener) {
+//        getBackingField().addListener(listener);
+//    }
+//
+//    @Override
+//    public void addValueChangeListener(ValueChangeListener listener) {
+//        getBackingField().addValueChangeListener(listener);
+//    }
+//
+//    @Override
+//    @Deprecated
+//    public void removeListener(ValueChangeListener listener) {
+//        getBackingField().removeListener(listener);
+//    }
+//
+//    @Override
+//    public void removeValueChangeListener(ValueChangeListener listener) {
+//        getBackingField().removeValueChangeListener(listener);
+//    }
+//
+//    @Override
+//    public void valueChange(Property.ValueChangeEvent event) {
+//        getBackingField().valueChange(event);
+//    }
 
 //    @Override
 //    public Property getPropertyDataSource() {

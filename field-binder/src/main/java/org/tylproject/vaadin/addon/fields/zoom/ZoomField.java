@@ -102,6 +102,17 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         return this;
     }
 
+    @Override
+    public void setReadOnly(boolean readOnly) {
+        super.setReadOnly(readOnly);
+        getBackingField().setReadOnly(true);
+        if (readOnly) {
+            getButton().setIcon(FontAwesome.ELLIPSIS_H);
+        } else {
+            getButton().setIcon(FontAwesome.SEARCH);
+        }
+    }
+
     public ZoomField<T> drillDownOnly() {
         this.drillDownOnly = true;
         getButton().setIcon(FontAwesome.ELLIPSIS_H);

@@ -21,10 +21,7 @@ package org.tylproject.vaadin.addon.fields.zoom;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.DefaultFieldFactory;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.fields.FilterableGrid;
 
 /**
@@ -58,6 +55,21 @@ public class GridZoomDialog extends VerticalLayout implements ZoomDialog {
         this(grid);
         this.propertyId = propertyId;
         setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
+    }
+
+    @Override
+    public Object getPropertyId() {
+        return propertyId;
+    }
+
+    @Override
+    public Component getDialogContents() {
+        return this;
+    }
+
+    @Override
+    public Container getContainer() {
+        return grid.getContainerDataSource();
     }
 
     public GridZoomDialog(Object propertyId, Container.Indexed container) {

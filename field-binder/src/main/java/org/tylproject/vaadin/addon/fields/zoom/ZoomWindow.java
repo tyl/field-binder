@@ -19,6 +19,8 @@
 
 package org.tylproject.vaadin.addon.fields.zoom;
 
+import com.vaadin.data.Item;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
@@ -74,7 +76,7 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
         btnSelect.addStyleName(ValoTheme.BUTTON_PRIMARY);
         content.addStyleName(ValoTheme.PANEL_BORDERLESS);
 
-        Component dialogContents = field.getZoomDialog();
+        Component dialogContents = field.getZoomDialog().getDialogContents();
 
         content.setContent(dialogContents);
         content.setSizeFull();
@@ -102,7 +104,10 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
     @Override
     public void buttonClick(Button.ClickEvent event) {
         if (event.getSource() == btnSelect) {
-            field.setValue((T)field.getZoomDialog().dismiss());
+            Object itemId = field.getZoomDialog().dismiss();
+            Item item = field.getZoomDialog().getContainer().getItem(itemId);
+
+            field.setValue((T)((BeanItem)item).getBean());
         } else
         if (event.getSource() == btnSelectNone) {
             field.setValue(null);

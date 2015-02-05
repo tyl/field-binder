@@ -66,6 +66,21 @@ public class TableZoomDialog extends CustomComponent implements ZoomDialog {
     }
 
     @Override
+    public Component getDialogContents() {
+        return this;
+    }
+
+    @Override
+    public Container getContainer() {
+        return beanTable.getContainerDataSource();
+    }
+
+    @Override
+    public Object getPropertyId() {
+        return propertyId;
+    }
+
+    @Override
     public void show(Object value) {
 
     }
@@ -75,8 +90,8 @@ public class TableZoomDialog extends CustomComponent implements ZoomDialog {
      */
     @Override
     public Object dismiss() {
-        Object itemId = beanTable.getSelectedItemId();
-        if (itemId == null) return null;
-        Item item = beanTable.getContainerDataSource().getItem(itemId);
-        return item.getItemProperty(propertyId).getValue();
+        return beanTable.getSelectedItemId();
+//        if (itemId == null) return null;
+//        Item item = beanTable.getContainerDataSource().getItem(itemId);
+//        return item.getItemProperty(propertyId).getValue();
     }}

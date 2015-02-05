@@ -68,7 +68,7 @@ public class DrillDownWindow<T> extends Window implements Button.ClickListener {
         btnClose.setStyleName(ValoTheme.BUTTON_PRIMARY);
         content.addStyleName(ValoTheme.PANEL_BORDERLESS);
 
-        Component dialogContents = field.getZoomDialog();
+        Component dialogContents = field.getZoomDialog().getDialogContents();
 
         content.setContent(dialogContents);
         content.setSizeFull();

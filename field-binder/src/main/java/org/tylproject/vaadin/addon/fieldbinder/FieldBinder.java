@@ -189,9 +189,12 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         String caption = DefaultFieldFactory
                 .createCaptionByPropertyId(bindingPropertyId);
 
-        TextField textField = super.build(null, bindingPropertyId, TextField.class);
-        TextZoomField field = new TextZoomField(textField);
+//        TextField textField = super.build(null, bindingPropertyId, TextField.class);
+        TextZoomField field = new TextZoomField();
+        field.setCaption(caption);
         field.withZoomDialog(makeDefaultZoomDialog(containerPropertyId, zoomCollection));
+
+        bind(field, bindingPropertyId);
 
         return field;
     }
