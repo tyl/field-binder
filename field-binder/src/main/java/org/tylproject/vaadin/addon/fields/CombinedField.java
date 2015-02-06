@@ -80,6 +80,10 @@ public abstract class CombinedField<T, FT, F extends AbstractField<FT>> extends 
             this.value = newValue;
             fireValueChange(false);
         }
+
+        Property p = getPropertyDataSource();
+        if (p != null) p.setValue(value);
+
     }
 
 }

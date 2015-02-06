@@ -27,6 +27,7 @@ import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.TextField;
 
+import javax.annotation.Nullable;
 import java.util.Locale;
 
 /**
@@ -42,9 +43,9 @@ public class TextZoomField extends ZoomField<Object> {
     }
 
     @Override
-    public void setValue(Object newValue) throws ReadOnlyException {
+    public void setValue(@Nullable Object newValue) throws ReadOnlyException {
         super.setValue(newValue);
-        getPropertyDataSource().setValue(newValue);
+//        getPropertyDataSource().setValue(newValue);
 
         boolean isReadOnly = getBackingField().isReadOnly();
 
@@ -70,7 +71,7 @@ public class TextZoomField extends ZoomField<Object> {
     public void setPropertyDataSource(Property newDataSource) {
         super.setPropertyDataSource(newDataSource);
         if (newDataSource == null) setValue(null);
-        setValue(newDataSource.getValue());
+        else setValue(newDataSource.getValue());
     }
 
     @Override

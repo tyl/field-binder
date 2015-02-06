@@ -166,6 +166,8 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
 
     public void bind(Field<?> field, Object propertyId) {
         try {
+            Class<?> dataType = getPropertyType(propertyId);
+            propertyIdToType.put(propertyId, dataType);
             propertyIdToField.put(propertyId, field);
             fieldToPropertyId.put(field, propertyId);
 
@@ -251,7 +253,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
 
         field.setCaption(caption);
 
-        propertyIdToType.put(propertyId, dataType);
+//        propertyIdToType.put(propertyId, dataType);
 
         bind(field, propertyId);
 

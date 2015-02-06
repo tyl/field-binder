@@ -155,6 +155,7 @@ public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> exten
     public void setValue(T newValue) throws ReadOnlyException {
         super.setValue(newValue);
         if (newValue != null) return;
+        getBackingField().setValue(null);
 
         SearchPattern lastPattern = getLastAppliedSearchPattern();
         setLastAppliedSearchPattern(null);
@@ -162,6 +163,10 @@ public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> exten
         Container.Filterable c = getTargetContainer();
         if (c != null) c.removeContainerFilter(lastPattern.getFilter());
 
+    }
+
+    public T getValue() {
+        return (T) getBackingField().getValue();
     }
 
     /**
