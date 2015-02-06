@@ -29,6 +29,8 @@ public interface ZoomDialog {
     public Object dismiss();
     public void show(Object value);
     public ZoomDialog withPropertyId(Object propertyId);
+    public boolean isReadOnly();
+    public void setReadOnly(boolean readOnly);
     public Container getContainer();
     public Component getDialogContents();
     public Object getPropertyId();

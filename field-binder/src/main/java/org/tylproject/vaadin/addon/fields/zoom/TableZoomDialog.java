@@ -82,7 +82,7 @@ public class TableZoomDialog extends CustomComponent implements ZoomDialog {
 
     @Override
     public void show(Object value) {
-
+        beanTable.getTable().setSelectable(!isReadOnly());
     }
 
     /**

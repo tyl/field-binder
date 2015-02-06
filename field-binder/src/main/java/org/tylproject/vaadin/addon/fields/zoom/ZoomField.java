@@ -106,6 +106,7 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
     public void setReadOnly(boolean readOnly) {
         super.setReadOnly(readOnly);
         getBackingField().setReadOnly(true);
+        getZoomDialog().setReadOnly(readOnly);
         if (readOnly) {
             getButton().setIcon(FontAwesome.ELLIPSIS_H);
         } else {

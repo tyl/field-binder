@@ -86,6 +86,7 @@ public class DrillDownWindow<T> extends Window implements Button.ClickListener {
     }
 
     public void show() {
+        field.getZoomDialog().show(this.field.getValue());
         UI.getCurrent().addWindow(this);
         center();
         focus();
