@@ -164,7 +164,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         }
     }
 
-    public void bind(Field<?> field, Object propertyId) {
+    public <T extends Field<?>> T bind(T field, Object propertyId) {
         try {
             Class<?> dataType = getPropertyType(propertyId);
             propertyIdToType.put(propertyId, dataType);
@@ -182,7 +182,13 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
             if (hasItemDataSource())
                 getFieldGroup().bind(field, propertyId);
 
+            if (field.getCaption() == null) {
+                field.setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
+            }
+
             configureField(field);
+
+            return field;
 
         } catch (RuntimeException e) {
             throw new FieldGroup.BindException("Could not bind field "+field+" to property "+propertyId, e);
