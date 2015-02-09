@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 import java.util.Locale;
 
 /**
- * Created by evacchi on 30/01/15.
+ * Shows a non-editable TextField that zooms on a data source
  */
 public class TextZoomField extends ZoomField<Object> {
     public TextZoomField(TextField field) {
@@ -39,13 +39,11 @@ public class TextZoomField extends ZoomField<Object> {
     }
     public TextZoomField() {
         super(Object.class);
-//        this.setConverter(defaultConverter);
     }
 
     @Override
     public void setValue(@Nullable Object newValue) throws ReadOnlyException {
         super.setValue(newValue);
-//        getPropertyDataSource().setValue(newValue);
 
         boolean isReadOnly = getBackingField().isReadOnly();
 

@@ -189,7 +189,6 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         String caption = DefaultFieldFactory
                 .createCaptionByPropertyId(bindingPropertyId);
 
-//        TextField textField = super.build(null, bindingPropertyId, TextField.class);
         TextZoomField field = new TextZoomField();
         field.setCaption(caption);
         field.withZoomDialog(makeDefaultZoomDialog(containerPropertyId, zoomCollection));
@@ -212,10 +211,6 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
 
-
-//    public <U> ZoomField<U> buildZoomField(Object propertyId, BeanTable<?> beanTable) {
-//        return this.<U>buildZoomField(propertyId).withZoomOnTable(beanTable);
-//    }
     /**
      * focus first component
      */
@@ -313,23 +308,6 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
         return null;
     }
-
-
-
-//    @Override
-//    protected Class<?> getPropertyType(Object propertyId) {
-//        DynaProperty dynaProperty = dynaClass.getDynaProperty(propertyId.toString());
-//        if (dynaProperty == null) {
-//            Container container = getNavigation().getContainer();
-//            if (container != null) {
-//                Class<?> type = container.getType(propertyId);
-//                if (type != null) return type;
-//            }
-//
-//            throw new IllegalArgumentException("Unknown property "+propertyId);
-//        }
-//        return dynaProperty.getType();
-//    }
 
     public BasicDataNavigation getNavigation() {
         if (navigation == null)
