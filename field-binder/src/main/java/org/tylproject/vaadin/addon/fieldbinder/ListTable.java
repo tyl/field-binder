@@ -31,6 +31,7 @@ public class ListTable<T> extends CollectionTable<T,List<T>> {
         super(containedBeanClass, (Class) List.class);
     }
     public ListTable<T> withDefaultEditorBar() {
-        return (ListTable<T>) super.withDefaultEditorBar();
+        super.withDefaultEditorBar();
+        return this;
     }
 }

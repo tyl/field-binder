@@ -19,6 +19,8 @@
 
 package org.tylproject.vaadin.addon.fieldbinder;
 
+import com.vaadin.data.Container;
+import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
@@ -91,6 +93,16 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
     }
 
 
+    public Object getSelectedItemId() {
+        return this.getNavigation().getCurrentItemId();
+    }
+
+    public Item getSelectedItem() {
+        return this.getNavigation().getCurrentItem();
+    }
+
+
+
     /**
      * Mimicks {@link com.vaadin.ui.Table} but automatically infer column names like a
      * {@link com.vaadin.data.fieldgroup.FieldGroup} or a {@link FieldBinder}
@@ -148,6 +160,10 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
         table.focus();
     }
 
+    public void setCollection(U collection) {
+        setInternalValue(collection);
+    }
+
     @Override
     protected void setInternalValue(U collection) {
         // reset the navigation status
@@ -156,16 +172,16 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
         super.setInternalValue(collection);
 
         if (collection == null) {
-            this.setContainerDataSource(null);
+            this.setListContainer(null);
         } else {
             FilterableListContainer<T> listContainer = new FilterableListContainer<T>(containedBeanClass);
             listContainer.setCollection(collection);
 
-            this.setContainerDataSource(listContainer);
+            this.setListContainer(listContainer);
         }
     }
 
-    protected void setContainerDataSource(FilterableListContainer<T> listContainer) {
+    protected void setListContainer(FilterableListContainer<T> listContainer) {
         this.listContainer = listContainer;
         if (listContainer == null) {
             // clears the table contents
@@ -188,8 +204,13 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
         }
     }
 
-    public FilterableListContainer<T> getContainerDataSource() {
+    protected FilterableListContainer<T> getListContainer() {
         return listContainer;
+    }
+
+
+    public Container.Ordered getContainerDataSource() {
+        return getListContainer();
     }
 
     @Override
@@ -216,7 +237,7 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
     @Override
     protected U getInternalValue() {
 
-        FilterableListContainer<T> container = getContainerDataSource();
+        FilterableListContainer<T> container = getListContainer();
         if (container == null) return super.getInternalValue();
 
         Collection<T> allItems = container.getItemIds();
