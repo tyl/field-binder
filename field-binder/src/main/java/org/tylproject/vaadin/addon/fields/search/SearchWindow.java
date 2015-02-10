@@ -140,13 +140,14 @@ public class SearchWindow extends Window implements SearchDialog {
     }
 
     private void restorePatternsIntoFields() {
-        for (Map.Entry<Object, FilterPatternField> e:
-                searchForm.getSearchFieldManager().getPropertyIdToFilterExpressionField().entrySet()) {
+        for (Map.Entry<Object, SearchPatternField<?,?,?>> e:
+                searchForm.getSearchFieldManager().getPropertyIdToSearchPatternField().entrySet()) {
             final SearchPattern searchPattern = propertyIdToPatterns.get(e.getKey());
             if (searchPattern == null) {
                 e.getValue().setValue(null);
             } else {
-                e.getValue().setValue(searchPattern.getObjectPattern());
+                SearchPatternField spf = e.getValue();
+                spf.setValue(searchPattern.getObjectPattern());
 
             }
         }
@@ -159,8 +160,8 @@ public class SearchWindow extends Window implements SearchDialog {
     }
     private void backupPatternsFromFields() {
         propertyIdToPatterns.clear();
-        for (Map.Entry<Object, FilterPatternField> e:
-                searchForm.getSearchFieldManager().getPropertyIdToFilterExpressionField().entrySet()) {
+        for (Map.Entry<Object, SearchPatternField<?,?,?>> e:
+                searchForm.getSearchFieldManager().getPropertyIdToSearchPatternField().entrySet()) {
             propertyIdToPatterns.put(e.getKey(), e.getValue().getPatternFromValue());
         }
     }

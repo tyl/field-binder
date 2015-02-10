@@ -32,9 +32,9 @@ import org.tylproject.vaadin.addon.fields.CombinedField;
  * filter to a Container instance, if it is given
  *
  */
-public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> extends CombinedField<T, FT, F> {
+public abstract class SearchPatternField<T,FT,F extends AbstractField<FT>> extends CombinedField<T, FT, F> {
 
-    private static final FilterFactory filterFactory = new DefaultFilterFactory();
+    private FilterFactory filterFactory = new DefaultFilterFactory();
 
     private SearchPattern lastAppliedSearchPattern;
     private Container.Filterable targetContainer;
@@ -42,7 +42,7 @@ public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> exten
     private final Class<?> targetPropertyType;
 
 
-    public FilterPatternField(final F backingField,    final Class<T> fieldType,
+    public SearchPatternField(final F backingField, final Class<T> fieldType,
                               final Object propertyId, final Class<?> propertyType) {
         super(backingField, new Button(FontAwesome.TIMES_CIRCLE), fieldType);
         final Button clearBtn = getButton();
@@ -67,11 +67,19 @@ public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> exten
      * @param propertyType the type of the property in the Filter
      * @param targetContainer the container the Filter should be applied to
      */
-    public FilterPatternField(final F backingField,    final Class<T> fieldType,
+    public SearchPatternField(final F backingField, final Class<T> fieldType,
                               final Object propertyId, final Class<?> propertyType,
                               final Container.Filterable targetContainer) {
         this(backingField, fieldType, propertyId, propertyType);
         setTargetContainer(targetContainer);
+    }
+
+    public void setFilterFactory(FilterFactory filterFactory) {
+        this.filterFactory = filterFactory;
+    }
+
+    public FilterFactory getFilterFactory() {
+        return filterFactory;
     }
 
     /**
@@ -92,10 +100,6 @@ public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> exten
 
     public Object getTargetPropertyId() {
         return targetPropertyId;
-    }
-
-    protected static FilterFactory getFilterFactory() {
-        return filterFactory;
     }
 
 
@@ -135,7 +139,8 @@ public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> exten
     }
 
     public SearchPattern getPatternFromValue() {
-        return getPattern(getValue());
+        if (!isEnabled()) return SearchPattern.Empty;
+        else return getPattern(getValue());
     }
 
     private SearchPattern getPattern(Object objectPattern) {
@@ -154,7 +159,10 @@ public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> exten
     @Override
     public void setValue(T newValue) throws ReadOnlyException {
         super.setValue(newValue);
-        if (newValue != null) return;
+        if (newValue != null) {
+            getBackingField().setValue((FT)newValue);
+            return;
+        }
         getBackingField().setValue(null);
 
         SearchPattern lastPattern = getLastAppliedSearchPattern();
@@ -173,7 +181,9 @@ public abstract class FilterPatternField<T,FT,F extends AbstractField<FT>> exten
      * equivalent to setValue(null)
      */
     public void clear() {
-        this.setValue(null);
+        if (!isReadOnly()) {
+            this.setValue(null);
+        }
     }
 
 

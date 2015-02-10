@@ -41,27 +41,29 @@ public class TextZoomField extends ZoomField<Object> {
         super(Object.class);
     }
 
+    // value is a structured object *from which* we extract the display value
     @Override
-    public void setValue(@Nullable Object newValue) throws ReadOnlyException {
-        super.setValue(newValue);
+    public void setValue(@Nullable Object value) throws ReadOnlyException {
+
+
+
+        super.setValue(value);
 
         boolean isReadOnly = getBackingField().isReadOnly();
+        getBackingField().setReadOnly(false);
 
-        if (isReadOnly) {
-            getBackingField().setReadOnly(false);
-        }
+
+        ZoomDialog zd = getZoomDialog();
 
         String stringValue;
-        if (newValue == null) {
-
+        if (value == null) {
             stringValue = null;
+        } else  {
 
-        } else {
-            String propertyId = getZoomDialog().getPropertyId().toString();
-            stringValue = new BeanItem(newValue, propertyId).getItemProperty(propertyId).getValue().toString();
+            stringValue = value.toString();
         }
 
-        getBackingField().setValue(stringValue);
+        setDisplayValue(stringValue);
         getBackingField().setReadOnly(isReadOnly);
     }
 
@@ -91,61 +93,4 @@ public class TextZoomField extends ZoomField<Object> {
         this.getBackingField().setConversionError(valueConversionError);
     }
 
-    private Converter<String,Object> defaultConverter = new Converter<String, Object>() {
-        @Override
-        public Object convertToModel(String value, Class<?> targetType, Locale locale) throws ConversionException {
-
-            if (value == null) return null;
-
-            Container c = getZoomDialog().getContainer();
-            Object propertyId = getZoomDialog().getPropertyId();
-
-            Item item = null;
-
-            if (c instanceof Container.Filterable) {
-                Container.Filterable cc = (Container.Filterable) c;
-                cc.removeAllContainerFilters();
-                cc.addContainerFilter(new Compare.Equal(propertyId, value));
-
-                if (c instanceof Container.Ordered) {
-                    Object itemId = ((Container.Ordered) c).firstItemId();
-                    item = c.getItem(itemId);
-                }
-
-                cc.removeAllContainerFilters();
-            }
-            if (item instanceof BeanItem) {
-
-                return ((BeanItem) item).getBean();
-
-            } else {
-                if (item == null) {
-//                    throw new IllegalArgumentException("Unknown value");
-                    return null;
-                }
-
-                throw new ConversionException(
-                        "Item of this container is of an unsupported type: "
-                                + item.getClass());
-            }
-
-        }
-
-        @Override
-        public String convertToPresentation(Object value, Class<? extends String> targetType, Locale locale) throws ConversionException {
-            if (value == null) return null;
-            String propertyId = getZoomDialog().getPropertyId().toString();
-            return new BeanItem(value, propertyId).getItemProperty(propertyId).getValue().toString();
-        }
-
-        @Override
-        public Class<Object> getModelType() {
-            return Object.class;
-        }
-
-        @Override
-        public Class<String> getPresentationType() {
-            return String.class;
-        }
-    };
 }

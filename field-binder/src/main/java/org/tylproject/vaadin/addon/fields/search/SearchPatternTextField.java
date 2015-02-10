@@ -26,15 +26,16 @@ import com.vaadin.ui.TextField;
 /**
  * Created by evacchi on 23/01/15.
  */
-public class FilterPatternTextField extends FilterPatternField<String, String, TextField> {
+public class SearchPatternTextField extends SearchPatternField<String, String, TextField> {
 
-    public FilterPatternTextField(Object propertyId, Class<?> propertyType) {
+    public SearchPatternTextField(Object propertyId, Class<?> propertyType) {
         super(new TextField(), String.class, propertyId, propertyType);
         setFieldDefaults(getBackingField());
     }
 
 
-    public FilterPatternTextField(Object propertyId, Class<?> propertyType, Container.Filterable targetContainer) {
+    public SearchPatternTextField(Object propertyId, Class<?> propertyType, Container
+    .Filterable targetContainer) {
         super(new TextField(), String.class, propertyId, propertyType, targetContainer);
         setFieldDefaults(getBackingField());
         addDefaultBackingFieldListeners(getTargetContainer());

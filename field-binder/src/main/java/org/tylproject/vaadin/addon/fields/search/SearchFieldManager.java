@@ -20,11 +20,9 @@
 package org.tylproject.vaadin.addon.fields.search;
 
 import com.vaadin.data.Container;
-import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.DefaultFieldFactory;
-import com.vaadin.ui.Field;
-import com.vaadin.ui.HasComponents;
-import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultFilterFactory;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.FilterFactory;
 
 import java.util.*;
 
@@ -32,8 +30,10 @@ import java.util.*;
  * Created by evacchi on 28/01/15.
  */
 public class SearchFieldManager {
-    final Map<Object, Class<?>> propertyIdToType = new LinkedHashMap<>();
-    final Map<Object, FilterPatternField> propertyIdToFilterExpressionField = new LinkedHashMap<>();
+    protected final Map<Object, Class<?>> propertyIdToType = new LinkedHashMap<>();
+    protected final Map<Object, SearchPatternField<?,?,?>> propertyIdToSearchPatternField = new LinkedHashMap<>();
+    protected FilterFactory filterFactory = new DefaultFilterFactory();
+    protected SearchFieldFactory searchFieldFactory = new DefaultSearchFieldFactory();
 
     /**
      * Create a SearchForm for pairs of the form (propertyId, type)
@@ -50,14 +50,31 @@ public class SearchFieldManager {
         }
     }
 
+    public void setFilterFactory(FilterFactory filterFactory) {
+        this.filterFactory = filterFactory;
+        for (SearchPatternField fef: propertyIdToSearchPatternField.values()) {
+            fef.setFilterFactory(filterFactory);
+        }
+    }
+
+    public FilterFactory getFilterFactory() {
+        return filterFactory;
+    }
+
+    public void setSearchFieldFactory(SearchFieldFactory searchFieldFactory) {
+        this.searchFieldFactory = searchFieldFactory;
+    }
+    public SearchFieldFactory getSearchFieldFactory() {
+        return searchFieldFactory;
+    }
 
     /**
      * add a field to the SearchForm for the given propertyId, propertyType
      */
     public void addProperty(Object propertyId, Class<?> propertyType) {
         this.propertyIdToType.put(propertyId, propertyType);
-        FilterPatternField f = makeField(propertyId, propertyType);
-        this.propertyIdToFilterExpressionField.put(propertyId, f);
+        SearchPatternField f = searchFieldFactory.createField(propertyId, propertyType);
+        this.propertyIdToSearchPatternField.put(propertyId, f);
     }
 
     /**
@@ -66,7 +83,7 @@ public class SearchFieldManager {
     public Map<Object, SearchPattern> getPatternsFromValues() {
         final Map<Object, SearchPattern> filtersFromValues = new LinkedHashMap<>();
 
-        for (Map.Entry<Object, FilterPatternField> e : getPropertyIdToFilterExpressionField().entrySet()) {
+        for (Map.Entry<Object, SearchPatternField<?,?,?>> e : getPropertyIdToSearchPatternField().entrySet()) {
 
             SearchPattern searchPattern = e.getValue().getPatternFromValue();
             if (searchPattern.isEmpty()) continue;
@@ -78,27 +95,16 @@ public class SearchFieldManager {
     }
 
     public Map<Object, Class<?>> getPropertyIdToType() {
-        return Collections.unmodifiableMap(propertyIdToType);
+        return (propertyIdToType);
     }
 
-    public Map<Object, FilterPatternField> getPropertyIdToFilterExpressionField() {
-        return Collections.unmodifiableMap(propertyIdToFilterExpressionField);
+    public Map<Object, SearchPatternField<?,?,?>> getPropertyIdToSearchPatternField() {
+        return (propertyIdToSearchPatternField);
     }
 
-
-    private FilterPatternField makeField(Object propertyId, Class<?> type) {
-        FilterPatternField f ;
-        if (java.lang.Enum.class.isAssignableFrom(type)) {
-            f = new FilterPatternComboBox(propertyId, (Class<java.lang.Enum>)type);
-        } else {
-            f = new FilterPatternTextField(propertyId, type);
-        }
-        f.setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
-        return f;
-    }
 
     public void clear() {
-        for (FilterPatternField f: getPropertyIdToFilterExpressionField().values()) {
+        for (SearchPatternField f: getPropertyIdToSearchPatternField().values()) {
             f.clear();
         }
     }

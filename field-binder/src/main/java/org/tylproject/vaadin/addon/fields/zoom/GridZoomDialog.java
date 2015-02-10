@@ -27,53 +27,28 @@ import org.tylproject.vaadin.addon.fields.FilterableGrid;
 /**
  * Created by evacchi on 20/01/15.
  */
-public class GridZoomDialog extends VerticalLayout implements ZoomDialog {
+public class GridZoomDialog extends AbstractZoomDialog {
 
     private final Grid grid;
-    private Object propertyId;
-
 
     public GridZoomDialog(Grid grid) {
         this.grid = grid;
         setupDialog(grid);
     }
 
-    private void setupDialog(Grid grid) {
-        if (!(grid.getSelectionModel() instanceof Grid.SingleSelectionModel)) {
-            throw new AssertionError(
-                    "Selection mode must be "+Grid.SelectionMode.SINGLE.getClass()+", "+
-                            grid.getSelectionModel().getClass() +" was given");
-        }
-
-        addComponent(grid);
-        setExpandRatio(getGrid(), 1f);
-        setSizeFull();
+    public GridZoomDialog(Grid grid, Object propertyId, String caption) {
+        this(grid, propertyId);
+        this.setCaption(caption);
     }
-
 
     public GridZoomDialog(Grid grid, Object propertyId) {
         this(grid);
-        this.propertyId = propertyId;
+        withNestedPropertyId(propertyId);
         setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
     }
 
-    @Override
-    public Object getPropertyId() {
-        return propertyId;
-    }
-
-    @Override
-    public Component getDialogContents() {
-        return this;
-    }
-
-    @Override
-    public Container getContainer() {
-        return grid.getContainerDataSource();
-    }
-
     public GridZoomDialog(Object propertyId, Container.Indexed container) {
-        withPropertyId(propertyId);
+        withNestedPropertyId(propertyId);
 
         FilterableGrid grid = new FilterableGrid(container);
 
@@ -89,17 +64,28 @@ public class GridZoomDialog extends VerticalLayout implements ZoomDialog {
 
     }
 
+    private void setupDialog(Grid grid) {
+        if (!(grid.getSelectionModel() instanceof Grid.SingleSelectionModel)) {
+            throw new AssertionError(
+                    "Selection mode must be "+Grid.SelectionMode.SINGLE.getClass()+", "+
+                            grid.getSelectionModel().getClass() +" was given");
+        }
 
-
-
-    public GridZoomDialog(Grid grid, Object propertyId, String caption) {
-        this(grid, propertyId);
-        this.setCaption(caption);
+        addComponent(grid);
+        setExpandRatio(getGrid(), 1f);
+        setSizeFull();
     }
 
-    public final GridZoomDialog withPropertyId(Object propertyId) {
-        this.propertyId = propertyId;
+
+    public GridZoomDialog withNestedPropertyId(Object propertyId) {
+        super.withNestedPropertyId(propertyId);
         return this;
+    }
+
+
+    @Override
+    public Container getContainer() {
+        return grid.getContainerDataSource();
     }
 
 
@@ -110,17 +96,14 @@ public class GridZoomDialog extends VerticalLayout implements ZoomDialog {
 
     @Override
     public void show(Object value) {
-
+        if (isReadOnly()) {
+            grid.setSelectionMode(Grid.SelectionMode.NONE);
+        } else {
+            grid.setSelectionMode(Grid.SelectionMode.SINGLE);
+        }
     }
 
-    /**
-     * Returns the current selected value
-     */
-    @Override
-    public Object dismiss() {
-        Object itemId = getGrid().getSelectedRow();
-        if (itemId == null) return null;
-        Item item = getGrid().getContainerDataSource().getItem(itemId);
-        return item.getItemProperty(propertyId).getValue();
+    public Object getSelectedItemId() {
+        return getGrid().getSelectedRow();
     }
 }

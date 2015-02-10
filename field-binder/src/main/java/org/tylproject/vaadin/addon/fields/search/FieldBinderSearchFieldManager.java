@@ -27,32 +27,38 @@ import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import java.util.Collections;
 import java.util.Map;
 
+
 /**
- * Created by evacchi on 30/01/15.
+ * Create a SearchForm for the fields of a FieldBinder
  */
 public class FieldBinderSearchFieldManager extends SearchFieldManager {
     final FieldBinder<?> fieldBinder;
 
-    /**
-     * Create a SearchForm for the fields of a FieldBinder
-     */
     public FieldBinderSearchFieldManager(FieldBinder<?> fieldBinder) {
         super(Collections.<Object,Class<?>>emptyMap());
         this.fieldBinder = fieldBinder;
         makeSearchFieldsFromFieldBinder();
     }
 
+    public void addPropertyFromField(Object propertyId, Class<?> propertyType, Field<?> field) {
+        this.propertyIdToType.put(propertyId, propertyType);
+        SearchPatternField<?,?,?> searchPatternField = getSearchFieldFactory().createField(propertyId, propertyType, field);
+        this.propertyIdToSearchPatternField.put(propertyId, searchPatternField);
+    }
+
+
+
     private void makeSearchFieldsFromFieldBinder() {
         final Map<Object, Class<?>> propertyIdToType = fieldBinder.getPropertyIdToTypeBindings();
 
         int numNonCollectionFields = propertyIdToType.size() - fieldBinder.getCollectionFields().size();
-        int numSearchFields = this.getPropertyIdToFilterExpressionField().size();
+        int numSearchFields = this.getPropertyIdToSearchPatternField().size();
 
         // if there are more fields in the binder
         // than the fields there are in our maps, let us create them again
         if (numNonCollectionFields > numSearchFields) {
-            this.propertyIdToType.clear();
-            this.propertyIdToFilterExpressionField.clear();
+            this.getPropertyIdToType().clear();
+            this.getPropertyIdToSearchPatternField().clear();
 
             for (Map.Entry<Object, Class<?>> e : propertyIdToType.entrySet()) {
                 Object propertyId = e.getKey();
@@ -62,7 +68,7 @@ public class FieldBinderSearchFieldManager extends SearchFieldManager {
                 if (fieldBinder.getCollectionFields().keySet().contains(propertyId))
                     continue;
 
-                addProperty(propertyId, type);
+                addPropertyFromField(propertyId, type, fieldBinder.getField(propertyId));
 
             }
         }
@@ -76,7 +82,7 @@ public class FieldBinderSearchFieldManager extends SearchFieldManager {
 
         makeSearchFieldsFromFieldBinder();
 
-        for (Map.Entry<Object, FilterPatternField> e : getPropertyIdToFilterExpressionField().entrySet()) {
+        for (Map.Entry<Object, SearchPatternField<?,?,?>> e : getPropertyIdToSearchPatternField().entrySet()) {
             Object propertyId = e.getKey();
             Field<?> replacement = e.getValue();
             Field<?> original = fieldBinder.getPropertyIdToFieldBindings().get(propertyId);
@@ -96,7 +102,7 @@ public class FieldBinderSearchFieldManager extends SearchFieldManager {
                     "Cannot restore fields. No FieldBinder instance was given");
         }
 
-        for (Map.Entry<Object, FilterPatternField> e : getPropertyIdToFilterExpressionField().entrySet()) {
+        for (Map.Entry<Object, SearchPatternField<?,?,?>> e : getPropertyIdToSearchPatternField().entrySet()) {
             Object propertyId = e.getKey();
             Field<?> replacement = e.getValue();
             Field<?> original = fieldBinder.getPropertyIdToFieldBindings().get(propertyId);

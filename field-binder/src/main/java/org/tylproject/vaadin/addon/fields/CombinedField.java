@@ -86,4 +86,9 @@ public abstract class CombinedField<T, FT, F extends AbstractField<FT>> extends 
 
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        getButton().setEnabled(enabled);
+    }
 }

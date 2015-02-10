@@ -22,9 +22,9 @@ package org.tylproject.vaadin.addon.fields;
 import com.vaadin.data.Container;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Grid;
-import org.tylproject.vaadin.addon.fields.search.FilterPatternComboBox;
-import org.tylproject.vaadin.addon.fields.search.FilterPatternField;
-import org.tylproject.vaadin.addon.fields.search.FilterPatternTextField;
+import org.tylproject.vaadin.addon.fields.search.SearchPatternComboBox;
+import org.tylproject.vaadin.addon.fields.search.SearchPatternField;
+import org.tylproject.vaadin.addon.fields.search.SearchPatternTextField;
 
 import java.util.*;
 
@@ -111,14 +111,14 @@ public class FilterableGrid extends Grid {
     }
 
     protected Field<?> makeFilterField(final Object propertyId, Container.Filterable container) {
-        FilterPatternField f ;
+        SearchPatternField f ;
 
         Class<?> type = container.getType(propertyId);
 
         if (java.lang.Enum.class.isAssignableFrom(type)) {
-            f = new FilterPatternComboBox(propertyId, (Class<java.lang.Enum>)type, container);
+            f = new SearchPatternComboBox(propertyId, (Class<java.lang.Enum>)type, container);
         } else {
-            f = new FilterPatternTextField(propertyId, type, container);
+            f = new SearchPatternTextField(propertyId, type, container);
         }
 
         return f;

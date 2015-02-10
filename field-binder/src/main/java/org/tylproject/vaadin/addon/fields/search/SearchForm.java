@@ -53,7 +53,7 @@ public class SearchForm extends FormLayout {
     }
 
     private void addFieldsToLayout() {
-        for (FilterPatternField f : searchFieldManager.getPropertyIdToFilterExpressionField().values()) {
+        for (SearchPatternField f : searchFieldManager.getPropertyIdToSearchPatternField().values()) {
             this.addComponent(f);
         }
     }
@@ -64,7 +64,7 @@ public class SearchForm extends FormLayout {
      */
     public void addProperty(Object propertyId, Class<?> propertyType) {
         searchFieldManager.addProperty(propertyId, propertyType);
-        this.addComponent(this.getSearchFieldManager().getPropertyIdToFilterExpressionField().get(propertyId));
+        this.addComponent(this.getSearchFieldManager().getPropertyIdToSearchPatternField().get(propertyId));
     }
 
 

@@ -20,18 +20,43 @@
 package org.tylproject.vaadin.addon.fields.zoom;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.ui.Component;
 
 /**
  * Created by evacchi on 19/01/15.
  */
 public interface ZoomDialog {
-    public Object dismiss();
+
+    /**
+     * Return the current value when a nestedPropertyId is given,
+     * or the selectedItemId otherwise
+     */
+    public void dismiss();
     public void show(Object value);
-    public ZoomDialog withPropertyId(Object propertyId);
+
+    public Component getDialogContents();
+
     public boolean isReadOnly();
     public void setReadOnly(boolean readOnly);
+
     public Container getContainer();
-    public Component getDialogContents();
-    public Object getPropertyId();
+    public ZoomDialog withNestedPropertyId(Object propertyId);
+    public Object getNestedPropertyId();
+    public boolean hasNestedPropertyId();
+    public Property<?> getNestedProperty();
+
+    /**
+     * Return the selected value
+     */
+    public Object getSelectedItemId();
+    public Item getSelectedItem();
+
+    public Object getSelectedBean();
+    public Object getSelectedValue();
+
+    void setNullSelectionAllowed(boolean allowed);
+
+    boolean isNullSelectionAllowed();
 }

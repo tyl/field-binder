@@ -73,17 +73,34 @@ import java.util.ResourceBundle;
  */
 public class ZoomField<T> extends CombinedField<T, String, TextField> {
 
+
+    public static enum Mode {
+        FullValue, PropertyId
+    }
+
+    private boolean nullSelectionAllowed;
     private ZoomDialog dialog;
     private boolean drillDownOnly = false;
+    private Mode mode = Mode.FullValue;
 
     public ZoomField(TextField field, Class<T> type) {
         super(field, new Button(FontAwesome.SEARCH), type);
+        getBackingField().setReadOnly(true);
         getButton().addClickListener(new ButtonClickListener());
     }
 
     public ZoomField(Class<T> type) {
         this(new TextField(), type);
         getBackingField().setNullRepresentation("");
+    }
+
+    public void setNullSelectionAllowed(boolean allowed) {
+        this.nullSelectionAllowed = allowed;
+        getZoomDialog().setNullSelectionAllowed(allowed);
+    }
+
+    public boolean isNullSelectionAllowed() {
+        return nullSelectionAllowed;
     }
 
     public ZoomDialog getZoomDialog() {
@@ -102,6 +119,23 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         return this;
     }
 
+    public void setDisplayValue(Object displayValue) {
+        getBackingField().setReadOnly(false);
+
+        getBackingField().setValue(displayValue == null? null: displayValue.toString());
+
+        getBackingField().setReadOnly(true);
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+
+    public ZoomField<T> withMode(Mode mode) {
+        setMode(mode);
+        return this;
+    }
+
     @Override
     public void setReadOnly(boolean readOnly) {
         super.setReadOnly(readOnly);
@@ -114,10 +148,29 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         }
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        // the button is always enabled
+        getButton().setEnabled(true);
+    }
+
     public ZoomField<T> drillDownOnly() {
         this.drillDownOnly = true;
         getButton().setIcon(FontAwesome.ELLIPSIS_H);
         return this;
+    }
+
+    public void onZoomDialogDismissed() {
+        final ZoomDialog zoomDialog = getZoomDialog();
+        if (mode == Mode.FullValue) {
+            setValue((T) zoomDialog.getSelectedBean());
+            setDisplayValue(zoomDialog.getSelectedValue());
+        } else if (mode == Mode.PropertyId) {
+            setValue((T) zoomDialog.getSelectedValue());
+        } else {
+            throw new IllegalStateException("Unknown mode " + mode);
+        }
     }
 
     class ButtonClickListener implements Button.ClickListener {

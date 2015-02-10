@@ -20,29 +20,22 @@
 package org.tylproject.vaadin.addon.fields.zoom;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Item;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
-import org.tylproject.vaadin.addon.datanav.resources.Strings;
 import org.tylproject.vaadin.addon.fieldbinder.BeanTable;
-import org.vaadin.viritin.FilterableListContainer;
-
-import java.util.ResourceBundle;
 
 /**
  * Displays a table, allows to select an Item in the table,
  * returns the itemId of the selection
  */
-public class TableZoomDialog extends CustomComponent implements ZoomDialog {
+public class TableZoomDialog extends AbstractZoomDialog {
 
     private final BeanTable<?> beanTable;
-    private Object propertyId;
 
 
     public TableZoomDialog(BeanTable<?> beanTable) {
         this.beanTable = beanTable;
         beanTable.setSizeFull();
-        setCompositionRoot(beanTable);
+        addComponent(beanTable);
     }
 
     public TableZoomDialog(BeanTable<?> beanTable, String caption) {
@@ -52,7 +45,7 @@ public class TableZoomDialog extends CustomComponent implements ZoomDialog {
 
     public TableZoomDialog(Object propertyId, Container.Ordered zoomCollection) {
         this(new BeanTable<>(Object.class, zoomCollection));
-        withPropertyId(propertyId);
+        withNestedPropertyId(propertyId);
     }
 
     public BeanTable<?> getTable() {
@@ -60,13 +53,8 @@ public class TableZoomDialog extends CustomComponent implements ZoomDialog {
     }
 
 
-    public TableZoomDialog withPropertyId(Object propertyId) {
-        this.propertyId = propertyId;
-        return this;
-    }
-
-    @Override
-    public Component getDialogContents() {
+    public TableZoomDialog withNestedPropertyId(Object propertyId) {
+        super.withNestedPropertyId(propertyId);
         return this;
     }
 
@@ -76,22 +64,11 @@ public class TableZoomDialog extends CustomComponent implements ZoomDialog {
     }
 
     @Override
-    public Object getPropertyId() {
-        return propertyId;
-    }
-
-    @Override
     public void show(Object value) {
         beanTable.getTable().setSelectable(!isReadOnly());
     }
 
-    /**
-     * Returns the current selected itemId
-     */
     @Override
-    public Object dismiss() {
+    public Object getSelectedItemId() {
         return beanTable.getSelectedItemId();
-//        if (itemId == null) return null;
-//        Item item = beanTable.getContainerDataSource().getItem(itemId);
-//        return item.getItemProperty(propertyId).getValue();
     }}

@@ -26,7 +26,6 @@ import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
 import org.tylproject.vaadin.addon.fields.search.FieldBinderSearchFieldManager;
-import org.tylproject.vaadin.addon.fields.search.SearchFieldManager;
 import org.tylproject.vaadin.addon.fields.search.SearchPattern;
 
 /**
@@ -131,7 +130,7 @@ public class FieldBinders {
      * Default implementation for FindListeners. It replaces
      * the fields in the form with custom text inputs
      *
-     * @see org.tylproject.vaadin.addon.fields.search.FilterPatternField
+     * @see org.tylproject.vaadin.addon.fields.search.SearchPatternField
      *
      */
     public static class Find<T> implements FindListeners {

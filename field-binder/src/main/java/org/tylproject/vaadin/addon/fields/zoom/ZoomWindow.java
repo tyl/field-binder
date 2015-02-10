@@ -20,12 +20,13 @@
 package org.tylproject.vaadin.addon.fields.zoom;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.tylproject.vaadin.addon.datanav.resources.Strings;
+import org.tylproject.vaadin.addon.utils.BeanExtractor;
+import org.tylproject.vaadin.addon.utils.DefaultBeanExtractor;
 
 import java.util.ResourceBundle;
 
@@ -46,7 +47,7 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
 
     private final Panel content = new Panel();
 
-    private final HorizontalLayout buttonBar = new HorizontalLayout(spacer, btnSelect, btnSelectNone, btnCancel);
+    private final HorizontalLayout buttonBar = new HorizontalLayout();
     private final VerticalLayout rootLayout = new VerticalLayout(content, buttonBar);
 
 
@@ -67,7 +68,15 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
 
         btnCancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
         btnSelect.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        btnSelectNone.setClickShortcut(ShortcutAction.KeyCode.ENTER, ShortcutAction.ModifierKey.SHIFT);
+
+        if (field.isNullSelectionAllowed()) {
+            buttonBar.addComponents(spacer, btnSelect, btnSelectNone, btnCancel);
+            btnSelectNone.setClickShortcut(ShortcutAction.KeyCode.ENTER,
+                                            ShortcutAction.ModifierKey.SHIFT);
+        } else {
+            buttonBar.addComponents(spacer, btnSelect, btnCancel);
+        }
+
 
     }
 
@@ -104,10 +113,9 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
     @Override
     public void buttonClick(Button.ClickEvent event) {
         if (event.getSource() == btnSelect) {
-            Object itemId = field.getZoomDialog().dismiss();
-            Item item = field.getZoomDialog().getContainer().getItem(itemId);
-
-            field.setValue((T)((BeanItem)item).getBean());
+            final ZoomDialog zd = field.getZoomDialog();
+            zd.dismiss();
+            field.onZoomDialogDismissed();
         } else
         if (event.getSource() == btnSelectNone) {
             field.setValue(null);

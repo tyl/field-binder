@@ -30,17 +30,18 @@ import java.util.EnumSet;
 /**
  * Created by evacchi on 23/01/15.
  */
-public class FilterPatternComboBox extends FilterPatternField<Object, Object, ComboBox> {
+public class SearchPatternComboBox extends SearchPatternField<Object, Object, ComboBox> {
 
     private static final String CAPTION_PROPERTY_ID = "Caption";
 
-    public FilterPatternComboBox(Object propertyId, Class<? extends java.lang.Enum> propertyType) {
+    public SearchPatternComboBox(Object propertyId, Class<? extends java.lang.Enum>
+    propertyType) {
         super(new ComboBox(), Object.class, propertyId, propertyType);
         setFieldDefaults(getBackingField());
     }
 
 
-    public FilterPatternComboBox(Object propertyId, Class<?> propertyType, Container
+    public SearchPatternComboBox(Object propertyId, Class<?> propertyType, Container
             .Filterable targetContainer) {
         super(new ComboBox(), Object.class, propertyId, propertyType, targetContainer);
         setFieldDefaults(getBackingField());
