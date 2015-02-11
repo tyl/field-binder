@@ -54,8 +54,9 @@ public class TutorialZoom extends MFormLayout implements View {
         final TextZoomField drillDownField =
                 new TextZoomField("DrillDown Only, with Grid")
                     .drillDownOnly()
+                    .withMode(ZoomField.Mode.PropertyId)
                     .withZoomDialog(new GridZoomDialog(TARGET_PROPERTY_ID, container));
-
+        drillDownField.setValue("Paul");
 
         addComponents(
                         zoomField, zoomFieldSelection,
