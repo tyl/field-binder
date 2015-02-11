@@ -19,16 +19,11 @@
 
 package org.tylproject.vaadin.addon.fields.zoom;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.converter.Converter;
-import com.vaadin.data.util.filter.Compare;
 import com.vaadin.ui.TextField;
 
 import javax.annotation.Nullable;
-import java.util.Locale;
+import javax.xml.soap.Text;
 
 /**
  * Shows a non-editable TextField that zooms on a data source
@@ -39,6 +34,20 @@ public class TextZoomField extends ZoomField<Object> {
     }
     public TextZoomField() {
         super(Object.class);
+    }
+    public TextZoomField(String caption) {
+        this();
+        this.setCaption(caption);
+    }
+
+
+    public TextZoomField withNullSelectionDisabled() {
+        this.setNullSelectionEnabled(false);
+        return this;
+    }
+    public TextZoomField withMode(Mode mode) {
+        setMode(mode);
+        return this;
     }
 
     // value is a structured object *from which* we extract the display value
@@ -74,10 +83,11 @@ public class TextZoomField extends ZoomField<Object> {
         else setValue(newDataSource.getValue());
     }
 
-    @Override
     public TextZoomField withZoomDialog(ZoomDialog dialog) {
-        return (TextZoomField)super.withZoomDialog(dialog);
+        this.setZoomDialog(dialog);
+        return this;
     }
+
     @Override
     public TextZoomField drillDownOnly() {
         return (TextZoomField)super.drillDownOnly();

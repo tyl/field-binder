@@ -19,14 +19,11 @@
 
 package org.tylproject.vaadin.addon.fields.zoom;
 
-import com.vaadin.data.Item;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.tylproject.vaadin.addon.datanav.resources.Strings;
-import org.tylproject.vaadin.addon.utils.BeanExtractor;
-import org.tylproject.vaadin.addon.utils.DefaultBeanExtractor;
 
 import java.util.ResourceBundle;
 
@@ -47,7 +44,7 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
 
     private final Panel content = new Panel();
 
-    private final HorizontalLayout buttonBar = new HorizontalLayout();
+    private final HorizontalLayout buttonBar = new HorizontalLayout(spacer);
     private final VerticalLayout rootLayout = new VerticalLayout(content, buttonBar);
 
 
@@ -69,13 +66,6 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
         btnCancel.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
         btnSelect.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
-        if (field.isNullSelectionAllowed()) {
-            buttonBar.addComponents(spacer, btnSelect, btnSelectNone, btnCancel);
-            btnSelectNone.setClickShortcut(ShortcutAction.KeyCode.ENTER,
-                                            ShortcutAction.ModifierKey.SHIFT);
-        } else {
-            buttonBar.addComponents(spacer, btnSelect, btnCancel);
-        }
 
 
     }
@@ -91,10 +81,6 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
         content.setSizeFull();
 //            rootLayout.setMargin(true);
 
-        buttonBar.setStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-        buttonBar.setWidth("100%");
-        buttonBar.setSpacing(true);
-        buttonBar.setExpandRatio(spacer, 1);
 
         rootLayout.setSizeFull();
         rootLayout.setExpandRatio(content, 1);
@@ -104,6 +90,32 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
     }
 
     public void show() {
+
+        buttonBar.removeAllComponents();
+
+        if (field.isNullSelectionEnabled()) {
+            buttonBar.addComponents(spacer, btnSelect, btnSelectNone, btnCancel);
+            btnSelectNone.setClickShortcut(ShortcutAction.KeyCode.ENTER,
+                    ShortcutAction.ModifierKey.SHIFT);
+        } else {
+            buttonBar.addComponents(spacer, btnSelect, btnCancel);
+        }
+
+
+
+        if (field.isNullSelectionEnabled()) {
+            buttonBar.addComponents(btnSelect, btnSelectNone, btnCancel);
+            btnSelectNone.setClickShortcut(ShortcutAction.KeyCode.ENTER,
+                    ShortcutAction.ModifierKey.SHIFT);
+        } else {
+            buttonBar.addComponents(spacer, btnSelect, btnCancel);
+        }
+
+        buttonBar.setStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
+        buttonBar.setWidth("100%");
+        buttonBar.setSpacing(true);
+        buttonBar.setExpandRatio(spacer, 1);
+
         field.getZoomDialog().show(this.field.getValue());
         UI.getCurrent().addWindow(this);
         center();

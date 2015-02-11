@@ -53,6 +53,7 @@ public class GridZoomDialog extends AbstractZoomDialog {
         FilterableGrid grid = new FilterableGrid(container);
 
         grid.setSelectionMode(Grid.SelectionMode.SINGLE);
+
         grid.setSizeFull();
         grid.setWidth("100%");
         grid.setHeight("100%");

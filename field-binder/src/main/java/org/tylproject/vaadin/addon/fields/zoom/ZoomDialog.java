@@ -57,6 +57,5 @@ public interface ZoomDialog {
     public Object getSelectedValue();
 
     void setNullSelectionAllowed(boolean allowed);
-
     boolean isNullSelectionAllowed();
 }

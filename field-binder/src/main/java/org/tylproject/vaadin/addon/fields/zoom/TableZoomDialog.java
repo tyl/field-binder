@@ -34,6 +34,7 @@ public class TableZoomDialog extends AbstractZoomDialog {
 
     public TableZoomDialog(BeanTable<?> beanTable) {
         this.beanTable = beanTable;
+        beanTable.getTable().setNullSelectionAllowed(false);
         beanTable.setSizeFull();
         addComponent(beanTable);
     }

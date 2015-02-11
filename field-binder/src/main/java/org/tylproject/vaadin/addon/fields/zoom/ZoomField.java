@@ -19,17 +19,10 @@
 
 package org.tylproject.vaadin.addon.fields.zoom;
 
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
-import org.tylproject.vaadin.addon.datanav.resources.Strings;
-import org.tylproject.vaadin.addon.fieldbinder.BeanTable;
 import org.tylproject.vaadin.addon.fields.CombinedField;
 import org.tylproject.vaadin.addon.fields.drilldown.DrillDownWindow;
-
-import java.util.ResourceBundle;
 
 /**
  * Decorates a TextField with a "zoom" button.
@@ -78,7 +71,7 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         FullValue, PropertyId
     }
 
-    private boolean nullSelectionAllowed;
+    private boolean nullSelectionEnabled = true;
     private ZoomDialog dialog;
     private boolean drillDownOnly = false;
     private Mode mode = Mode.FullValue;
@@ -94,13 +87,12 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         getBackingField().setNullRepresentation("");
     }
 
-    public void setNullSelectionAllowed(boolean allowed) {
-        this.nullSelectionAllowed = allowed;
-        getZoomDialog().setNullSelectionAllowed(allowed);
+    public void setNullSelectionEnabled(boolean allowed) {
+        this.nullSelectionEnabled = allowed;
     }
 
-    public boolean isNullSelectionAllowed() {
-        return nullSelectionAllowed;
+    public boolean isNullSelectionEnabled() {
+        return nullSelectionEnabled;
     }
 
     public ZoomDialog getZoomDialog() {
@@ -111,13 +103,6 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         this.dialog = dialog;
     }
 
-    /**
-     * "fluent" alias to {@link #setZoomDialog(ZoomDialog)}
-     */
-    public ZoomField<T> withZoomDialog(ZoomDialog dialog) {
-        this.setZoomDialog(dialog);
-        return this;
-    }
 
     public void setDisplayValue(Object displayValue) {
         getBackingField().setReadOnly(false);
@@ -131,10 +116,6 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         this.mode = mode;
     }
 
-    public ZoomField<T> withMode(Mode mode) {
-        setMode(mode);
-        return this;
-    }
 
     @Override
     public void setReadOnly(boolean readOnly) {
