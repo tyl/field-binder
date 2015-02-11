@@ -108,4 +108,12 @@ public class GridZoomDialog extends AbstractZoomDialog {
     public Object getSelectedItemId() {
         return getGrid().getSelectedRow();
     }
+
+    public void dismiss() {
+        super.dismiss();
+        Container c = getGrid().getContainerDataSource();
+        if (c instanceof Container.Filterable) {
+            ((Container.Filterable) c).removeAllContainerFilters();
+        }
+    }
 }
