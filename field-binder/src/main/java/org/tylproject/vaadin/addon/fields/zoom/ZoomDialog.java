@@ -42,7 +42,8 @@ public interface ZoomDialog {
     public void setReadOnly(boolean readOnly);
 
     public Container getContainer();
-    public ZoomDialog withNestedPropertyId(Object propertyId);
+    public ZoomDialog withNestedPropertyId(Object propertyId, Class<?> propertyType);
+    public Class<?> getNestedPropertyType();
     public Object getNestedPropertyId();
     public boolean hasNestedPropertyId();
     public Property<?> getNestedProperty();

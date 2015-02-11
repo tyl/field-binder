@@ -45,7 +45,7 @@ public class TableZoomDialog extends AbstractZoomDialog {
 
     public TableZoomDialog(Object propertyId, Container.Ordered zoomCollection) {
         this(new BeanTable<>(Object.class, zoomCollection));
-        withNestedPropertyId(propertyId);
+        withNestedPropertyId(propertyId, zoomCollection.getType(propertyId));
     }
 
     public BeanTable<?> getTable() {
@@ -53,8 +53,8 @@ public class TableZoomDialog extends AbstractZoomDialog {
     }
 
 
-    public TableZoomDialog withNestedPropertyId(Object propertyId) {
-        super.withNestedPropertyId(propertyId);
+    public TableZoomDialog withNestedPropertyId(Object propertyId, Class<?> propertyType) {
+        super.withNestedPropertyId(propertyId, propertyType);
         return this;
     }
 

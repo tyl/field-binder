@@ -66,9 +66,15 @@ import org.tylproject.vaadin.addon.fields.drilldown.DrillDownWindow;
  */
 public class ZoomField<T> extends CombinedField<T, String, TextField> {
 
-
     public static enum Mode {
-        FullValue, PropertyId
+        /**
+         * The value is the complete bean
+         */
+        FullValue,
+        /**
+         * The value is only a property <i>inside</i> the bean
+         */
+        PropertyId;
     }
 
     private boolean nullSelectionEnabled = true;
@@ -114,6 +120,9 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
 
     public void setMode(Mode mode) {
         this.mode = mode;
+    }
+    public Mode getMode() {
+        return mode;
     }
 
 

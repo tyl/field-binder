@@ -43,12 +43,13 @@ public class GridZoomDialog extends AbstractZoomDialog {
 
     public GridZoomDialog(Grid grid, Object propertyId) {
         this(grid);
-        withNestedPropertyId(propertyId);
+        Container c = grid.getContainerDataSource();
+        withNestedPropertyId(propertyId, c.getType(propertyId));
         setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
     }
 
     public GridZoomDialog(Object propertyId, Container.Indexed container) {
-        withNestedPropertyId(propertyId);
+        withNestedPropertyId(propertyId, container.getType(propertyId));
 
         FilterableGrid grid = new FilterableGrid(container);
 
@@ -78,8 +79,8 @@ public class GridZoomDialog extends AbstractZoomDialog {
     }
 
 
-    public GridZoomDialog withNestedPropertyId(Object propertyId) {
-        super.withNestedPropertyId(propertyId);
+    public GridZoomDialog withNestedPropertyId(Object propertyId, Class<?> propertyType) {
+        super.withNestedPropertyId(propertyId, propertyType);
         return this;
     }
 

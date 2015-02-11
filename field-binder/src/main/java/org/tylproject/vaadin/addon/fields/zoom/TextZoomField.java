@@ -20,6 +20,7 @@
 package org.tylproject.vaadin.addon.fields.zoom;
 
 import com.vaadin.data.Property;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.TextField;
 
 import javax.annotation.Nullable;
@@ -80,7 +81,17 @@ public class TextZoomField extends ZoomField<Object> {
     public void setPropertyDataSource(Property newDataSource) {
         super.setPropertyDataSource(newDataSource);
         if (newDataSource == null) setValue(null);
-        else setValue(newDataSource.getValue());
+        else {
+            Object value = newDataSource.getValue();
+            setValue(value);
+            setDisplayValue(extractDisplayValue(value));
+        }
+    }
+
+    private Object extractDisplayValue(Object value) {
+        if (value == null) return null;
+        String propertyId = getZoomDialog().getNestedPropertyId().toString();
+        return new BeanItem<Object>(value, propertyId).getItemProperty(propertyId).getValue();
     }
 
     public TextZoomField withZoomDialog(ZoomDialog dialog) {

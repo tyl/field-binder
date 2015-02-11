@@ -15,6 +15,7 @@ public abstract class AbstractZoomDialog extends VerticalLayout implements ZoomD
     private Object propertyId;
     private BeanExtractor beanExtractor = new DefaultBeanExtractor();
     private boolean nullSelectionAllowed;
+    private Class<?> propertyType;
 
     public void setBeanExtractor(BeanExtractor beanExtractor) {
         this.beanExtractor = beanExtractor;
@@ -34,11 +35,17 @@ public abstract class AbstractZoomDialog extends VerticalLayout implements ZoomD
         return this;
     }
 
-
-    public AbstractZoomDialog withNestedPropertyId(Object propertyId) {
+    @Override
+    public AbstractZoomDialog withNestedPropertyId(Object propertyId, Class<?> propertyType) {
         this.propertyId = propertyId;
+        this.propertyType = propertyType;
         return this;
     }
+
+    public Class<?> getNestedPropertyType() {
+        return propertyType;
+    }
+
     @Override
     public void dismiss() {}
 

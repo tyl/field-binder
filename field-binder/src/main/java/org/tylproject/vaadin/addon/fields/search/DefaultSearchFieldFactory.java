@@ -28,13 +28,32 @@ public class DefaultSearchFieldFactory implements SearchFieldFactory {
         //  hack: non-vaadin fields are currently unsupported
         if (originalField instanceof ZoomField) {
             ZoomField<?> zf = (ZoomField<?>) originalField;
-            Object targetPropertyId = zf.getZoomDialog().getNestedPropertyId();
+            Object nestedPropertyId = zf.getZoomDialog().getNestedPropertyId();
+            ZoomField.Mode mode = zf.getMode();
+            if (mode == ZoomField.Mode.PropertyId) {
+                // do nothing, it's already fine
+            } else if (mode == ZoomField.Mode.FullValue) {
+                // should filter using a nested property
+                // must extract correct propertyType
+                f = createField(propertyId + "." + nestedPropertyId, ((ZoomField<?>) originalField).getZoomDialog().getNestedPropertyType());
+            } else {
+                // fallback
+                f = createField(propertyId, propertyType);
+                unsupportedField(f);
+            }
+
+
+
         } else
         if (!originalField.getClass().getCanonicalName().startsWith("com.vaadin")) {
-            f.setValue("Unsupported Field");
-            f.setReadOnly(true);
-            f.setEnabled(false);
+            unsupportedField(f);
         }
         return f;
+    }
+
+    private void unsupportedField(SearchPatternField f) {
+        f.setValue("Unsupported Field");
+        f.setReadOnly(true);
+        f.setEnabled(false);
     }
 }
