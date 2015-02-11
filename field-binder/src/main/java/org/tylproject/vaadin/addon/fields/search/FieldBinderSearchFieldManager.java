@@ -42,7 +42,7 @@ public class FieldBinderSearchFieldManager extends SearchFieldManager {
 
     public void addPropertyFromField(Object propertyId, Class<?> propertyType, Field<?> field) {
         this.propertyIdToType.put(propertyId, propertyType);
-        SearchPatternField<?,?,?> searchPatternField = getSearchFieldFactory().createField(propertyId, propertyType, field);
+        SearchPatternField<?,?> searchPatternField = getSearchFieldFactory().createField(propertyId, propertyType, field);
         this.propertyIdToSearchPatternField.put(propertyId, searchPatternField);
     }
 
@@ -82,7 +82,7 @@ public class FieldBinderSearchFieldManager extends SearchFieldManager {
 
         makeSearchFieldsFromFieldBinder();
 
-        for (Map.Entry<Object, SearchPatternField<?,?,?>> e : getPropertyIdToSearchPatternField().entrySet()) {
+        for (Map.Entry<Object, SearchPatternField<?,?>> e : getPropertyIdToSearchPatternField().entrySet()) {
             Object propertyId = e.getKey();
             Field<?> replacement = e.getValue();
             Field<?> original = fieldBinder.getPropertyIdToFieldBindings().get(propertyId);
@@ -102,7 +102,7 @@ public class FieldBinderSearchFieldManager extends SearchFieldManager {
                     "Cannot restore fields. No FieldBinder instance was given");
         }
 
-        for (Map.Entry<Object, SearchPatternField<?,?,?>> e : getPropertyIdToSearchPatternField().entrySet()) {
+        for (Map.Entry<Object, SearchPatternField<?,?>> e : getPropertyIdToSearchPatternField().entrySet()) {
             Object propertyId = e.getKey();
             Field<?> replacement = e.getValue();
             Field<?> original = fieldBinder.getPropertyIdToFieldBindings().get(propertyId);

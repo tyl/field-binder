@@ -30,7 +30,7 @@ import java.util.EnumSet;
 /**
  * Created by evacchi on 23/01/15.
  */
-public class SearchPatternComboBox extends SearchPatternField<Object, Object, ComboBox> {
+public class SearchPatternComboBox extends SearchPatternField<Object, ComboBox> {
 
     private static final String CAPTION_PROPERTY_ID = "Caption";
 

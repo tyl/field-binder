@@ -8,7 +8,7 @@ import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
  * Created by evacchi on 10/02/15.
  */
 public class DefaultSearchFieldFactory implements SearchFieldFactory {
-    public SearchPatternField<?,?,?> createField(Object propertyId, Class<?> propertyType) {
+    public SearchPatternField<?,?> createField(Object propertyId, Class<?> propertyType) {
 
         SearchPatternField f ;
         if (java.lang.Enum.class.isAssignableFrom(propertyType)) {
@@ -21,7 +21,7 @@ public class DefaultSearchFieldFactory implements SearchFieldFactory {
     }
 
     @Override
-    public SearchPatternField<?, ?, ?> createField(Object propertyId, Class<?> propertyType, Field<?> originalField) {
+    public SearchPatternField<?, ?> createField(Object propertyId, Class<?> propertyType, Field<?> originalField) {
         if (originalField == null) throw new IllegalArgumentException("originalField must be non-null");
 
         SearchPatternField f = createField(propertyId, propertyType);

@@ -140,7 +140,7 @@ public class SearchWindow extends Window implements SearchDialog {
     }
 
     private void restorePatternsIntoFields() {
-        for (Map.Entry<Object, SearchPatternField<?,?,?>> e:
+        for (Map.Entry<Object, SearchPatternField<?,?>> e:
                 searchForm.getSearchFieldManager().getPropertyIdToSearchPatternField().entrySet()) {
             final SearchPattern searchPattern = propertyIdToPatterns.get(e.getKey());
             if (searchPattern == null) {
@@ -160,7 +160,7 @@ public class SearchWindow extends Window implements SearchDialog {
     }
     private void backupPatternsFromFields() {
         propertyIdToPatterns.clear();
-        for (Map.Entry<Object, SearchPatternField<?,?,?>> e:
+        for (Map.Entry<Object, SearchPatternField<?,?>> e:
                 searchForm.getSearchFieldManager().getPropertyIdToSearchPatternField().entrySet()) {
             propertyIdToPatterns.put(e.getKey(), e.getValue().getPatternFromValue());
         }

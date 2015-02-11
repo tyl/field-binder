@@ -8,6 +8,6 @@ import com.vaadin.ui.Field;
  * Created by evacchi on 10/02/15.
  */
 public interface SearchFieldFactory {
-    public SearchPatternField<?,?,?> createField(Object propertyId, Class<?> propertyType);
-    public SearchPatternField<?,?,?> createField(Object propertyId, Class<?> propertyType, Field<?> originalField);
+    public SearchPatternField<?,?> createField(Object propertyId, Class<?> propertyType);
+    public SearchPatternField<?,?> createField(Object propertyId, Class<?> propertyType, Field<?> originalField);
 }

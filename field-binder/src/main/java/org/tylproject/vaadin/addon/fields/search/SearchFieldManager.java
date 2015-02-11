@@ -31,7 +31,7 @@ import java.util.*;
  */
 public class SearchFieldManager {
     protected final Map<Object, Class<?>> propertyIdToType = new LinkedHashMap<>();
-    protected final Map<Object, SearchPatternField<?,?,?>> propertyIdToSearchPatternField = new LinkedHashMap<>();
+    protected final Map<Object, SearchPatternField<?,?>> propertyIdToSearchPatternField = new LinkedHashMap<>();
     protected FilterFactory filterFactory = new DefaultFilterFactory();
     protected SearchFieldFactory searchFieldFactory = new DefaultSearchFieldFactory();
 
@@ -83,7 +83,7 @@ public class SearchFieldManager {
     public Map<Object, SearchPattern> getPatternsFromValues() {
         final Map<Object, SearchPattern> filtersFromValues = new LinkedHashMap<>();
 
-        for (Map.Entry<Object, SearchPatternField<?,?,?>> e : getPropertyIdToSearchPatternField().entrySet()) {
+        for (Map.Entry<Object, SearchPatternField<?,?>> e : getPropertyIdToSearchPatternField().entrySet()) {
 
             SearchPattern searchPattern = e.getValue().getPatternFromValue();
             if (searchPattern.isEmpty()) continue;
@@ -98,7 +98,7 @@ public class SearchFieldManager {
         return (propertyIdToType);
     }
 
-    public Map<Object, SearchPatternField<?,?,?>> getPropertyIdToSearchPatternField() {
+    public Map<Object, SearchPatternField<?,?>> getPropertyIdToSearchPatternField() {
         return (propertyIdToSearchPatternField);
     }
 

@@ -32,7 +32,7 @@ import org.tylproject.vaadin.addon.fields.CombinedField;
  * filter to a Container instance, if it is given
  *
  */
-public abstract class SearchPatternField<T,FT,F extends AbstractField<FT>> extends CombinedField<T, FT, F> {
+public abstract class SearchPatternField<T,F extends AbstractField<T>> extends CombinedField<T,T,F> {
 
     private FilterFactory filterFactory = new DefaultFilterFactory();
 
@@ -160,7 +160,7 @@ public abstract class SearchPatternField<T,FT,F extends AbstractField<FT>> exten
     public void setValue(T newValue) throws ReadOnlyException {
         super.setValue(newValue);
         if (newValue != null) {
-            getBackingField().setValue((FT)newValue);
+            getBackingField().setValue(newValue);
             return;
         }
         getBackingField().setValue(null);

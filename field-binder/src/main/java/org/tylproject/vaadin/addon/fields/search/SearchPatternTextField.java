@@ -26,7 +26,7 @@ import com.vaadin.ui.TextField;
 /**
  * Created by evacchi on 23/01/15.
  */
-public class SearchPatternTextField extends SearchPatternField<String, String, TextField> {
+public class SearchPatternTextField extends SearchPatternField<String, TextField> {
 
     public SearchPatternTextField(Object propertyId, Class<?> propertyType) {
         super(new TextField(), String.class, propertyId, propertyType);
