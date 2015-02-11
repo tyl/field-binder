@@ -2,24 +2,28 @@ package org.tylproject.demos.fieldbinder;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Container;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.tylproject.demos.fieldbinder.model.Person;
 import org.tylproject.vaadin.addon.datanav.ButtonBar;
 import org.tylproject.vaadin.addon.fieldbinder.BeanTable;
-import org.vaadin.maddon.layouts.MVerticalLayout;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.spring.UIScope;
 import org.vaadin.spring.VaadinUI;
+import org.vaadin.spring.navigator.VaadinView;
 
 /**
  * Created by evacchi on 19/12/14.
  */
-@VaadinUI(path = "/tutorial-3")
+@VaadinView(name = "/table")
+@UIScope
 @Theme("valo")
-public class TutorialTable extends UI {
+public class TutorialTable extends MVerticalLayout implements View {
 
-    @Override
-    protected void init(VaadinRequest request) {
+    {
         final Container.Ordered container = MyDataSourceGenerator.makeDummyDataset();
 
         final BeanTable<Person> table = new BeanTable<>(Person.class, container);
@@ -31,12 +35,14 @@ public class TutorialTable extends UI {
         // for conciseness, we use Maddon.
         // Maddon wraps common Vaadin classes with fluent APIs
         // for the most common options
-        final VerticalLayout mainLayout = new MVerticalLayout(
-                bar, table
-        ).withFullWidth().withMargin(true);
+        addComponents(bar, table);
 
-        setContent(mainLayout);
+        withFullWidth().withMargin(true);
 
+    }
+
+    @Override
+    public void enter(ViewChangeListener.ViewChangeEvent event) {
 
     }
 

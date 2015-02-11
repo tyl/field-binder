@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Tyl Consulting s.a.s.
+ * Copyright (c) 2015 - Tyl Consulting s.a.s.
  *
  *   Authors: Edoardo Vacchi
  *   Contributors: Marco Pancotti, Daniele Zonca
@@ -17,18 +17,19 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.containers.mongocontainer;
 
 import com.vaadin.ui.Table;
 import org.bson.types.ObjectId;
 import org.tylproject.vaadin.addon.BufferedMongoContainer;
 import org.tylproject.vaadin.addon.datanav.events.*;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 
 /**
  * Created by evacchi on 19/12/14.
  */
-public class BufferedMongoContainerTableBehavior<T> extends ListContainerTableBehavior<T> {
-    public BufferedMongoContainerTableBehavior(Class<T> beanClass, Table table) {
+public class BufferedMongoTableCrud<T> extends Tables.BaseCrud<T> {
+    public BufferedMongoTableCrud(Class<T> beanClass, Table table) {
         super(beanClass, table);
     }
 
@@ -52,9 +53,8 @@ public class BufferedMongoContainerTableBehavior<T> extends ListContainerTableBe
 
         event.getSource().setCurrentItemId(itemId);
 
-        table.setEditable(true);
-        table.setSelectable(false);
-        table.focus();
+
+       super.itemCreate(event);
 
 
     }

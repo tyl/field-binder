@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Tyl Consulting s.a.s.
+ * Copyright (c) 2015 - Tyl Consulting s.a.s.
  *
  *   Authors: Edoardo Vacchi
  *   Contributors: Marco Pancotti, Daniele Zonca
@@ -17,14 +17,14 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Item;
-import com.vaadin.ui.Field;
-import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.Behavior;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.legacy.LegacyFindListeners;
 
 /**
  * Created by evacchi on 26/11/14.
@@ -32,17 +32,27 @@ import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 public abstract class AbstractBehavior<T> implements Behavior {
 
     protected final FieldBinder<T> fieldBinder;
-    protected FilterApplier filterApplier = new FilterApplier();
     private final Class<T> beanClass;
+    private final FindListeners findListenersDelegate;
+
+    public AbstractBehavior(FieldBinder<T> fieldBinder) {
+        this.fieldBinder = fieldBinder;
+        this.beanClass = fieldBinder.getType();
+        this.findListenersDelegate = new LegacyFindListeners<>(fieldBinder);
+
+        fieldBinder.setReadOnly(true);
+    }
 
     public Class<T> getBeanClass() {
         return beanClass;
     }
 
-    public AbstractBehavior(FieldBinder<T> fieldBinder) {
-        this.fieldBinder = fieldBinder;
-        this.beanClass = fieldBinder.getType();
-        fieldBinder.setReadOnly(true);
+    public FieldBinder<T> getFieldBinder() {
+        return fieldBinder;
+    }
+
+    public FindListeners getFindListenersDelegate() {
+        return findListenersDelegate;
     }
 
     @Override
@@ -80,55 +90,23 @@ public abstract class AbstractBehavior<T> implements Behavior {
         fieldBinder.focus();
     }
 
-
-    public void clearToFind(ClearToFind.Event event) {
-        // if the navigator does not point to a valid id
-        // FIXME I don't recall what this particular check was supposed to mean: it was a hack
-
-        DataNavigation nav = event.getSource();
-
-        if (nav.getCurrentItemId() == null) {
-            fieldBinder.unbindAll();
-            fieldBinder.setReadOnly(false);
-            event.getSource().setCurrentItemId(null);
-
-
-
-        } else {
-            // fields are already unbound, then
-            // jus clear their contents
-            fieldBinder.setReadOnly(false);
-            event.getSource().setCurrentItemId(null);
-            for (Field<?> f : fieldBinder.getFields())
-                f.setValue(null);
-
-        }
-
-        if (filterApplier.hasAppliedFilters()) {
-            filterApplier.restorePatterns(fieldBinder.getPropertyIdToFieldBindings());
-            filterApplier.clearPropertyIdToFilterPatterns();
-        }
-
-
-        fieldBinder.focus();
-    }
-
-    @Override
-    public void onFind(OnFind.Event event) {
-        filterApplier.applyFilters(fieldBinder.getPropertyIdToFieldBindings(), (Container.Filterable) event.getSource().getContainer());
-        event.getSource().first();
-        fieldBinder.setReadOnly(true);
-        fieldBinder.bindAll();
-    }
-
-
-
     @Override
     public void itemCreate(ItemCreate.Event event) {
         fieldBinder.setReadOnly(false);
         event.getSource().setCurrentItemId(null);
         T bean = createBean();
         fieldBinder.setBeanDataSource(bean);
+    }
+
+
+    @Override
+    public void clearToFind(ClearToFind.Event event) {
+        findListenersDelegate.clearToFind(event);
+    }
+
+    @Override
+    public void onFind(OnFind.Event event) {
+        findListenersDelegate.onFind(event);
     }
 
     protected T createBean() {

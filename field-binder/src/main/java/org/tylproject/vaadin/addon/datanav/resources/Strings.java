@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Tyl Consulting s.a.s.
+ * Copyright (c) 2015 - Tyl Consulting s.a.s.
  *
  *   Authors: Edoardo Vacchi
  *   Contributors: Marco Pancotti, Daniele Zonca
@@ -46,7 +46,15 @@ public class Strings extends ListResourceBundle {
             {"find", "Find"},
 
             {"recordCounter", "{0} of {1}"},
-            {"recordCounterFiltered", "{0} of {1} (*)"}
+            {"recordCounterFiltered", "{0} of {1} (*)"},
+
+            // confirm dialogs
+            {"ok", "OK"},
+            {"cancel", "Cancel"},
+            {"close", "Close"},
+
+            {"select", "Select"},
+            {"selectNone", "Select None"},
 
     };
 

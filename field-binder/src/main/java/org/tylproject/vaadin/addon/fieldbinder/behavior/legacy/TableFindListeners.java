@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Tyl Consulting s.a.s.
+ * Copyright (c) 2015 - Tyl Consulting s.a.s.
  *
  *   Authors: Edoardo Vacchi
  *   Contributors: Marco Pancotti, Daniele Zonca
@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
 import com.vaadin.data.Container;
 import com.vaadin.ui.*;
@@ -26,19 +26,21 @@ import org.tylproject.vaadin.addon.datanav.FindButtonBar;
 import org.tylproject.vaadin.addon.datanav.events.ClearToFind;
 import org.tylproject.vaadin.addon.datanav.events.OnFind;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.legacy.FilterApplier;
 
-public class TableFindBehavior<T> implements FindListeners {
+public class TableFindListeners<T> implements FindListeners {
 
 	private final Class<T> beanClass;
 	private FindWindow window;
 	private final FilterApplier filterApplier = new FilterApplier();
 
 
-	public TableFindBehavior(Class<T> beanClass) {
+	public TableFindListeners(Class<T> beanClass) {
 		this.beanClass = beanClass;
 	}
 	@Deprecated
-	public TableFindBehavior(Class<T> beanClass, Table table) {
+	public TableFindListeners(Class<T> beanClass, Table table) {
 		this(beanClass);
 	}
 

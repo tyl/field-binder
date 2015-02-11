@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Tyl Consulting s.a.s.
+ * Copyright (c) 2015 - Tyl Consulting s.a.s.
  *
  *   Authors: Edoardo Vacchi
  *   Contributors: Marco Pancotti, Daniele Zonca
@@ -17,10 +17,12 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
 import com.vaadin.data.Container;
 import com.vaadin.ui.Table;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.Behavior;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.BehaviorFactory;
 
 /**
  * Created by evacchi on 15/12/14.
@@ -37,16 +39,16 @@ public class TableBehaviorFactory<U> implements BehaviorFactory<U> {
 
 
     @Override
-    public <T extends Behavior> T forContainerType(Class<? extends Container>
+    public Behavior forContainerType(Class<? extends Container>
                                                                containerClass) {
             switch (containerClass.getCanonicalName()) {
                 case "org.vaadin.viritin.ListContainer":
                 case "org.vaadin.viritin.FilterableListContainer":
-                    return (T) new ListContainerTableBehavior<U>(beanClass, table);
+                    return new ListContainerTableBehavior<U>(beanClass, table);
                 case "org.tylproject.vaadin.addon.BufferedMongoContainer":
-                    return (T) new BufferedMongoContainerTableBehavior<U>(beanClass, table);
+                    return new BufferedMongoContainerTableBehavior<U>(beanClass, table);
                 case "com.vaadin.addon.jpacontainer.JPAContainer":
-                    return (T) new JPAContainerTableBehavior<U>(beanClass, table);
+                    return new JPAContainerTableBehavior<U>(beanClass, table);
             }
 
         throw new UnsupportedOperationException("Unknown container type: "+ containerClass.getCanonicalName());

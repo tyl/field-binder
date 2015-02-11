@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Tyl Consulting s.a.s.
+ * Copyright (c) 2015 - Tyl Consulting s.a.s.
  *
  *   Authors: Edoardo Vacchi
  *   Contributors: Marco Pancotti, Daniele Zonca
@@ -52,6 +52,7 @@ public class FindButtonBar extends AbstractButtonBar {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 getNavigation().clearToFind();
+                enable(btnFind);
             }
         });
 

@@ -7,7 +7,7 @@
     <groupId>org.tylproject.vaadin.addon.masterdetail</groupId>
     <artifactId>field-binder</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <name>Master-Detail Addon Main</name>
 
     <modules>

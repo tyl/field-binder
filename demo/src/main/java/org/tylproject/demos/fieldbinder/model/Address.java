@@ -9,7 +9,12 @@ public class Address {
     public Address() {
     }
 
-    public Address(String street) {
+    public Address(String city) {
+        this.city = city;
+    }
+
+    public Address(String city, String street) {
+        this.city = city;
         this.street = street;
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Tyl Consulting s.a.s.
+ * Copyright (c) 2015 - Tyl Consulting s.a.s.
  *
  *   Authors: Edoardo Vacchi
  *   Contributors: Marco Pancotti, Daniele Zonca
@@ -26,6 +26,8 @@ import com.vaadin.data.util.filter.Compare;
 import com.vaadin.data.util.filter.SimpleStringFilter;
 import org.joda.time.DateTime;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,14 +47,33 @@ public class DefaultFilterFactory implements FilterFactory {
 
     @Override
     public Container.Filter createFilter(Class<?> targetType, Object targetPropertyId, Object pattern) {
-        if (String.class.isAssignableFrom(targetType)) {
+        if (pattern == null) return null;
+
+        if (String.class.isAssignableFrom(targetType) || java.lang.Enum.class.isAssignableFrom(targetType)) {
             return filterForString(targetPropertyId, pattern.toString());
         } else
-        if (Number.class.isAssignableFrom(targetType)) {
-            return filterForNumber(targetPropertyId, pattern.toString());
+        if (isNumberClass(targetType)) {
+            return filterForNumber(targetPropertyId, targetType, pattern.toString());
+        } else
+        if (Date.class.isAssignableFrom(targetType) || DateTime.class.isAssignableFrom(targetType)) {
+            Container.Filter filter = filterForCompareDate(targetPropertyId, pattern.toString());
+            if (filter != null) return filter;
+            return filterForDateRange(targetPropertyId, pattern.toString());
         } else {
+            // fallback to equality
             return new Compare.Equal(targetPropertyId, pattern);
         }
+    }
+
+    private boolean isNumberClass(Class<?> targetType) {
+        return Number.class.isAssignableFrom(targetType)
+            || targetType == int.class
+            || targetType == long.class
+            || targetType == byte.class
+            || targetType == double.class
+            || targetType == float.class
+//            || targetType == char.class
+            ;
     }
 
 
@@ -88,15 +109,15 @@ public class DefaultFilterFactory implements FilterFactory {
         return new SimpleStringFilter(propertyId, pattern, true, true);
     }
 
-    protected Container.Filter filterForNumber(Object propertyId, String pattern) {
+    protected Container.Filter filterForNumber(Object propertyId, Class<?> targetType, String pattern) {
         Container.Filter filter = numberEqual(propertyId, pattern);
         if (filter != null) return filter;
 
-        filter = intRange(propertyId, pattern);
+        filter = numericRange(propertyId, targetType, pattern);
 
         if (filter != null) return filter;
 
-        filter = intCompare(propertyId, pattern);
+        filter = numberCompare(propertyId, targetType, pattern);
 
         if (filter != null) return filter;
 
@@ -106,22 +127,93 @@ public class DefaultFilterFactory implements FilterFactory {
     }
 
 
-    protected final Pattern intComparePattern = Pattern.compile("^((?:<|>)=?)(\\d+)$");
-    protected Container.Filter intCompare(Object propertyId, String pattern) {
-        Matcher matcher = intComparePattern.matcher(pattern);
+    final String Digits     = "(\\p{Digit}+)";
+    final String HexDigits  = "(\\p{XDigit}+)";
+    // an exponent is 'e' or 'E' followed by an optionally
+    // signed decimal integer.
+    final String Exp        = "[eE][+-]?"+Digits;
+    final String fpRegex    =
+            ("[\\x00-\\x20]*"+  // Optional leading "whitespace"
+                    "[+-]?(" + // Optional sign character
+                    "NaN|" +           // "NaN" string
+                    "Infinity|" +      // "Infinity" string
+
+                    // A decimal floating-point string representing a finite positive
+                    // number without a leading sign has at most five basic pieces:
+                    // Digits . Digits ExponentPart FloatTypeSuffix
+                    //
+                    // Since this method allows integer-only strings as input
+                    // in addition to strings of floating-point literals, the
+                    // two sub-patterns below are simplifications of the grammar
+                    // productions from section 3.10.2 of
+                    // The Java™ Language Specification.
+
+                    // Digits ._opt Digits_opt ExponentPart_opt FloatTypeSuffix_opt
+                    "((("+Digits+"(\\.)?("+Digits+"?)("+Exp+")?)|"+
+
+                    // . Digits ExponentPart_opt FloatTypeSuffix_opt
+                    "(\\.("+Digits+")("+Exp+")?)|"+
+
+                    // Hexadecimal strings
+                    "((" +
+                    // 0[xX] HexDigits ._opt BinaryExponent FloatTypeSuffix_opt
+                    "(0[xX]" + HexDigits + "(\\.)?)|" +
+
+                    // 0[xX] HexDigits_opt . HexDigits BinaryExponent FloatTypeSuffix_opt
+                    "(0[xX]" + HexDigits + "?(\\.)" + HexDigits + ")" +
+
+                    ")[pP][+-]?" + Digits + "))" +
+                    "[fFdD]?))" +
+                    "[\\x00-\\x20]*");// Optional trailing "whitespace"
+
+    protected final Pattern fpPattern = Pattern.compile(fpRegex);
+    protected final Pattern numberComparePattern = Pattern.compile("^((?:<|>)=?)(" + fpRegex + ")$");
+    protected Container.Filter numberCompare(Object propertyId, Class<?> numberType, String pattern) {
+        Matcher matcher = numberComparePattern.matcher(pattern);
         if (!matcher.find()) return null;
 
         String op = matcher.group(1);
-        int value = Integer.parseInt(matcher.group(2));
+
+        Number numberValue = parseNumericValue(matcher.group(2), numberType);
 
         switch (op) {
-            case ">": return new Compare.Greater(propertyId, value);
-            case ">=": return new Compare.GreaterOrEqual(propertyId, value);
-            case "<": return new Compare.Less(propertyId, value);
-            case "<=": return new Compare.LessOrEqual(propertyId, value);
+            case ">": return new Compare.Greater(propertyId, numberValue);
+            case ">=": return new Compare.GreaterOrEqual(propertyId, numberValue);
+            case "<": return new Compare.Less(propertyId, numberValue);
+            case "<=": return new Compare.LessOrEqual(propertyId, numberValue);
         }
 
         return null;
+    }
+
+    private Number parseNumericValue(String numericString, Class<?> numberType) {
+        try {
+
+            if (numberType == BigDecimal.class) {
+                return new BigDecimal(numericString);
+            } else if (numberType == BigInteger.class) {
+                return new BigInteger(numericString);
+            }
+
+            // otherwise
+
+            Double value = Double.parseDouble(numericString);
+
+            if (numberType == double.class || numberType == Double.class) {
+                return value;
+            } else if (numberType == int.class || numberType == Integer.class) {
+                return value.intValue();
+            } else if (numberType == long.class || numberType == Long.class) {
+                return value.longValue();
+            } else if (numberType == byte.class || numberType == Byte.class) {
+                return value.byteValue();
+            } else if (numberType == float.class || numberType == Float.class) {
+                return value.floatValue();
+            } else return null;
+
+        } catch(NumberFormatException ex) {
+            return null;
+        }
     }
 
     protected Container.Filter numberEqual(Object propertyId, String pattern) {
@@ -133,17 +225,20 @@ public class DefaultFilterFactory implements FilterFactory {
         }
     }
 
-    protected final Pattern intRangePattern = Pattern.compile("^(\\d+)-(\\d+)$");
-    protected Container.Filter intRange(Object propertyId, String pattern) {
-        Matcher matcher = intRangePattern.matcher(pattern);
+    protected final Pattern numericRangePattern = Pattern.compile("^(.+)\\.\\.(.+)$");
+    protected Container.Filter numericRange(Object propertyId, Class<?> numberClass,
+    String pattern) {
+        Matcher matcher = numericRangePattern.matcher(pattern);
         if (!matcher.find()) return null;
         String left = matcher.group(1);
         String right = matcher.group(2);
-        try {
-            int i = Integer.parseInt(left);
-            int j = Integer.parseInt(right);
 
-            if (i>j) {
+        if (fpPattern.matcher(left).matches() && fpPattern.matcher(right).matches()) {
+
+            Number i = parseNumericValue(left, numberClass);
+            Number j = parseNumericValue(right, numberClass);
+
+            if (i.doubleValue() > j.doubleValue()) {
                 throw new Validator.InvalidValueException(
                         String.format("The given range '%s' is invalid", pattern));
             }
@@ -152,17 +247,33 @@ public class DefaultFilterFactory implements FilterFactory {
                     new Compare.GreaterOrEqual(propertyId, i),
                     new Compare.LessOrEqual(propertyId, j)
             );
-
-        } catch (NumberFormatException ex) {
-            return null;
         }
 
+        return null;
     }
 
 
     // experimental date range filters.
-    // Currently not supported nor exposed due to internal
-    // limitations of the DateField (cannot access raw text value)
+    protected final Pattern comparePattern = Pattern.compile("^((?:<|>)=?)(.+)");
+    protected Container.Filter filterForCompareDate(Object propertyId, String pattern) {
+        Matcher matcher = comparePattern.matcher(pattern);
+        if (!matcher.find())
+            return null;
+        String op = matcher.group(1);
+        String rest = matcher.group(2);
+
+        Date value = leftRange(rest);
+
+        switch (op) {
+            case ">": return new Compare.Greater(propertyId, value);
+            case ">=": return new Compare.GreaterOrEqual(propertyId, value);
+            case "<": return new Compare.Less(propertyId, value);
+            case "<=": return new Compare.LessOrEqual(propertyId, value);
+        }
+
+        return null;
+
+    }
 
     protected Container.Filter filterForDateRange(Object propertyId, String pattern) {
         return new And(new Compare.GreaterOrEqual(propertyId, leftRange(pattern)),
@@ -171,98 +282,107 @@ public class DefaultFilterFactory implements FilterFactory {
 
     protected final static String dateRangeSepRegex = "\\.\\.";
     protected final static Pattern dateSepPattern = Pattern.compile("[/.-]");
-    protected final static Pattern fullDatePattern = Pattern.compile("(\\d\\d)("+dateSepPattern+")(\\d\\d)(\\2((\\d\\d)?\\d\\d))?");
-    protected final static Pattern monthDatePattern = Pattern.compile("(\\d\\d)("+dateSepPattern+")((\\d\\d)?\\d\\d)");
+
+    // dd..dd
+    // dd-mm..dd-mm
+    // dd-mm-YYYY..dd-mm-YYYY
+    protected final static Pattern fullDatePattern =
+            Pattern.compile(
+                "^(\\d\\d)(?:(" + dateSepPattern.pattern() + ")(\\d\\d)(?:\\2(\\d\\d\\d\\d))?)?"
+            );
+    protected final static Pattern monthDatePattern =
+            Pattern.compile("(\\d\\d)(?:"+dateSepPattern+")((\\d\\d)?\\d\\d)");
     protected final static Pattern yearPattern = Pattern.compile("\\d{4}");
+
+
+    private static enum RangeEndpoint {
+        Min, Max;
+    }
 
     protected Date leftRange(String pattern) {
         String[] range = pattern.split(dateRangeSepRegex);
-        return stringToDate(range[0], -1);
+        return stringToDate(range[0], RangeEndpoint.Min);
     }
 
     protected Date rightRange(String pattern) {
         String[] range = pattern.split(dateRangeSepRegex);
-        if (range.length == 1) return stringToDate(range[0], 1);
-        return stringToDate(range[1], 1);
+        String value = (range.length == 1)? range[0] : range[1];
+        return stringToDate(value, RangeEndpoint.Max);
     }
 
-    private static Date stringToDate(String pattern, int leftOrRight) {
-
-        System.out.println(pattern);
-
+    private static Date stringToDate(String pattern, RangeEndpoint rangeEndpoint) {
         Matcher m = fullDatePattern.matcher(pattern);
-        if (m.matches()) return fullDatePatternToDate(m, leftOrRight);
+        if (m.matches()) return fullDatePatternToDate(pattern, rangeEndpoint);
 
         m = monthDatePattern.matcher(pattern);
-        if (m.matches()) return monthDatePatternToDate(m, leftOrRight);
+        if (m.matches()) return monthDatePatternToDate(pattern, rangeEndpoint);
 
         m = yearPattern.matcher(pattern);
-        if (m.matches()) return yearToDate(m, leftOrRight);
+        if (m.matches()) return yearToDate(pattern, rangeEndpoint);
 
         return null;
     }
 
-    private static Date fullDatePatternToDate(Matcher m, int leftOrRight) {
+
+    private static Date fullDatePatternToDate(String pattern, RangeEndpoint rangeEndpoint) {
         DateTime t = DateTime.now();
+        int currentYear = t.getYear();
+        int currentMonth = t.getMonthOfYear();
 
-        String maybeDay = m.group(1);
-        String maybeMonth = m.group(3);
-        String maybeYear = m.group(5);
-        int maybeMonthVal, maybeDayVal, maybeYearVal;
+        /*
+         * Try to parse a date in format
+         *          dd
+         *          dd-mm
+         *          dd-mm-YYYY
+         *
+         */
 
-        maybeDayVal = Integer.parseInt(maybeDay);
-        maybeMonthVal = Integer.parseInt(maybeMonth);
-        maybeYearVal = t.year().get();
+        String[] patternComponents = pattern.split(dateSepPattern.pattern());
+        int day, month, year;
 
-        DateTime dt ;
+        // first element is day
+        day = Integer.parseInt(patternComponents[0]);
+        month = currentMonth;
+        year = currentYear;
 
-        if (maybeYear == null) {
-
-            // if month > 12 then it's a 2-digits year
-            if (maybeMonthVal > 12) {
-                // not necessarily true! depends on the locale
-                maybeYearVal = maybeMonthVal ;
-                maybeMonthVal  = maybeDayVal;
-                maybeDayVal   = 1;
-
-                dt = new DateTime(maybeYearVal, maybeMonthVal, maybeDayVal, 0,0);
-                if (leftOrRight > 0) dt = dt.dayOfMonth().withMaximumValue();
-            } else {
-
-                dt = new DateTime(maybeYearVal, maybeMonthVal, maybeDayVal, 0,0);
-            }
-
-        } else {
-            maybeYearVal = Integer.parseInt(maybeYear);
-            if (maybeYearVal < 100) {
-                if (maybeYearVal > t.year().get()) {
-                    maybeYearVal += 1900;
-                } else {
-                    maybeYearVal += 2000;
-                }
-            }
-
-            dt = new DateTime(maybeYearVal, maybeMonthVal, maybeDayVal, 0,0);
-
+        // format is dd-mm
+        if (patternComponents.length >= 2) {
+            month = Integer.parseInt(patternComponents[1]);
+        }
+        // format is dd-mm-YYYY
+        if (patternComponents.length == 3) {
+            year = Integer.parseInt(patternComponents[2]);
         }
 
+        DateTime dt = null;
 
+        switch (rangeEndpoint) {
+            case Min:
+                dt = new DateTime(year, month, day, 0, 0, 0, 0); break;
+            case Max:
+                dt = new DateTime(year, month, day, 23, 59, 59, 999); break;
+        }
 
         return dt.toDate();
+
     }
 
-    private static Date monthDatePatternToDate(Matcher m, int leftOrRight) {
-        int y = Integer.parseInt(m.group(2));
-        int mm = Integer.parseInt(m.group(1));
+    private static Date monthDatePatternToDate(String pattern, RangeEndpoint rangeEndpoint) {
+        String[] patternComponents = pattern.split(dateSepPattern.pattern());
+        int y = Integer.parseInt(patternComponents[1]);
+        int mm = Integer.parseInt(patternComponents[0]);
 
-        return null;
+        DateTime dt = new DateTime(y, mm, 1, 0, 0);
+        return rangeEndpoint == RangeEndpoint.Min ? dt.toDate()
+            : new DateTime(y, mm, dt.dayOfMonth().getMaximumValue(), 23, 59, 59, 999).toDate();
     }
 
 
-    private static Date yearToDate(Matcher m, int leftOrRight) {
-        int y = Integer.parseInt(m.group(0));
-        if (leftOrRight < 0) return new DateTime(y, 1, 1, 0, 0).toDate();
-        else return new DateTime(y, 12, 31, 23, 59, 59).toDate();
+    private static Date yearToDate(String pattern, RangeEndpoint rangeEndpoint) {
+        int y = Integer.parseInt(pattern);
+        return (rangeEndpoint == RangeEndpoint.Min) ?
+             new DateTime(y, 1, 1, 0, 0).toDate()
+             : new DateTime(y, 12, 31, 23, 59, 59, 999).toDate();
 
     }
 }

@@ -4,9 +4,7 @@ package org.tylproject.demos.fieldbinder.model;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by evacchi on 20/11/14.
@@ -35,6 +33,11 @@ public class Person {
     public Person(String firstName, String lastName, Address address) {
         this(firstName, lastName);
         this.addressList.add(address);
+    }
+
+    public Person(String firstName, String lastName, Date birthDate, Address address) {
+        this(firstName, lastName, address);
+        this.birthDate = birthDate;
     }
 
     public String getFirstName() {

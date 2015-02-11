@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Tyl Consulting s.a.s.
+ * Copyright (c) 2015 - Tyl Consulting s.a.s.
  *
  *   Authors: Edoardo Vacchi
  *   Contributors: Marco Pancotti, Daniele Zonca
@@ -23,19 +23,25 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
+import com.vaadin.ui.TextField;
 import org.apache.commons.beanutils.DynaProperty;
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.WrapDynaClass;
 import org.tylproject.vaadin.addon.datanav.*;
+import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.FieldBinderBehaviorFactory;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultBehaviorFactory;
+import org.tylproject.vaadin.addon.fields.zoom.*;
 
+import java.beans.PropertyDescriptor;
 import java.util.*;
 
 /**
  * An enhanced version of Vaadin's standard {@link com.vaadin.data.fieldgroup.FieldGroup}
  *
- * The FieldBinder mimicks the FieldGroup interface, but it supports more methods, and
+ * The FieldBinder mimics the FieldGroup interface, but it supports more methods, and
  * it behaves in a slightly different way.
  *
  * It supports binding and unbinding elements, while still keeping track of which
@@ -68,6 +74,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     private final WrapDynaClass dynaClass ;
     private final Class<T> beanClass;
     private final BasicDataNavigation navigation;
+    private boolean gridSupportEnabled = false;
 
     public FieldBinder(Class<T> beanClass) {
         super(new FieldGroup());
@@ -92,10 +99,15 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         this.dynaClass = WrapDynaClass.createDynaClass(beanClass);
 
         BasicDataNavigation nav = new BasicDataNavigation(container);
-        nav.setBehaviorFactory(new FieldBinderBehaviorFactory(this));
+        nav.setBehaviorFactory(new DefaultBehaviorFactory(this));
 
         this.navigation = nav;
 
+    }
+
+    public FieldBinder<T> withGridSupport() {
+        this.gridSupportEnabled = true;
+        return this;
     }
 
     public void setItemDataSource(BeanItem<T> itemDataSource) {
@@ -152,29 +164,52 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
      * @param <U>
      * @return
      */
-    public <U> ListTable<U> buildListOf(Class<U> containedBeanClass, Object propertyId) {
-        final Class<?> dataType = getPropertyType(propertyId);
-        final ListTable<U> listTable = getFieldFactory().createDetailField(dataType, containedBeanClass);
+    public <U,C extends Collection<U>> CollectionTable<U,C> buildCollectionOf(Class<U> containedBeanClass, Object propertyId) {
+        final Class<C> dataType = (Class<C>) getPropertyType(propertyId);
+        final CollectionTable<U,C> collectionTable = getFieldFactory().createDetailField(dataType, containedBeanClass);
 
-        bind(listTable, propertyId);
+        bind(collectionTable, propertyId);
 
-        this.getNavigation().addEditingModeChangeListener(new EditingModeChange.Listener() {
-            @Override
-            public void editingModeChange(EditingModeChange.Event event) {
-                DataNavigation nav = listTable.getNavigation();
-                if (event.isEnteringEditingMode()) {
-                    nav.enableCrud();
-                } else {
-                    nav.disableCrud();
-                }
-            }
-        });
+        this.getNavigation().addEditingModeChangeListener(
+            new EditingModeSwitcher(collectionTable.getNavigation()));
 
-        listTable.getNavigation().disableCrud();
+        collectionTable.getNavigation().disableCrud();
 
 
-        return listTable;
+        return collectionTable;
     }
+
+    public <U> ListTable<U> buildListOf(Class<U> containedBeanClass, Object propertyId) {
+        return (ListTable<U>) this.<U,List<U>>buildCollectionOf(containedBeanClass, propertyId);
+    }
+
+
+    public TextZoomField buildZoomField(Object bindingPropertyId, Object containerPropertyId, Container.Indexed zoomCollection) {
+
+        String caption = DefaultFieldFactory
+                .createCaptionByPropertyId(bindingPropertyId);
+
+        TextZoomField field = new TextZoomField();
+        field.setCaption(caption);
+        field.withZoomDialog(makeDefaultZoomDialog(containerPropertyId, zoomCollection));
+
+        bind(field, bindingPropertyId);
+
+        return field;
+    }
+
+    public TextZoomField buildDrillDownField(Object propertyId,  Object containerPropertyId, Container.Indexed zoomCollection) {
+        return this.buildZoomField(propertyId, containerPropertyId, zoomCollection).drillDownOnly();
+    }
+
+    protected ZoomDialog makeDefaultZoomDialog(Object propertyId, Container.Indexed zoomCollection) {
+        if (gridSupportEnabled) {
+            return new GridZoomDialog(propertyId, zoomCollection);
+        } else {
+            return new TableZoomDialog(propertyId, zoomCollection);
+        }
+    }
+
 
     /**
      * focus first component
@@ -236,9 +271,42 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         return beanClass;
     }
 
-    @Override
-    protected Class<?> getPropertyType(Object propertyId) {
-        return dynaClass.getDynaProperty(propertyId.toString()).getType();
+
+    /**
+     * Retrieves the type of the property with the given name of the given
+     * Class.
+     *
+     * Supports nested properties following bean naming convention.
+     * e.g., "foo.bar.name"
+     *
+     * @see PropertyUtils#getPropertyDescriptors(Class)
+     * @return Null if no property exists.
+     */
+    public Class<?> getPropertyType(Object propertyId) {
+        if (propertyId == null)
+            throw new IllegalArgumentException("PropertyName must not be null.");
+
+        final String propertyName = propertyId.toString();
+
+        final String[] path = propertyName.split("\\.");
+
+
+        Class<?> propClass = beanClass;
+
+        for (int i = 0; i < path.length; i++) {
+            String propertyFragment = path[i];
+            final PropertyDescriptor[] propDescs =
+                PropertyUtils.getPropertyDescriptors(propClass);
+
+            for (final PropertyDescriptor propDesc : propDescs)
+                if (propDesc.getName().equals(propertyFragment)) {
+                    propClass = propDesc.getPropertyType();
+                    if (i == path.length - 1)
+                        return propClass;
+                }
+        }
+
+        return null;
     }
 
     public BasicDataNavigation getNavigation() {
@@ -253,21 +321,23 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         EditingModeSwitcher(DataNavigation other) {
             this.otherNavigation = other;
         }
-
-        @Override
         public void editingModeChange(EditingModeChange.Event event) {
             if (event.isEnteringEditingMode()) {
-                otherNavigation.disableNavigation();
-                otherNavigation.disableCrud();
-                otherNavigation.disableFind();
-            } else {
-                otherNavigation.enableNavigation();
                 otherNavigation.enableCrud();
-                otherNavigation.enableFind();
+            } else {
+                otherNavigation.disableCrud();
             }
         }
     }
 
-
+    private final CurrentItemChange.Listener defaultItemChangeListener = new CurrentItemChange.Listener() {
+        @Override
+        public void currentItemChange(CurrentItemChange.Event event) {
+            FieldBinder.this.setItemDataSource(event.getNewItem());
+        }
+    };
+    public CurrentItemChange.Listener defaultItemChangeListener() {
+        return this.defaultItemChangeListener;
+    }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Tyl Consulting s.a.s.
+ * Copyright (c) 2015 - Tyl Consulting s.a.s.
  *
  *   Authors: Edoardo Vacchi
  *   Contributors: Marco Pancotti, Daniele Zonca
@@ -21,10 +21,11 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import com.vaadin.data.Container;
 
+import javax.annotation.Nonnull;
+
 /**
  * Created by evacchi on 15/12/14.
  */
 public interface BehaviorFactory<T> {
-
-    <T extends Behavior> T forContainerType(Class<? extends Container> containerClass);
+    Behavior forContainerType(@Nonnull Class<? extends Container> containerClass);
 }

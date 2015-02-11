@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Tyl Consulting s.a.s.
+ * Copyright (c) 2015 - Tyl Consulting s.a.s.
  *
  *   Authors: Edoardo Vacchi
  *   Contributors: Marco Pancotti, Daniele Zonca
@@ -17,10 +17,12 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder.behavior;
+package org.tylproject.vaadin.addon.fieldbinder.behavior.legacy;
 
 import com.vaadin.data.Container;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.Behavior;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.BehaviorFactory;
 
 /**
  * Created by evacchi on 15/12/14.
@@ -34,18 +36,18 @@ public class FieldBinderBehaviorFactory<U> implements BehaviorFactory<U> {
     }
 
     @Override
-    public <T extends Behavior> T forContainerType(Class<? extends Container>
+    public Behavior forContainerType(Class<? extends Container>
                                                                containerClass) {
         if (containerClass != null) {
 
             switch (containerClass.getCanonicalName()) {
                 case "org.vaadin.viritin.ListContainer":
                 case "org.vaadin.viritin.FilterableListContainer":
-                    return (T) new ListContainerBehavior<U>(fieldBinder);
+                    return new ListContainerBehavior<U>(fieldBinder);
                 case "org.tylproject.vaadin.addon.MongoContainer":
-                    return (T) new MongoBehavior<U>(fieldBinder);
+                    return new MongoBehavior<U>(fieldBinder);
                 case "com.vaadin.addon.jpacontainer.JPAContainer":
-                    return (T) new JPAContainerBehavior<U>(fieldBinder);
+                    return new JPAContainerBehavior<U>(fieldBinder);
             }
 
         }

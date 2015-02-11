@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 - Tyl Consulting s.a.s.
+ * Copyright (c) 2015 - Tyl Consulting s.a.s.
  *
  *   Authors: Edoardo Vacchi
  *   Contributors: Marco Pancotti, Daniele Zonca
@@ -22,7 +22,6 @@ package org.tylproject.vaadin.addon.fieldbinder;
 import com.vaadin.data.Item;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroupFieldFactory;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
@@ -36,7 +35,10 @@ import java.util.*;
 public abstract class AbstractFieldBinder<T extends FieldGroup> implements Serializable {
     private final T fieldGroup;
     private final Map<Object, Field<?>> propertyIdToField;
+    private final Map<Object, Class<?>> propertyIdToType;
     private final Map<Field<?>, Object> fieldToPropertyId;
+    private final Map<Object, CollectionTable<?, ?>> collectionFields = new
+    LinkedHashMap<Object, CollectionTable<?, ?>>();
 
     private Item itemDataSource = null;
 
@@ -46,7 +48,9 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
     public AbstractFieldBinder(T fieldGroup) {
         this.fieldGroup = fieldGroup;
         this.propertyIdToField = new LinkedHashMap<Object, Field<?>>();
+        this.propertyIdToType  = new LinkedHashMap<Object, Class<?>>();
         this.fieldToPropertyId = new LinkedHashMap<Field<?>, Object>();
+
     }
 
     public T getFieldGroup() {
@@ -67,8 +71,22 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         return Collections.unmodifiableMap(propertyIdToField);
     }
 
+
+    public Map<Object, Class<?>> getPropertyIdToTypeBindings() {
+        return Collections.unmodifiableMap(propertyIdToType);
+    }
+
+
     public Field<?> getField(Object propertyId) {
         return propertyIdToField.get(propertyId);
+    }
+
+    public boolean isCollectionField(Object propertyId) {
+        return collectionFields.containsKey(propertyId);
+    }
+
+    public Map<Object, ? extends CollectionTable<?,?>> getCollectionFields() {
+        return Collections.unmodifiableMap(collectionFields);
     }
 
     public Object getPropertyId(Field<?> field) {
@@ -146,18 +164,35 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         }
     }
 
-    public void bind(Field<?> field, Object propertyId) {
-        propertyIdToField.put(propertyId, field);
-        fieldToPropertyId.put(field, propertyId);
+    public <T extends Field<?>> T bind(T field, Object propertyId) {
+        try {
+            Class<?> dataType = getPropertyType(propertyId);
+            propertyIdToType.put(propertyId, dataType);
+            propertyIdToField.put(propertyId, field);
+            fieldToPropertyId.put(field, propertyId);
 
-        if (field instanceof AbstractField<?>) {
-            ((AbstractField) field).setValidationVisible(false);
+            if (field instanceof AbstractField<?>) {
+                ((AbstractField) field).setValidationVisible(false);
+            }
+
+            if (field instanceof CollectionTable) {
+                collectionFields.put(propertyId, (CollectionTable<?, ?>) field);
+            }
+
+            if (hasItemDataSource())
+                getFieldGroup().bind(field, propertyId);
+
+            if (field.getCaption() == null) {
+                field.setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
+            }
+
+            configureField(field);
+
+            return field;
+
+        } catch (RuntimeException e) {
+            throw new FieldGroup.BindException("Could not bind field "+field+" to property "+propertyId, e);
         }
-
-        if (hasItemDataSource())
-            getFieldGroup().bind(field, propertyId);
-
-        configureField(field);
     }
 
     public void unbind(Field<?> field) {
@@ -223,6 +258,8 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         }
 
         field.setCaption(caption);
+
+//        propertyIdToType.put(propertyId, dataType);
 
         bind(field, propertyId);
 
