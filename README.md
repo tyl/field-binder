@@ -49,7 +49,7 @@ or simply:
   $ ./run.sh
 ```
 
-The demo uses [vaadin4spring](https://github.com/peholmst/vaadin4spring) for convenience.
+The demo uses [vaadin4spring](https://github.com/peholmst/vaadin4spring) for convenience. You can find more tutorials at the [documentation repository](https://github.com/tyl/documentation/tree/master/field-binder/tutorials)
 
 ## What is wrong with Good Ol' FieldGroup?
 
