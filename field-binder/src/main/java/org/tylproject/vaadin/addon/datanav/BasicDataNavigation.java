@@ -77,7 +77,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     public void restrictContainerType(Class<? extends Container.Ordered> restrictedContainerType) {
         if (container != null) {
             // container.getClass() must be a subtype of restrictedContainerType
-            if (!container.getClass().isAssignableFrom(restrictedContainerType)) {
+            if (!restrictedContainerType.isAssignableFrom(container.getClass())) {
                 throw new IllegalStateException(
                         "Cannot restrict container type to " + restrictedContainerType.getCanonicalName() + ":" +
                                 " a container of type " + container.getClass()
@@ -92,7 +92,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     protected void assertAssignableContainer(@Nonnull Container.Ordered container) {
         if (! (container == null ||
                 restrictedContainerType == null ||
-                container.getClass().isAssignableFrom(restrictedContainerType) ) ) {
+                restrictedContainerType.isAssignableFrom(container.getClass()) ) ) {
             throw new AssertionError(
                     "Allowed container type is "+restrictedContainerType +", "+
                             container.getClass() + " was given"
