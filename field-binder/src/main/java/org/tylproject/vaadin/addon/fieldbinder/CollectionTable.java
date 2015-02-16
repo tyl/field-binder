@@ -23,7 +23,6 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
-import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
@@ -46,6 +45,7 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
     private Object[] visibleColumns;
     private final BasicDataNavigation navigation;
     private FilterableListContainer<T> listContainer;
+    private boolean delayedColumnInit = false;
 
     public CollectionTable(Class<T> containedBeanClass, Class<U> collectionType) {
         this.containedBeanClass = containedBeanClass;
@@ -110,8 +110,14 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
      */
     public void setVisibleColumns(Object ... visibleColumns) {
         this.visibleColumns = visibleColumns;
+
         // delay until a data source with more than 0 properties is available
-        if (table.getContainerDataSource().getContainerPropertyIds().size() == 0) return;
+        if (table.getContainerDataSource().getContainerPropertyIds().size() == 0) {
+            delayedColumnInit = true;
+            return;
+        }
+        delayedColumnInit = false;
+
         table.setVisibleColumns(visibleColumns);
         setAllHeadersFromColumns(visibleColumns);
     }
@@ -197,7 +203,7 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
             table.select(null);
             navigation.setContainer(listContainer);
 
-            if (visibleColumns != null) {
+            if (delayedColumnInit) {
                 this.setVisibleColumns(visibleColumns);
             } else {
                 setAllHeadersFromColumns(table.getVisibleColumns());

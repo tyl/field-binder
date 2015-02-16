@@ -4,6 +4,7 @@ import com.vaadin.ui.VerticalLayout;
 import org.junit.Test;
 import org.tylproject.vaadin.addon.datanav.ButtonBar;
 import org.tylproject.vaadin.addon.datanav.NavigationLabel;
+import org.tylproject.vaadin.addon.fieldbinder.BeanTable;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.ListTable;
 import org.tylproject.vaadin.addons.fieldbinder.tests.model.Address;
@@ -12,6 +13,12 @@ import org.vaadin.viritin.FilterableListContainer;
 import org.vaadin.viritin.layouts.MFormLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+
 /**
  * Created by evacchi on 16/02/15.
  */
@@ -19,14 +26,25 @@ public class DelayedTableInitTest {
 
     @Test
     public void testInitTableColumn() {
-        FilterableListContainer<Person> container = new FilterableListContainer<>(Person.class);
-        FieldBinder<Person> binder = new FieldBinder<>(Person.class, container);
 
+        List<Address> addressList = new ArrayList<>();
 
-        ListTable<Address> listTable = binder.buildListOf(Address.class, "addressList");
+        ListTable<Address> listTable = new ListTable<>(Address.class);
         listTable.setVisibleColumns("id","street", "zipCode", "city", "state");
-        binder.getNavigation().withDefaultBehavior();
-        binder.build("name");
+
+        assertEquals(0, listTable.getTable().getVisibleColumns().length);
+
+
+        Address a = new Address();
+        a.setCity("Milan");
+
+        addressList.add(a);
+
+        listTable.setValue(addressList);
+
+
+        assertEquals(5, listTable.getTable().getVisibleColumns().length);
+
 
     }
 
