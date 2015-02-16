@@ -240,8 +240,9 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     public void edit() {
         if (!isCrudEnabled()) return;
 
-        if (isEditingMode()) leaveEditingMode();
-        else enterEditingMode();
+        if (!isEditingMode()) {
+            enterEditingMode();
+        }
 
         getEventRouter().fireEvent(new ItemEdit.Event(this));
     }
