@@ -20,7 +20,9 @@
 package org.tylproject.vaadin.addon.fieldbinder;
 
 import com.vaadin.data.fieldgroup.DefaultFieldGroupFieldFactory;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.*;
+import org.joda.time.DateTime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -43,7 +45,39 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
             f = super.createField(type, fieldType);
         }
 
-        if (Date.class.isAssignableFrom(type)) {
+        boolean isJoda = DateTime.class.isAssignableFrom(type);
+
+        if (isJoda) {
+            DateField dateField = createField(Date.class, DateField.class) ;
+            f = dateField;
+            dateField.setConverter(new Converter<Date, DateTime>() {
+                @Override
+                public DateTime convertToModel(Date date, Class<? extends DateTime> aClass, Locale locale) throws ConversionException {
+                    return date == null? null : new DateTime(date);
+                }
+
+                @Override
+                public Date convertToPresentation(DateTime o, Class<? extends
+                        Date> aClass, Locale locale) throws ConversionException {
+                    return o == null? null : o.toDate();
+                }
+
+                @Override
+                public Class<DateTime> getModelType() {
+                    return DateTime.class;
+                }
+
+                @Override
+                public Class<Date> getPresentationType() {
+                    return Date.class;
+                }
+            });
+        }
+
+
+        if (Date.class.isAssignableFrom(type)
+            || isJoda) {
+
             // try to assign a locale-specific date pattern
             DateFormat dateFormat =
                 DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
@@ -56,6 +90,7 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
 
                 // hack: turn 2-digits year into 4-digits year
                 dateField.setDateFormat(pattern.replace("yy", "yyyy"));
+
             }
         }
 

@@ -66,7 +66,6 @@ public class Tables {
         final protected FieldManager fieldManager;
 
         protected T newEntity = null;
-        protected FindListeners findListeners;
 
         public BaseCrud(final Class<T> beanClass, final Table table) {
             this.beanClass = beanClass;
@@ -88,9 +87,6 @@ public class Tables {
 
         @Override
         public void itemCreate(ItemCreate.Event event) {
-    //        event.getSource().getContainer().addItem(...);
-    //        event.getSource().setCurrentItemId(...);
-
             table.setEditable(true);
             table.setSelectable(false);
             table.focus();
