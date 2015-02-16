@@ -280,7 +280,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
      * e.g., "foo.bar.name"
      *
      * @see PropertyUtils#getPropertyDescriptors(Class)
-     * @return Null if no property exists.
+     * @throws java.lang.IllegalArgumentException if the given propertyId does not exist
      */
     public Class<?> getPropertyType(Object propertyId) {
         if (propertyId == null)
@@ -306,7 +306,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
                 }
         }
 
-        return null;
+        throw new IllegalArgumentException("No such propertyId: "+propertyId);
     }
 
     public BasicDataNavigation getNavigation() {

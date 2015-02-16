@@ -23,6 +23,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
@@ -109,8 +110,8 @@ public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
      */
     public void setVisibleColumns(Object ... visibleColumns) {
         this.visibleColumns = visibleColumns;
-        // delay until a data source is available
-        if (table.getContainerDataSource() == null) return;
+        // delay until a data source with more than 0 properties is available
+        if (table.getContainerDataSource().getContainerPropertyIds().size() == 0) return;
         table.setVisibleColumns(visibleColumns);
         setAllHeadersFromColumns(visibleColumns);
     }

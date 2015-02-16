@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.FindButtonBar;
+import org.tylproject.vaadin.addons.fieldbinder.tests.model.Person;
 import org.vaadin.viritin.FilterableListContainer;
 
 import java.util.ArrayList;
@@ -24,21 +25,6 @@ import static org.tylproject.vaadin.addons.fieldbinder.tests.UIAssert
  */
 public class FindButtonBarTest {
 
-    public static class Person {
-        private String name;
-
-        public Person(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
 
 
     @Test
