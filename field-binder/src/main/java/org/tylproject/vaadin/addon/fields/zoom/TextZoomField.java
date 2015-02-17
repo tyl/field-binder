@@ -91,7 +91,18 @@ public class TextZoomField extends ZoomField<Object> {
     private Object extractDisplayValue(Object value) {
         if (value == null) return null;
         String propertyId = getZoomDialog().getNestedPropertyId().toString();
-        return new BeanItem<Object>(value, propertyId).getItemProperty(propertyId).getValue();
+        BeanItem<Object> beanItem = new BeanItem<Object>(value, propertyId);
+        if (isDottedProperty(propertyId)) {
+            beanItem.addNestedProperty(propertyId.toString());
+        }
+        Property displayProperty = beanItem.getItemProperty(propertyId);
+
+        return value == null? null : displayProperty.getValue();
+    }
+
+    // heuristic to understand if the property is actually nested
+    public boolean isDottedProperty(Object propertyId) {
+        return propertyId.toString().contains(".");
     }
 
     public TextZoomField withZoomDialog(ZoomDialog dialog) {
