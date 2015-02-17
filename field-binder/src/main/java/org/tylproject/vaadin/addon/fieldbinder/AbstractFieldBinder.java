@@ -191,7 +191,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
             return field;
 
         } catch (RuntimeException e) {
-            throw new FieldGroup.BindException("Could not bind field "+field+" to property "+propertyId, e);
+            throw new FieldGroup.BindException("Could not bind field "+field.getClass().getCanonicalName()+" to property "+propertyId, e);
         }
     }
 

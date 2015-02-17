@@ -111,11 +111,24 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
     public void setItemDataSource(BeanItem<T> itemDataSource) {
+        registerNestedPropertyIds(itemDataSource);
         super.setItemDataSource(itemDataSource);
+    }
+
+    private void registerNestedPropertyIds(BeanItem<T> itemDataSource) {
+        for (Object propertyId: getBindingPropertyIds()) {
+            if (isNestedProperty(propertyId)) {
+                itemDataSource.addNestedProperty(propertyId.toString());
+            }
+        }
     }
 
     public void setBeanDataSource(T dataSource) {
         this.setItemDataSource(new BeanItem<T>(dataSource));
+    }
+
+    protected boolean isNestedProperty(Object propertyId) {
+        return propertyId.toString().contains(".");
     }
 
     @Override
