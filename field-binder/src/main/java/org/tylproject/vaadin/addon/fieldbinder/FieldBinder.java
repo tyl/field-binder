@@ -192,6 +192,21 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         return collectionTable;
     }
 
+    public <U,C extends Collection<U>> CollectionGrid<U,C> buildDetailGridOf(Class<U> containedBeanClass, Object propertyId) {
+        final Class<C> dataType = (Class<C>) getPropertyType(propertyId);
+        final CollectionGrid<U,C> collectionTable = getFieldFactory().createGridDetailField(dataType, containedBeanClass);
+
+        bind(collectionTable, propertyId);
+
+        this.getNavigation().addEditingModeChangeListener(
+                new EditingModeSwitcher(collectionTable.getNavigation()));
+
+        collectionTable.getNavigation().disableCrud();
+
+
+        return collectionTable;
+    }
+
     public <U> ListTable<U> buildListOf(Class<U> containedBeanClass, Object propertyId) {
         return (ListTable<U>) this.<U,List<U>>buildCollectionOf(containedBeanClass, propertyId);
     }

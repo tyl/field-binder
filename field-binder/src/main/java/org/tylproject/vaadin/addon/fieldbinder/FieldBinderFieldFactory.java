@@ -143,4 +143,18 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
         }
         else throw new UnsupportedOperationException("Unsupported type "+ dataType);
     }
+
+
+    public <T,U extends Collection<T>> CollectionGrid<T,U>
+        createGridDetailField(Class<U> dataType, Class<T> containedBeanClass) {
+//        if (List.class.isAssignableFrom(dataType)) {
+//            return (CollectionGrid<T, U>) new ListTable<T>(containedBeanClass);
+//        } else
+        if (Collection.class.isAssignableFrom(dataType)) {
+            return new CollectionGrid<T,U>(containedBeanClass, dataType);
+        }
+        else throw new UnsupportedOperationException("Unsupported type "+ dataType);
+    }
 }
+
+

@@ -36,277 +36,33 @@ import java.util.Collection;
  *
  * Generally used together with {@link FieldBinder}
  */
-public class CollectionTable<T,U extends Collection<T>> extends CustomField<U> {
+public class CollectionTable<T,U extends Collection<T>> extends CollectionTabularView<T,U> {
 
-    protected final VerticalLayout compositionRoot = new VerticalLayout();
-    protected final Table table;
-    protected final Class<T> containedBeanClass;
-    protected final Class<U> collectionType;
-    private Object[] visibleColumns;
-    private final BasicDataNavigation navigation;
-    private FilterableListContainer<T> listContainer;
-    private boolean delayedColumnInit = false;
+    final TableAdaptor adaptor;
 
     public CollectionTable(Class<T> containedBeanClass, Class<U> collectionType) {
-        this.containedBeanClass = containedBeanClass;
-        this.collectionType = collectionType;
+        super(containedBeanClass, collectionType, new TableAdaptor(containedBeanClass));
 
-        table = new Table();
-        table.setBuffered(true);
-        table.setSizeFull();
-        table.setHeight("300px");
-        table.setSelectable(true);
-        table.setMultiSelect(false);
+        adaptor = (TableAdaptor) super.getAdaptor();
 
-        navigation = new BasicDataNavigation();
-        navigation.setBehaviorFactory(new DefaultTableBehaviorFactory(containedBeanClass, table));
-        navigation.restrictContainerType(FilterableListContainer.class);
+        Table tableComponent = adaptor.getComponent();
 
-        compositionRoot.addComponent(table);
-
-
-        // when the value of this wrapper (the list of values!)
-        // changes, restore the table state:
-        // (selectable = true, select id = null)
-        this.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                navigation.setCurrentItemId(null);
-                table.select(null);
-                table.setSelectable(true);
-            }
-        });
-
-        // when someone selects an item on the actual table widget,
-        // then update the navigator accordingly
-        table.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                navigation.setCurrentItemId(event.getProperty().getValue());
-            }
-        });
+        tableComponent.setBuffered(true);
+        tableComponent.setSizeFull();
+        tableComponent.setHeight("300px");
+        tableComponent.setSelectable(true);
+        tableComponent.setMultiSelect(false);
 
 
     }
 
-    public void select(Object itemId) {
-        table.select(itemId);
-    }
-
-
-    public Object getSelectedItemId() {
-        return this.getNavigation().getCurrentItemId();
-    }
-
-    public Item getSelectedItem() {
-        return this.getNavigation().getCurrentItem();
-    }
-
-
-
-    /**
-     * Mimicks {@link com.vaadin.ui.Table} but automatically infer column names like a
-     * {@link com.vaadin.data.fieldgroup.FieldGroup} or a {@link FieldBinder}
-     */
-    public void setVisibleColumns(Object ... visibleColumns) {
-        this.visibleColumns = visibleColumns;
-
-        // delay until a data source with more than 0 properties is available
-        if (table.getContainerDataSource().getContainerPropertyIds().size() == 0) {
-            delayedColumnInit = true;
-            return;
-        }
-        delayedColumnInit = false;
-
-        table.setVisibleColumns(visibleColumns);
-        setAllHeadersFromColumns(visibleColumns);
-    }
-
-    /**
-     * Infers the column names from the column ids.
-     *
-     * Internally relies upon {@link com.vaadin.ui.DefaultFieldFactory}
-     */
-    private void setAllHeadersFromColumns(Object[] columns) {
-        String[] headers = new String[columns.length];
-        for (int i = 0; i < columns.length; i++) {
-            Object propertyId = columns[i];
-            headers[i] = DefaultFieldFactory.createCaptionByPropertyId(propertyId);
-        }
-        table.setColumnHeaders(headers);
-    }
-
-    @Override
-    protected Component initContent() {
-        return compositionRoot;
-    }
 
     /**
      * Returns the actual {@link com.vaadin.ui.Table} instance
      * @return
      */
     public Table getTable() {
-        return table;
-    }
-
-    @Override
-    public Class getType() {
-        return collectionType;
-    }
-
-    /**
-     * return the type parameter for the List that this table contains
-     */
-    /**
-     * @return the data type contained by the list
-     */
-    public Class<T> getListType() { return containedBeanClass; }
-
-    @Override
-    public void focus() {
-        table.focus();
-    }
-
-    public void setCollection(U collection) {
-        setInternalValue(collection);
-    }
-
-    @Override
-    protected void setInternalValue(U collection) {
-        // reset the navigation status
-        navigation.setCurrentItemId(null);
-
-        super.setInternalValue(collection);
-
-        if (collection == null) {
-            this.setListContainer(null);
-        } else {
-            FilterableListContainer<T> listContainer = new FilterableListContainer<T>(containedBeanClass);
-            listContainer.setCollection(collection);
-
-            this.setListContainer(listContainer);
-        }
-    }
-
-    protected void setListContainer(FilterableListContainer<T> listContainer) {
-        this.listContainer = listContainer;
-        if (listContainer == null) {
-            // clears the table contents
-
-            table.setContainerDataSource(null);
-            table.select(null);
-            navigation.setContainer(null);
-        } else {
-
-            table.setContainerDataSource(listContainer);
-            // clear selection
-            table.select(null);
-            navigation.setContainer(listContainer);
-
-            if (delayedColumnInit) {
-                this.setVisibleColumns(visibleColumns);
-            } else {
-                setAllHeadersFromColumns(table.getVisibleColumns());
-            }
-        }
-    }
-
-    protected FilterableListContainer<T> getListContainer() {
-        return listContainer;
-    }
-
-
-    public Container.Ordered getContainerDataSource() {
-        return getListContainer();
-    }
-
-    @Override
-    public U getValue() {
-        // the super implementation invokes getInternalValue() (via getFieldValue())
-        // but only if (dataSource == null || isBuffered() || isModified())
-        // otherwise it calls convertFromModel(getDataSourceValue())
-        // which is a *private* pass-through for propertyDataSource.getValue()
-
-        if (getPropertyDataSource() == null || isBuffered() || isModified()) {
-            // return the buffered value
-            return getInternalValue();
-        }
-
-        // not buffered, nor modified, just return the underlying value
-        // no conversion is needed
-        return (U) getPropertyDataSource().getValue();
-    }
-
-
-    /*
-     * return the actual value, pulling it from the container
-     */
-    @Override
-    protected U getInternalValue() {
-
-        FilterableListContainer<T> container = getListContainer();
-        if (container == null) return super.getInternalValue();
-
-        Collection<T> allItems = container.getItemIds();
-        U propertyCollection = super.getInternalValue();
-
-        // if they are the same instance, no need to copy the values over
-        if (propertyCollection == allItems) return propertyCollection;
-
-        propertyCollection.clear();
-        propertyCollection.addAll(container.getItemIds());
-
-        return propertyCollection;
-
-    }
-
-
-    public Object getConvertedValue() {
-        // no need to convert
-        return getValue();
-    }
-
-
-    @Override
-    public void commit() throws SourceException, Validator.InvalidValueException {
-        super.commit();
-        table.commit();
-    }
-
-    @Override
-    public void discard() {
-        table.discard();
-    }
-
-    /**
-     * @return adds a default button bar to the bottom right of this component
-     */
-    public CollectionTable<T,U> withDefaultEditorBar() {
-        CrudButtonBar buttonBar = buildDefaultEditorBar();
-        compositionRoot.setSizeFull();
-
-        HorizontalLayout inner = new HorizontalLayout(buttonBar);
-        inner.setSizeFull();
-        inner.setComponentAlignment(buttonBar, Alignment.BOTTOM_RIGHT);
-
-        compositionRoot.addComponent(inner);
-        return this;
-    }
-
-
-    /**
-     * build and returns a default button bar for this component
-     * @return
-     */
-    public CrudButtonBar buildDefaultEditorBar() {
-        return new CrudButtonBar(getNavigation().withDefaultBehavior());
-    }
-
-    /**
-     * @return the DataNavigation instance bound to this component
-     */
-    public BasicDataNavigation getNavigation() {
-        return navigation;
+        return adaptor.getComponent();
     }
 
 }
