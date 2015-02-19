@@ -98,7 +98,7 @@ public class TableAdaptor<T> implements TabularViewAdaptor<Table>, Property.Valu
     public void attachNavigation(final BasicDataNavigation navigation) {
         table.addValueChangeListener(this);
         this.setNavigation(navigation);
-        navigation.setBehaviorFactory(new DefaultTableBehaviorFactory(beanClass, table));
+        navigation.setBehaviorFactory(new DefaultTableBehaviorFactory(beanClass, this));
 
 
     }

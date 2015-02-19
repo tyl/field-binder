@@ -24,6 +24,7 @@ import com.vaadin.data.fieldgroup.FieldGroupFieldFactory;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinderFieldFactory;
+import org.tylproject.vaadin.addon.fieldbinder.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
 
@@ -39,9 +40,9 @@ public class Tables {
      * Link Table selection to the DataNavigation instance
      */
     public static class CurrentItemChangeListener implements CurrentItemChange.Listener {
-        private final Table table;
+        private final TabularViewAdaptor<?> table;
 
-        public CurrentItemChangeListener(Table table) {
+        public CurrentItemChangeListener(TabularViewAdaptor<?> table) {
             this.table = table;
         }
 
@@ -61,19 +62,19 @@ public class Tables {
      *
      */
     public static class BaseCrud<T> implements CrudListeners {
-        final protected Table table;
+        final protected TabularViewAdaptor<?> table;
         final protected Class<T> beanClass;
         final protected FieldManager fieldManager;
 
         protected T newEntity = null;
 
-        public BaseCrud(final Class<T> beanClass, final Table table) {
+        public BaseCrud(final Class<T> beanClass, final TabularViewAdaptor<?> table) {
             this.beanClass = beanClass;
             this.table = table;
 
             this.fieldManager = new FieldManager(table);
 
-            table.setTableFieldFactory(fieldManager);
+//            table.setTableFieldFactory(fieldManager);
         }
 
 
@@ -119,7 +120,7 @@ public class Tables {
         }
 
         public void itemRemove(ItemRemove.Event event) {
-            this.table.removeItem(event.getSource().getCurrentItemId());
+            this.table.getContainerDataSource().removeItem(event.getSource().getCurrentItemId());
         }
 
         protected T createBean() {
@@ -139,21 +140,21 @@ public class Tables {
     public static class FieldManager implements TableFieldFactory {
         final FieldGroupFieldFactory fieldFactory ;
         final List<Field<?>> fields = new ArrayList<>();
-        final Table table;
+        final TabularViewAdaptor<?> table;
 
 
-        public FieldManager(Table table) {
+        public FieldManager(TabularViewAdaptor<?> table) {
             this(table, new FieldBinderFieldFactory());
         }
 
-        public FieldManager(Table table, FieldGroupFieldFactory fieldFactory) {
+        public FieldManager(TabularViewAdaptor<?> table, FieldGroupFieldFactory fieldFactory) {
             this.fieldFactory = fieldFactory;
             this.table = table;
         }
 
         @Override
         public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
-            if (itemId == null || !itemId.equals(table.getValue())) return null;
+            if (itemId == null || !itemId.equals(table.getSelectedItemId())) return null;
 
             Class<?> dataType = container.getType(propertyId);
             Field<?> f = fieldFactory.createField(dataType, Field.class);

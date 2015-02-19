@@ -25,13 +25,14 @@ import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
 import org.tylproject.vaadin.addon.datanav.events.ItemRemove;
 import org.tylproject.vaadin.addon.datanav.events.OnCommit;
 import org.tylproject.vaadin.addon.datanav.events.OnDiscard;
+import org.tylproject.vaadin.addon.fieldbinder.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 
 /**
  * Created by evacchi on 19/12/14.
  */
 public class JPAContainerTableCrud<T> extends Tables.BaseCrud<T> {
-    public JPAContainerTableCrud(Class<T> beanClass, Table table) {
+    public JPAContainerTableCrud(Class<T> beanClass, TabularViewAdaptor<?> table) {
         super(beanClass, table);
     }
 

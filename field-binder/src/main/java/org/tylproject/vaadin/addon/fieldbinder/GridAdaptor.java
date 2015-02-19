@@ -2,10 +2,12 @@ package org.tylproject.vaadin.addon.fieldbinder;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.ui.Grid;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultTableBehaviorFactory;
 import org.tylproject.vaadin.addon.fields.FilterableGrid;
 
 import java.util.Arrays;
@@ -15,7 +17,7 @@ import java.util.List;
 /**
  * Created by evacchi on 18/02/15.
  */
-public class GridAdaptor<T> implements TabularViewAdaptor<Grid>, SelectionEvent.SelectionListener{
+public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
     private final Grid grid;
     private final Class<T> beanClass;
     private DataNavigation navigation;
@@ -31,9 +33,9 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid>, SelectionEvent.
 
     @Override
     public void attachNavigation(BasicDataNavigation navigation) {
-        grid.addSelectionListener(this);
+        grid.addSelectionListener(selectionListener);
         this.setNavigation(navigation);
-        // TODO: navigation.setBehaviorFactory(new ...);
+        navigation.setBehaviorFactory(new DefaultTableBehaviorFactory(beanClass, this));
     }
 
     public void setVisibleColumns(Object... propertyIds) {
@@ -99,11 +101,13 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid>, SelectionEvent.
 
     @Override
     public void setEditable(boolean editable) {
-//        if (editable) {
-//            grid.editItem(navigation.getCurrentItemId());
-//        } else {
-//            grid.cancelEditor();
-//        }
+        if (editable) {
+            grid.setEditorEnabled(true);
+            grid.editItem(navigation.getCurrentItemId());
+        } else {
+            grid.setEditorEnabled(false);
+            grid.markAsDirty();
+        }
     }
 
     @Override
@@ -142,22 +146,31 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid>, SelectionEvent.
 
     @Override
     public void commit() {
-
+        try {
+            grid.saveEditor();
+            grid.cancelEditor();
+        } catch (FieldGroup.CommitException ex) {
+            throw new CommitException(ex);
+        }
     }
 
     @Override
     public void discard() {
-
+        grid.cancelEditor();
     }
 
-    @Override
-    public void select(SelectionEvent selectionEvent) {
-        if (selectionEvent.getSelected().iterator().hasNext()){
-            navigation.setCurrentItemId(null);
-        } else {
-            navigation.setCurrentItemId(selectionEvent.getSelected().iterator().next());
+    private final SelectionEvent.SelectionListener selectionListener = new SelectionEvent.SelectionListener() {
+
+        @Override
+        public void select(SelectionEvent selectionEvent) {
+            if (selectionEvent.getSelected().iterator().hasNext()) {
+                navigation.setCurrentItemId(selectionEvent.getSelected().iterator().next());
+            } else {
+                navigation.setCurrentItemId(null);
+
+            }
         }
-    }
+    };
 
     public void setNavigation(DataNavigation navigation) {
         this.navigation = navigation;
