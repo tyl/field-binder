@@ -20,8 +20,10 @@ public class CollectionGrid<T,U extends Collection<T>> extends CollectionTabular
         Grid gridComponent = adaptor.getComponent();
 
         gridComponent.setSizeFull();
+        gridComponent.setWidth("100%");
         gridComponent.setHeight("300px");
         gridComponent.setSelectionMode(Grid.SelectionMode.SINGLE);
+
 
 
     }

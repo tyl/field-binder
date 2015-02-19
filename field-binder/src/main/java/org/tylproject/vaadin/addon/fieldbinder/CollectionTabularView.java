@@ -59,6 +59,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         navigation.restrictContainerType(FilterableListContainer.class);
 
         this.listContainer = new FilterableListContainer<T>(containedBeanClass);
+        table.setContainerDataSource(listContainer);
         navigation.setContainer(listContainer);
 
         compositionRoot.addComponent(adaptor.getComponent());
@@ -110,7 +111,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
 
         // delay until a data source with more than 0 properties is available
         if (table.getContainerDataSource().getContainerPropertyIds().size() == 0) {
-//            delayedColumnInit = true;
+            delayedColumnInit = true;
             return;
         }
         delayedColumnInit = true;
@@ -174,20 +175,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
 
         visibleColumns = getContainerDataSource().getContainerPropertyIds().toArray();
 
-//        if (delayedColumnInit) {
-            this.setVisibleColumns(visibleColumns);
-//        } else {
-//            setAllHeadersFromColumns(visibleColumns);
-//        }
-
-//        if (collection == null) {
-//            this.setListContainer(null);
-//        } else {
-//            FilterableListContainer<T> listContainer = new FilterableListContainer<T>(containedBeanClass);
-//            listContainer.setCollection(collection);
-//
-//            this.setListContainer(listContainer);
-//        }
+        setupColumns();
     }
 
     protected void clearContainerState() {
@@ -215,11 +203,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
             table.select(null);
             navigation.setContainer(listContainer);
 
-//            if (delayedColumnInit) {
-                this.setVisibleColumns(visibleColumns);
-//            } else {
-                setAllHeadersFromColumns(table.getVisibleColumns());
-//            }
+            setupColumns();
         }
     }
 
@@ -284,11 +268,15 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         if (newDataSource == null) return;
         else super.setPropertyDataSource(newDataSource);
 
-//        if (delayedColumnInit) {
+        setupColumns();
+    }
+
+    private void setupColumns() {
+        if (delayedColumnInit) {
             this.setVisibleColumns(visibleColumns);
-//        } else {
+        } else {
             setAllHeadersFromColumns(table.getVisibleColumns());
-//        }
+        }
     }
 
 
