@@ -75,7 +75,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
      *
      */
     public void restrictContainerType(Class<? extends Container.Ordered> restrictedContainerType) {
-        if (container != null) {
+        if (container != null && restrictedContainerType != null) {
             // container.getClass() must be a subtype of restrictedContainerType
             if (!restrictedContainerType.isAssignableFrom(container.getClass())) {
                 throw new IllegalStateException(
