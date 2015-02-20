@@ -10,16 +10,16 @@ import com.vaadin.ui.VerticalLayout;
 import org.tylproject.demos.fieldbinder.model.Person;
 import org.tylproject.vaadin.addon.datanav.ButtonBar;
 import org.tylproject.vaadin.addon.fieldbinder.BeanTable;
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.viritin.layouts.MVerticalLayout;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinUI;
-import org.vaadin.spring.navigator.VaadinView;
+
 
 /**
  * Created by evacchi on 19/12/14.
  */
 @VaadinView(name = "/table")
-@UIScope
+@VaadinUIScope
 @Theme("valo")
 public class TutorialTable extends MVerticalLayout implements View {
 

@@ -23,14 +23,13 @@ import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
 import org.tylproject.vaadin.addon.datanav.events.ItemEdit;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.ListTable;
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.viritin.layouts.MFormLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinUI;
-import org.vaadin.spring.navigator.VaadinView;
 
 @VaadinView(name = "/custom-events")
-@UIScope
+@VaadinUIScope
 @Theme("valo")
 public class TutorialExtended extends MVerticalLayout implements View {
 

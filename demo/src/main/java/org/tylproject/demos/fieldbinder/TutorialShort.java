@@ -16,20 +16,20 @@ import org.tylproject.vaadin.addon.datanav.ButtonBar;
 import org.tylproject.vaadin.addon.datanav.NavigationLabel;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.fieldbinder.CollectionGrid;
+import org.tylproject.vaadin.addon.fieldbinder.CollectionTabularView;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.viritin.ListContainer;
 import org.vaadin.viritin.layouts.MFormLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.VaadinUI;
-import org.vaadin.spring.navigator.VaadinView;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @VaadinView(name = "/simple")
-@UIScope
+@VaadinUIScope
 @Theme("valo")
 public class TutorialShort extends MVerticalLayout implements View {
 
@@ -44,9 +44,7 @@ public class TutorialShort extends MVerticalLayout implements View {
 
     // initialize the FieldBinder for the masterDetail editor on the Person entity
     final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container);
-    final CollectionGrid<Address, List<Address>> grid ;
-
-    ListContainer<Address> bic = new ListContainer<>(Address.class);
+    final CollectionTabularView<Address, Collection<Address>> grid ;
 
 
     // initialize the layout, building the fields at the same time
@@ -54,9 +52,10 @@ public class TutorialShort extends MVerticalLayout implements View {
     // Maddon wraps common Vaadin classes with fluent APIs
     // for the most common options
     {
-
+        final Grid grid2 = new Grid();
 
         with(
+
 
                 new ButtonBar(binder.getNavigation().withDefaultBehavior()),
 
@@ -71,8 +70,15 @@ public class TutorialShort extends MVerticalLayout implements View {
 
                 // initialize the addressList field with the built-in button bar
 
-                grid = binder.buildDetailGridOf(Address.class, "addressList")//.withDefaultEditorBar()
+                (grid = binder.buildDetailGridOf(Address.class, "addressList").withDefaultEditorBar()),
+                grid2
+
         ).withFullWidth().withMargin(true);
+
+        grid2.setEditorEnabled(true);
+        ArrayList<Address> addrs = new ArrayList<>();
+        addrs.add(new Address("foo"));
+        grid2.setContainerDataSource(new BeanItemContainer<>(Address.class, addrs));
 
 
 //        binder.getNavigation().addCurrentItemChangeListener(new CurrentItemChange.Listener() {

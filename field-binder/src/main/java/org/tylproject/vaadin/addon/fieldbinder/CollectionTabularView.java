@@ -27,6 +27,7 @@ import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultTableBehaviorFactory;
+import org.tylproject.vaadin.addon.utils.CachingContainerProxy;
 import org.vaadin.viritin.FilterableListContainer;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         navigation.restrictContainerType(FilterableListContainer.class);
 
         this.listContainer = new FilterableListContainer<T>(containedBeanClass);
-        table.setContainerDataSource(listContainer);
+        table.setContainerDataSource(new CachingContainerProxy<>(listContainer));
         navigation.setContainer(listContainer);
 
         compositionRoot.addComponent(adaptor.getComponent());

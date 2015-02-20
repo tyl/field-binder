@@ -14,13 +14,13 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.FieldBinders;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.SearchWindowFindListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontainer
 .ListContainerCrud;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.viritin.layouts.MFormLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 @VaadinView(name = "/search-dialog")
-@UIScope
+@VaadinUIScope
 
 @Theme("valo")
 public class TutorialAlternativeFind extends MVerticalLayout implements View {
