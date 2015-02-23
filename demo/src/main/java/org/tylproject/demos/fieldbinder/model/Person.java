@@ -20,6 +20,8 @@ public class Person {
     // @org.springframework.data.annotation.Transient
     private Integer age;
     private Date birthDate;
+    private Gender gender;
+
 
     private List<Address> addressList = new ArrayList<Address>();
 
@@ -78,6 +80,15 @@ public class Person {
 
     public void setBirthDate(Date birth) {
         this.birthDate = birth;
+    }
+
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public List<Address> getAddressList() {
