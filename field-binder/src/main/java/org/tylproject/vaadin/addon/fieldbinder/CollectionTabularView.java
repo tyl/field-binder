@@ -44,6 +44,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     protected final TabularViewAdaptor<?> table;
     protected final Class<T> containedBeanClass;
     protected final Class<U> collectionType;
+//    private final CachingContainerProxy<FilterableListContainer<T>> cache;
     private Object[] visibleColumns;
     private final BasicDataNavigation navigation;
     final private FilterableListContainer<T> listContainer;
@@ -60,14 +61,14 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         navigation.restrictContainerType(FilterableListContainer.class);
 
         this.listContainer = new FilterableListContainer<T>(containedBeanClass);
-        table.setContainerDataSource(new CachingContainerProxy<>(listContainer));
+        table.setContainerDataSource(listContainer);
         navigation.setContainer(listContainer);
 
         compositionRoot.addComponent(adaptor.getComponent());
 
 
         // when the value of this wrapper (the list of values!)
-        // changes, restore the table state:
+        // changes, restore the tableAdaptor state:
         // (selectable = true, select id = null)
         this.addValueChangeListener(new ValueChangeListener() {
             @Override
@@ -78,7 +79,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
             }
         });
 
-        // when someone selects an item on the actual table widget,
+        // when someone selects an item on the actual tableAdaptor widget,
         // then update the navigator accordingly
         table.attachNavigation(navigation);
 
@@ -98,7 +99,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         return this.getNavigation().getCurrentItem();
     }
 
-    protected TabularViewAdaptor<?> getAdaptor() {
+    public TabularViewAdaptor<?> getAdaptor() {
         return table;
     }
 
@@ -146,7 +147,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     }
 
     /**
-     * return the type parameter for the List that this table contains
+     * return the type parameter for the List that this tableAdaptor contains
      */
     /**
      * @return the data type contained by the list

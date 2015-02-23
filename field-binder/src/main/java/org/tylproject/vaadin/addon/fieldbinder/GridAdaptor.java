@@ -149,6 +149,7 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
         try {
             grid.saveEditor();
             grid.cancelEditor();
+            grid.setCellStyleGenerator(grid.getCellStyleGenerator());
         } catch (FieldGroup.CommitException ex) {
             throw new CommitException(ex);
         }
