@@ -25,7 +25,7 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.Grid;
 import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.WrapDynaClass;
@@ -74,7 +74,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     private final WrapDynaClass dynaClass ;
     private final Class<T> beanClass;
     private final BasicDataNavigation navigation;
-    private boolean gridSupportEnabled = false;
+    private GridSupport gridSupport = GridSupport.UseTable;
 
     public FieldBinder(Class<T> beanClass) {
         super(new FieldGroup());
@@ -106,7 +106,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
     public FieldBinder<T> withGridSupport() {
-        this.gridSupportEnabled = true;
+        this.gridSupport = GridSupport.UseGrid;
         return this;
     }
 
@@ -177,9 +177,11 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
      * @param <U>
      * @return
      */
-    public <U,C extends Collection<U>> CollectionTable<U,C> buildCollectionOf(Class<U> containedBeanClass, Object propertyId) {
+    public <U,C extends Collection<U>>
+    CollectionTable<U,C> buildCollectionOf(Class<U> containedBeanClass, Object propertyId) {
+
         final Class<C> dataType = (Class<C>) getPropertyType(propertyId);
-        final CollectionTable<U,C> collectionTable = getFieldFactory().createDetailField(dataType, containedBeanClass);
+        final CollectionTable<U,C>  collectionTable = getFieldFactory().createDetailField(dataType, containedBeanClass, gridSupport);
 
         bind(collectionTable, propertyId);
 
@@ -192,23 +194,10 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         return collectionTable;
     }
 
-    public <U,C extends Collection<U>> CollectionGrid<U,C> buildDetailGridOf(Class<U> containedBeanClass, Object propertyId) {
-        final Class<C> dataType = (Class<C>) getPropertyType(propertyId);
-        final CollectionGrid<U,C> collectionTable = getFieldFactory().createGridDetailField(dataType, containedBeanClass);
-
-        bind(collectionTable, propertyId);
-
-        this.getNavigation().addEditingModeChangeListener(
-                new EditingModeSwitcher(collectionTable.getNavigation()));
-
-        collectionTable.getNavigation().disableCrud();
-
-
-        return collectionTable;
-    }
 
     public <U> ListTable<U> buildListOf(Class<U> containedBeanClass, Object propertyId) {
-        return (ListTable<U>) this.<U,List<U>>buildCollectionOf(containedBeanClass, propertyId);
+        ListTable<U> listTable = (ListTable < U >) this.<U, List<U>>buildCollectionOf(containedBeanClass, propertyId);
+        return listTable;
     }
 
 
@@ -231,7 +220,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
     protected ZoomDialog makeDefaultZoomDialog(Object propertyId, Container.Indexed zoomCollection) {
-        if (gridSupportEnabled) {
+        if (gridSupport == GridSupport.UseGrid) {
             return new GridZoomDialog(propertyId, zoomCollection);
         } else {
             return new TableZoomDialog(propertyId, zoomCollection);

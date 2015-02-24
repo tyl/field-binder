@@ -134,27 +134,27 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
 
 
     public <T,U extends Collection<T>> CollectionTable<T,U>
-        createDetailField(Class<U> dataType, Class<T> containedBeanClass) {
+        createDetailField(Class<U> dataType, Class<T> containedBeanClass, GridSupport  gridSupport) {
         if (List.class.isAssignableFrom(dataType)) {
-            return (CollectionTable<T, U>) new ListTable<T>(containedBeanClass);
+            return (CollectionTable<T, U>) new ListTable<T>(containedBeanClass, gridSupport);
         } else
         if (Collection.class.isAssignableFrom(dataType)) {
-            return new CollectionTable<T,U>(containedBeanClass, dataType);
+            return new CollectionTable<T,U>(containedBeanClass, dataType, gridSupport);
         }
         else throw new UnsupportedOperationException("Unsupported type "+ dataType);
     }
 
-
-    public <T,U extends Collection<T>> CollectionGrid<T,U>
-        createGridDetailField(Class<U> dataType, Class<T> containedBeanClass) {
-//        if (List.class.isAssignableFrom(dataType)) {
-//            return (CollectionGrid<T, U>) new ListTable<T>(containedBeanClass);
-//        } else
-        if (Collection.class.isAssignableFrom(dataType)) {
-            return new CollectionGrid<T,U>(containedBeanClass, dataType);
-        }
-        else throw new UnsupportedOperationException("Unsupported type "+ dataType);
-    }
+//
+//    public <T,U extends Collection<T>> CollectionGrid<T,U>
+//        createGridDetailField(Class<U> dataType, Class<T> containedBeanClass) {
+////        if (List.class.isAssignableFrom(dataType)) {
+////            return (CollectionGrid<T, U>) new ListTable<T>(containedBeanClass);
+////        } else
+//        if (Collection.class.isAssignableFrom(dataType)) {
+//            return new CollectionGrid<T,U>(containedBeanClass, dataType);
+//        }
+//        else throw new UnsupportedOperationException("Unsupported type "+ dataType);
+//    }
 }
 
 

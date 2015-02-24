@@ -38,23 +38,68 @@ import java.util.Collection;
  */
 public class CollectionTable<T,U extends Collection<T>> extends CollectionTabularView<T,U> {
 
-    final TableAdaptor adaptor;
+    final TableAdaptor<?> tableAdaptor;
+    final GridAdaptor<?> gridAdaptor;
 
+    /**
+     * constructs a collection table. Defaults to a Table widget
+     */
     public CollectionTable(Class<T> containedBeanClass, Class<U> collectionType) {
-        super(containedBeanClass, collectionType, new TableAdaptor(containedBeanClass));
+        this(containedBeanClass, collectionType, GridSupport.UseTable);
+    }
 
-        adaptor = (TableAdaptor) super.getAdaptor();
+    public CollectionTable(Class<T> containedBeanClass, Class<U> collectionType, GridSupport gridSupport) {
+        super(containedBeanClass, collectionType, makeAdaptor(containedBeanClass, gridSupport));
 
-        Table tableComponent = adaptor.getComponent();
+
+        switch (gridSupport) {
+            case UseTable:
+                tableAdaptor = (TableAdaptor) super.getAdaptor();
+                gridAdaptor = null;
+                initTableAdaptor();
+                break;
+            case UseGrid:
+                gridAdaptor = (GridAdaptor) super.getAdaptor();
+                tableAdaptor = null;
+                initGridAdaptor();
+                break;
+            default:
+                throw new IllegalArgumentException(""+gridSupport);
+        }
+    }
+
+    private static <T> TabularViewAdaptor<?> makeAdaptor(Class<T> containedBeanClass, GridSupport gridSupport) {
+        switch (gridSupport) {
+            case UseTable:
+                return new TableAdaptor<>(containedBeanClass);
+            case UseGrid:
+                return new GridAdaptor<>(containedBeanClass);
+            default:
+                throw new IllegalArgumentException(""+gridSupport);
+        }
+    }
+
+    public void initTableAdaptor() {
+        Table tableComponent = tableAdaptor.getComponent();
 
         tableComponent.setBuffered(true);
         tableComponent.setSizeFull();
         tableComponent.setHeight("300px");
         tableComponent.setSelectable(true);
         tableComponent.setMultiSelect(false);
+    }
 
+    public void initGridAdaptor() {
+        Grid gridComponent = gridAdaptor.getComponent();
+
+        gridComponent.setSizeFull();
+        gridComponent.setWidth("100%");
+        gridComponent.setHeight("300px");
+        gridComponent.setSelectionMode(Grid.SelectionMode.SINGLE);
 
     }
+
+
 
 
     /**
@@ -62,7 +107,11 @@ public class CollectionTable<T,U extends Collection<T>> extends CollectionTabula
      * @return
      */
     public Table getTable() {
-        return adaptor.getComponent();
+        if (tableAdaptor == null) {
+            throw new IllegalStateException("This CollectionTable");
+        }
+
+        return (Table) getAdaptor().getComponent();
     }
 
 }

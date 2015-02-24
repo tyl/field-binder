@@ -4,6 +4,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.SelectionEvent;
+import com.vaadin.server.ServerRpcManager;
 import com.vaadin.ui.Grid;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
@@ -106,7 +107,7 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
             grid.editItem(navigation.getCurrentItemId());
         } else {
             grid.setEditorEnabled(false);
-            grid.markAsDirty();
+//            grid.markAsDirty();
         }
     }
 
@@ -148,8 +149,17 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
     public void commit() {
         try {
             grid.saveEditor();
+
+
             grid.cancelEditor();
+
+
+            grid.setEditorEnabled(false);
+
+
+
             grid.setCellStyleGenerator(grid.getCellStyleGenerator());
+//            grid.setEditorEnabled(false);
         } catch (FieldGroup.CommitException ex) {
             throw new CommitException(ex);
         }
@@ -158,6 +168,7 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
     @Override
     public void discard() {
         grid.cancelEditor();
+        grid.setEditorEnabled(false);
     }
 
     private final SelectionEvent.SelectionListener selectionListener = new SelectionEvent.SelectionListener() {
