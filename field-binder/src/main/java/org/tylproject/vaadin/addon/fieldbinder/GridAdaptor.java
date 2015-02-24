@@ -4,6 +4,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.SelectionEvent;
+import com.vaadin.server.Page;
 import com.vaadin.server.ServerRpcManager;
 import com.vaadin.ui.Grid;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
@@ -26,6 +27,9 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
     public GridAdaptor(Grid grid, Class<T> beanClass) {
         this.grid = grid;
         this.beanClass = beanClass;
+
+        Page.getCurrent().getStyles().add(".v-grid-editor-footer { display:none !important; }");
+
     }
 
     public GridAdaptor(Class<T> beanClass) {
@@ -105,8 +109,11 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
         if (editable) {
             grid.setEditorEnabled(true);
             grid.editItem(navigation.getCurrentItemId());
+
+
+
         } else {
-            grid.setEditorEnabled(false);
+//            grid.setEditorEnabled(false);
 //            grid.markAsDirty();
         }
     }
@@ -147,22 +154,23 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
 
     @Override
     public void commit() {
-        try {
-            grid.saveEditor();
+//        try {
 
 
-            grid.cancelEditor();
+            // ugliest hack in world history
+            Page.getCurrent().getJavaScript().execute(
+//                    "document.getElementsByClassName('v-grid-editor-save')[0].click();"
 
+                    "var elems = document.getElementsByClassName('v-grid-editor-save');\n" +
+                    "for (var i = 0; i < elems.length; i++) { elems[i].click(); }"
 
-            grid.setEditorEnabled(false);
-
+            );
 
 
             grid.setCellStyleGenerator(grid.getCellStyleGenerator());
-//            grid.setEditorEnabled(false);
-        } catch (FieldGroup.CommitException ex) {
-            throw new CommitException(ex);
-        }
+//        } catch (FieldGroup.CommitException ex) {
+//            throw new CommitException(ex);
+//        }
     }
 
     @Override
