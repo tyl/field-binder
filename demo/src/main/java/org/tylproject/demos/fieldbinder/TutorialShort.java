@@ -18,6 +18,7 @@ import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.fieldbinder.CollectionGrid;
 import org.tylproject.vaadin.addon.fieldbinder.CollectionTabularView;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.ListTable;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.viritin.ListContainer;
@@ -43,8 +44,8 @@ public class TutorialShort extends MVerticalLayout implements View {
     // FIELD BINDER (MASTER/DETAIL EDITOR)
 
     // initialize the FieldBinder for the masterDetail editor on the Person entity
-    final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container);
-    final CollectionTabularView<Address, Collection<Address>> grid ;
+    final FieldBinder<Person> binder = new FieldBinder<>(Person.class, container).withGridSupport();
+    final ListTable<Address> grid ;
 
 
     // initialize the layout, building the fields at the same time
@@ -70,7 +71,7 @@ public class TutorialShort extends MVerticalLayout implements View {
 
                 // initialize the addressList field with the built-in button bar
 
-                (grid = binder.buildDetailGridOf(Address.class, "addressList").withDefaultEditorBar()),
+                (grid = binder.buildListOf(Address.class, "addressList").withDefaultEditorBar()),
                 grid2
 
         ).withFullWidth().withMargin(true);

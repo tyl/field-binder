@@ -105,9 +105,9 @@ public class Tables {
             if (fieldGroup instanceof Tables.FieldManager) {
                 return (FieldManager)fieldGroup;
             }
-        } else {
-            throw new IllegalArgumentException("Unsupported adaptor. Cannot get FieldManager");
         }
+        throw new IllegalArgumentException("Unsupported adaptor. Cannot get FieldManager");
+
     }
 
     /**

@@ -27,7 +27,6 @@ import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultTableBehaviorFactory;
-import org.tylproject.vaadin.addon.utils.CachingContainerProxy;
 import org.vaadin.viritin.FilterableListContainer;
 
 import java.util.ArrayList;
