@@ -48,13 +48,13 @@ public class NavigationEnabled {
         }
 
     }
-    public static interface Listener {
+    public static interface Listener extends java.io.Serializable {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class, "navigationEnabled", Event.class);
         public void navigationEnabled(Event event);
     }
 
-    public static interface Notifier {
+    public static interface Notifier extends java.io.Serializable {
         void addNavigationEnabledListener(Listener listener);
         void removeNavigationEnabledListener(Listener listener);
     }

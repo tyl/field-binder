@@ -31,14 +31,14 @@ public class LastItem {
         }
     }
 
-    public static interface Listener {
+    public static interface Listener extends java.io.Serializable {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
                         "lastItem", Event.class);
         public void lastItem(Event event);
     }
 
-    public static interface Notifier {
+    public static interface Notifier extends java.io.Serializable {
         void addLastItemListener(Listener listener);
         void removeLastItemListener(Listener listener);
     }

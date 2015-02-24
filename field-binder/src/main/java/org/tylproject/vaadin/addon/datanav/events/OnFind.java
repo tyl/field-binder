@@ -34,14 +34,14 @@ public class OnFind {
         }
     }
 
-    public static interface Listener {
+    public static interface Listener extends java.io.Serializable {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
                         "onFind", Event.class);
         public void onFind(Event event);
     }
 
-    public static interface Notifier {
+    public static interface Notifier extends java.io.Serializable {
         void addOnFindListener(Listener listener);
         void removeOnFindListener(Listener listener);
     }

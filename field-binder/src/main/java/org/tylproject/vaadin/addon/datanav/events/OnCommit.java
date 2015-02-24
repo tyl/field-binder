@@ -34,14 +34,14 @@ public class OnCommit {
         }
     }
 
-    public static interface Listener {
+    public static interface Listener extends java.io.Serializable {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
                         "onCommit", Event.class);
         public void onCommit(Event event);
     }
 
-    public static interface Notifier {
+    public static interface Notifier extends java.io.Serializable {
         void addOnCommitListener(Listener listener);
         void removeOnCommitListener(Listener listener);
     }

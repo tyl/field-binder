@@ -31,14 +31,14 @@ public class ItemCreate {
         }
     }
 
-    public static interface Listener {
+    public static interface Listener extends java.io.Serializable {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
                         "itemCreate", Event.class);
         public void itemCreate(Event event);
     }
 
-    public static interface Notifier {
+    public static interface Notifier extends java.io.Serializable {
         void addItemCreateListener(Listener listener);
         void removeItemCreateListener(Listener listener);
     }

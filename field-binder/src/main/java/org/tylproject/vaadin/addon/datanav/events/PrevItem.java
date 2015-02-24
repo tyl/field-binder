@@ -31,14 +31,14 @@ public class PrevItem {
         }
     }
 
-    public static interface Listener {
+    public static interface Listener extends java.io.Serializable {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
                         "prevItem", Event.class);
         public void prevItem(Event event);
     }
 
-    public static interface Notifier {
+    public static interface Notifier extends java.io.Serializable {
         void addPrevItemListener(Listener listener);
         void removePrevItemListener(Listener listener);
     }

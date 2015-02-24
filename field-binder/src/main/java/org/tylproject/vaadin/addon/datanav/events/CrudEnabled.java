@@ -22,13 +22,14 @@ package org.tylproject.vaadin.addon.datanav.events;
 import com.vaadin.util.ReflectTools;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.EventObject;
 
 /**
  * Created by evacchi on 19/11/14.
  */
-public class CrudEnabled {
+public class CrudEnabled implements Serializable {
 
     public static class Event extends EventObject {
         private final boolean crudEnabled;
@@ -48,13 +49,13 @@ public class CrudEnabled {
         }
 
     }
-    public static interface Listener {
+    public static interface Listener extends java.io.Serializable {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class, "crudEnabled", Event.class);
         public void crudEnabled(Event event);
     }
 
-    public static interface Notifier {
+    public static interface Notifier extends Serializable {
         void addCrudEnabledListener(Listener listener);
         void removeCrudEnabledListener(Listener listener);
     }

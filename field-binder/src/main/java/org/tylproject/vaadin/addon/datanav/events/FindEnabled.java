@@ -22,6 +22,7 @@ package org.tylproject.vaadin.addon.datanav.events;
 import com.vaadin.util.ReflectTools;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.EventObject;
 
@@ -48,13 +49,13 @@ public class FindEnabled {
         }
 
     }
-    public static interface Listener {
+    public static interface Listener extends java.io.Serializable {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class, "findEnabled", Event.class);
         public void findEnabled(Event event);
     }
 
-    public static interface Notifier {
+    public static interface Notifier extends Serializable {
         void addFindEnabledListener(Listener listener);
         void removeFindEnabledListener(Listener listener);
     }

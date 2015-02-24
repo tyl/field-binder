@@ -22,6 +22,7 @@ package org.tylproject.vaadin.addon.datanav.events;
 import com.vaadin.util.ReflectTools;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.EventObject;
 
@@ -30,7 +31,7 @@ import java.util.EventObject;
  */
 public class EditingModeChange {
 
-    public enum Status {
+    public enum Status implements Serializable {
         Entering, Leaving
     }
 
@@ -53,13 +54,13 @@ public class EditingModeChange {
         }
 
     }
-    public static interface Listener {
+    public static interface Listener extends java.io.Serializable {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class, "editingModeChange", Event.class);
         public void editingModeChange(Event event);
     }
 
-    public static interface Notifier {
+    public static interface Notifier extends Serializable {
         void addEditingModeChangeListener(Listener listener);
         void removeEditingModeChangeListener(Listener listener);
     }

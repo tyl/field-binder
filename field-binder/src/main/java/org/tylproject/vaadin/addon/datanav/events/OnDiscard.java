@@ -34,14 +34,14 @@ public class OnDiscard {
         }
     }
 
-    public static interface Listener {
+    public static interface Listener extends java.io.Serializable {
         public static final Method METHOD =
                 ReflectTools.findMethod(Listener.class,
                         "onDiscard", Event.class);
         public void onDiscard(Event event);
     }
 
-    public static interface Notifier {
+    public static interface Notifier extends java.io.Serializable {
         void addOnDiscardListener(Listener listener);
         void removeOnDiscardListener(Listener listener);
     }
