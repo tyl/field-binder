@@ -2,33 +2,54 @@ package org.tylproject.vaadin.addon.fieldbinder;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
-import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.server.Page;
-import com.vaadin.server.ServerRpcManager;
 import com.vaadin.ui.Grid;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultTableBehaviorFactory;
-import org.tylproject.vaadin.addon.fields.FilterableGrid;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 /**
- * Created by evacchi on 18/02/15.
+ * Adaptor to the Grid API
+ *
+ * This implementation contains hacks to workaround some early Grid rough-edges.
+ * The most reliable way to enter and leave editing mode is to send click events
+ * to the client side. This must and will change, as more reliable server-side
+ * API will be made available.
  */
 public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
     private final Grid grid;
     private final Class<T> beanClass;
     private DataNavigation navigation;
 
+    private final String id = UUID.randomUUID().toString();
+    private final String vClass = ".v-grid-"+id;
+    private static final String BUTTON_SAVE_CLASS = ".v-grid-editor-save";
+    private static final String BUTTON_CANCEL_CLASS = ".v-grid-editor-cancel";
+    private static final String jsCode = "document.querySelector('%s %s').click();";
+
+    private final String jsCodeSave = String.format(
+        jsCode, vClass, BUTTON_SAVE_CLASS);
+    private final String jsCodeCancel = String.format(
+        jsCode, vClass, BUTTON_CANCEL_CLASS);
+
+    private static final String EDITOR_FOOTER_CLASS = ".v-grid-editor-footer";
+    private static final String cssHideButtons = "%s %s { display:none !important; }";
+
+    private final String cssHideButtonsForThisGrid = String.format(
+        cssHideButtons, vClass, EDITOR_FOOTER_CLASS);
+
     public GridAdaptor(Grid grid, Class<T> beanClass) {
         this.grid = grid;
         this.beanClass = beanClass;
+        grid.setEditorEnabled(true);
+        grid.addStyleName(id);
 
-        Page.getCurrent().getStyles().add(".v-grid-editor-footer { display:none !important; }");
+        Page.getCurrent().getStyles().add(cssHideButtonsForThisGrid);
 
     }
 
@@ -114,17 +135,17 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
 
         } else {
 //            grid.setEditorEnabled(false);
-//            grid.markAsDirty();
+            grid.markAsDirty();
         }
     }
 
     @Override
     public void setSelectable(boolean selectable) {
-//        if (selectable) {
-//            grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-//        } else {
-//            grid.setSelectionMode(Grid.SelectionMode.NONE);
-//        }
+        if (selectable) {
+            grid.setSelectionMode(Grid.SelectionMode.SINGLE);
+        } else {
+            grid.setSelectionMode(Grid.SelectionMode.NONE);
+        }
     }
 
     @Override
@@ -134,7 +155,7 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
 
     @Override
     public void focus() {
-
+        // no focus() method is available for grid
     }
 
     @Override
@@ -154,29 +175,23 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
 
     @Override
     public void commit() {
-//        try {
 
+          if (grid.getEditedItemId() == null) {
+              grid.setEditorEnabled(false);
+              return;
+          }
+        grid.setCellStyleGenerator(grid.getCellStyleGenerator());
 
             // ugliest hack in world history
-            Page.getCurrent().getJavaScript().execute(
-//                    "document.getElementsByClassName('v-grid-editor-save')[0].click();"
+            Page.getCurrent().getJavaScript().execute(jsCodeSave);
 
-                    "var elems = document.getElementsByClassName('v-grid-editor-save');\n" +
-                    "for (var i = 0; i < elems.length; i++) { elems[i].click(); }"
-
-            );
-
-
-            grid.setCellStyleGenerator(grid.getCellStyleGenerator());
-//        } catch (FieldGroup.CommitException ex) {
-//            throw new CommitException(ex);
-//        }
+//            grid.setEditorEnabled(false);
     }
 
     @Override
     public void discard() {
-        grid.cancelEditor();
-        grid.setEditorEnabled(false);
+        Page.getCurrent().getJavaScript().execute(jsCodeCancel);
+//        grid.setEditorEnabled(false);
     }
 
     private final SelectionEvent.SelectionListener selectionListener = new SelectionEvent.SelectionListener() {
