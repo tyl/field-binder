@@ -49,7 +49,10 @@ public class CollectionTable<T,U extends Collection<T>> extends CollectionTabula
     }
 
     public CollectionTable(Class<T> containedBeanClass, Class<U> collectionType, GridSupport gridSupport) {
-        super(containedBeanClass, collectionType, makeAdaptor(containedBeanClass, gridSupport));
+        super(containedBeanClass, collectionType);
+
+        final TabularViewAdaptor<?> adaptor = makeAdaptor(containedBeanClass, gridSupport);
+        setAdaptor(adaptor);
 
 
         switch (gridSupport) {
@@ -68,12 +71,17 @@ public class CollectionTable<T,U extends Collection<T>> extends CollectionTabula
         }
     }
 
-    private static <T> TabularViewAdaptor<?> makeAdaptor(Class<T> containedBeanClass, GridSupport gridSupport) {
+    private TabularViewAdaptor<?> makeAdaptor(Class<T> containedBeanClass, GridSupport gridSupport) {
         switch (gridSupport) {
             case UseTable:
-                return new TableAdaptor<>(containedBeanClass);
+                return new TableAdaptor<T>(containedBeanClass, new FieldBinder<T>(containedBeanClass) {
+                    @Override
+                    public BasicDataNavigation getNavigation() {
+                        return CollectionTable.this.getNavigation();
+                    }
+                });
             case UseGrid:
-                return new GridAdaptor<>(containedBeanClass);
+                return new GridAdaptor<T>(containedBeanClass);
             default:
                 throw new IllegalArgumentException(""+gridSupport);
         }

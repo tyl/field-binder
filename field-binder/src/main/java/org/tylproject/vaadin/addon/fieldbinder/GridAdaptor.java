@@ -2,6 +2,7 @@ package org.tylproject.vaadin.addon.fieldbinder;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Grid;
@@ -20,6 +21,10 @@ import java.util.UUID;
  * The most reliable way to enter and leave editing mode is to send click events
  * to the client side. This must and will change, as more reliable server-side
  * API will be made available.
+ *
+ * It uses document.querySelector() which is a recently new JS API, so it might
+ * not work at all in less recent browsers.
+ *
  */
 public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
     private final Grid grid;
@@ -51,6 +56,11 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
 
         Page.getCurrent().getStyles().add(cssHideButtonsForThisGrid);
 
+    }
+
+    @Override
+    public void setEditorDataSource(Item currentItem) {
+        // NOP: it is done automatically
     }
 
     public GridAdaptor(Class<T> beanClass) {

@@ -26,7 +26,7 @@ import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultTableBehaviorFactory;
+import org.tylproject.vaadin.addon.utils.CachingContainerProxy;
 import org.vaadin.viritin.FilterableListContainer;
 
 import java.util.ArrayList;
@@ -40,28 +40,51 @@ import java.util.Collection;
 public class CollectionTabularView<T,U extends Collection<T>> extends CustomField<U> {
 
     protected final VerticalLayout compositionRoot = new VerticalLayout();
-    protected final TabularViewAdaptor<?> table;
+    protected TabularViewAdaptor<?> adaptor;
     protected final Class<T> containedBeanClass;
     protected final Class<U> collectionType;
 //    private final CachingContainerProxy<FilterableListContainer<T>> cache;
     private Object[] visibleColumns;
     private final BasicDataNavigation navigation;
+
     final private FilterableListContainer<T> listContainer;
     private boolean delayedColumnInit = false;
 
-    public CollectionTabularView(Class<T> containedBeanClass, Class<U> collectionType, TabularViewAdaptor<?> adaptor) {
+    public CollectionTabularView(Class<T> containedBeanClass, Class<U> collectionType) {
         this.containedBeanClass = containedBeanClass;
         this.collectionType = collectionType;
 
 
-        this.table = adaptor;
 
-        navigation = new BasicDataNavigation();
-        navigation.restrictContainerType(FilterableListContainer.class);
+//        this.navigation =
+//        navigation.restrictContainerType(FilterableListContainer.class);
 
         this.listContainer = new FilterableListContainer<T>(containedBeanClass);
-        table.setContainerDataSource(listContainer);
-        navigation.setContainer(listContainer);
+        this.navigation = new BasicDataNavigation();
+        getNavigation().setContainer(listContainer);
+
+
+
+
+
+//        getNavigation().addItemEditListener(new ItemEdit.Listener() {
+//            @Override
+//            public void itemEdit(ItemEdit.Event event) {
+//                fieldBinder.setItemDataSource(event.getSource().getCurrentItem());
+//                fieldBinder.bindAll();
+//            }
+//        });
+
+    }
+
+    protected void setAdaptor(final TabularViewAdaptor<?> adaptor) {
+
+        if (this.adaptor != null) throw new IllegalStateException("cannot setAdaptor() twice");
+
+        this.adaptor = adaptor;
+
+        final CachingContainerProxy<?> proxy = new CachingContainerProxy<>(navigation);
+        adaptor.setContainerDataSource(proxy);
 
         compositionRoot.addComponent(adaptor.getComponent());
 
@@ -73,20 +96,21 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 navigation.setCurrentItemId(null);
-                table.select(null);
-                table.setSelectable(true);
+                adaptor.select(null);
+                adaptor.setSelectable(true);
             }
         });
 
+
         // when someone selects an item on the actual tableAdaptor widget,
         // then update the navigator accordingly
-        table.attachNavigation(navigation);
-
-
+        adaptor.attachNavigation(navigation);
     }
 
+
+
     public void select(Object itemId) {
-        table.select(itemId);
+        adaptor.select(itemId);
     }
 
 
@@ -99,7 +123,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     }
 
     public TabularViewAdaptor<?> getAdaptor() {
-        return table;
+        return adaptor;
     }
 
 
@@ -111,13 +135,13 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         this.visibleColumns = visibleColumns;
 
         // delay until a data source with more than 0 properties is available
-        if (table.getContainerDataSource().getContainerPropertyIds().size() == 0) {
+        if (adaptor.getContainerDataSource().getContainerPropertyIds().size() == 0) {
             delayedColumnInit = true;
             return;
         }
         delayedColumnInit = true;
 
-        table.setVisibleColumns(visibleColumns);
+        adaptor.setVisibleColumns(visibleColumns);
         setAllHeadersFromColumns(visibleColumns);
     }
 
@@ -132,7 +156,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
             Object propertyId = columns[i];
             headers[i] = DefaultFieldFactory.createCaptionByPropertyId(propertyId);
         }
-        table.setColumnHeaders(headers);
+        adaptor.setColumnHeaders(headers);
     }
 
     @Override
@@ -155,7 +179,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
 
     @Override
     public void focus() {
-        table.focus();
+        adaptor.focus();
     }
 
     public void setCollection(U collection) {
@@ -182,7 +206,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     protected void clearContainerState() {
         listContainer.removeAllContainerFilters();
         listContainer.setCollection(new ArrayList<T>());
-        table.select(null);
+        adaptor.select(null);
         // FIXME reset sort?
     }
 
@@ -194,14 +218,14 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         if (listContainer == null) {
             // clears the table contents
 
-            table.setContainerDataSource(null);
-            table.select(null);
+            adaptor.setContainerDataSource(null);
+            adaptor.select(null);
             navigation.setContainer(null);
         } else {
 
-            table.setContainerDataSource(listContainer);
+            adaptor.setContainerDataSource(listContainer);
             // clear selection
-            table.select(null);
+            adaptor.select(null);
             navigation.setContainer(listContainer);
 
             setupColumns();
@@ -276,7 +300,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         if (delayedColumnInit) {
             this.setVisibleColumns(visibleColumns);
         } else {
-            setAllHeadersFromColumns(table.getVisibleColumns());
+            setAllHeadersFromColumns(adaptor.getVisibleColumns());
         }
     }
 
@@ -290,12 +314,12 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     @Override
     public void commit() throws SourceException, Validator.InvalidValueException {
         super.commit();
-        table.commit();
+        adaptor.commit();
     }
 
     @Override
     public void discard() {
-        table.discard();
+        adaptor.discard();
     }
 
     /**

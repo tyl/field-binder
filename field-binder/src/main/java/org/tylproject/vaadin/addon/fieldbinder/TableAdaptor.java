@@ -3,10 +3,12 @@ package org.tylproject.vaadin.addon.fieldbinder;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.ui.Table;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultTableBehaviorFactory;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 
 /**
  * Created by evacchi on 18/02/15.
@@ -14,19 +16,31 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultTableBehaviorFact
 public class TableAdaptor<T> implements TabularViewAdaptor<Table>, Property.ValueChangeListener {
     final Table table;
     final Class<T> beanClass;
+    final FieldBinder<T> fieldBinder;
     private DataNavigation navigation;
 
-    public TableAdaptor(Table table, Class<T> beanClass) {
+    public TableAdaptor(Table table, Class<T> beanClass, FieldBinder<T> fieldBinder) {
         this.table = table;
         this.beanClass = beanClass;
+        this.fieldBinder = fieldBinder;
     }
-    public TableAdaptor(Class<T> beanClass) {
-        this(new Table(), beanClass);
+    public TableAdaptor(Class<T> beanClass, FieldBinder<T> fieldBinder) {
+        this(new Table(), beanClass, fieldBinder);
+    }
+
+    public FieldBinder<T> getFieldBinder() {
+        return fieldBinder;
     }
 
     @Override
     public void commit() {
         table.commit();
+        fieldBinder.commit();
+    }
+
+    @Override
+    public void setEditorDataSource(Item currentItem) {
+        fieldBinder.setItemDataSource(currentItem);
     }
 
     @Override
@@ -71,7 +85,7 @@ public class TableAdaptor<T> implements TabularViewAdaptor<Table>, Property.Valu
 
     @Override
     public void focus() {
-        table.focus();
+        fieldBinder.focus();
     }
 
     @Override
@@ -96,9 +110,16 @@ public class TableAdaptor<T> implements TabularViewAdaptor<Table>, Property.Valu
 
     @Override
     public void attachNavigation(final BasicDataNavigation navigation) {
+        if (this.navigation != null) throw new IllegalStateException("Cannot attach navigation twice");
+
         table.addValueChangeListener(this);
         this.setNavigation(navigation);
         navigation.setBehaviorFactory(new DefaultTableBehaviorFactory(beanClass, this));
+        table.setTableFieldFactory(new Tables.SingleLineFieldFactory(fieldBinder));
+
+
+//        this.table.setTableFieldFactory(
+//            new Tables.SingleLineFieldFactory(table.getTableFieldFactory(), navigation));
 
 
     }

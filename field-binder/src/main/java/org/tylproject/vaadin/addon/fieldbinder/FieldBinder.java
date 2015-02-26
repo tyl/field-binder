@@ -73,7 +73,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
     private final WrapDynaClass dynaClass ;
     private final Class<T> beanClass;
-    private final BasicDataNavigation navigation;
+    private BasicDataNavigation navigation;
     private GridSupport gridSupport = GridSupport.UseTable;
 
     public FieldBinder(Class<T> beanClass) {
