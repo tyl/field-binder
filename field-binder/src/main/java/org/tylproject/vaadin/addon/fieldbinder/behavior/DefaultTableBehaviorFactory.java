@@ -46,9 +46,9 @@ import java.util.Map;
 public class DefaultTableBehaviorFactory<U> implements BehaviorFactory<U> {
 
     final Class<U> beanClass;
-    final TabularViewAdaptor<?> table;
+    final TabularViewAdaptor<U,?> table;
 
-    public DefaultTableBehaviorFactory(Class<U> beanClass, TabularViewAdaptor<?> table) {
+    public DefaultTableBehaviorFactory(Class<U> beanClass, TabularViewAdaptor<U,?> table) {
         this.beanClass = beanClass;
         this.table = table;
     }

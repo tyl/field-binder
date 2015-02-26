@@ -75,6 +75,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     private final Class<T> beanClass;
     private BasicDataNavigation navigation;
     private GridSupport gridSupport = GridSupport.UseTable;
+    private ResourceBundle resourceBundle = null;
 
     public FieldBinder(Class<T> beanClass) {
         super(new FieldGroup());
@@ -108,6 +109,26 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     public FieldBinder<T> withGridSupport() {
         this.gridSupport = GridSupport.UseGrid;
         return this;
+    }
+
+    public FieldBinder<T> withResourceBundle(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
+        return this;
+    }
+
+    /**
+     * Generate a default caption automatically, or look it up under a resource bundle
+     * @param propertyId
+     * @return
+     */
+    @Override
+    protected String createCaptionByPropertyId(Object propertyId) {
+        if (resourceBundle != null) {
+            if (resourceBundle.containsKey(propertyId.toString())) {
+                return resourceBundle.getString(propertyId.toString());
+            }
+        }
+        return super.createCaptionByPropertyId(propertyId);
     }
 
     public void setItemDataSource(BeanItem<T> itemDataSource) {
@@ -190,6 +211,15 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
         collectionTable.getNavigation().disableCrud();
 
+        if (gridSupport == GridSupport.UseTable) {
+            // field binder is currently only available for Tables!
+            // propagate resourceBundle
+            collectionTable.getFieldBinder().withResourceBundle(resourceBundle);
+
+            // the following is off by default:
+            //     collectionTable.getFieldBinder().withGridSupport();
+            // so no need to revert it
+        }
 
         return collectionTable;
     }
@@ -203,8 +233,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
     public TextZoomField buildZoomField(Object bindingPropertyId, Object containerPropertyId, Container.Indexed zoomCollection) {
 
-        String caption = DefaultFieldFactory
-                .createCaptionByPropertyId(bindingPropertyId);
+        String caption = createCaptionByPropertyId(bindingPropertyId);
 
         TextZoomField field = new TextZoomField();
         field.setCaption(caption);

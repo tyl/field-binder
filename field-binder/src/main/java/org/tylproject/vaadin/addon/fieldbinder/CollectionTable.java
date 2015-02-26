@@ -51,7 +51,7 @@ public class CollectionTable<T,U extends Collection<T>> extends CollectionTabula
     public CollectionTable(Class<T> containedBeanClass, Class<U> collectionType, GridSupport gridSupport) {
         super(containedBeanClass, collectionType);
 
-        final TabularViewAdaptor<?> adaptor = makeAdaptor(containedBeanClass, gridSupport);
+        final TabularViewAdaptor<T,?> adaptor = makeAdaptor(containedBeanClass, gridSupport);
         setAdaptor(adaptor);
 
 
@@ -71,7 +71,7 @@ public class CollectionTable<T,U extends Collection<T>> extends CollectionTabula
         }
     }
 
-    private TabularViewAdaptor<?> makeAdaptor(Class<T> containedBeanClass, GridSupport gridSupport) {
+    private TabularViewAdaptor<T,?> makeAdaptor(Class<T> containedBeanClass, GridSupport gridSupport) {
         switch (gridSupport) {
             case UseTable:
                 return new TableAdaptor<T>(containedBeanClass, new FieldBinder<T>(containedBeanClass) {

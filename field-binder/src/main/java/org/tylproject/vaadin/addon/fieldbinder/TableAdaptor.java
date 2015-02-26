@@ -13,7 +13,7 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 /**
  * Created by evacchi on 18/02/15.
  */
-public class TableAdaptor<T> implements TabularViewAdaptor<Table>, Property.ValueChangeListener {
+public class TableAdaptor<T> implements TabularViewAdaptor<T,Table>, Property.ValueChangeListener {
     final Table table;
     final Class<T> beanClass;
     final FieldBinder<T> fieldBinder;
@@ -28,8 +28,14 @@ public class TableAdaptor<T> implements TabularViewAdaptor<Table>, Property.Valu
         this(new Table(), beanClass, fieldBinder);
     }
 
+    @Override
     public FieldBinder<T> getFieldBinder() {
         return fieldBinder;
+    }
+
+    @Override
+    public FieldGroup getFieldGroup() {
+        return fieldBinder.getFieldGroup();
     }
 
     @Override

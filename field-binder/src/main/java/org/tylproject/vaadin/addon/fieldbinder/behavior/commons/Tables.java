@@ -43,9 +43,9 @@ public class Tables {
      * Link Table selection to the DataNavigation instance
      */
     public static class CurrentItemChangeListener implements CurrentItemChange.Listener {
-        private final TabularViewAdaptor<?> table;
+        private final TabularViewAdaptor<?,?> table;
 
-        public CurrentItemChangeListener(TabularViewAdaptor<?> table) {
+        public CurrentItemChangeListener(TabularViewAdaptor<?,?> table) {
             this.table = table;
         }
 
@@ -65,12 +65,12 @@ public class Tables {
      *
      */
     public static class BaseCrud<T> implements CrudListeners {
-        final protected TabularViewAdaptor<?> tableAdaptor;
+        final protected TabularViewAdaptor<T,?> tableAdaptor;
         final protected Class<T> beanClass;
         protected T newEntity = null;
 
 
-        public BaseCrud(final Class<T> beanClass, final TabularViewAdaptor<?> tableAdaptor) {
+        public BaseCrud(final Class<T> beanClass, final TabularViewAdaptor<T,?> tableAdaptor) {
             this.beanClass = beanClass;
             this.tableAdaptor = tableAdaptor;
         }
@@ -138,7 +138,6 @@ public class Tables {
 
     public static class SingleLineFieldFactory implements TableFieldFactory {
         private FieldBinder<?> fieldBinder;
-        private boolean autoGenerateFields = true;
 
         public SingleLineFieldFactory(FieldBinder<?> fieldBinder) {
             this.fieldBinder = fieldBinder;

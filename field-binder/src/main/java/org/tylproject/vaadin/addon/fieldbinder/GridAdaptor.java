@@ -26,7 +26,7 @@ import java.util.UUID;
  * not work at all in less recent browsers.
  *
  */
-public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
+public class GridAdaptor<T> implements TabularViewAdaptor<T,Grid> {
     private final Grid grid;
     private final Class<T> beanClass;
     private DataNavigation navigation;
@@ -56,6 +56,16 @@ public class GridAdaptor<T> implements TabularViewAdaptor<Grid> {
 
         Page.getCurrent().getStyles().add(cssHideButtonsForThisGrid);
 
+    }
+
+    @Override
+    public FieldBinder<T> getFieldBinder() {
+        throw new UnsupportedOperationException("FieldBinder is not supported using Grid");
+    }
+
+    @Override
+    public FieldGroup getFieldGroup() {
+        return grid.getEditorFieldGroup();
     }
 
     @Override

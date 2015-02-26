@@ -32,7 +32,7 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
  * Created by evacchi on 19/12/14.
  */
 public class JPAContainerTableCrud<T> extends Tables.BaseCrud<T> {
-    public JPAContainerTableCrud(Class<T> beanClass, TabularViewAdaptor<?> table) {
+    public JPAContainerTableCrud(Class<T> beanClass, TabularViewAdaptor<T,?> table) {
         super(beanClass, table);
     }
 

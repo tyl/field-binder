@@ -32,7 +32,7 @@ public class ListContainerTableCrud<T> extends Tables.BaseCrud<T> {
 
     protected T newEntity = null;
 
-    public ListContainerTableCrud(final Class<T> beanClass, final TabularViewAdaptor<?> table) {
+    public ListContainerTableCrud(final Class<T> beanClass, final TabularViewAdaptor<T,?> table) {
         super(beanClass, table);
     }
 

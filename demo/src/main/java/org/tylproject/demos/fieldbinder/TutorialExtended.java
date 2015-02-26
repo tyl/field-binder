@@ -27,11 +27,27 @@ import org.vaadin.viritin.layouts.MFormLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import java.util.Arrays;
+import java.util.ListResourceBundle;
+import java.util.ResourceBundle;
 
 @VaadinView(name = "/custom-events")
 @VaadinUIScope
 @Theme("valo")
 public class TutorialExtended extends MVerticalLayout implements View {
+
+
+    ResourceBundle resourceBundle = new ListResourceBundle() {
+        private final String[][] STRINGS =
+        {
+            {"firstName", "Bellazio"},
+            {"street", "Strada"}
+        };
+
+        @Override
+        protected Object[][] getContents() {
+            return STRINGS;
+        }
+    };
 
     // CONTAINER
 
@@ -42,7 +58,7 @@ public class TutorialExtended extends MVerticalLayout implements View {
 
 
     // initialize the FieldBinder for the masterDetail editor on the Person entity
-    final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container);
+    final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container).withResourceBundle(resourceBundle);
 
     // initialize the Form input fields, each in its own class field
     final TextField firstName = binder.build("firstName"),
@@ -55,9 +71,7 @@ public class TutorialExtended extends MVerticalLayout implements View {
     final ListTable<Address> addressList =
             binder.buildListOf(Address.class, "addressList");
 
-//    final FieldBinder<Address> addressListBinder = new FieldBinder<Address>(Address.class);
-
-    final FieldBinder<Address> addressListBinder = ((TableAdaptor)addressList.getAdaptor()).getFieldBinder();
+    final FieldBinder<Address> addressListBinder = addressList.getFieldBinder();
 
     final TextField street  = addressListBinder.build("street"),
                     zipCode = addressListBinder.build("zipCode");
@@ -100,9 +114,11 @@ public class TutorialExtended extends MVerticalLayout implements View {
         state.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                if (event.getProperty().getValue().equals("London"))
-                city.clear();
-                city.addItems(Arrays.asList("London", "Liverpool", "Oxford"));
+                city.removeAllItems();
+                if (event.getProperty().getValue().equals("England")) {
+                    city.addItems(Arrays.asList("London", "Liverpool", "Oxford"));
+                    city.select("London");
+                }
             }
         });
 

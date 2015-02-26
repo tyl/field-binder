@@ -15,7 +15,6 @@ import org.tylproject.demos.fieldbinder.model.Person;
 import org.tylproject.vaadin.addon.datanav.ButtonBar;
 import org.tylproject.vaadin.addon.datanav.NavigationLabel;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
-import org.tylproject.vaadin.addon.fieldbinder.CollectionGrid;
 import org.tylproject.vaadin.addon.fieldbinder.CollectionTabularView;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.ListTable;

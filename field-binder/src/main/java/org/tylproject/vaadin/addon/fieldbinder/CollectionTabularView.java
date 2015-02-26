@@ -23,6 +23,8 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.shared.util.SharedUtil;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
@@ -40,7 +42,7 @@ import java.util.Collection;
 public class CollectionTabularView<T,U extends Collection<T>> extends CustomField<U> {
 
     protected final VerticalLayout compositionRoot = new VerticalLayout();
-    protected TabularViewAdaptor<?> adaptor;
+    protected TabularViewAdaptor<T,?> adaptor;
     protected final Class<T> containedBeanClass;
     protected final Class<U> collectionType;
 //    private final CachingContainerProxy<FilterableListContainer<T>> cache;
@@ -77,7 +79,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
 
     }
 
-    protected void setAdaptor(final TabularViewAdaptor<?> adaptor) {
+    protected void setAdaptor(final TabularViewAdaptor<T,?> adaptor) {
 
         if (this.adaptor != null) throw new IllegalStateException("cannot setAdaptor() twice");
 
@@ -109,6 +111,15 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
 
 
 
+    public FieldBinder<T> getFieldBinder() {
+        return (FieldBinder<T>)getAdaptor().getFieldBinder();
+    }
+
+    public FieldGroup getFieldGroup() {
+        return getAdaptor().getFieldGroup();
+    }
+
+
     public void select(Object itemId) {
         adaptor.select(itemId);
     }
@@ -122,7 +133,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         return this.getNavigation().getCurrentItem();
     }
 
-    public TabularViewAdaptor<?> getAdaptor() {
+    public TabularViewAdaptor<T,?> getAdaptor() {
         return adaptor;
     }
 
@@ -154,11 +165,18 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         String[] headers = new String[columns.length];
         for (int i = 0; i < columns.length; i++) {
             Object propertyId = columns[i];
-            headers[i] = DefaultFieldFactory.createCaptionByPropertyId(propertyId);
+            headers[i] = createCaptionByPropertyId(propertyId);
         }
         adaptor.setColumnHeaders(headers);
     }
 
+
+    protected String createCaptionByPropertyId(Object propertyId) {
+        if (getAdaptor() instanceof TableAdaptor) {
+            return getAdaptor().getFieldBinder().createCaptionByPropertyId(propertyId);
+        }
+        return SharedUtil.propertyIdToHumanFriendly(propertyId);
+    }
     @Override
     protected Component initContent() {
         return compositionRoot;

@@ -30,7 +30,7 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
  * Created by evacchi on 19/12/14.
  */
 public class BufferedMongoTableCrud<T> extends Tables.BaseCrud<T> {
-    public BufferedMongoTableCrud(Class<T> beanClass, TabularViewAdaptor<?> table) {
+    public BufferedMongoTableCrud(Class<T> beanClass, TabularViewAdaptor<T,?> table) {
         super(beanClass, table);
     }
 

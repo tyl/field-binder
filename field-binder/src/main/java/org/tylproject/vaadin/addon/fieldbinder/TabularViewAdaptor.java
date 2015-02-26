@@ -10,7 +10,7 @@ import org.tylproject.vaadin.addon.datanav.DataNavigation;
 /**
  * An interface to bridge between the Table API and the Grid API
  */
-public interface TabularViewAdaptor<T extends Component> {
+public interface TabularViewAdaptor<T,U extends Component> {
 
 
     public void setVisibleColumns(Object... visibleColumns);
@@ -25,12 +25,16 @@ public interface TabularViewAdaptor<T extends Component> {
     public void setEditable(boolean editable);
     public void setSelectable(boolean selectable);
 
-    public T getComponent();
+    public U getComponent();
     public void focus();
 
     public void select(Object itemId);
     public Object getSelectedItemId();
     public Item getSelectedItem();
+
+    FieldBinder<T> getFieldBinder();
+
+    FieldGroup getFieldGroup();
 
     public void commit();
     public void discard();
