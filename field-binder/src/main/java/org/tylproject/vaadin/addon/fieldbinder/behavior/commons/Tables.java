@@ -91,6 +91,8 @@ public class Tables {
             tableAdaptor.setEditable(true);
             tableAdaptor.setSelectable(false);
             tableAdaptor.focus();
+
+            tableAdaptor.setEditorDataSource(event.getSource().getCurrentItem());
         }
 
 
