@@ -215,7 +215,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
     }
 
     protected String createCaptionByPropertyId(Object propertyId) {
-        return SharedUtil.propertyIdToHumanFriendly(propertyId);
+        return getFieldFactory().createCaptionByPropertyId(propertyId);
     }
 
 

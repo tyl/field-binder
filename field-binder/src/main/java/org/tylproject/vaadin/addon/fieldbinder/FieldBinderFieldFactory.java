@@ -19,23 +19,47 @@
 
 package org.tylproject.vaadin.addon.fieldbinder;
 
+import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.DefaultFieldGroupFieldFactory;
 import com.vaadin.data.util.converter.Converter;
+import com.vaadin.shared.util.SharedUtil;
 import com.vaadin.ui.*;
 import org.joda.time.DateTime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * An extended {@link com.vaadin.data.fieldgroup.FieldGroupFieldFactory}
  * that supports {@link org.tylproject.vaadin.addon.fieldbinder.ListTable}
  */
 public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
+
+
+    protected ResourceBundle resourceBundle = null;
+
+    public void setResourceBundle(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
+    }
+
+    public ResourceBundle getResourceBundle() {
+        return resourceBundle;
+    }
+
+    public boolean hasResourceBundle() {
+        return resourceBundle != null;
+    }
+
+    public String createCaptionByPropertyId(Object propertyId) {
+        if (hasResourceBundle()) {
+            String propertyIdString = propertyId.toString();
+            if (resourceBundle.containsKey(propertyIdString)) {
+                return resourceBundle.getString(propertyIdString);
+            }
+        }
+        return SharedUtil.propertyIdToHumanFriendly(propertyId);
+    }
 
     public <T extends Field> T createField(Class<?> type, Class<T> fieldType) {
         Field<?> f;
@@ -144,17 +168,37 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
         else throw new UnsupportedOperationException("Unsupported type "+ dataType);
     }
 
-//
-//    public <T,U extends Collection<T>> CollectionGrid<T,U>
-//        createGridDetailField(Class<U> dataType, Class<T> containedBeanClass) {
-////        if (List.class.isAssignableFrom(dataType)) {
-////            return (CollectionGrid<T, U>) new ListTable<T>(containedBeanClass);
-////        } else
-//        if (Collection.class.isAssignableFrom(dataType)) {
-//            return new CollectionGrid<T,U>(containedBeanClass, dataType);
-//        }
-//        else throw new UnsupportedOperationException("Unsupported type "+ dataType);
-//    }
+    @Override
+    protected void populateWithEnumData(AbstractSelect select, Class<? extends Enum>
+    enumClass) {
+        select.removeAllItems();
+        for (Object p : select.getContainerPropertyIds()) {
+            select.removeContainerProperty(p);
+        }
+        select.addContainerProperty(CAPTION_PROPERTY_ID, String.class, "");
+        select.setItemCaptionPropertyId(CAPTION_PROPERTY_ID);
+        @SuppressWarnings("unchecked")
+        EnumSet<?> enumSet = EnumSet.allOf(enumClass);
+        for (Enum<?> r : enumSet) {
+            Item newItem = select.addItem(r);
+            newItem.getItemProperty(CAPTION_PROPERTY_ID).setValue(getLocalizedEnumCaption(r));
+        }
+    }
+
+    protected String getLocalizedEnumCaption(Enum<?> enumValue) {
+        String enumName = enumValue.name();
+        String baseName = enumValue.getDeclaringClass().getCanonicalName();
+
+        String key = baseName + '.' + enumName;
+
+        if (hasResourceBundle()) {
+            if (resourceBundle.containsKey(key)) {
+                return resourceBundle.getString(key);
+            }
+        }
+
+        return enumValue.toString();
+    }
 }
 
 

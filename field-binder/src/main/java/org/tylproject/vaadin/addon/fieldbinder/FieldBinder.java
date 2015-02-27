@@ -23,6 +23,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Grid;
@@ -36,6 +37,7 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultBehaviorFactory;
 import org.tylproject.vaadin.addon.fields.zoom.*;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
 import java.util.*;
 
 /**
@@ -75,7 +77,6 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     private final Class<T> beanClass;
     private BasicDataNavigation navigation;
     private GridSupport gridSupport = GridSupport.UseTable;
-    private ResourceBundle resourceBundle = null;
 
     public FieldBinder(Class<T> beanClass) {
         super(new FieldGroup());
@@ -112,23 +113,8 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
     public FieldBinder<T> withResourceBundle(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
+        this.getFieldFactory().setResourceBundle(resourceBundle);
         return this;
-    }
-
-    /**
-     * Generate a default caption automatically, or look it up under a resource bundle
-     * @param propertyId
-     * @return
-     */
-    @Override
-    protected String createCaptionByPropertyId(Object propertyId) {
-        if (resourceBundle != null) {
-            if (resourceBundle.containsKey(propertyId.toString())) {
-                return resourceBundle.getString(propertyId.toString());
-            }
-        }
-        return super.createCaptionByPropertyId(propertyId);
     }
 
     public void setItemDataSource(BeanItem<T> itemDataSource) {
@@ -157,6 +143,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         return super.getItemDataSource();
     }
 
+    // this is a bit dirty
     public T getBeanDataSource() {
         Item item = getItemDataSource();
         if (item instanceof BeanItem) {
@@ -174,9 +161,18 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
     protected T createBean() {
         try {
-            return beanClass.newInstance();
+            Constructor<T> ctor = beanClass.getConstructor();
+            return ctor.newInstance();
         } catch (Exception ex) {
             throw new UnsupportedOperationException(ex);
+        }
+    }
+
+    @Override
+    protected void configureField(Field<?> f) {
+        super.configureField(f);
+        if (f instanceof ComboBox) {
+
         }
     }
 
@@ -214,7 +210,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         if (gridSupport == GridSupport.UseTable) {
             // field binder is currently only available for Tables!
             // propagate resourceBundle
-            collectionTable.getFieldBinder().withResourceBundle(resourceBundle);
+            collectionTable.getFieldBinder().withResourceBundle(getFieldFactory().getResourceBundle());
 
             // the following is off by default:
             //     collectionTable.getFieldBinder().withGridSupport();
