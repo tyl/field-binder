@@ -22,7 +22,8 @@ public class MyDataSourceGenerator {
                 new Person("George", "Harrison", new DateTime(1943, 2, 25, 0, 0).toDate(), new Address("Liverpool", "Abbey Road")),
                 new Person("John", "Lennon",     new DateTime(1940, 10, 9, 0, 0).toDate(), new Address("Liverpool", "Liverpool St.")),
                 new Person("Paul", "McCartney", new DateTime(1942, 6, 18, 0, 0).toDate(), new Address("Liverpool")),
-                new Person("Ringo", "Starr", new DateTime(1940, 6, 7, 0, 0).toDate(), new Address("Test"))
+                new Person("Ringo", "Starr", new DateTime(1940, 6, 7, 0, 0).toDate(), new Address("Test")),
+                new Person("Lucy", "Indeskij", new DateTime(1967, 6, 1, 0, 0).toDate(), new Address("Diamonds"))
         ));
         return dataSource;
     }

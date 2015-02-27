@@ -35,14 +35,21 @@ import java.util.ResourceBundle;
 @Theme("valo")
 public class TutorialExtended extends MVerticalLayout implements View {
 
+    private static final String[][] STRINGS =
+    {
+//            {"firstName", "Nome"},
+//            {"street", "Strada"},
+            {"org.tylproject.demos.fieldbinder.model.Gender.MALE",   "♂ Male"},
+            {"org.tylproject.demos.fieldbinder.model.Gender.FEMALE", "♀ Female"}
+    };
 
-    ResourceBundle resourceBundle = new ListResourceBundle() {
-        private final String[][] STRINGS =
-        {
-            {"firstName", "Bellazio"},
-            {"street", "Strada"}
+    final ResourceBundle resourceBundle = new ListResourceBundle() {
+        final ResourceBundle resourceBundle = new ListResourceBundle() {
+            @Override
+            protected Object[][] getContents() {
+                return STRINGS;
+            }
         };
-
         @Override
         protected Object[][] getContents() {
             return STRINGS;
@@ -58,7 +65,9 @@ public class TutorialExtended extends MVerticalLayout implements View {
 
 
     // initialize the FieldBinder for the masterDetail editor on the Person entity
-    final FieldBinder<Person> binder = new FieldBinder<Person>(Person.class, container).withResourceBundle(resourceBundle);
+    final FieldBinder<Person> binder =
+                new FieldBinder<Person>(Person.class, container)
+                            .withResourceBundle(resourceBundle);
 
     // initialize the Form input fields, each in its own class field
     final TextField firstName = binder.build("firstName"),
@@ -66,6 +75,7 @@ public class TutorialExtended extends MVerticalLayout implements View {
                     age       = binder.build("age");
 
     final DateField birthDate = binder.build("birthDate");
+    final ComboBox gender     = binder.build("gender");
 
 
     final ListTable<Address> addressList =
@@ -77,7 +87,7 @@ public class TutorialExtended extends MVerticalLayout implements View {
                     zipCode = addressListBinder.build("zipCode");
 
     final ComboBox state   = addressListBinder.build("State", "state", ComboBox.class);
-    final ComboBox city   = addressListBinder.build("City", "city", ComboBox.class);
+    final ComboBox city    = addressListBinder.build("City", "city", ComboBox.class);
 
 
     {
@@ -88,6 +98,7 @@ public class TutorialExtended extends MVerticalLayout implements View {
                         lastName,
                         birthDate,
                         age,
+                        gender,
                         new NavigationLabel(binder.getNavigation())
                 ).withFullWidth().withMargin(true),
 
@@ -115,7 +126,7 @@ public class TutorialExtended extends MVerticalLayout implements View {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 city.removeAllItems();
-                if (event.getProperty().getValue().equals("England")) {
+                if ("England".equals(event.getProperty().getValue())) {
                     city.addItems(Arrays.asList("London", "Liverpool", "Oxford"));
                     city.select("London");
                 }
