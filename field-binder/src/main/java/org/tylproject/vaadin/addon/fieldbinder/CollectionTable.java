@@ -95,6 +95,8 @@ public class CollectionTable<T,U extends Collection<T>> extends CollectionTabula
         tableComponent.setHeight("300px");
         tableComponent.setSelectable(true);
         tableComponent.setMultiSelect(false);
+        tableComponent.setNullSelectionAllowed(false);
+
     }
 
     public void initGridAdaptor() {
