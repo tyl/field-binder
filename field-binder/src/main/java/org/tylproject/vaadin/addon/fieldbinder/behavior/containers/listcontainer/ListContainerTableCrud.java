@@ -21,6 +21,7 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontaine
 
 import com.vaadin.ui.Table;
 import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
+import org.tylproject.vaadin.addon.fieldbinder.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 
 /**
@@ -31,7 +32,7 @@ public class ListContainerTableCrud<T> extends Tables.BaseCrud<T> {
 
     protected T newEntity = null;
 
-    public ListContainerTableCrud(final Class<T> beanClass, final Table table) {
+    public ListContainerTableCrud(final Class<T> beanClass, final TabularViewAdaptor<T,?> table) {
         super(beanClass, table);
     }
 

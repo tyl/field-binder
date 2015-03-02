@@ -9,13 +9,14 @@ import org.tylproject.vaadin.addon.fields.zoom.GridZoomDialog;
 import org.tylproject.vaadin.addon.fields.zoom.TableZoomDialog;
 import org.tylproject.vaadin.addon.fields.zoom.TextZoomField;
 import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.navigator.VaadinView;
+
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.viritin.FilterableListContainer;
 import org.vaadin.viritin.layouts.MFormLayout;
 
 @VaadinView(name = "/zoom")
-@UIScope
+@VaadinUIScope
 public class TutorialZoom extends MFormLayout implements View {
 
     private static final String TARGET_PROPERTY_ID = "firstName";

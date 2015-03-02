@@ -8,13 +8,13 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
+import org.vaadin.spring.annotation.VaadinUIScope;
+import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.viritin.layouts.MVerticalLayout;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.navigator.VaadinView;
 
 
 @VaadinView(name = "")
-@UIScope
+@VaadinUIScope
 public class MainView extends MVerticalLayout implements View  {
 
     {

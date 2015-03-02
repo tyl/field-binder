@@ -23,13 +23,14 @@ import com.vaadin.ui.Table;
 import org.bson.types.ObjectId;
 import org.tylproject.vaadin.addon.BufferedMongoContainer;
 import org.tylproject.vaadin.addon.datanav.events.*;
+import org.tylproject.vaadin.addon.fieldbinder.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 
 /**
  * Created by evacchi on 19/12/14.
  */
 public class BufferedMongoTableCrud<T> extends Tables.BaseCrud<T> {
-    public BufferedMongoTableCrud(Class<T> beanClass, Table table) {
+    public BufferedMongoTableCrud(Class<T> beanClass, TabularViewAdaptor<T,?> table) {
         super(beanClass, table);
     }
 

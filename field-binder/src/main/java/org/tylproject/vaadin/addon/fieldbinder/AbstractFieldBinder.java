@@ -22,6 +22,7 @@ package org.tylproject.vaadin.addon.fieldbinder;
 import com.vaadin.data.Item;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.shared.util.SharedUtil;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
@@ -191,7 +192,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
             return field;
 
         } catch (RuntimeException e) {
-            throw new FieldGroup.BindException("Could not bind field "+field+" to property "+propertyId, e);
+            throw new FieldGroup.BindException("Could not bind field "+field.getClass().getCanonicalName()+" to property "+propertyId, e);
         }
     }
 
@@ -213,6 +214,12 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         return this.itemDataSource != null;
     }
 
+    protected String createCaptionByPropertyId(Object propertyId) {
+        return getFieldFactory().createCaptionByPropertyId(propertyId);
+    }
+
+
+
     /**
      * Build automatically a Field for the given propertyId
      *
@@ -227,8 +234,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
      * camelCased property ids.
      */
     public <T extends Field<?>> T build(Object propertyId) {
-        String caption = DefaultFieldFactory
-                .createCaptionByPropertyId(propertyId);
+        String caption = createCaptionByPropertyId(propertyId);
         return (T) build(caption, propertyId);
     }
 
@@ -240,6 +246,31 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
      */
     public <T extends Field<?>> T build(String caption, Object propertyId) {
         return (T) build(caption, propertyId, Field.class);
+    }
+
+
+    /**
+     * Build a field of the given type, for the given propertyId,
+     * with the given caption,
+     *
+     */
+    public <T extends Field<?>> T build(Object propertyId, Class<T> fieldType) {
+        Class<?> dataType = getPropertyType(propertyId);
+
+        T field = getFieldFactory().createField(dataType, fieldType);
+        if (field == null) {
+            throw new BuildException("Unable to build a field of type "
+                    + fieldType.getName() + " for editing "
+                    + dataType.getName());
+        }
+
+        field.setCaption(createCaptionByPropertyId(propertyId));
+
+//        propertyIdToType.put(propertyId, dataType);
+
+        bind(field, propertyId);
+
+        return field;
     }
 
     /**

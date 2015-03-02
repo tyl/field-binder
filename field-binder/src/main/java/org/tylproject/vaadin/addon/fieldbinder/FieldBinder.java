@@ -23,9 +23,10 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.Grid;
 import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.WrapDynaClass;
@@ -36,6 +37,7 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultBehaviorFactory;
 import org.tylproject.vaadin.addon.fields.zoom.*;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
 import java.util.*;
 
 /**
@@ -73,8 +75,8 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
     private final WrapDynaClass dynaClass ;
     private final Class<T> beanClass;
-    private final BasicDataNavigation navigation;
-    private boolean gridSupportEnabled = false;
+    private BasicDataNavigation navigation;
+    private GridSupport gridSupport = GridSupport.UseTable;
 
     public FieldBinder(Class<T> beanClass) {
         super(new FieldGroup());
@@ -106,16 +108,34 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
     public FieldBinder<T> withGridSupport() {
-        this.gridSupportEnabled = true;
+        this.gridSupport = GridSupport.UseGrid;
+        return this;
+    }
+
+    public FieldBinder<T> withResourceBundle(ResourceBundle resourceBundle) {
+        this.getFieldFactory().setResourceBundle(resourceBundle);
         return this;
     }
 
     public void setItemDataSource(BeanItem<T> itemDataSource) {
+        registerNestedPropertyIds(itemDataSource);
         super.setItemDataSource(itemDataSource);
+    }
+
+    private void registerNestedPropertyIds(BeanItem<T> itemDataSource) {
+        for (Object propertyId: getBindingPropertyIds()) {
+            if (isNestedProperty(propertyId)) {
+                itemDataSource.addNestedProperty(propertyId.toString());
+            }
+        }
     }
 
     public void setBeanDataSource(T dataSource) {
         this.setItemDataSource(new BeanItem<T>(dataSource));
+    }
+
+    protected boolean isNestedProperty(Object propertyId) {
+        return propertyId.toString().contains(".");
     }
 
     @Override
@@ -123,6 +143,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
         return super.getItemDataSource();
     }
 
+    // this is a bit dirty
     public T getBeanDataSource() {
         Item item = getItemDataSource();
         if (item instanceof BeanItem) {
@@ -140,9 +161,18 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
     protected T createBean() {
         try {
-            return beanClass.newInstance();
+            Constructor<T> ctor = beanClass.getConstructor();
+            return ctor.newInstance();
         } catch (Exception ex) {
             throw new UnsupportedOperationException(ex);
+        }
+    }
+
+    @Override
+    protected void configureField(Field<?> f) {
+        super.configureField(f);
+        if (f instanceof ComboBox) {
+
         }
     }
 
@@ -164,9 +194,11 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
      * @param <U>
      * @return
      */
-    public <U,C extends Collection<U>> CollectionTable<U,C> buildCollectionOf(Class<U> containedBeanClass, Object propertyId) {
+    public <U,C extends Collection<U>>
+    CollectionTable<U,C> buildCollectionOf(Class<U> containedBeanClass, Object propertyId) {
+
         final Class<C> dataType = (Class<C>) getPropertyType(propertyId);
-        final CollectionTable<U,C> collectionTable = getFieldFactory().createDetailField(dataType, containedBeanClass);
+        final CollectionTable<U,C>  collectionTable = getFieldFactory().createDetailField(dataType, containedBeanClass, gridSupport);
 
         bind(collectionTable, propertyId);
 
@@ -175,19 +207,29 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
 
         collectionTable.getNavigation().disableCrud();
 
+        if (gridSupport == GridSupport.UseTable) {
+            // field binder is currently only available for Tables!
+            // propagate resourceBundle
+            collectionTable.getFieldBinder().withResourceBundle(getFieldFactory().getResourceBundle());
+
+            // the following is off by default:
+            //     collectionTable.getFieldBinder().withGridSupport();
+            // so no need to revert it
+        }
 
         return collectionTable;
     }
 
+
     public <U> ListTable<U> buildListOf(Class<U> containedBeanClass, Object propertyId) {
-        return (ListTable<U>) this.<U,List<U>>buildCollectionOf(containedBeanClass, propertyId);
+        ListTable<U> listTable = (ListTable < U >) this.<U, List<U>>buildCollectionOf(containedBeanClass, propertyId);
+        return listTable;
     }
 
 
     public TextZoomField buildZoomField(Object bindingPropertyId, Object containerPropertyId, Container.Indexed zoomCollection) {
 
-        String caption = DefaultFieldFactory
-                .createCaptionByPropertyId(bindingPropertyId);
+        String caption = createCaptionByPropertyId(bindingPropertyId);
 
         TextZoomField field = new TextZoomField();
         field.setCaption(caption);
@@ -203,7 +245,7 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
     }
 
     protected ZoomDialog makeDefaultZoomDialog(Object propertyId, Container.Indexed zoomCollection) {
-        if (gridSupportEnabled) {
+        if (gridSupport == GridSupport.UseGrid) {
             return new GridZoomDialog(propertyId, zoomCollection);
         } else {
             return new TableZoomDialog(propertyId, zoomCollection);

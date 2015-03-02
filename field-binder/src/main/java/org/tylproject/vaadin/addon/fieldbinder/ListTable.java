@@ -24,12 +24,20 @@ import java.util.List;
 /**
  * A table wrapper where the value is a {@link java.util.List}
  *
+ * This would be type alias to CollectionTable<T,List<T>> if Java had type aliases
+ *
  * Generally used together with {@link org.tylproject.vaadin.addon.fieldbinder.FieldBinder}
  */
 public class ListTable<T> extends CollectionTable<T,List<T>> {
     public ListTable(Class<T> containedBeanClass) {
         super(containedBeanClass, (Class) List.class);
     }
+
+    public ListTable(Class<T> containedBeanClass, GridSupport gridSupport) {
+        super(containedBeanClass, (Class) List.class, gridSupport);
+    }
+
+
     public ListTable<T> withDefaultEditorBar() {
         super.withDefaultEditorBar();
         return this;

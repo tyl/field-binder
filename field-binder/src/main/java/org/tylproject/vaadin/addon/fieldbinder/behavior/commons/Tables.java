@@ -20,28 +20,32 @@
 package org.tylproject.vaadin.addon.fieldbinder.behavior.commons;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Item;
+import com.vaadin.data.fieldgroup.DefaultFieldGroupFieldFactory;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroupFieldFactory;
 import com.vaadin.ui.*;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.events.*;
-import org.tylproject.vaadin.addon.fieldbinder.FieldBinderFieldFactory;
+import org.tylproject.vaadin.addon.fieldbinder.*;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudListeners;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Constructor;
+import java.util.*;
 
 /**
  * Base behavior for Tables
  */
 public class Tables {
 
+
     /**
      * Link Table selection to the DataNavigation instance
      */
     public static class CurrentItemChangeListener implements CurrentItemChange.Listener {
-        private final Table table;
+        private final TabularViewAdaptor<?,?> table;
 
-        public CurrentItemChangeListener(Table table) {
+        public CurrentItemChangeListener(TabularViewAdaptor<?,?> table) {
             this.table = table;
         }
 
@@ -61,49 +65,42 @@ public class Tables {
      *
      */
     public static class BaseCrud<T> implements CrudListeners {
-        final protected Table table;
+        final protected TabularViewAdaptor<T,?> tableAdaptor;
         final protected Class<T> beanClass;
-        final protected FieldManager fieldManager;
-
         protected T newEntity = null;
-        protected FindListeners findListeners;
 
-        public BaseCrud(final Class<T> beanClass, final Table table) {
+
+        public BaseCrud(final Class<T> beanClass, final TabularViewAdaptor<T,?> tableAdaptor) {
             this.beanClass = beanClass;
-            this.table = table;
-
-            this.fieldManager = new FieldManager(table);
-
-            table.setTableFieldFactory(fieldManager);
+            this.tableAdaptor = tableAdaptor;
         }
-
-
         @Override
         public void itemEdit(ItemEdit.Event event) {
-            table.setEditable(true);
-            table.setSelectable(false);
-            table.focus();
+            tableAdaptor.setEditable(true);
+            tableAdaptor.setSelectable(false);
+            tableAdaptor.focus();
+
+            tableAdaptor.setEditorDataSource(event.getSource().getCurrentItem());
+
+
         }
 
 
         @Override
         public void itemCreate(ItemCreate.Event event) {
-    //        event.getSource().getContainer().addItem(...);
-    //        event.getSource().setCurrentItemId(...);
+            tableAdaptor.setEditable(true);
+            tableAdaptor.setSelectable(false);
+            tableAdaptor.focus();
 
-            table.setEditable(true);
-            table.setSelectable(false);
-            table.focus();
+            tableAdaptor.setEditorDataSource(event.getSource().getCurrentItem());
         }
 
 
         public void onDiscard(OnDiscard.Event event) {
-            this.table.discard();
+            this.tableAdaptor.discard();
 
-            fieldManager.discardFields();
-            this.table.setEditable(false);
-
-            this.table.setSelectable(true);
+            this.tableAdaptor.setEditable(false);
+            this.tableAdaptor.setSelectable(true);
             if (newEntity != null) {
                 newEntity = null;
                 event.getSource().remove();
@@ -113,22 +110,26 @@ public class Tables {
 
         public void onCommit(OnCommit.Event event) {
 
-            fieldManager.commitFields();
-            this.table.commit();
-            this.table.setEditable(false);
+            this.tableAdaptor.setEditable(false);
+            this.tableAdaptor.commit();
 
-            this.table.setSelectable(true);
+//            this.tableAdaptor.getFieldBinder().commit();
+
+            ((TableAdaptor<?>)this.tableAdaptor).getComponent().refreshRowCache();
+
+            this.tableAdaptor.setSelectable(true);
 
             newEntity = null;
         }
 
         public void itemRemove(ItemRemove.Event event) {
-            this.table.removeItem(event.getSource().getCurrentItemId());
+            this.tableAdaptor.getContainerDataSource().removeItem(event.getSource().getCurrentItemId());
         }
 
         protected T createBean() {
             try {
-                T bean = beanClass.newInstance();
+                Constructor<T> ctor = beanClass.getConstructor();
+                T bean = ctor.newInstance();
                 newEntity = bean;
                 return bean;
             } catch (Exception ex) {
@@ -137,52 +138,25 @@ public class Tables {
         }
     }
 
-    /**
-     * Mimics a (lighter-weight) FieldBinder for Table inline-editing
-     */
-    public static class FieldManager implements TableFieldFactory {
-        final FieldGroupFieldFactory fieldFactory ;
-        final List<Field<?>> fields = new ArrayList<>();
-        final Table table;
+    public static class SingleLineFieldFactory implements TableFieldFactory {
+        private FieldBinder<?> fieldBinder;
 
-
-        public FieldManager(Table table) {
-            this(table, new FieldBinderFieldFactory());
-        }
-
-        public FieldManager(Table table, FieldGroupFieldFactory fieldFactory) {
-            this.fieldFactory = fieldFactory;
-            this.table = table;
+        public SingleLineFieldFactory(FieldBinder<?> fieldBinder) {
+            this.fieldBinder = fieldBinder;
         }
 
         @Override
         public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
-            if (itemId == null || !itemId.equals(table.getValue())) return null;
+            if (itemId != fieldBinder.getNavigation().getCurrentItemId()) return null;
 
-            Class<?> dataType = container.getType(propertyId);
-            Field<?> f = fieldFactory.createField(dataType, Field.class);
-            if (f instanceof AbstractTextField) {
-                ((AbstractTextField) f).setNullRepresentation("");
-                ((AbstractTextField) f).setImmediate(true);
+            Field<?> f = fieldBinder.getField(propertyId);
+            if (f == null) {
+                fieldBinder.build(propertyId);
             }
-            f.setBuffered(true);
-            fields.add(f);
-            return f;
-        }
 
 
-        public void commitFields() {
-            for (Field<?> f: fields) {
-                f.commit();
-            }
-            fields.clear();
+            return fieldBinder.getField(propertyId);
         }
-        public void discardFields() {
-            for (Field<?> f: fields) {
-                f.discard();
-            }
-            fields.clear();
-        }
-
     }
+
 }

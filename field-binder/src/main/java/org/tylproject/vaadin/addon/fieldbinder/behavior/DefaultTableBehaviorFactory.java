@@ -22,6 +22,7 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior;
 import com.vaadin.data.Container;
 import com.vaadin.ui.Table;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
+import org.tylproject.vaadin.addon.fieldbinder.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.SearchWindowFindListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.jpacontainer
@@ -45,9 +46,9 @@ import java.util.Map;
 public class DefaultTableBehaviorFactory<U> implements BehaviorFactory<U> {
 
     final Class<U> beanClass;
-    final Table table;
+    final TabularViewAdaptor<U,?> table;
 
-    public DefaultTableBehaviorFactory(Class<U> beanClass, Table table) {
+    public DefaultTableBehaviorFactory(Class<U> beanClass, TabularViewAdaptor<U,?> table) {
         this.beanClass = beanClass;
         this.table = table;
     }
