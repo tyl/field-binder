@@ -22,6 +22,7 @@ package org.tylproject.vaadin.addon.datanav;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
 import org.tylproject.vaadin.addon.datanav.events.CrudEnabled;
+import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
 
 import javax.annotation.Nonnull;
@@ -29,7 +30,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by evacchi on 04/12/14.
  */
-public class CrudButtonBar extends AbstractButtonBar {
+public class CrudButtonBar extends AbstractButtonBar implements CurrentItemChange.Listener, EditingModeChange.Listener, CrudEnabled.Listener {
 
     private final Button createButton = button("create");
     private final Button editButton = button("edit");
@@ -101,43 +102,20 @@ public class CrudButtonBar extends AbstractButtonBar {
 
     @Override
     protected void attachNavigation(@Nonnull DataNavigation nav) {
-        nav.addCrudEnabledListener(buttonEnabler);
-        nav.addEditingModeChangeListener(editingListener);
-        super.attachNavigation(nav);
+        nav.addCrudEnabledListener(this);
+        nav.addEditingModeChangeListener(this);
+        nav.addCurrentItemChangeListener(this);
     }
 
     @Override
     protected void detachNavigation(@Nonnull DataNavigation nav) {
-        super.detachNavigation(nav);
-        nav.removeCrudEnabledListener(buttonEnabler);
-        nav.removeEditingModeChangeListener(editingListener);
+        nav.removeCurrentItemChangeListener(this);
+        nav.removeCrudEnabledListener(this);
+        nav.removeEditingModeChangeListener(this);
     }
 
-    CrudEnabled.Listener buttonEnabler = new CrudEnabled.Listener() {
-        @Override
-        public void crudEnabled(CrudEnabled.Event event) {
-            updateButtonStatus();
 
-        }
-    };
-
-    EditingModeChange.Listener editingListener = new EditingModeChange.Listener() {
-
-        @Override
-        public void editingModeChange(EditingModeChange.Event event) {
-            if (event.isEnteringEditingMode()) {
-                disable(createButton, editButton, removeButton);
-                enable(commitButton, discardButton);
-            } else {
-                enable(createButton, editButton, removeButton);
-                disable(commitButton, discardButton);
-            }
-        }
-    };
-
-    @Override
     protected void updateButtonStatus() {
-
         if (!getNavigation().isCrudEnabled()) {
             disable(crudButtons);
             return;
@@ -161,8 +139,31 @@ public class CrudButtonBar extends AbstractButtonBar {
                 }
             }
         }
+    }
+
+    @Override
+    public void crudEnabled(CrudEnabled.Event event) {
+        updateButtonStatus();
 
     }
+
+    @Override
+    public void currentItemChange(CurrentItemChange.Event event) {
+        updateButtonStatus();
+    }
+
+    @Override
+    public void editingModeChange(EditingModeChange.Event event) {
+        if (event.isEnteringEditingMode()) {
+            disable(createButton, editButton, removeButton);
+            enable(commitButton, discardButton);
+        } else {
+            enable(createButton, editButton, removeButton);
+            disable(commitButton, discardButton);
+        }
+    }
+
+
 
 
     public Button getCreateButton() {

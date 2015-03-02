@@ -22,6 +22,7 @@ package org.tylproject.vaadin.addon.datanav;
 import com.vaadin.data.Container;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
+import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.datanav.events.NavigationEnabled;
 
 import javax.annotation.Nonnull;
@@ -29,7 +30,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by evacchi on 04/12/14.
  */
-public class NavButtonBar extends AbstractButtonBar {
+public class NavButtonBar extends AbstractButtonBar implements NavigationEnabled.Listener, CurrentItemChange.Listener {
 
 
     private final Button btnFirst = button("first");
@@ -89,25 +90,28 @@ public class NavButtonBar extends AbstractButtonBar {
 
     @Override
     protected void attachNavigation(@Nonnull DataNavigation nav) {
-        super.attachNavigation(nav);
-        nav.addNavigationEnabledListener(buttonEnabler);
+        nav.addCurrentItemChangeListener(this);
+        nav.addNavigationEnabledListener(this);
     }
 
     @Override
     protected void detachNavigation(@Nonnull DataNavigation nav) {
-        nav.removeNavigationEnabledListener(buttonEnabler);
-        super.detachNavigation(nav);
+        nav.removeNavigationEnabledListener(this);
+        nav.removeCurrentItemChangeListener(this);
     }
 
-    NavigationEnabled.Listener buttonEnabler = new NavigationEnabled.Listener() {
-        @Override
-        public void navigationEnabled(NavigationEnabled.Event event) {
-            updateButtonStatus();
-        }
-    };
 
     @Override
-    protected  void updateButtonStatus() {
+    public void navigationEnabled(NavigationEnabled.Event event) {
+        updateButtonStatus();
+    }
+
+    @Override
+    public void currentItemChange(CurrentItemChange.Event event) {
+        updateButtonStatus();
+    }
+
+    protected void updateButtonStatus() {
         Container.Ordered ctr = getNavigation().getContainer();
         if (ctr == null || !getNavigation().isNavigationEnabled()) {
             disable(navButtons);

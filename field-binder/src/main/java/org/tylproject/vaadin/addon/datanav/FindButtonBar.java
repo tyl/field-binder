@@ -22,6 +22,7 @@ package org.tylproject.vaadin.addon.datanav;
 import com.vaadin.data.Container;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
+import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.datanav.events.FindEnabled;
 
 import javax.annotation.Nonnull;
@@ -29,7 +30,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by evacchi on 04/12/14.
  */
-public class FindButtonBar extends AbstractButtonBar {
+public class FindButtonBar extends AbstractButtonBar implements FindEnabled.Listener, CurrentItemChange.Listener {
 
     final Button btnClearToFind = button("clearToFind");
     final Button btnFind = button("find");
@@ -69,28 +70,30 @@ public class FindButtonBar extends AbstractButtonBar {
 
     @Override
     protected void attachNavigation(@Nonnull DataNavigation nav) {
-        super.attachNavigation(nav);
-        nav.addFindEnabledListener(buttonEnabler);
+        nav.addCurrentItemChangeListener(this);
+        nav.addFindEnabledListener(this);
+    }
+
+    @Override
+    public void currentItemChange(CurrentItemChange.Event event) {
+        updateButtonStatus();
     }
 
     @Override
     protected void detachNavigation(@Nonnull DataNavigation nav) {
-        if (nav == null) return;
-        nav.removeFindEnabledListener(buttonEnabler);
-        super.detachNavigation(nav);
+        nav.removeFindEnabledListener(this);
+        nav.removeCurrentItemChangeListener(this);
     }
 
-    FindEnabled.Listener buttonEnabler = new FindEnabled.Listener() {
-        @Override
-        public void findEnabled(FindEnabled.Event event) {
-            if (event.isFindEnabled()) {
-                // default to disabling clearToFind
-                updateClearToFind(event.getSource().getContainer());
-            } else {
-                disable(findButtons);
-            }
+    @Override
+    public void findEnabled(FindEnabled.Event event) {
+        if (event.isFindEnabled()) {
+            // default to disabling clearToFind
+            updateClearToFind(event.getSource().getContainer());
+        } else {
+            disable(findButtons);
         }
-    };
+    }
 
     private void updateClearToFind(Container container) {
         disable(btnFind);
@@ -106,7 +109,6 @@ public class FindButtonBar extends AbstractButtonBar {
         }
     }
 
-    @Override
     protected void updateButtonStatus() {
 
         if (!getNavigation().isFindEnabled()) {

@@ -51,7 +51,6 @@ public abstract class AbstractButtonBar extends CustomComponent implements DataN
         detachNavigation(this.navigation);
         this.navigation = nav;
         attachNavigation(nav);
-        updateButtonStatus();
     }
 
     public DataNavigation getNavigation() {
@@ -71,13 +70,9 @@ public abstract class AbstractButtonBar extends CustomComponent implements DataN
 
 
 
-    protected void detachNavigation(@Nonnull DataNavigation nav) {
-        nav.removeCurrentItemChangeListener(buttonBarStatusUpdater);
-    }
+    protected abstract void detachNavigation(@Nonnull DataNavigation nav) ;
 
-    protected void attachNavigation(@Nonnull DataNavigation nav) {
-        nav.addCurrentItemChangeListener(buttonBarStatusUpdater);
-    }
+    protected abstract void attachNavigation(@Nonnull DataNavigation nav) ;
 
 
     protected Button button(String labelIdentifier) {
@@ -90,12 +85,4 @@ public abstract class AbstractButtonBar extends CustomComponent implements DataN
         for (Button btn: btns) btn.setEnabled(false);
     }
 
-    CurrentItemChange.Listener buttonBarStatusUpdater = new CurrentItemChange.Listener() {
-        @Override
-        public void currentItemChange(CurrentItemChange.Event event) {
-            updateButtonStatus();
-        }
-    };
-
-    protected abstract void updateButtonStatus();
 }
