@@ -25,7 +25,7 @@ import org.tylproject.vaadin.addon.datanav.events.*;
 import java.util.logging.Logger;
 
 /**
- * Created by evacchi on 19/11/14.
+ * Defines all the event handlers for a DataNavigation.
  */
 public abstract class AbstractDataNavigation implements DataNavigation {
 

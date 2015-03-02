@@ -203,8 +203,11 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     @Override
     public void create() {
         if (!isCrudEnabled()) return;
-        enterEditingMode();
         getEventRouter().fireEvent(new ItemCreate.Event(this));
+        if (currentItemId != null){
+            // if currentItemId has actually been set; i.e., an item has been actually created
+            enterEditingMode();
+        }
     }
 
     @Override
@@ -239,6 +242,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     @Override
     public void edit() {
         if (!isCrudEnabled()) return;
+        if (container.size() == 0) return;
 
         if (!isEditingMode()) {
             enterEditingMode();

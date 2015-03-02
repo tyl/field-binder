@@ -28,57 +28,57 @@ import org.tylproject.vaadin.addon.datanav.events.NavigationEnabled;
 import javax.annotation.Nonnull;
 
 /**
- * Created by evacchi on 04/12/14.
+ * ButtonBar for Simple Navigation events.
  */
 public class NavButtonBar extends AbstractButtonBar implements NavigationEnabled.Listener, CurrentItemChange.Listener {
 
 
-    private final Button btnFirst = button("first");
-    private final Button btnPrev  = button("prev");
-    private final Button btnNext  = button("next");
-    private final Button btnLast  = button("last");
+    private final Button firstButton = button("first");
+    private final Button prevButton = button("prev");
+    private final Button nextButton = button("next");
+    private final Button lastButton = button("last");
 
     private final Button[] navButtons = {
-            btnFirst,
-            btnPrev,
-            btnNext,
-            btnLast
+            firstButton,
+            prevButton,
+            nextButton,
+            lastButton
     };
 
     public NavButtonBar(final DataNavigation nav) {
         super(nav);
         Layout buttonLayout = getLayout();
 
-        buttonLayout.addComponent(btnFirst);
-        buttonLayout.addComponent(btnPrev);
-        buttonLayout.addComponent(btnNext);
-        buttonLayout.addComponent(btnLast);
+        buttonLayout.addComponent(firstButton);
+        buttonLayout.addComponent(prevButton);
+        buttonLayout.addComponent(nextButton);
+        buttonLayout.addComponent(lastButton);
 
 
 
 
-        btnFirst.addClickListener(new Button.ClickListener() {
+        firstButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 getNavigation().first();
             }
         });
 
-        btnNext.addClickListener(new Button.ClickListener() {
+        nextButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 getNavigation().next();
             }
         });
 
-        btnPrev.addClickListener(new Button.ClickListener() {
+        prevButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 getNavigation().prev();
             }
         });
 
-        btnLast.addClickListener(new Button.ClickListener() {
+        lastButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 getNavigation().last();
@@ -134,9 +134,25 @@ public class NavButtonBar extends AbstractButtonBar implements NavigationEnabled
             hasPrev = null != ctr.prevItemId(currentId);
         }
 
-        btnNext.setEnabled(hasNext);
-        btnPrev.setEnabled(hasPrev);
-        btnFirst.setEnabled(hasPrev);
-        btnLast.setEnabled(hasNext);
+        nextButton.setEnabled(hasNext);
+        prevButton.setEnabled(hasPrev);
+        firstButton.setEnabled(hasPrev);
+        lastButton.setEnabled(hasNext);
+    }
+
+    public Button getFirstButton() {
+        return firstButton;
+    }
+
+    public Button getLastButton() {
+        return lastButton;
+    }
+
+    public Button getNextButton() {
+        return nextButton;
+    }
+
+    public Button getPrevButton() {
+        return prevButton;
     }
 }

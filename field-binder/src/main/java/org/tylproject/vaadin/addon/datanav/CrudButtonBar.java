@@ -28,7 +28,7 @@ import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
 import javax.annotation.Nonnull;
 
 /**
- * Created by evacchi on 04/12/14.
+ * ButtonBar for Crud Events
  */
 public class CrudButtonBar extends AbstractButtonBar implements CurrentItemChange.Listener, EditingModeChange.Listener, CrudEnabled.Listener {
 
@@ -116,15 +116,9 @@ public class CrudButtonBar extends AbstractButtonBar implements CurrentItemChang
 
 
     protected void updateButtonStatus() {
-        if (!getNavigation().isCrudEnabled()) {
-            disable(crudButtons);
-            return;
-        }
-
         if (getNavigation().isEditingMode()) {
             return;
         }
-
 
         if (getNavigation().getContainer() == null) {
             disable(crudButtons);
@@ -143,7 +137,11 @@ public class CrudButtonBar extends AbstractButtonBar implements CurrentItemChang
 
     @Override
     public void crudEnabled(CrudEnabled.Event event) {
-        updateButtonStatus();
+       if (!event.isCrudEnabled()) {
+           disable(crudButtons);
+       } else {
+           updateButtonStatus();
+       }
 
     }
 
