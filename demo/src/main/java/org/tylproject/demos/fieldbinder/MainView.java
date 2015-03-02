@@ -30,15 +30,19 @@ public class MainView extends MVerticalLayout implements View  {
                     "An advanced example that hooks into the DataNavigation event handler",
                     "/custom-events"),
                 makeIndexSection(
-                        "Tutorial 3",
-                        "A stand-alone table with a DataNavigation controller",
-                        "/table"),
+                    "Tutorial 3",
+                    "Using resource bundles and attaching events to table fields",
+                    "/custom-events-table"),
                 makeIndexSection(
                     "Tutorial 4",
+                    "A stand-alone table with a DataNavigation controller",
+                    "/table"),
+                makeIndexSection(
+                    "Tutorial 5",
                     "Using a SearchDialog",
                     "/search-dialog"),
                 makeIndexSection(
-                    "Tutorial 5",
+                    "Tutorial 6",
                     "ZoomField",
                     "/zoom"
                 ));
