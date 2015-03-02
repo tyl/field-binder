@@ -4,7 +4,7 @@
 
     <groupId>org.tylproject.vaadin.addon.fieldbinder</groupId>
     <artifactId>field-binder</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
     <name>FieldBinder Addon</name>
     <packaging>jar</packaging>
 
@@ -16,7 +16,7 @@
     	<url>https://github.com/tyl/field-binder</url>
     	<connection>scm:git:ssh://github.com/tyl/field-binder</connection>
     	<developerConnection>scm:git:ssh://git@github.com:/tyl/field-binder</developerConnection>
-    	<tag>v1.0</tag>
+    	<tag>v1.3</tag>
     </scm>
 
     
