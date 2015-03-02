@@ -34,6 +34,7 @@ import java.util.ResourceBundle;
 @Theme("valo")
 public class TutorialExtendedMore extends MVerticalLayout implements View {
 
+    // define a resource bundle inline
     private static final String[][] STRINGS =
     {
             {"org.tylproject.demos.fieldbinder.model.Gender.MALE",   "♂ Male"},
@@ -64,7 +65,7 @@ public class TutorialExtendedMore extends MVerticalLayout implements View {
     // initialize the FieldBinder for the masterDetail editor on the Person entity
     final FieldBinder<Person> binder =
                 new FieldBinder<Person>(Person.class, container)
-                            .withResourceBundle(resourceBundle);
+                            .withResourceBundle(resourceBundle); //use resbundle
 
     // initialize the Form input fields, each in its own class field
     final TextField firstName = binder.build("firstName"),
@@ -80,6 +81,7 @@ public class TutorialExtendedMore extends MVerticalLayout implements View {
 
     final FieldBinder<Address> addressListBinder = addressList.getFieldBinder();
 
+    // get references to the Table fields
     final TextField street  = addressListBinder.build("street"),
                     zipCode = addressListBinder.build("zipCode");
 
@@ -118,6 +120,7 @@ public class TutorialExtendedMore extends MVerticalLayout implements View {
         dataNav.addBeforeCommitListener(controller);
         dataNav.addCurrentItemChangeListener(controller);
 
+        // add event listeners to the state field
         state.addItems(Arrays.asList("England", "Scotland", "Wales", "Northern Ireland"));
         state.addValueChangeListener(new Property.ValueChangeListener() {
             @Override

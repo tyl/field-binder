@@ -10,7 +10,7 @@ import org.vaadin.viritin.DynaBeanItem;
 /**
  * Created by evacchi on 10/02/15.
  */
-public class DefaultBeanExtractorText {
+public class DefaultBeanExtractorTest {
 
     BeanExtractor beanExtractor = new DefaultBeanExtractor();
 
