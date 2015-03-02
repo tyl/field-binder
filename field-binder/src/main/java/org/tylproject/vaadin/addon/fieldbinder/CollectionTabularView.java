@@ -50,7 +50,6 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     private final BasicDataNavigation navigation;
 
     final private FilterableListContainer<T> listContainer;
-    private boolean delayedColumnInit = false;
 
     public CollectionTabularView(Class<T> containedBeanClass, Class<U> collectionType) {
         this.containedBeanClass = containedBeanClass;
@@ -144,14 +143,6 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
      */
     public void setVisibleColumns(Object ... visibleColumns) {
         this.visibleColumns = visibleColumns;
-
-        // delay until a data source with more than 0 properties is available
-        if (adaptor.getContainerDataSource().getContainerPropertyIds().size() == 0) {
-            delayedColumnInit = true;
-            return;
-        }
-        delayedColumnInit = true;
-
         adaptor.setVisibleColumns(visibleColumns);
         setAllHeadersFromColumns(visibleColumns);
     }
@@ -315,11 +306,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     }
 
     private void setupColumns() {
-        if (delayedColumnInit) {
-            this.setVisibleColumns(visibleColumns);
-        } else {
-            setAllHeadersFromColumns(adaptor.getVisibleColumns());
-        }
+        setAllHeadersFromColumns(adaptor.getVisibleColumns());
     }
 
 
