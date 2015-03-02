@@ -42,7 +42,8 @@ public class BeanTable<T> extends ListTable<T> {
     public void setContainerDataSource(Container.Ordered container) {
         this.getTable().setContainerDataSource(container);
         getNavigation().setContainer(container);
-        this.select(null);
+        getNavigation().enableNavigation();
+        getNavigation().first();
     }
 
     public Container.Ordered getContainerDataSource() {
