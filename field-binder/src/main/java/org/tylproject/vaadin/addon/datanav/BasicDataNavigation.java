@@ -203,10 +203,8 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     public void create() {
         if (!isCrudEnabled()) return;
         getEventRouter().fireEvent(new ItemCreate.Event(this));
-        if (currentItemId != null){
-            // if currentItemId has actually been set; i.e., an item has been actually created
-            enterEditingMode();
-        }
+        // if currentItemId has actually been set; i.e., an item has been actually created
+        enterEditingMode();
     }
 
     @Override
