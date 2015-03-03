@@ -25,7 +25,7 @@ import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.fields.FilterableGrid;
 
 /**
- * Created by evacchi on 20/01/15.
+ * A ZoomDialog that uses a FilterableGrid by default
  */
 public class GridZoomDialog extends AbstractZoomDialog {
 

@@ -111,7 +111,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
     }
 
     /**
-     * unbinds all the managed fields from
+     * unbind all the managed fields from
      */
     public void unbindAll() {
         for (Object fid: this.getBindingPropertyIds()) {
@@ -120,6 +120,9 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         }
     }
 
+    /**
+     * clear all the fields
+     */
     public void clear() {
     	for (Object fid: this.getBindingPropertyIds()) {
             Field<?> f = propertyIdToField.get(fid);
@@ -127,6 +130,16 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
     	}
     }
 
+    /**
+     * Clear field status:
+     *
+     * <code>
+     *      field.setBuffered(false);
+     *      field.setEnabled(true);
+     *      field.setReadOnly(false);
+     *      field.setValue(null);
+     * </code>
+     */
     protected void resetField(Field<?> field) {
         field.setBuffered(false);
         field.setEnabled(true);
@@ -134,9 +147,19 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         field.setValue(null);
     }
 
+    /**
+     * Configure the field defaults, depending on the FieldBinder settings.
+     *
+     * <code>
+     *   field.setBuffered(isBuffered());
+     *   field.setEnabled(isEnabled());
+     *   if (field.getPropertyDataSource().isReadOnly()) {
+     *      field.setReadOnly(true)
+     *   } else { field.setReadOnly(isReadOnly()); }
+     * </code>
+     */
     protected void configureField(Field<?> field) {
         field.setBuffered(isBuffered());
-
         field.setEnabled(isEnabled());
 
         if (field.getPropertyDataSource() != null
@@ -152,8 +175,7 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
      * Updates the item that is used by this FieldBinder. Rebinds all fields to
      * the properties in the new item.
      *
-     * @param itemDataSource
-     *            The new item to use
+     * @param itemDataSource The new item to use
      */
     public void setItemDataSource(Item itemDataSource) {
         this.itemDataSource = itemDataSource;
@@ -165,6 +187,9 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         }
     }
 
+    /**
+     * Bind an existing field to a propertyId
+     */
     public <T extends Field<?>> T bind(T field, Object propertyId) {
         try {
             Class<?> dataType = getPropertyType(propertyId);
@@ -196,6 +221,9 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         }
     }
 
+    /**
+     * Unbind the given field from the data source
+     */
     public void unbind(Field<?> field) {
         if (hasItemDataSource())
             getFieldGroup().unbind(field);
@@ -210,10 +238,18 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         configureField(field);
     }
 
+    /**
+     *
+     * @return true if a datasource has been given
+     */
     public boolean hasItemDataSource() {
         return this.itemDataSource != null;
     }
 
+    /**
+     * Create a caption from the resource bundle, or falls back onto splitting
+     * the camel-cased identifier.
+     */
     protected String createCaptionByPropertyId(Object propertyId) {
         return getFieldFactory().createCaptionByPropertyId(propertyId);
     }
@@ -265,9 +301,6 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         }
 
         field.setCaption(createCaptionByPropertyId(propertyId));
-
-//        propertyIdToType.put(propertyId, dataType);
-
         bind(field, propertyId);
 
         return field;
@@ -289,9 +322,6 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
         }
 
         field.setCaption(caption);
-
-//        propertyIdToType.put(propertyId, dataType);
-
         bind(field, propertyId);
 
         return field;
