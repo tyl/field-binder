@@ -51,10 +51,26 @@ public interface DataNavigation extends
         FindEnabled.Notifier {
 
     public Container.Ordered  getContainer();
+
+    /**
+     * Bind the Navigation to the given Container.
+     *
+     * Container may cleared by passing null.
+     * The method may invoke first() to bring the Navigation to a consistent state.
+     *
+     */
     public void setContainer(Container.Ordered container);
 
+    /**
+     * equivalent to getContainer().getItem(getCurrentItemId())
+     * @return null if either getCurrentItemId() or getContainer() are null
+     */
     public Item getCurrentItem();
     public Object getCurrentItemId();
+
+    /**
+     * set the given itemId as current, and fires the CurrentItemChange event
+     */
     public Object setCurrentItemId(Object itemId);
 
     // navigation
@@ -62,16 +78,39 @@ public interface DataNavigation extends
     public void last();
     public void next();
     public void prev();
+
+    /**
+     * enable the navigation and fire the NavigationEnabled event
+     */
     public void enableNavigation();
+
+    /**
+     * disable the navigation and fire the NavigationEnabled event
+     */
     public void disableNavigation();
     public boolean isNavigationEnabled();
 
+
+
     // search
+    /**
+     * Enters find mode and prepare for search input.
+     * Fires OnClearToFind event.
+     */
     public void clearToFind();
-    public void find();
     public boolean isClearToFindMode();
+
+    /**
+     * Perform lookup with the prepared parameters.
+     * Fires BeforeFind, OnFind, AfterFind
+     */
+    public void find();
+    /**
+     *
+     */
     public void enableFind();
     public void disableFind();
+
     public boolean isFindEnabled();
 
 

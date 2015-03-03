@@ -31,7 +31,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Created by evacchi on 19/11/14.
+ * Main implementation of the {@link org.tylproject.vaadin.addon.datanav.DataNavigation}
+ * interface.
+ *
  */
 final public class BasicDataNavigation extends AbstractDataNavigation implements DataNavigation {
 
@@ -48,11 +50,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
 
 
 
-    public BasicDataNavigation() {
-//        disableNavigation();
-//        disableCrud();
-//        disableFind();
-    }
+    public BasicDataNavigation() {}
 
     public BasicDataNavigation(@Nonnull final Container.Ordered container) {
         setContainer(container);
@@ -129,6 +127,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
         if (container == null || container.size() == 0) disableNavigation();
         if (container instanceof Container.Filterable) enableFind();
         else disableFind();
+
         first();
     }
 

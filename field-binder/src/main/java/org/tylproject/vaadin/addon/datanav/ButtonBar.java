@@ -24,10 +24,9 @@ import com.vaadin.ui.*;
 import javax.annotation.Nonnull;
 
 /**
- * Created by evacchi on 19/11/14.
+ * A Button bar that contains NavButtonBar, CrudButtonBar and FindButtonBar
  */
 public class ButtonBar extends CustomComponent implements DataNavigationBar {
-
 
     private final NavButtonBar navBar;
     private final CrudButtonBar crudBar;
@@ -69,6 +68,10 @@ public class ButtonBar extends CustomComponent implements DataNavigationBar {
         return buttonLayout;
     }
 
+
+    /**
+     * equivalent to <code>new NavigationLabel(this.getNavigation())</code>
+     */
     public NavigationLabel buildNavigationLabel() {
         return new NavigationLabel(this.getNavigation());
     }
