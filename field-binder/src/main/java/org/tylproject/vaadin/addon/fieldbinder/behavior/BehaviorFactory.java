@@ -24,7 +24,30 @@ import com.vaadin.data.Container;
 import javax.annotation.Nonnull;
 
 /**
- * Created by evacchi on 15/12/14.
+ * Creates a suitable {@link org.tylproject.vaadin.addon.fieldbinder.behavior.Behavior} object
+ * for the given container class.
+ *
+ * Currently two default implementations are available:
+ *
+ *  <dl>
+ *      <dt>{@link org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultBehaviorFactory}</dt>
+ *      <dd>When a FieldBinder is being used</dd>
+ *
+ *      <dt>{@link org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultTableBehaviorFactory}</dt>
+ *      <dd>When a Table-like field is being used</dd>
+ *  </dl>
+ *
+ * Default implementations check the given containerClass <b>by name</b> to avoid
+ * a NoClassDefFoundError if any of the supported Container implementations
+ * is an unsatisfied dependency.
+ *
+ * Pre-defined Behavior implementations are available for JPAContainer, MongoContainer
+ * and Viritin's ListContainer. If any of these are not available on the classpath
+ * the Factory should not throw an error.
+ *
+ * Caveat: because class names are checked by string equality, third-party Container
+ * subclasses may not work with the pre-defined Factories.
+ *
  */
 public interface BehaviorFactory<T> {
     Behavior forContainerType(@Nonnull Class<? extends Container> containerClass);

@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder;
+package org.tylproject.vaadin.addon.fields.collectiontables;
 
 import com.vaadin.data.Container;
 

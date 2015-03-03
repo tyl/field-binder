@@ -20,12 +20,11 @@
 package org.tylproject.vaadin.addon.fieldbinder.behavior.containers.jpacontainer;
 
 import com.vaadin.addon.jpacontainer.JPAContainer;
-import com.vaadin.ui.Table;
 import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
 import org.tylproject.vaadin.addon.datanav.events.ItemRemove;
 import org.tylproject.vaadin.addon.datanav.events.OnCommit;
 import org.tylproject.vaadin.addon.datanav.events.OnDiscard;
-import org.tylproject.vaadin.addon.fieldbinder.TabularViewAdaptor;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 
 /**

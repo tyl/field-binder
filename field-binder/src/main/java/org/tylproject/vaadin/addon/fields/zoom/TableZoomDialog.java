@@ -20,8 +20,7 @@
 package org.tylproject.vaadin.addon.fields.zoom;
 
 import com.vaadin.data.Container;
-import com.vaadin.ui.*;
-import org.tylproject.vaadin.addon.fieldbinder.BeanTable;
+import org.tylproject.vaadin.addon.fields.collectiontables.BeanTable;
 
 /**
  * Displays a table, allows to select an Item in the table,

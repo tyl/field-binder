@@ -17,7 +17,9 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder;
+package org.tylproject.vaadin.addon.fields.collectiontables;
+
+import org.tylproject.vaadin.addon.fieldbinder.GridSupport;
 
 import java.util.List;
 

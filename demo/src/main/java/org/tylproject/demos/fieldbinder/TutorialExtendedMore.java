@@ -19,7 +19,7 @@ import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.NavigationLabel;
 import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
-import org.tylproject.vaadin.addon.fieldbinder.ListTable;
+import org.tylproject.vaadin.addon.fields.collectiontables.ListTable;
 import org.vaadin.spring.annotation.VaadinUIScope;
 import org.vaadin.spring.navigator.annotation.VaadinView;
 import org.vaadin.viritin.layouts.MFormLayout;

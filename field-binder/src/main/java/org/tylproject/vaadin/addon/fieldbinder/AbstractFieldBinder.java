@@ -22,10 +22,12 @@ package org.tylproject.vaadin.addon.fieldbinder;
 import com.vaadin.data.Item;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.shared.util.SharedUtil;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
+import org.tylproject.vaadin.addon.fieldbinder.exceptions.BuildException;
+import org.tylproject.vaadin.addon.fieldbinder.exceptions.CommitException;
+import org.tylproject.vaadin.addon.fields.collectiontables.CollectionTable;
 
 import java.io.Serializable;
 import java.util.*;

@@ -20,9 +20,8 @@
 package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import com.vaadin.data.Container;
-import com.vaadin.ui.Table;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
-import org.tylproject.vaadin.addon.fieldbinder.TabularViewAdaptor;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.SearchWindowFindListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.jpacontainer
@@ -41,7 +40,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
+ * BehaviorFactory for Table-like widgets.
  *
+ * It internally uses a TabularViewAdaptor to adapt the Table API to Grid instances.
  */
 public class DefaultTableBehaviorFactory<U> implements BehaviorFactory<U> {
 

@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder;
+package org.tylproject.vaadin.addon.fields.collectiontables;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -28,6 +28,9 @@ import com.vaadin.shared.util.SharedUtil;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TableAdaptor;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.utils.CachingContainerProxy;
 import org.vaadin.viritin.FilterableListContainer;
 
@@ -45,8 +48,8 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     protected TabularViewAdaptor<T,?> adaptor;
     protected final Class<T> containedBeanClass;
     protected final Class<U> collectionType;
-//    private final CachingContainerProxy<FilterableListContainer<T>> cache;
-    private Object[] visibleColumns;
+
+
     private final BasicDataNavigation navigation;
 
     final private FilterableListContainer<T> listContainer;
@@ -54,28 +57,9 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     public CollectionTabularView(Class<T> containedBeanClass, Class<U> collectionType) {
         this.containedBeanClass = containedBeanClass;
         this.collectionType = collectionType;
-
-
-
-//        this.navigation =
-//        navigation.restrictContainerType(FilterableListContainer.class);
-
         this.listContainer = new FilterableListContainer<T>(containedBeanClass);
         this.navigation = new BasicDataNavigation();
         getNavigation().setContainer(listContainer);
-
-
-
-
-
-//        getNavigation().addItemEditListener(new ItemEdit.Listener() {
-//            @Override
-//            public void itemEdit(ItemEdit.Event event) {
-//                fieldBinder.setItemDataSource(event.getSource().getCurrentItem());
-//                fieldBinder.bindAll();
-//            }
-//        });
-
     }
 
     protected void setAdaptor(final TabularViewAdaptor<T,?> adaptor) {
@@ -111,11 +95,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
 
 
     public FieldBinder<T> getFieldBinder() {
-        return (FieldBinder<T>)getAdaptor().getFieldBinder();
-    }
-
-    public FieldGroup getFieldGroup() {
-        return getAdaptor().getFieldGroup();
+        return getAdaptor().getFieldBinder();
     }
 
 
@@ -142,7 +122,6 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
      * {@link com.vaadin.data.fieldgroup.FieldGroup} or a {@link org.tylproject.vaadin.addon.fieldbinder.FieldBinder}
      */
     public void setVisibleColumns(Object ... visibleColumns) {
-        this.visibleColumns = visibleColumns;
         adaptor.setVisibleColumns(visibleColumns);
         setAllHeadersFromColumns(visibleColumns);
     }
@@ -161,10 +140,18 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         adaptor.setColumnHeaders(headers);
     }
 
-
+    /**
+     * Create caption from propertyId
+     *
+     * Caveat: internally uses the FieldBinder from the Table;
+     * but it requires the adaptor to be a TableAdaptor!
+     *
+     * TODO: needs work for Grid
+     *
+     */
     protected String createCaptionByPropertyId(Object propertyId) {
         if (getAdaptor() instanceof TableAdaptor) {
-            return getAdaptor().getFieldBinder().createCaptionByPropertyId(propertyId);
+            return getAdaptor().getFieldBinder().getFieldFactory().createCaptionByPropertyId(propertyId);
         }
         return SharedUtil.propertyIdToHumanFriendly(propertyId);
     }
@@ -206,8 +193,6 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         if (collection != null) {
             listContainer.setCollection(collection);
         }
-
-        visibleColumns = getContainerDataSource().getContainerPropertyIds().toArray();
 
         setupColumns();
     }

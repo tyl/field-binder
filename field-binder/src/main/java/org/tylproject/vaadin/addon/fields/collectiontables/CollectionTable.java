@@ -17,24 +17,21 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder;
+package org.tylproject.vaadin.addon.fields.collectiontables;
 
-import com.vaadin.data.Container;
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
-import com.vaadin.data.Validator;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
-import org.tylproject.vaadin.addon.datanav.CrudButtonBar;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultTableBehaviorFactory;
-import org.vaadin.viritin.FilterableListContainer;
+import org.tylproject.vaadin.addon.fieldbinder.*;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.GridAdaptor;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TableAdaptor;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 
 import java.util.Collection;
 
 /**
  * A table wrapper where the value is a {@link java.util.List}
  *
- * Generally used together with {@link FieldBinder}
+ * Generally used together with {@link org.tylproject.vaadin.addon.fieldbinder.FieldBinder}
  */
 public class CollectionTable<T,U extends Collection<T>> extends CollectionTabularView<T,U> {
 

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.fail;
 import static org.tylproject.vaadin.addons.fieldbinder.tests.UIAssert
 .assertButtonsDisabled;
 import static org.tylproject.vaadin.addons.fieldbinder.tests.UIAssert
@@ -41,11 +42,15 @@ public class CrudButtonBarTest {
         assertButtonsEnabled(create);
 
 
-        // should ignore attempt: cannot edit, no item is in the container!
-        basicDataNavigation.edit();
-        assertButtonsDisabled(edit, remove, commit, discard);
-        assertButtonsEnabled(create);
-
+        // no item is in the container!
+        try {
+            basicDataNavigation.edit();
+            // should throw exception, otherwise fail
+            fail();
+        } catch (IllegalStateException ex) {
+            assertButtonsDisabled(edit, remove, commit, discard);
+            assertButtonsEnabled(create);
+        }
 
         // should ignore attempt: create must add an item (no event is currently attached)
         basicDataNavigation.create();

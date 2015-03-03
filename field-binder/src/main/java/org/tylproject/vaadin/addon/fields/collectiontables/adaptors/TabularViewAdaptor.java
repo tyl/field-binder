@@ -1,4 +1,4 @@
-package org.tylproject.vaadin.addon.fieldbinder;
+package org.tylproject.vaadin.addon.fields.collectiontables.adaptors;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -6,6 +6,7 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.ui.Component;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
+import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
 /**
  * An interface to bridge between the Table API and the Grid API

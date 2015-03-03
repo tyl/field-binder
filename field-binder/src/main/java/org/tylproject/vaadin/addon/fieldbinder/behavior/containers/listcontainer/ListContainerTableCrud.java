@@ -19,9 +19,8 @@
 
 package org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontainer;
 
-import com.vaadin.ui.Table;
 import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
-import org.tylproject.vaadin.addon.fieldbinder.TabularViewAdaptor;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 
 /**

@@ -24,7 +24,8 @@ import com.vaadin.data.Item;
 import org.tylproject.vaadin.addon.datanav.events.*;
 
 /**
- * Created by evacchi on 19/11/14.
+ *
+ * Defines Navigation methods and extends all the Notifier interfaces
  */
 public interface DataNavigation extends
         CurrentItemChange.Notifier,
@@ -106,21 +107,52 @@ public interface DataNavigation extends
      */
     public void find();
     /**
-     *
+     * Enable find methods, fire FindEnabled
      */
     public void enableFind();
+    /**
+     * Enable find methods, fire FindDisabled
+     */
     public void disableFind();
 
     public boolean isFindEnabled();
 
 
     // CRUD
+
+    /**
+     * Fire OnCreate
+     */
     public void create();
-    public void commit();
+
+    /**
+     * Enter editingMode, fire OnEdit
+     */
     public void edit();
+
+    /**
+     * Fire BeforeCommit, OnCommit, AfterCommit; leave editingMode
+     */
+    public void commit();
+
+    /**
+     * Leave editingMode, fire onDiscard
+     */
     public void discard();
+
+    /**
+     * Fire OnRemove, moves the internal cursor
+     */
     public void remove();
+
+    /**
+     * Enable Crud Methods
+     */
     public void enableCrud();
+
+    /**
+     * Disable Crud methods
+     */
     public void disableCrud();
     public boolean isCrudEnabled();
     public void enterEditingMode();

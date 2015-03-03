@@ -35,11 +35,6 @@ import static com.vaadin.event.ShortcutAction.ModifierKey.*;
  */
 public class KeyBinder implements Action.Handler {
 
-
-//    public static KeyBinder forNavigation(CrudNavigation nav) {
-//        return new KeyBinder(nav);
-//    }
-
     private DataNavigation nav;
 
     private final int[] NoModifiers = {};

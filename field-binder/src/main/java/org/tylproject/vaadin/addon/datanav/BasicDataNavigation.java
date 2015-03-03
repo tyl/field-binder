@@ -241,7 +241,9 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     @Override
     public void edit() {
         if (!isCrudEnabled()) return;
-        if (container.size() == 0) return;
+        if (container == null || container.size() == 0) {
+            throw new IllegalStateException("Container is empty or null");
+        }
 
         if (!isEditingMode()) {
             enterEditingMode();
@@ -254,6 +256,11 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     public void remove() {
         if (!isCrudEnabled()) return;
         if (isEditingMode()) leaveEditingMode();
+
+        if (container == null || container.size() == 0) {
+            throw new IllegalStateException("Container is empty or null");
+        }
+
         Object currentItemId = this.getCurrentItemId();
         Object newItemId = container.nextItemId(currentItemId);
         if (newItemId == null) {
@@ -407,7 +414,16 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     }
 
     /**
-     * assign a default behavior according to the current known container type
+     * Assign a default behavior according to the current known container type.
+     *
+     * Uses a {@link org.tylproject.vaadin.addon.fieldbinder.behavior.BehaviorFactory}.
+     * There are two BehaviorFactories:
+     *
+     *  <ul>
+     *      <li>{@link org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultBehaviorFactory}</li>
+     *      <li>{@link org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultTableBehaviorFactory}</li>
+     *  </ul>
+     *
      */
     public BasicDataNavigation withDefaultBehavior() {
 

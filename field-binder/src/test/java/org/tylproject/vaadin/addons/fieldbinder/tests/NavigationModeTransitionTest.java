@@ -3,6 +3,9 @@ package org.tylproject.vaadin.addons.fieldbinder.tests;
 import org.junit.Test;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
+import org.vaadin.viritin.ListContainer;
+
+import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertTrue;
 
@@ -22,6 +25,7 @@ public class NavigationModeTransitionTest {
     @Test
     public void editShouldNotToggle() {
         DataNavigation dataNavigation = new BasicDataNavigation();
+        dataNavigation.setContainer(new ListContainer<>(new ArrayList(){{ add(new Object()); }}));
 
         dataNavigation.edit();
         assertTrue(dataNavigation.isEditingMode());

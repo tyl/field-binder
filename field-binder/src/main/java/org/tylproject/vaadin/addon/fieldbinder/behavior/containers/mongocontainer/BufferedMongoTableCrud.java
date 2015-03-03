@@ -19,11 +19,10 @@
 
 package org.tylproject.vaadin.addon.fieldbinder.behavior.containers.mongocontainer;
 
-import com.vaadin.ui.Table;
 import org.bson.types.ObjectId;
 import org.tylproject.vaadin.addon.BufferedMongoContainer;
 import org.tylproject.vaadin.addon.datanav.events.*;
-import org.tylproject.vaadin.addon.fieldbinder.TabularViewAdaptor;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
 
 /**

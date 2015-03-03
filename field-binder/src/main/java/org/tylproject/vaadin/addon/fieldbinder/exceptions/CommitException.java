@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package org.tylproject.vaadin.addon.fieldbinder;
+package org.tylproject.vaadin.addon.fieldbinder.exceptions;
 
 /**
  * Created by evacchi on 02/12/14.

@@ -31,6 +31,8 @@ import org.tylproject.vaadin.addon.datanav.*;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.datanav.events.EditingModeChange;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.DefaultBehaviorFactory;
+import org.tylproject.vaadin.addon.fields.collectiontables.CollectionTable;
+import org.tylproject.vaadin.addon.fields.collectiontables.ListTable;
 import org.tylproject.vaadin.addon.fields.zoom.*;
 
 import java.beans.PropertyDescriptor;
@@ -45,7 +47,7 @@ import java.util.*;
  *
  * It supports binding and unbinding elements, while still keeping track of which
  * elements are managed by the group. It also supports binding {@link com.vaadin.ui.Table} instances
- * to List values as their datasource, using {@link org.tylproject.vaadin.addon.fieldbinder.ListTable}
+ * to List values as their datasource, using {@link org.tylproject.vaadin.addon.fields.collectiontables.ListTable}
  * as their implementation.
  *
  * Example:
@@ -415,15 +417,4 @@ public class FieldBinder<T> extends AbstractFieldBinder<FieldGroup> {
             }
         }
     }
-
-    private final CurrentItemChange.Listener defaultItemChangeListener = new CurrentItemChange.Listener() {
-        @Override
-        public void currentItemChange(CurrentItemChange.Event event) {
-            FieldBinder.this.setItemDataSource(event.getNewItem());
-        }
-    };
-    public CurrentItemChange.Listener defaultItemChangeListener() {
-        return this.defaultItemChangeListener;
-    }
-
 }

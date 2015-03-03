@@ -20,18 +20,14 @@
 package org.tylproject.vaadin.addon.fieldbinder.behavior.commons;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Item;
-import com.vaadin.data.fieldgroup.DefaultFieldGroupFieldFactory;
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroupFieldFactory;
 import com.vaadin.ui.*;
-import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.*;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudListeners;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TableAdaptor;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 
 import java.lang.reflect.Constructor;
-import java.util.*;
 
 /**
  * Base behavior for Tables

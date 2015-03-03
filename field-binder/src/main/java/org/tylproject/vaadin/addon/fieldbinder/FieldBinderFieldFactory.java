@@ -25,6 +25,8 @@ import com.vaadin.data.util.converter.Converter;
 import com.vaadin.shared.util.SharedUtil;
 import com.vaadin.ui.*;
 import org.joda.time.DateTime;
+import org.tylproject.vaadin.addon.fields.collectiontables.CollectionTable;
+import org.tylproject.vaadin.addon.fields.collectiontables.ListTable;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,7 +34,7 @@ import java.util.*;
 
 /**
  * An extended {@link com.vaadin.data.fieldgroup.FieldGroupFieldFactory}
- * that supports {@link org.tylproject.vaadin.addon.fieldbinder.ListTable}
+ * that supports {@link org.tylproject.vaadin.addon.fields.collectiontables.ListTable}
  */
 public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
 
