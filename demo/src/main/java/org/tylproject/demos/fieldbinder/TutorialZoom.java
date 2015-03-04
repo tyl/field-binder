@@ -1,5 +1,6 @@
 package org.tylproject.demos.fieldbinder;
 
+import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -22,7 +23,7 @@ public class TutorialZoom extends MFormLayout implements View {
     private static final String TARGET_PROPERTY_ID = "firstName";
 
     {
-        final FilterableListContainer<Person> container = MyDataSourceGenerator.makeDummyDataset();
+        final Container.Indexed container = MyDataSourceGenerator.makeDummyDataset();
 
         final TextZoomField zoomField =
                 new TextZoomField("Simple Zoom Field")

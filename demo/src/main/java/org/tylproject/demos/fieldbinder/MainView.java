@@ -22,28 +22,28 @@ public class MainView extends MVerticalLayout implements View  {
         addComponents(
         new Label("<h1>Field Binder Add-on Demo</h1>", ContentMode.HTML),
                 makeIndexSection(
-                    "Tutorial 1",
+                    "Short Tutorial",
                     "First steps using the Field Binder",
                     "/simple"),
                 makeIndexSection(
-                    "Tutorial 2",
+                    "Extended Tutorial",
                     "An advanced example that hooks into the DataNavigation event handler",
                     "/custom-events"),
                 makeIndexSection(
-                    "Tutorial 3",
+                    "ResourceBundles and Table Events",
                     "Using resource bundles and attaching events to table fields",
                     "/custom-events-table"),
                 makeIndexSection(
-                    "Tutorial 4",
+                    "Stand-Alone Tables",
                     "A stand-alone table with a DataNavigation controller",
                     "/table"),
                 makeIndexSection(
-                    "Tutorial 5",
+                    "Search",
                     "Using a SearchDialog",
                     "/search-dialog"),
                 makeIndexSection(
-                    "Tutorial 6",
-                    "ZoomField",
+                    "Other Detail Views",
+                    "Using Zoom and DrillDown Field",
                     "/zoom"
                 ));
 
@@ -59,6 +59,5 @@ public class MainView extends MVerticalLayout implements View  {
     }
 
     @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
-    }
+    public void enter(ViewChangeListener.ViewChangeEvent event) {}
 }

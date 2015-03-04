@@ -1,6 +1,7 @@
 package org.tylproject.demos.fieldbinder;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.ExternalResource;
@@ -13,6 +14,7 @@ import org.vaadin.spring.navigator.SpringViewProvider;
 
 
 @VaadinUI
+@Title("FieldBinder Demo")
 @Theme("valo")
 public class Main extends UI {
 
