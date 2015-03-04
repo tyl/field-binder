@@ -184,11 +184,13 @@ public abstract class AbstractDataNavigation implements DataNavigation {
     @Override
     public void addCrudEnabledListener(CrudEnabled.Listener listener) {
         eventRouter.addListener(CrudEnabled.Event.class, listener, CrudEnabled.Listener.METHOD);
+        eventRouter.fireEvent(new CrudEnabled.Event(this, this.isCrudEnabled()));
     }
 
     @Override
     public void removeCrudEnabledListener(CrudEnabled.Listener listener) {
         eventRouter.removeListener(CrudEnabled.Event.class, listener, CrudEnabled.Listener.METHOD);
+        eventRouter.fireEvent(new CrudEnabled.Event(this, this.isCrudEnabled()));
     }
 
     @Override

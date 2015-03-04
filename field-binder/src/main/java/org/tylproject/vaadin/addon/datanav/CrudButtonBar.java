@@ -120,6 +120,10 @@ public class CrudButtonBar extends AbstractButtonBar implements CurrentItemChang
             return;
         }
 
+        if (!getNavigation().isCrudEnabled()) {
+            return;
+        }
+
         if (getNavigation().getContainer() == null) {
             disable(crudButtons);
         } else {
@@ -152,6 +156,8 @@ public class CrudButtonBar extends AbstractButtonBar implements CurrentItemChang
 
     @Override
     public void editingModeChange(EditingModeChange.Event event) {
+        if (!event.getSource().isCrudEnabled()) return;
+
         if (event.isEnteringEditingMode()) {
             disable(createButton, editButton, removeButton);
             enable(commitButton, discardButton);
