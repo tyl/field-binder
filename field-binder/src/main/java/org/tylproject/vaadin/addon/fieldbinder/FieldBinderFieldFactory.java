@@ -71,6 +71,10 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
             f = super.createField(type, fieldType);
         }
 
+        if (f instanceof AbstractTextField) {
+            ((AbstractTextField) f).setConverter(type);
+        }
+
         boolean isJoda = DateTime.class.isAssignableFrom(type);
 
         if (isJoda) {
