@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 final public class BasicDataNavigation extends AbstractDataNavigation implements DataNavigation {
 
     private @Nonnull Container.Ordered container;
-    private @Nullable Class<? extends Container.Ordered> restrictedContainerType = null;
 
     private Object currentItemId;
     private boolean navigationEnabled = true;
@@ -66,50 +65,11 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
     }
 
     /**
-     * Assign an upper bound for the container that this Navigation may wrap.
-     *
-     * It is used in order to automatically infer assign a Behavior class when calling
-     * {@link #withDefaultBehavior()}.
-     *
-     */
-    public void restrictContainerType(Class<? extends Container.Ordered> restrictedContainerType) {
-        if (container != null && restrictedContainerType != null) {
-            // container.getClass() must be a subtype of restrictedContainerType
-            if (!restrictedContainerType.isAssignableFrom(container.getClass())) {
-                throw new IllegalStateException(
-                        "Cannot restrict container type to " + restrictedContainerType.getCanonicalName() + ":" +
-                                " a container of type " + container.getClass()
-                                .getCanonicalName() +
-                                " is currently attached"
-                );
-            }
-        }
-        this.restrictedContainerType = restrictedContainerType;
-    }
-
-    protected void assertAssignableContainer(@Nonnull Container.Ordered container) {
-        if (! (container == null ||
-                restrictedContainerType == null ||
-                restrictedContainerType.isAssignableFrom(container.getClass()) ) ) {
-            throw new AssertionError(
-                    "Allowed container type is "+restrictedContainerType +", "+
-                            container.getClass() + " was given"
-            );
-        }
-    }
-
-    /**
-     * Return the (expected) container type for this DataNavigation
-     *
-     * Return the actual type if a container is set, or the restrictedContainerType
-     * if an upper bound was set with {@link #restrictContainerType(Class)}
+     * Return the container type for this DataNavigation
      */
     public @Nonnull Class<? extends Container.Ordered> getContainerType() {
         if (container != null) {
             return container.getClass();
-        }
-        else if (restrictedContainerType != null) {
-            return restrictedContainerType;
         }
         else {
             throw new IllegalStateException("The container type is currently unknown: " +
@@ -120,7 +80,6 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
 
     @Override
     public void setContainer(Container.Ordered container) {
-        assertAssignableContainer(container);
 
         this.container = container;
         this.currentItemId = null;

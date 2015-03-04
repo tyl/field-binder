@@ -35,7 +35,6 @@ public class BeanTable<T> extends ListTable<T> {
      */
     public BeanTable(final Class<T> beanClass, final Container.Ordered container) {
         super(beanClass);
-        getNavigation().restrictContainerType(null);
         setContainerDataSource(container);
     }
 
