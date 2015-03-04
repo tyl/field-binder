@@ -22,7 +22,8 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior;
 import com.vaadin.data.Container;
 
 /**
- * Created by evacchi on 05/12/14.
+ *  A factory that generates {@link com.vaadin.data.Container.Filter} instances
+ *  for a target type, for a given pattern.
  */
 public interface FilterFactory {
 

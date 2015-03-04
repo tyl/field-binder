@@ -71,6 +71,7 @@ public class CollectionTable<T,U extends Collection<T>> extends CollectionTabula
     private TabularViewAdaptor<T,?> makeAdaptor(Class<T> containedBeanClass, GridSupport gridSupport) {
         switch (gridSupport) {
             case UseTable:
+                // fieldBinder.setNavigation() does not exist
                 return new TableAdaptor<T>(containedBeanClass, new FieldBinder<T>(containedBeanClass) {
                     @Override
                     public BasicDataNavigation getNavigation() {

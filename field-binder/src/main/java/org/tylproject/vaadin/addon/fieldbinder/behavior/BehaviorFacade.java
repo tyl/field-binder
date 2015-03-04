@@ -22,7 +22,13 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior;
 import org.tylproject.vaadin.addon.datanav.events.*;
 
 /**
- * Created by evacchi on 28/01/15.
+ * Composes CurrentItemChange.Listener, CrudListeners and FindListeners
+ * into one single class
+ *
+ * It is basically a Java implementation of trait-like composition.
+ * It is used by the default {@link org.tylproject.vaadin.addon.fieldbinder.behavior.BehaviorFactory}
+ * implementations to compose pre-defined actions for each supported Container type
+ *
  */
 public class BehaviorFacade implements Behavior {
 

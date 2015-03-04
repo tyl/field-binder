@@ -33,7 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Default implementation.
+ * Default implementation of a {@link org.tylproject.vaadin.addon.fieldbinder.behavior.FilterFactory}
  *
  * Supports:
  *   <ul>

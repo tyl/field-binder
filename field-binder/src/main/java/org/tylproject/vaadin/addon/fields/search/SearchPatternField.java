@@ -29,7 +29,14 @@ import org.tylproject.vaadin.addon.fields.CombinedField;
 
 /**
  * A Field that returns a filter for a given text pattern; it also immediately applies the
- * filter to a Container instance, if it is given
+ * filter to a Container instance, if it is given.
+ *
+ * Each field is contains an input field (usually textual) and a button to clear its contents.
+ * Pre-defined subclasses are:
+ *  <ul>
+ *    <li>{@link org.tylproject.vaadin.addon.fields.search.SearchPatternTextField}</li>
+ *    <li>{@link org.tylproject.vaadin.addon.fields.search.SearchPatternComboBox}</li>
+ *  </ul>
  *
  */
 public abstract class SearchPatternField<T,F extends AbstractField<T>> extends CombinedField<T,T,F> {

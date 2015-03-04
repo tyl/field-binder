@@ -43,6 +43,20 @@ import java.util.Map;
  * BehaviorFactory for Table-like widgets.
  *
  * It internally uses a TabularViewAdaptor to adapt the Table API to Grid instances.
+ *
+ * Default Behavior Factory for a FieldBinder.
+ *
+ * Supported Containers:
+ *
+ * <ul>
+ *  <li>org.vaadin.viritin.ListContainer</li>
+ *  <li>org.vaadin.viritin.FilterableListContainer</li>
+ *  <li>org.tylproject.vaadin.addon.BufferedMongoContainer</li>
+ *  <li>com.vaadin.addon.jpacontainer.JPAContainer</li>
+ * </ul>
+ *
+ * The containerClass is checked by *name* so subclasses WILL NOT be recognized.
+ *
  */
 public class DefaultTableBehaviorFactory<U> implements BehaviorFactory<U> {
 

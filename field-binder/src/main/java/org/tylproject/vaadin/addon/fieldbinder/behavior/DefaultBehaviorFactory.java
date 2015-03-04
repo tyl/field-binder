@@ -35,7 +35,18 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.mongocontaine
 import javax.annotation.Nonnull;
 
 /**
- * Created by evacchi on 15/12/14.
+ * Default Behavior Factory for a FieldBinder.
+ *
+ * Supported Containers:
+ *
+ * <ul>
+ *  <li>org.vaadin.viritin.ListContainer</li>
+ *  <li>org.vaadin.viritin.FilterableListContainer</li>
+ *  <li>org.tylproject.vaadin.addon.MongoContainer</li>
+ *  <li>com.vaadin.addon.jpacontainer.JPAContainer</li>
+ * </ul>
+ *
+ * The containerClass is checked by *name* so subclasses WILL NOT be recognized.
  */
 public class DefaultBehaviorFactory<U> implements BehaviorFactory<U> {
 

@@ -121,14 +121,8 @@ public class TableAdaptor<T> implements TabularViewAdaptor<T,Table>, Property.Va
 
         table.addValueChangeListener(this);
         this.setNavigation(navigation);
-        navigation.setBehaviorFactory(new DefaultTableBehaviorFactory(beanClass, this));
+        navigation.setBehaviorFactory(new DefaultTableBehaviorFactory<>(beanClass, this));
         table.setTableFieldFactory(new Tables.SingleLineFieldFactory(fieldBinder));
-
-
-//        this.table.setTableFieldFactory(
-//            new Tables.SingleLineFieldFactory(table.getTableFieldFactory(), navigation));
-
-
     }
 
     public void valueChange(Property.ValueChangeEvent event) {
