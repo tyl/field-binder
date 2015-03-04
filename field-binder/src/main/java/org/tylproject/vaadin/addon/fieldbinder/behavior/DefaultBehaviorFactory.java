@@ -23,14 +23,9 @@ import com.vaadin.data.Container;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.FieldBinders;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.SearchWindowFindListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.jpacontainer.JPAContainerCrud;
-
-import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontainer
-.ListContainerCrud;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontainer.ListContainerCrud;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.mongocontainer.MongoCrud;
-
-
 
 import javax.annotation.Nonnull;
 
@@ -40,13 +35,13 @@ import javax.annotation.Nonnull;
  * Supported Containers:
  *
  * <ul>
- *  <li>org.vaadin.viritin.ListContainer</li>
- *  <li>org.vaadin.viritin.FilterableListContainer</li>
- *  <li>org.tylproject.vaadin.addon.MongoContainer</li>
- *  <li>com.vaadin.addon.jpacontainer.JPAContainer</li>
+ *  <li>{@link org.vaadin.viritin.ListContainer}</li>
+ *  <li>{@link org.vaadin.viritin.FilterableListContainer}</li>
+ *  <li>{@link org.tylproject.vaadin.addon.MongoContainer}</li>
+ *  <li>{@link com.vaadin.addon.jpacontainer.JPAContainer}</li>
  * </ul>
  *
- * The containerClass is checked by *name* so subclasses WILL NOT be recognized.
+ *
  */
 public class DefaultBehaviorFactory<U> implements BehaviorFactory<U> {
 
@@ -60,31 +55,30 @@ public class DefaultBehaviorFactory<U> implements BehaviorFactory<U> {
     public Behavior forContainerType(@Nonnull Class<? extends Container> containerClass) {
         if (containerClass == null) throw new AssertionError("containerClass cannot be null");
 
-        final CrudListeners crudListeners;
+        final CrudListeners crudListeners = this.findCrudListeners(containerClass);
         final FindListeners findListeners = new FieldBinders.Find<>(fieldBinder);
         final CurrentItemChange.Listener currentItemListener = new FieldBinders.CurrentItemChangeListener<>(fieldBinder);
-
-        switch (containerClass.getCanonicalName()) {
-            case "org.vaadin.viritin.ListContainer":
-            case "org.vaadin.viritin.FilterableListContainer":
-                crudListeners = new ListContainerCrud<>(fieldBinder);
-                break;
-
-            case "org.tylproject.vaadin.addon.MongoContainer":
-                crudListeners = new MongoCrud<>(fieldBinder);
-                break;
-
-            case "com.vaadin.addon.jpacontainer.JPAContainer":
-                crudListeners = new JPAContainerCrud<>(fieldBinder);
-                break;
-
-            default:
-                throw new UnsupportedOperationException(
-                    "Unknown container type: "+ containerClass.getCanonicalName());
-        }
-
 
         return new BehaviorFacade(currentItemListener, crudListeners, findListeners);
 
     }
+
+    protected CrudHandler findCrudListeners(Class<? extends Container> containerClass) {
+
+        CrudHandler crudListeners;
+
+        crudListeners = new ListContainerCrud<>(fieldBinder);
+        if (crudListeners.matches(containerClass)) return crudListeners;
+
+        crudListeners = new MongoCrud<>(fieldBinder);
+        if (crudListeners.matches(containerClass)) return crudListeners;
+
+        crudListeners = new JPAContainerCrud<>(fieldBinder);
+        if (crudListeners.matches(containerClass)) return crudListeners;
+
+        throw new UnsupportedOperationException(
+                "Unknown container type: "+ containerClass.getCanonicalName());
+
+    }
+
 }

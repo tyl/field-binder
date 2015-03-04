@@ -23,6 +23,7 @@ import com.vaadin.data.Container;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.*;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudHandler;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudListeners;
 import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TableAdaptor;
 import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
@@ -60,24 +61,49 @@ public class Tables {
      * must be overridden
      *
      */
-    public static class BaseCrud<T> implements CrudListeners {
+    public abstract static class BaseCrud<T> implements CrudHandler {
         final protected TabularViewAdaptor<T,?> tableAdaptor;
         final protected Class<T> beanClass;
         protected T newEntity = null;
-
 
         public BaseCrud(final Class<T> beanClass, final TabularViewAdaptor<T,?> tableAdaptor) {
             this.beanClass = beanClass;
             this.tableAdaptor = tableAdaptor;
         }
+
+        @Override
+        public boolean matches(Class<?> clazz) {
+            try {
+                return verifyMatch(clazz);
+            } catch (NoClassDefFoundError ex) { return false; }
+        }
+
+        protected abstract boolean verifyMatch(Class<?> clazz);
+
         @Override
         public void itemEdit(ItemEdit.Event event) {
+
+            // setEditable(true) causes table to generate Fields and bind them to the propertyIds
+            // Field creation is done through the TableFieldFactory.
+
+            // However, this binding *does not* work the same as FieldGroup's binding
+            // FieldGroup wraps properties inside TransactionalPropertyWrappers
+            // on commit it checks whether properties are of this type and *throws an error*
+            // if they aren't!
+
+            // thus, we need to setEditable(true)
+            // and THEN invoke fieldBinder.setItemDataSource()
+
+            // IT IS NOT enough to attach to the currentItemChange event to do this binding
+            // because Table will RESET the bindings each time we do setEditable(true)!
+
             tableAdaptor.setEditable(true);
             tableAdaptor.setSelectable(false);
             tableAdaptor.focus();
 
+            // this line is equivalent to getting the table's fieldBinder and
+            // then invoking fieldBinder.setItemDataSource(...)
             tableAdaptor.setEditorDataSource(event.getSource().getCurrentItem());
-
 
         }
 
@@ -88,6 +114,7 @@ public class Tables {
             tableAdaptor.setSelectable(false);
             tableAdaptor.focus();
 
+            // see itemEdit() to understand why this is necessary
             tableAdaptor.setEditorDataSource(event.getSource().getCurrentItem());
         }
 
@@ -105,13 +132,13 @@ public class Tables {
 
 
         public void onCommit(OnCommit.Event event) {
-
             this.tableAdaptor.setEditable(false);
             this.tableAdaptor.commit();
 
-//            this.tableAdaptor.getFieldBinder().commit();
+            if (this.tableAdaptor instanceof TableAdaptor) {
+                ((TableAdaptor<?>) this.tableAdaptor).getComponent().refreshRowCache();
+            } // else: grid does not support this right now.
 
-            ((TableAdaptor<?>)this.tableAdaptor).getComponent().refreshRowCache();
 
             this.tableAdaptor.setSelectable(true);
 
@@ -134,6 +161,9 @@ public class Tables {
         }
     }
 
+    /**
+     * TableFieldFactory for inline editing in a table. Only one line at a time is editable. Uses a FieldBinder instance
+     */
     public static class SingleLineFieldFactory implements TableFieldFactory {
         private FieldBinder<?> fieldBinder;
 
@@ -146,12 +176,20 @@ public class Tables {
             if (itemId != fieldBinder.getNavigation().getCurrentItemId()) return null;
 
             Field<?> f = fieldBinder.getField(propertyId);
+
             if (f == null) {
-                fieldBinder.build(propertyId);
+
+                // if the propertyId is unknown/no field exists, generate it
+
+                // CAVEAT: this might *not* be what people want;
+                // e.g., users may want to NOT show a field if it is not explicitly declared
+                //       if users will request this feature, than this should be properly
+                //       configurable
+
+                return fieldBinder.build(propertyId);
+            } else {
+                return f;
             }
-
-
-            return fieldBinder.getField(propertyId);
         }
     }
 

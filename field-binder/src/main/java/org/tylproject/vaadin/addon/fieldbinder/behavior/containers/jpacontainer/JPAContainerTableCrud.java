@@ -36,6 +36,11 @@ public class JPAContainerTableCrud<T> extends Tables.BaseCrud<T> {
     }
 
     @Override
+    protected boolean verifyMatch(Class<?> clazz) {
+        return JPAContainer.class.isAssignableFrom(clazz);
+    }
+
+    @Override
     public void itemCreate(ItemCreate.Event event) {
         T bean = createBean();
 

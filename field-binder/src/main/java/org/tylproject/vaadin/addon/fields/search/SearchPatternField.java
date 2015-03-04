@@ -38,6 +38,9 @@ import org.tylproject.vaadin.addon.fields.CombinedField;
  *    <li>{@link org.tylproject.vaadin.addon.fields.search.SearchPatternComboBox}</li>
  *  </ul>
  *
+ *  {@link #getPatternFromValue()} generates the {@link org.tylproject.vaadin.addon.fields.search.SearchPattern}
+ *  instance from the pattern represented by the value {@link #getValue()} of this search field.
+ *
  */
 public abstract class SearchPatternField<T,F extends AbstractField<T>> extends CombinedField<T,T,F> {
 

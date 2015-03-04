@@ -22,6 +22,7 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontaine
 import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
 import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
+import org.vaadin.viritin.ListContainer;
 
 /**
  * The table field factory defines the default CRUD behavior for a table. It also injects
@@ -35,6 +36,10 @@ public class ListContainerTableCrud<T> extends Tables.BaseCrud<T> {
         super(beanClass, table);
     }
 
+    @Override
+    protected boolean verifyMatch(Class<?> clazz) {
+        return ListContainer.class.isAssignableFrom(clazz);
+    }
 
     @Override
     public void itemCreate(ItemCreate.Event event) {

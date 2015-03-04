@@ -37,16 +37,10 @@ import javax.annotation.Nonnull;
  *      <dd>When a Table-like field is being used</dd>
  *  </dl>
  *
- * Default implementations check the given containerClass <b>by name</b> to avoid
- * a NoClassDefFoundError if any of the supported Container implementations
- * is an unsatisfied dependency.
  *
  * Pre-defined Behavior implementations are available for JPAContainer, MongoContainer
  * and Viritin's ListContainer. If any of these are not available on the classpath
- * the Factory should not throw an error.
- *
- * Caveat: because class names are checked by string equality, third-party Container
- * subclasses may not work with the pre-defined Factories.
+ * the Factory <em>should not</em> throw an error.
  *
  */
 public interface BehaviorFactory<T> {

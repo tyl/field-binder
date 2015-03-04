@@ -33,6 +33,11 @@ public class ListContainerCrud<T> extends FieldBinders.BaseCrud<T> {
     }
 
     @Override
+    protected boolean verifyMatch(Class<?> clazz) {
+        return ListContainer.class.isAssignableFrom(clazz);
+    }
+
+    @Override
     public void itemCreate(ItemCreate.Event event) {
         super.itemCreate(event);
         T bean = createBean();

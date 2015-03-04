@@ -21,6 +21,8 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import com.vaadin.data.Container;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.jpacontainer.JPAContainerCrud;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.mongocontainer.MongoCrud;
 import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.SearchWindowFindListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
@@ -43,29 +45,25 @@ import java.util.Map;
  * BehaviorFactory for Table-like widgets.
  *
  * It internally uses a TabularViewAdaptor to adapt the Table API to Grid instances.
- *
- * Default Behavior Factory for a FieldBinder.
- *
  * Supported Containers:
  *
  * <ul>
- *  <li>org.vaadin.viritin.ListContainer</li>
- *  <li>org.vaadin.viritin.FilterableListContainer</li>
- *  <li>org.tylproject.vaadin.addon.BufferedMongoContainer</li>
- *  <li>com.vaadin.addon.jpacontainer.JPAContainer</li>
+ *  <li>{@link org.vaadin.viritin.ListContainer}</li>
+ *  <li>{@link org.vaadin.viritin.FilterableListContainer}</li>
+ *  <li>{@link org.tylproject.vaadin.addon.BufferedMongoContainer}</li>
+ *  <li>{@link com.vaadin.addon.jpacontainer.JPAContainer}</li>
  * </ul>
  *
- * The containerClass is checked by *name* so subclasses WILL NOT be recognized.
  *
  */
 public class DefaultTableBehaviorFactory<U> implements BehaviorFactory<U> {
 
     final Class<U> beanClass;
-    final TabularViewAdaptor<U,?> table;
+    final TabularViewAdaptor<U,?> tabularViewAdaptor;
 
-    public DefaultTableBehaviorFactory(Class<U> beanClass, TabularViewAdaptor<U,?> table) {
+    public DefaultTableBehaviorFactory(Class<U> beanClass, TabularViewAdaptor<U,?> tabularViewAdaptor) {
         this.beanClass = beanClass;
-        this.table = table;
+        this.tabularViewAdaptor = tabularViewAdaptor;
     }
 
     @Override
@@ -76,11 +74,11 @@ public class DefaultTableBehaviorFactory<U> implements BehaviorFactory<U> {
 
         // generates a search form for the columns that are visible in the table
         final SearchForm searchForm = new SearchForm(makePropertyIdToTypeMap(
-                table.getContainerDataSource(),
-                Arrays.asList(table.getVisibleColumns())));
+                tabularViewAdaptor.getContainerDataSource(),
+                Arrays.asList(tabularViewAdaptor.getVisibleColumns())));
 
         final FindListeners findListeners = new SearchWindowFindListeners(new SearchWindow(searchForm));
-        final CurrentItemChange.Listener currentItemListener = new Tables.CurrentItemChangeListener(table);
+        final CurrentItemChange.Listener currentItemListener = new Tables.CurrentItemChangeListener(tabularViewAdaptor);
 
         // we hard-code type strings so that the Java linker does not
         // raise an error when the Mongo, JPA addons (which are optional dependencies)
@@ -88,15 +86,15 @@ public class DefaultTableBehaviorFactory<U> implements BehaviorFactory<U> {
         switch (containerClass.getCanonicalName()) {
             case "org.vaadin.viritin.ListContainer":
             case "org.vaadin.viritin.FilterableListContainer":
-                crudListeners = new ListContainerTableCrud<U>(beanClass, table);
+                crudListeners = new ListContainerTableCrud<U>(beanClass, tabularViewAdaptor);
                 break;
 
             case "org.tylproject.vaadin.addon.BufferedMongoContainer":
-                crudListeners = new BufferedMongoTableCrud<U>(beanClass, table);
+                crudListeners = new BufferedMongoTableCrud<U>(beanClass, tabularViewAdaptor);
                 break;
 
             case "com.vaadin.addon.jpacontainer.JPAContainer":
-                crudListeners = new JPAContainerTableCrud<U>(beanClass, table);
+                crudListeners = new JPAContainerTableCrud<U>(beanClass, tabularViewAdaptor);
                 break;
 
             default:
@@ -107,6 +105,26 @@ public class DefaultTableBehaviorFactory<U> implements BehaviorFactory<U> {
         return new BehaviorFacade(currentItemListener, crudListeners, findListeners);
 
     }
+
+
+    protected CrudHandler findCrudListeners(Class<? extends Container> containerClass) {
+
+        CrudHandler crudListeners;
+
+        crudListeners = new ListContainerTableCrud<>(beanClass, tabularViewAdaptor);
+        if (crudListeners.matches(containerClass)) return crudListeners;
+
+        crudListeners = new BufferedMongoTableCrud<>(beanClass, tabularViewAdaptor);
+        if (crudListeners.matches(containerClass)) return crudListeners;
+
+        crudListeners = new JPAContainerTableCrud<>(beanClass, tabularViewAdaptor);
+        if (crudListeners.matches(containerClass)) return crudListeners;
+
+        throw new UnsupportedOperationException(
+                "Unknown container type: "+ containerClass.getCanonicalName());
+
+    }
+
 
     protected Map<Object, Class<?>> makePropertyIdToTypeMap(Container container, Collection<?> propertyIds) {
 

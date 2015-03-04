@@ -23,6 +23,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudHandler;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
 import org.tylproject.vaadin.addon.fields.search.FieldBinderSearchFieldManager;
@@ -64,7 +65,7 @@ public class FieldBinders {
      * (onCommit or onDiscard).
      *
      */
-    public static class BaseCrud<T> implements CrudListeners {
+    public abstract static class BaseCrud<T> implements CrudHandler {
 
         protected final FieldBinder<T> fieldBinder;
         private final Class<T> beanClass;
@@ -74,6 +75,15 @@ public class FieldBinders {
             this.beanClass = fieldBinder.getType();
             fieldBinder.setReadOnly(true);
         }
+
+        @Override
+        public final boolean matches(Class<?> clazz) {
+            try {
+                return verifyMatch(clazz);
+            } catch (NoClassDefFoundError e) { return false; }
+        }
+
+        protected abstract boolean verifyMatch(Class<?> clazz);
 
         public Class<T> getBeanClass() {
             return beanClass;

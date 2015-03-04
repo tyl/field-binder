@@ -31,6 +31,11 @@ public class JPAContainerCrud<T> extends FieldBinders.BaseCrud<T> {
     }
 
     @Override
+    protected boolean verifyMatch(Class<?> clazz) {
+        return JPAContainer.class.isAssignableFrom(clazz);
+    }
+
+    @Override
     public void onCommit(OnCommit.Event event) {
         super.onCommit(event);
         DataNavigation nav = event.getSource();

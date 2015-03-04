@@ -21,25 +21,31 @@ package org.tylproject.vaadin.addon.fields.search;
 
 import com.vaadin.data.Container;
 
+/**
+ * An immutable pair of (Object, Container.Filter)
+ */
 public class SearchPattern {
-    public static final SearchPattern Empty = new SearchPattern();
+    public static final SearchPattern Empty = new SearchPattern() {
+        @Override
+        public boolean isEmpty() {
+            return true;
+        }
+    };
 
     private final Object objectPattern;
     private final Container.Filter filter;
-    private final boolean empty;
 
     public static SearchPattern of(Object stringPattern, Container.Filter filter) {
         return new SearchPattern(stringPattern, filter);
     }
 
     private SearchPattern() {
-        this.filter = null; this.objectPattern = null; this.empty = true;
+        this.filter = null; this.objectPattern = null;
     }
 
     private SearchPattern(Object objectPattern, Container.Filter filter) {
         this.filter = filter;
         this.objectPattern = objectPattern;
-        this.empty = false;
     }
 
     public Object getObjectPattern() {
@@ -50,6 +56,6 @@ public class SearchPattern {
     }
 
     public boolean isEmpty() {
-        return empty;
+        return false;
     }
 }

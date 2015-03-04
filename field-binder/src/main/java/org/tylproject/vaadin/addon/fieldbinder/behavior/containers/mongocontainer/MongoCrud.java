@@ -28,18 +28,23 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.FieldBinders;
 /**
  * Created by evacchi on 27/11/14.
  */
-public class MongoCrud<M> extends FieldBinders.BaseCrud<M> {
+public class MongoCrud<T> extends FieldBinders.BaseCrud<T> {
 
-    public MongoCrud(FieldBinder<M> fieldBinder) {
+    public MongoCrud(FieldBinder<T> fieldBinder) {
         super(fieldBinder);
+    }
+
+    @Override
+    protected boolean verifyMatch(Class<?> clazz) {
+        return MongoContainer.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void onCommit(OnCommit.Event event) {
         super.onCommit(event);
         DataNavigation nav = event.getSource();
-        M bean = fieldBinder.getBeanDataSource();
-        MongoContainer<M> container = (MongoContainer<M>) nav.getContainer();
+        T bean = fieldBinder.getBeanDataSource();
+        MongoContainer<T> container = (MongoContainer<T>) nav.getContainer();
         Object id = container.addEntity(bean);
         nav.setCurrentItemId(id);
     }

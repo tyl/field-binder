@@ -34,6 +34,11 @@ public class BufferedMongoTableCrud<T> extends Tables.BaseCrud<T> {
     }
 
     @Override
+    protected boolean verifyMatch(Class<?> clazz) {
+        return BufferedMongoContainer.class.isAssignableFrom(clazz);
+    }
+
+    @Override
     public void itemEdit(ItemEdit.Event event) {
         BufferedMongoContainer<T> bmc = (BufferedMongoContainer<T>) event.getSource().getContainer();
 
