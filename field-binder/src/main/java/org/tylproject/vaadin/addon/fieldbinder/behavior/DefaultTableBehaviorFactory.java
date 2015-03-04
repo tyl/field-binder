@@ -70,8 +70,6 @@ public class DefaultTableBehaviorFactory<U> implements BehaviorFactory<U> {
     public Behavior forContainerType(@Nonnull Class<? extends Container> containerClass) {
         if (containerClass == null) throw new AssertionError("containerClass cannot be null");
 
-        final CrudListeners crudListeners;
-
         // generates a search form for the columns that are visible in the table
         final SearchForm searchForm = new SearchForm(makePropertyIdToTypeMap(
                 tabularViewAdaptor.getContainerDataSource(),
@@ -80,29 +78,7 @@ public class DefaultTableBehaviorFactory<U> implements BehaviorFactory<U> {
         final FindListeners findListeners = new SearchWindowFindListeners(new SearchWindow(searchForm));
         final CurrentItemChange.Listener currentItemListener = new Tables.CurrentItemChangeListener(tabularViewAdaptor);
 
-        // we hard-code type strings so that the Java linker does not
-        // raise an error when the Mongo, JPA addons (which are optional dependencies)
-        // are not available
-        switch (containerClass.getCanonicalName()) {
-            case "org.vaadin.viritin.ListContainer":
-            case "org.vaadin.viritin.FilterableListContainer":
-                crudListeners = new ListContainerTableCrud<U>(beanClass, tabularViewAdaptor);
-                break;
-
-            case "org.tylproject.vaadin.addon.BufferedMongoContainer":
-                crudListeners = new BufferedMongoTableCrud<U>(beanClass, tabularViewAdaptor);
-                break;
-
-            case "com.vaadin.addon.jpacontainer.JPAContainer":
-                crudListeners = new JPAContainerTableCrud<U>(beanClass, tabularViewAdaptor);
-                break;
-
-            default:
-                throw new UnsupportedOperationException("Unknown container type: "+ containerClass.getCanonicalName());
-
-        }
-
-        return new BehaviorFacade(currentItemListener, crudListeners, findListeners);
+        return new BehaviorFacade(currentItemListener, findCrudListeners(containerClass), findListeners);
 
     }
 
