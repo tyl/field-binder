@@ -51,7 +51,6 @@ public class CollectionTable<T,U extends Collection<T>> extends CollectionTabula
         final TabularViewAdaptor<T,?> adaptor = makeAdaptor(containedBeanClass, gridSupport);
         setAdaptor(adaptor);
 
-
         switch (gridSupport) {
             case UseTable:
                 tableAdaptor = (TableAdaptor) super.getAdaptor();
