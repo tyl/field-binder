@@ -222,7 +222,7 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
             logger.info("Commit operation was interrupted by user");
         } catch (ListenerMethod.MethodException ex) {
             if (ex.getCause() instanceof Validator.InvalidValueException) {
-                // ignore: Vaadin has already took care of it!
+                // ignore: Vaadin has already taken care of it!
             } else throw ex; // otherwise propagate!
         }
     }
@@ -243,11 +243,11 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
             throw new IllegalStateException("Container is empty or null");
         }
 
+        getEventRouter().fireEvent(new ItemEdit.Event(this));
+
         if (!isEditingMode()) {
             enterEditingMode();
         }
-
-        getEventRouter().fireEvent(new ItemEdit.Event(this));
     }
 
     @Override
