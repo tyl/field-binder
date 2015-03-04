@@ -284,8 +284,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     }
 
     public void setPropertyDataSource(Property newDataSource) {
-        if (newDataSource == null) return;
-        else super.setPropertyDataSource(newDataSource);
+        super.setPropertyDataSource(newDataSource);
 
         setupColumns();
     }
