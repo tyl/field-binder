@@ -38,6 +38,5 @@ public interface FilterFactory {
      * @throws com.vaadin.data.Validator.InvalidValueException
      *              when the target type and the pattern cannot identify a valid filter
      */
-    Container.Filter createFilter(Class<?> targetType, Object targetPropertyId, Object
-            pattern);
+    Container.Filter createFilter(Class<?> targetType, Object targetPropertyId, Object pattern);
 }

@@ -391,8 +391,8 @@ final public class BasicDataNavigation extends AbstractDataNavigation implements
 
         try {
             Class<? extends Container.Ordered> containerClass = getContainerType();
-            Behavior strategy = behaviorFactory.forContainerType(containerClass);
-            return this.withBehavior(strategy);
+            Behavior behavior = behaviorFactory.forContainerType(containerClass);
+            return this.withBehavior(behavior);
 
         } catch (IllegalStateException ex) {
             throw new IllegalStateException(

@@ -39,7 +39,6 @@ public class ListTable<T> extends CollectionTable<T,List<T>> {
         super(containedBeanClass, (Class) List.class, gridSupport);
     }
 
-
     public ListTable<T> withDefaultEditorBar() {
         super.withDefaultEditorBar();
         return this;
