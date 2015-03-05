@@ -46,34 +46,27 @@ public class TextZoomField extends ZoomField<Object> {
         this.setNullSelectionEnabled(false);
         return this;
     }
+
+    /**
+     * set the mode of operation
+     * @param mode mode of operation (FullValue or PropertyOnly)
+     */
     public TextZoomField withMode(Mode mode) {
         setMode(mode);
         return this;
     }
 
-    // value is a structured object *from which* we extract the display value
+    /**
+     * set the value to display in the field
+     */
     @Override
     public void setValue(@Nullable Object value) throws ReadOnlyException {
-
-
-
         super.setValue(value);
 
+        // backup readonly state
         boolean isReadOnly = getBackingField().isReadOnly();
         getBackingField().setReadOnly(false);
-
-
-        ZoomDialog zd = getZoomDialog();
-
-        String stringValue;
-        if (value == null) {
-            stringValue = null;
-        } else  {
-
-            stringValue = value.toString();
-        }
-
-        setDisplayValue(stringValue);
+        setDisplayValue(extractDisplayValue(value));
         getBackingField().setReadOnly(isReadOnly);
     }
 
