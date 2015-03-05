@@ -30,8 +30,7 @@ import org.tylproject.vaadin.addon.fields.drilldown.DrillDownWindow;
  * The zoom button opens a customizable popup from where the user may select an element.
  * The selected element will be set as the value of the field.
  *
- * The popup is customizable through the {@link #setZoomDialog(ZoomDialog)}
- * and {@link #withZoomDialog(ZoomDialog)} methods.
+ * The popup is customizable through the {@link #setZoomDialog(ZoomDialog)} method.
  *
  * The ZoomField can be seen as an "extended" ComboBox where a
  * popup window is shown instead of a small menu. Depending on the user's choice
@@ -52,15 +51,19 @@ import org.tylproject.vaadin.addon.fields.drilldown.DrillDownWindow;
  * </code>
  *
  * Most often, you will probably get an instance of a ZoomField from a
- * {@link org.tylproject.vaadin.addon.fieldbinder.FieldBinder}. <i>E.g,:</i>
+ * {@link org.tylproject.vaadin.addon.fieldbinder.FieldBinder}.
  *
- * <code>
- * <pre>
+ * Two modes of execution are supported. The default is FullValue: in this mode,
+ * when you select a row in the ZoomWindow, the corresponding bean is
+ * set as the <b>value</b> of the field. The propertyId that is given to the zoom dialog
+ * is only used as a <b>display value</b>.
  *
- * ZoomField<Person> binder.zoomField("firstName")
- *           .withZoomDialog(new GridZoomDialog(myGrid)).build();
- * </pre>
- * </code>
+ * The other mode is <b>PropertyId</b>, in this case, the propertyId
+ * given in the ZoomDialog is both the source of the display value
+ * <em>and</em> the value that will be assigned to the ZoomField.
+ *
+ *
+ * See the online developer documentation for details.
  *
  *
  */
@@ -68,7 +71,7 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
 
     public static enum Mode {
         /**
-         * The value is the complete bean
+         * The value is the complete bean (default)
          */
         FullValue,
         /**
@@ -93,6 +96,11 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         getBackingField().setNullRepresentation("");
     }
 
+    /**
+     * Allows/Disallows the "Select None" button in the ZoomWindow
+     *
+     * (this only makes sense when the drillDownOnly is NOT enabled!)
+     */
     public void setNullSelectionEnabled(boolean allowed) {
         this.nullSelectionEnabled = allowed;
     }
@@ -110,6 +118,9 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
     }
 
 
+    /**
+     * set the value to show in the embedded TextField ({@link #getBackingField()})
+     */
     public void setDisplayValue(Object displayValue) {
         getBackingField().setReadOnly(false);
 
@@ -145,12 +156,32 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         getButton().setEnabled(true);
     }
 
+    /**
+     * Switch the ZoomField to a DrillDown Field. A DrillDown Field
+     * is a ZoomField where no selection is possible in the ZoomWindow.
+     *
+     *
+     * It is meant to display the result of a query (e.g., the query
+     * that caused the current value to be displayed in this ZoomField).
+     *
+     * Read-only ZoomFields turn temporarily into DrillDown fields, until
+     * they turn back into writable state.
+     *
+     * In DrillDown state, the button is turned into a
+     * {@link com.vaadin.server.FontAwesome#ELLIPSIS_H}
+     *
+     */
     public ZoomField<T> drillDownOnly() {
         this.drillDownOnly = true;
         getButton().setIcon(FontAwesome.ELLIPSIS_H);
         return this;
     }
 
+    /**
+     * Invoked by the {@link ZoomWindow} when it's closed.
+     * Depending on the mode of execution, invokes {@link #setValue(Object)}
+     * with the entire bean, or the contents of the zoomed Container propertyId
+     */
     public void onZoomDialogDismissed() {
         final ZoomDialog zoomDialog = getZoomDialog();
         if (mode == Mode.FullValue) {
@@ -167,8 +198,14 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         @Override
         public void buttonClick(Button.ClickEvent event) {
             if (drillDownOnly || isReadOnly()) {
+                // if the button is clicked and it is readonly
+                // or it is drill-down, then show the DrillDown
+                // window decoration (only a close button is shown,
+                // selection is not allowed)
                 new DrillDownWindow<>(ZoomField.this).show();
             } else {
+                // otherwise, display the zoom window,
+                // where selection is allowed
                 new ZoomWindow<>(ZoomField.this).show();
             }
         }

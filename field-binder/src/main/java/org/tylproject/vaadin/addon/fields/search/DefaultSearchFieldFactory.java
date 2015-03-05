@@ -28,14 +28,14 @@ public class DefaultSearchFieldFactory implements SearchFieldFactory {
         //  hack: non-vaadin fields are currently unsupported
         if (originalField instanceof ZoomField) {
             ZoomField<?> zf = (ZoomField<?>) originalField;
-            Object nestedPropertyId = zf.getZoomDialog().getNestedPropertyId();
+            Object containerPropertyId = zf.getZoomDialog().getContainerPropertyId();
             ZoomField.Mode mode = zf.getMode();
             if (mode == ZoomField.Mode.PropertyId) {
                 // do nothing, it's already fine
             } else if (mode == ZoomField.Mode.FullValue) {
                 // should filter using a nested property
                 // must extract correct propertyType
-                f = createField(propertyId + "." + nestedPropertyId, ((ZoomField<?>) originalField).getZoomDialog().getNestedPropertyType());
+                f = createField(propertyId + "." + containerPropertyId, ((ZoomField<?>) originalField).getZoomDialog().getContainerPropertyType());
             } else {
                 // fallback
                 f = createField(propertyId, propertyType);

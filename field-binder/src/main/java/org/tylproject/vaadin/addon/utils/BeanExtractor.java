@@ -4,7 +4,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 
 /**
- * Created by evacchi on 10/02/15.
+ * Extract a Bean for a given (Item, itemId pair)
  */
 public interface BeanExtractor {
     public Object extract(Object itemId, Item item) throws IllegalArgumentException;

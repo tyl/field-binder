@@ -8,7 +8,12 @@ import org.tylproject.vaadin.addon.utils.BeanExtractor;
 import org.tylproject.vaadin.addon.utils.DefaultBeanExtractor;
 
 /**
- * Created by evacchi on 10/02/15.
+ * Base class for ZoomDialogs.
+ *
+ * The selected "value" is extracted from an Item using a
+ * {@link org.tylproject.vaadin.addon.utils.BeanExtractor}.
+ *
+ *
  */
 public abstract class AbstractZoomDialog extends VerticalLayout implements ZoomDialog {
 
@@ -26,7 +31,7 @@ public abstract class AbstractZoomDialog extends VerticalLayout implements ZoomD
     }
 
     @Override
-    public Object getNestedPropertyId() {
+    public Object getContainerPropertyId() {
         return propertyId;
     }
 
@@ -36,31 +41,27 @@ public abstract class AbstractZoomDialog extends VerticalLayout implements ZoomD
     }
 
     @Override
-    public AbstractZoomDialog withNestedPropertyId(Object propertyId, Class<?> propertyType) {
+    public AbstractZoomDialog withContainerPropertyId(Object propertyId, Class<?> propertyType) {
         this.propertyId = propertyId;
         this.propertyType = propertyType;
         return this;
     }
 
-    public Class<?> getNestedPropertyType() {
+    public Class<?> getContainerPropertyType() {
         return propertyType;
     }
 
     @Override
     public void dismiss() {}
 
-    @Override
-    public boolean hasNestedPropertyId() {
-        return getNestedPropertyId() != null;
-    }
 
     public Item getSelectedItem() {
         return getContainer().getItem(getSelectedItemId());
     }
     @Override
-    public Property<?> getNestedProperty() {
+    public Property<?> getContainerProperty() {
         Item item = getSelectedItem();
-        return item.getItemProperty(getNestedPropertyId());
+        return item.getItemProperty(getContainerPropertyId());
     }
 
     @Override
@@ -72,7 +73,7 @@ public abstract class AbstractZoomDialog extends VerticalLayout implements ZoomD
     public Object getSelectedValue() {
         Item item = getSelectedItem();
         if (item == null) return null;
-        return item.getItemProperty(getNestedPropertyId()).getValue();
+        return item.getItemProperty(getContainerPropertyId()).getValue();
     }
 
     @Override

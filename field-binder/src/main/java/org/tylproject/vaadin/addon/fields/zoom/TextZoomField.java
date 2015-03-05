@@ -24,7 +24,6 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.TextField;
 
 import javax.annotation.Nullable;
-import javax.xml.soap.Text;
 
 /**
  * Shows a non-editable TextField that zooms on a data source
@@ -66,7 +65,10 @@ public class TextZoomField extends ZoomField<Object> {
         // backup readonly state
         boolean isReadOnly = getBackingField().isReadOnly();
         getBackingField().setReadOnly(false);
+
         setDisplayValue(extractDisplayValue(value));
+
+        // restore state
         getBackingField().setReadOnly(isReadOnly);
     }
 
@@ -81,12 +83,16 @@ public class TextZoomField extends ZoomField<Object> {
         }
     }
 
+    /**
+     * Return the value associated to the nested propertyId in the given ZoomDialog
+     * or the entire value, depending on the execution {@link org.tylproject.vaadin.addon.fields.zoom.ZoomField.Mode}
+     */
     private Object extractDisplayValue(Object value) {
         if (value == null) return null;
 
         switch (getMode()) {
             case FullValue:
-                String propertyId = getZoomDialog().getNestedPropertyId().toString();
+                String propertyId = getZoomDialog().getContainerPropertyId().toString();
                 BeanItem<Object> beanItem = new BeanItem<Object>(value, propertyId);
                 if (isDottedProperty(propertyId)) {
                     beanItem.addNestedProperty(propertyId.toString());

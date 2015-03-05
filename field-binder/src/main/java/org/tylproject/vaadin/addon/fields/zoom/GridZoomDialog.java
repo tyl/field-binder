@@ -20,7 +20,6 @@
 package org.tylproject.vaadin.addon.fields.zoom;
 
 import com.vaadin.data.Container;
-import com.vaadin.data.Item;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.fields.FilterableGrid;
 
@@ -44,12 +43,12 @@ public class GridZoomDialog extends AbstractZoomDialog {
     public GridZoomDialog(Grid grid, Object propertyId) {
         this(grid);
         Container c = grid.getContainerDataSource();
-        withNestedPropertyId(propertyId, c.getType(propertyId));
+        withContainerPropertyId(propertyId, c.getType(propertyId));
         setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
     }
 
     public GridZoomDialog(Object propertyId, Container.Indexed container) {
-        withNestedPropertyId(propertyId, container.getType(propertyId));
+        withContainerPropertyId(propertyId, container.getType(propertyId));
 
         FilterableGrid grid = new FilterableGrid(container);
 
@@ -79,8 +78,8 @@ public class GridZoomDialog extends AbstractZoomDialog {
     }
 
 
-    public GridZoomDialog withNestedPropertyId(Object propertyId, Class<?> propertyType) {
-        super.withNestedPropertyId(propertyId, propertyType);
+    public GridZoomDialog withContainerPropertyId(Object propertyId, Class<?> propertyType) {
+        super.withContainerPropertyId(propertyId, propertyType);
         return this;
     }
 

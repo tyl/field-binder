@@ -42,19 +42,22 @@ public interface ZoomDialog {
     public void setReadOnly(boolean readOnly);
 
     public Container getContainer();
-    public ZoomDialog withNestedPropertyId(Object propertyId, Class<?> propertyType);
-    public Class<?> getNestedPropertyType();
-    public Object getNestedPropertyId();
-    public boolean hasNestedPropertyId();
-    public Property<?> getNestedProperty();
+    public ZoomDialog withContainerPropertyId(Object propertyId, Class<?> propertyType);
+    public Class<?> getContainerPropertyType();
+    public Object getContainerPropertyId();
+    public Property<?> getContainerProperty();
 
-    /**
-     * Return the selected value
-     */
     public Object getSelectedItemId();
     public Item getSelectedItem();
 
+    /**
+     * Return the selected item as a bean (if possible!)
+     */
     public Object getSelectedBean();
+
+    /**
+     * Return the selected value associated to the NestedPropertyId
+     */
     public Object getSelectedValue();
 
     void setNullSelectionAllowed(boolean allowed);
