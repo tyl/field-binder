@@ -4,9 +4,6 @@ import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
 
-/**
- * Created by evacchi on 10/02/15.
- */
 public class DefaultSearchFieldFactory implements SearchFieldFactory {
     public SearchPatternField<?,?> createField(Object propertyId, Class<?> propertyType) {
 
@@ -45,6 +42,8 @@ public class DefaultSearchFieldFactory implements SearchFieldFactory {
 
 
         } else
+
+        // heuristic to ignore unknown fields
         if (!originalField.getClass().getCanonicalName().startsWith("com.vaadin")) {
             unsupportedField(f);
         }

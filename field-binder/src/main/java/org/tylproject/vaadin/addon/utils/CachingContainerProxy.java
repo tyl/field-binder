@@ -15,7 +15,11 @@ import java.util.List;
 import java.util.WeakHashMap;
  
 /**
- * Created by evacchi on 19/02/15.
+ * Keeps the currently selected item "on hold" to prevent lazy containers from re-generating the instance each time
+ * {@link #getItem(Object)} is invoked.
+ *
+ * The currently selected item is implemented by passing a Navigator instance.
+ *
  */
 public class CachingContainerProxy<T extends Container.Indexed
                                            & Container.Filterable
