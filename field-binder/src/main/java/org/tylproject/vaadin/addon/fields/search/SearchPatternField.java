@@ -28,7 +28,7 @@ import org.tylproject.vaadin.addon.fieldbinder.behavior.FilterFactory;
 import org.tylproject.vaadin.addon.fields.CombinedField;
 
 /**
- * A Field that returns a filter for a given text pattern; it also immediately applies the
+ * Base class for a Field that returns a filter for a given text pattern; it also immediately applies the
  * filter to a Container instance, if it is given.
  *
  * Each field is contains an input field (usually textual) and a button to clear its contents.

@@ -29,7 +29,11 @@ import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
 import java.util.ResourceBundle;
 
 /**
- * Created by evacchi on 27/01/15.
+ * A Window decorator for {@link org.tylproject.vaadin.addon.fields.zoom.ZoomDialog}
+ * that only supports viewing.
+ *
+ * Used by the {@link org.tylproject.vaadin.addon.fields.zoom.ZoomField}
+ * when it is read-only or it is in drilldown mode.
  */
 public class DrillDownWindow<T> extends Window implements Button.ClickListener {
     private final ZoomField<T> field;

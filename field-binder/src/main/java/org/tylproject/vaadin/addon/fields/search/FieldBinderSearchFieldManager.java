@@ -29,7 +29,8 @@ import java.util.Map;
 
 
 /**
- * Create a SearchForm for the fields of a FieldBinder
+ * Extends the generic SearchFieldManager to infer the
+ * SearchPatternField definitions and bindings from a given FieldBinder instance.
  */
 public class FieldBinderSearchFieldManager extends SearchFieldManager {
     final FieldBinder<?> fieldBinder;

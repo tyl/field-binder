@@ -32,7 +32,13 @@ public class SearchPattern {
         }
     };
 
+    /**
+     * an object representing a search pattern (usually a string value)
+     */
     private final Object objectPattern;
+    /**
+     * the filter that corresponds to the objectPattern
+     */
     private final Container.Filter filter;
 
     public static SearchPattern of(Object stringPattern, Container.Filter filter) {

@@ -24,7 +24,7 @@ import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.TextField;
 
 /**
- * Created by evacchi on 23/01/15.
+ * A text field where users input a search pattern
  */
 public class SearchPatternTextField extends SearchPatternField<String, TextField> {
 

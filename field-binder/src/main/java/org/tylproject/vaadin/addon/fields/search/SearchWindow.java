@@ -32,7 +32,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * A window that wraps a SearchForm
+ * A window that wraps a {@link SearchForm}
  */
 public class SearchWindow extends Window implements SearchDialog {
     final SearchForm searchForm;

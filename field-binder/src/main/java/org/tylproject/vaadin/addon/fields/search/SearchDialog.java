@@ -22,15 +22,37 @@ package org.tylproject.vaadin.addon.fields.search;
 import java.util.Collection;
 
 /**
- * Created by evacchi on 23/01/15.
+ * Interface for an abstract Search Dialog
  */
 public interface SearchDialog {
+    /**
+     * Shows the dialog
+     */
     void show();
 
+    /**
+     * Closes the dialog and <em>signals</em> user's intention to actually
+     * apply the filters.
+     *
+     * In practice, this is the method that would get called when users click an "apply" button.
+     * Implementation is NOT required to actuallt apply the filters immediately
+     */
     void apply();
 
-    Collection<SearchPattern> getSearchPatterns();
+    /**
+     * clear the filters; does not dismiss the dialog
+     */
     void clear();
+
+    /**
+     * dismiss the dialog without applying new filters;
+     * restores the previous search criteria in the dialog
+     */
     void cancel();
+
+    /**
+     * return the search patterns that the user have described by interacting with the dialog
+     */
+    Collection<SearchPattern> getSearchPatterns();
 
 }

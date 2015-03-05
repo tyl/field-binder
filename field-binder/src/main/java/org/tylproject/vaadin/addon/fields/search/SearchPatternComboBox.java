@@ -28,22 +28,26 @@ import com.vaadin.ui.ComboBox;
 import java.util.EnumSet;
 
 /**
- * Created by evacchi on 23/01/15.
+ * A SearchPatternField that displays a ComboBox.
+ *
+ * To be used with Enums or a Container
  */
 public class SearchPatternComboBox extends SearchPatternField<Object, ComboBox> {
 
     private static final String CAPTION_PROPERTY_ID = "Caption";
 
-    public SearchPatternComboBox(Object propertyId, Class<? extends java.lang.Enum>
-    propertyType) {
+    public SearchPatternComboBox(Object propertyId, Class<? extends java.lang.Enum> propertyType) {
         super(new ComboBox(), Object.class, propertyId, propertyType);
         setFieldDefaults(getBackingField());
     }
 
 
-    public SearchPatternComboBox(Object propertyId, Class<?> propertyType, Container
-            .Filterable targetContainer) {
+    public SearchPatternComboBox(Object propertyId,
+                                 Class<?> propertyType,
+                                 Container.Filterable targetContainer) {
+
         super(new ComboBox(), Object.class, propertyId, propertyType, targetContainer);
+
         setFieldDefaults(getBackingField());
         addDefaultBackingFieldListeners(targetContainer);
     }
