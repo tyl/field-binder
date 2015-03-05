@@ -83,14 +83,24 @@ public class TextZoomField extends ZoomField<Object> {
 
     private Object extractDisplayValue(Object value) {
         if (value == null) return null;
-        String propertyId = getZoomDialog().getNestedPropertyId().toString();
-        BeanItem<Object> beanItem = new BeanItem<Object>(value, propertyId);
-        if (isDottedProperty(propertyId)) {
-            beanItem.addNestedProperty(propertyId.toString());
-        }
-        Property displayProperty = beanItem.getItemProperty(propertyId);
 
-        return value == null? null : displayProperty.getValue();
+        switch (getMode()) {
+            case FullValue:
+                String propertyId = getZoomDialog().getNestedPropertyId().toString();
+                BeanItem<Object> beanItem = new BeanItem<Object>(value, propertyId);
+                if (isDottedProperty(propertyId)) {
+                    beanItem.addNestedProperty(propertyId.toString());
+                }
+                Property displayProperty = beanItem.getItemProperty(propertyId);
+
+                return value == null ? null : displayProperty.getValue();
+
+            case PropertyId:
+                return value;
+
+            default:
+                throw new IllegalStateException("Unsupported mode " + getMode());
+        }
     }
 
     // heuristic to understand if the property is actually nested
