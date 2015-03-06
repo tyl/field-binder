@@ -16,7 +16,8 @@ public class DefaultBeanExtractor implements BeanExtractor {
         final Class<?> itemClass = item.getClass();
         Object bean;
 
-        if (ListContainer.DynaBeanItem.class.isAssignableFrom(itemClass)) {
+        if (ListContainer.DynaBeanItem.class.isAssignableFrom(itemClass)
+            || DynaBeanItem.class.isAssignableFrom(itemClass)) {
             bean = itemId;
         } else
         if (isJPAContainer(itemClass)) {
