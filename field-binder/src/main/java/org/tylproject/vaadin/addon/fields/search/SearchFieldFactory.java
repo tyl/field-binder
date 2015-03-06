@@ -4,7 +4,7 @@ import com.vaadin.ui.Field;
 
 public interface SearchFieldFactory {
     /**
-     * Create a SearchPatternField for the given propertyId, type
+     * Create a SearchPatternField for the given (propertyId, type) pair
      */
     public SearchPatternField<?,?> createField(Object propertyId, Class<?> propertyType);
 

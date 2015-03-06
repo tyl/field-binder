@@ -35,18 +35,14 @@ import java.util.Map;
 public class FieldBinderSearchFieldManager extends SearchFieldManager {
     final FieldBinder<?> fieldBinder;
 
+    /**
+     * automatically configures the field from the given fieldBinder instance
+     */
     public FieldBinderSearchFieldManager(FieldBinder<?> fieldBinder) {
         super(Collections.<Object,Class<?>>emptyMap());
         this.fieldBinder = fieldBinder;
         makeSearchFieldsFromFieldBinder();
     }
-
-    public void addPropertyFromField(Object propertyId, Class<?> propertyType, Field<?> field) {
-        this.propertyIdToType.put(propertyId, propertyType);
-        SearchPatternField<?,?> searchPatternField = getSearchFieldFactory().createField(propertyId, propertyType, field);
-        this.propertyIdToSearchPatternField.put(propertyId, searchPatternField);
-    }
-
 
 
     private void makeSearchFieldsFromFieldBinder() {
@@ -75,12 +71,18 @@ public class FieldBinderSearchFieldManager extends SearchFieldManager {
         }
     }
 
-    public void replaceFields() {
-        if (fieldBinder == null) {
-            throw new IllegalStateException(
-                    "Cannot replace fields. No FieldBinder instance was given");
-        }
 
+    public void addPropertyFromField(Object propertyId, Class<?> propertyType, Field<?> field) {
+        this.propertyIdToType.put(propertyId, propertyType);
+        SearchPatternField<?,?> searchPatternField = getSearchFieldFactory().createField(propertyId, propertyType, field);
+        this.propertyIdToSearchPatternField.put(propertyId, searchPatternField);
+    }
+
+
+    /**
+     * replace the fields in the fieldbinder in this SearchFieldManager
+     */
+    public void replaceFields() {
         makeSearchFieldsFromFieldBinder();
 
         for (Map.Entry<Object, SearchPatternField<?,?>> e : getPropertyIdToSearchPatternField().entrySet()) {
@@ -96,13 +98,10 @@ public class FieldBinderSearchFieldManager extends SearchFieldManager {
         }
     }
 
+    /**
+     * restore the fields in the fieldBinder
+     */
     public void restoreFields() {
-
-        if (fieldBinder == null) {
-            throw new IllegalStateException(
-                    "Cannot restore fields. No FieldBinder instance was given");
-        }
-
         for (Map.Entry<Object, SearchPatternField<?,?>> e : getPropertyIdToSearchPatternField().entrySet()) {
             Object propertyId = e.getKey();
             Field<?> replacement = e.getValue();

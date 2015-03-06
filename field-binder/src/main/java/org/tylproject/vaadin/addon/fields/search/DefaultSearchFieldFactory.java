@@ -5,6 +5,14 @@ import com.vaadin.ui.Field;
 import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
 
 public class DefaultSearchFieldFactory implements SearchFieldFactory {
+
+    /**
+     * In this implementation, {@link com.vaadin.ui.ComboBox}es are distinguished
+     * from other Fields.
+     *
+     * ComboBoxes get their own {@link SearchPatternComboBox};
+     * other fields are rendered using a {@link SearchPatternTextField}.
+     */
     public SearchPatternField<?,?> createField(Object propertyId, Class<?> propertyType) {
 
         SearchPatternField f ;
@@ -17,6 +25,9 @@ public class DefaultSearchFieldFactory implements SearchFieldFactory {
         return f;
     }
 
+    /**
+     * Properly configures search fields, depending on the settings/type of the given originalField
+     */
     @Override
     public SearchPatternField<?, ?> createField(Object propertyId, Class<?> propertyType, Field<?> originalField) {
         if (originalField == null) throw new IllegalArgumentException("originalField must be non-null");

@@ -39,7 +39,12 @@ public class SearchFieldManager {
     protected SearchFieldFactory searchFieldFactory = new DefaultSearchFieldFactory();
 
     /**
-     * Create a SearchForm for pairs of the form (propertyId, type)
+     * Create a SearchForm for pairs of the form (propertyId, type).
+     *
+     * For each (propertyId, type) a search field is automatically generated.
+     * This constructor can be used to configure a search with a subset of the search fields
+     * of an original input form.
+     *
      */
     public SearchFieldManager(Map<Object, Class<?>> propertyIdToType) {
         for (Map.Entry<Object, Class<?>> e: propertyIdToType.entrySet()) {
@@ -47,6 +52,9 @@ public class SearchFieldManager {
         }
     }
 
+    /**
+     * Creates a search form for all the properties contained in the given Container
+     */
     public SearchFieldManager(Container container) {
         for (Object propertyId: container.getContainerPropertyIds()) {
             addProperty(propertyId, container.getType(propertyId));
