@@ -76,11 +76,6 @@ public abstract class FieldDecorator<T, FT, F extends AbstractField<FT>> extends
     public void setRequiredError(String requiredMessage) {
         getBackingField().setRequiredError(requiredMessage);
     }
-//
-//    @Override
-//    public void addListener(Listener listener) {
-//        getBackingField().addListener(listener);
-//    }
 
     @Override
     public void addStyleName(String style) {

@@ -22,7 +22,7 @@ package org.tylproject.vaadin.addon.datanav.resources;
 import java.util.ListResourceBundle;
 
 /**
- * Created by evacchi on 09/12/14.
+ * Default bundle of strings
  */
 public class Strings extends ListResourceBundle {
 

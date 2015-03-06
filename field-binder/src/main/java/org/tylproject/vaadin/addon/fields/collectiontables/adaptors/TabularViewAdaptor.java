@@ -9,10 +9,9 @@ import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 
 /**
- * An interface to bridge between the Table API and the Grid API
+ * An interface to bridge the Table API and the Grid API
  */
 public interface TabularViewAdaptor<T,U extends Component> {
-
 
     public void setVisibleColumns(Object... visibleColumns);
 

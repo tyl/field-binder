@@ -46,8 +46,6 @@ public abstract class CombinedField<T, FT, F extends AbstractField<FT>> extends 
         this.button = button;
         this.type = type;
 
-//        this.getBackingField().setConverter(type);
-
         rootLayout.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         rootLayout.addComponents(field, button);
 

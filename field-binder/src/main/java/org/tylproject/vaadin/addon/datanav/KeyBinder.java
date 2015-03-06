@@ -31,7 +31,7 @@ import static com.vaadin.event.ShortcutAction.KeyCode.*;
 import static com.vaadin.event.ShortcutAction.ModifierKey.*;
 
 /**
- * Created by evacchi on 19/11/14.
+ * Manages default key bindings
  */
 public class KeyBinder implements Action.Handler {
 

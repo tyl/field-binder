@@ -23,19 +23,20 @@ import com.vaadin.data.Container;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
-import org.tylproject.vaadin.addon.datanav.resources.Strings;
 
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
 /**
- * Created by evacchi on 05/12/14.
+ * Displays "i of n" label, where i is the number of the current item in the container,
+ * and n is the total number of items in the navigator.
  */
 public class NavigationLabel extends CustomComponent {
 
     private static final ResourceBundle resourceBundle =
-            ResourceBundle.getBundle(Strings.class.getCanonicalName());
+        ResourceBundle.getBundle(
+            org.tylproject.vaadin.addon.datanav.resources.Strings.class.getCanonicalName());
 
     private final DataNavigation navigation;
     private final Label label;

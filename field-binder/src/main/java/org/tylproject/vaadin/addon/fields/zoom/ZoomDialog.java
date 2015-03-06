@@ -35,6 +35,10 @@ public interface ZoomDialog {
      * or the selectedItemId otherwise
      */
     public void dismiss();
+
+    /**
+     * Show the window, and pass in the currently selected value
+     */
     public void show(Object value);
 
     public Component getDialogContents();

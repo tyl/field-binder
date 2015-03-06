@@ -22,7 +22,7 @@ package org.tylproject.vaadin.addon.fields.collectiontables;
 import com.vaadin.data.Container;
 
 /**
- * Created by evacchi on 19/12/14.
+ * A ListTable designed to be stand-alone
  */
 public class BeanTable<T> extends ListTable<T> {
 
