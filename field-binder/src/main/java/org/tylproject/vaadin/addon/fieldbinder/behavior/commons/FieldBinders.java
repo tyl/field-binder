@@ -168,8 +168,8 @@ public class FieldBinders {
      */
     public static class Find<T> implements FindListeners {
         boolean clearToFindMode = false;
-        final FieldBinder<T> binder;
-        final FieldBinderSearchFieldManager searchFieldManager;
+        protected final FieldBinder<T> binder;
+        protected final FieldBinderSearchFieldManager searchFieldManager;
         public Find(FieldBinder<T> binder) {
             this.binder = binder;
             this.searchFieldManager = new FieldBinderSearchFieldManager(binder);

@@ -29,10 +29,10 @@ import org.tylproject.vaadin.addon.datanav.events.OnFind;
 import org.tylproject.vaadin.addon.fields.search.SearchPattern;
 
 /**
- * Created by evacchi on 23/01/15.
+ * Stand-alone search popup
  */
 public class SearchWindowFindListeners implements FindListeners {
-    private final SearchWindow searchWindow;
+    protected final SearchWindow searchWindow;
 
     public SearchWindowFindListeners(SearchWindow searchWindow) {
         this.searchWindow = searchWindow;

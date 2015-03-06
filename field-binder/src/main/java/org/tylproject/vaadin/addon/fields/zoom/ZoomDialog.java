@@ -25,7 +25,8 @@ import com.vaadin.data.Property;
 import com.vaadin.ui.Component;
 
 /**
- * Created by evacchi on 19/01/15.
+ * Interface for the contents of a {@link org.tylproject.vaadin.addon.fields.zoom.ZoomWindow}
+ * (displayed by clicking the button of a {@link org.tylproject.vaadin.addon.fields.zoom.ZoomField})
  */
 public interface ZoomDialog {
 

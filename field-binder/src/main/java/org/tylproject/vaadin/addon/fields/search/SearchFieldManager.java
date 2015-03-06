@@ -88,6 +88,10 @@ public class SearchFieldManager {
         this.propertyIdToSearchPatternField.put(propertyId, f);
     }
 
+    public SearchPatternField<?,?> getSearchPatternField(Object propertyId) {
+        return propertyIdToSearchPatternField.get(propertyId);
+    }
+
     /**
      * Return the inferred filters for the values currently in the form fields
      */
