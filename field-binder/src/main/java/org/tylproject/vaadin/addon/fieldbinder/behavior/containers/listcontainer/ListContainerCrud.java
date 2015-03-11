@@ -19,7 +19,11 @@
 
 package org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontainer;
 
+import com.vaadin.addon.jpacontainer.JPAContainer;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.events.ItemCreate;
+import org.tylproject.vaadin.addon.datanav.events.OnCommit;
+import org.tylproject.vaadin.addon.datanav.events.OnDiscard;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.FieldBinders;
 import org.vaadin.viritin.ListContainer;
@@ -38,11 +42,12 @@ public class ListContainerCrud<T> extends FieldBinders.BaseCrud<T> {
     }
 
     @Override
-    public void itemCreate(ItemCreate.Event event) {
-        super.itemCreate(event);
-        T bean = createBean();
-        ListContainer<T> container = ((ListContainer<T>) event.getSource().getContainer());
-        container.addItem(bean);
-        event.getSource().setCurrentItemId(bean);
+    public void onCommit(OnCommit.Event event) {
+        super.onCommit(event);
+        DataNavigation nav = event.getSource();
+        T bean = fieldBinder.getBeanDataSource();
+        nav.getContainer().addItem(bean);
+        nav.setCurrentItemId(bean);
     }
+
 }
