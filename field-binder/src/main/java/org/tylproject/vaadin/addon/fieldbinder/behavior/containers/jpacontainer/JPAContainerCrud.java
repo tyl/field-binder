@@ -22,6 +22,7 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior.containers.jpacontainer
 import com.vaadin.addon.jpacontainer.JPAContainer;
 import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.datanav.events.OnCommit;
+import org.tylproject.vaadin.addon.datanav.events.OnDiscard;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.FieldBinders;
 
@@ -43,6 +44,14 @@ public class JPAContainerCrud<T> extends FieldBinders.BaseCrud<T> {
         JPAContainer<T> container = (JPAContainer<T>) nav.getContainer();
         Object id = container.addEntity(bean);
         nav.setCurrentItemId(id);
+        container.commit();
     }
 
+    @Override
+    public void onDiscard(OnDiscard.Event event) {
+        super.onDiscard(event);
+        DataNavigation nav = event.getSource();
+        JPAContainer<T> container = (JPAContainer<T>) nav.getContainer();
+        container.discard();
+    }
 }
