@@ -75,8 +75,17 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
             ((AbstractTextField) f).setConverter(type);
         }
 
+        f = configureJodaTimeField(type, f);
+
+
+        ((AbstractField<?>) f).setImmediate(true);
+        return (T)f;
+    }
+
+    private Field<?> configureJodaTimeField(Class<?> type, Field<?> f) {
         boolean isJoda = DateTime.class.isAssignableFrom(type);
 
+        // FIXME: pull out Joda-specific logic for date-time
         if (isJoda) {
             DateField dateField = createField(Date.class, DateField.class) ;
             f = dateField;
@@ -123,10 +132,7 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
 
             }
         }
-
-
-        ((AbstractField<?>) f).setImmediate(true);
-        return (T)f;
+        return f;
     }
 
     @Override
@@ -136,15 +142,15 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
         AbstractSelect select;
 
         if (fieldType.isAssignableFrom(ComboBox.class)) {
-            select = new ComboBox();
-            select.setImmediate(true);
-            select.setNullSelectionAllowed(false);
-            return select;
-        }
-        else
-        if (OptionGroup.class.isAssignableFrom(fieldType)){
-            select = new OptionGroup();
-            select.setMultiSelect(false);
+                select = new ComboBox();
+                select.setImmediate(true);
+                select.setNullSelectionAllowed(false);
+                return select;
+            }
+            else
+            if (OptionGroup.class.isAssignableFrom(fieldType)){
+                select = new OptionGroup();
+                select.setMultiSelect(false);
             return select;
         }
         else {
@@ -175,8 +181,7 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
     }
 
     @Override
-    protected void populateWithEnumData(AbstractSelect select, Class<? extends Enum>
-    enumClass) {
+    protected void populateWithEnumData(AbstractSelect select, Class<? extends Enum> enumClass) {
         select.removeAllItems();
         for (Object p : select.getContainerPropertyIds()) {
             select.removeContainerProperty(p);

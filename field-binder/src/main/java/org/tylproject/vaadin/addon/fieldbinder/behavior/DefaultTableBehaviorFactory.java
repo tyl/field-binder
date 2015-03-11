@@ -21,17 +21,12 @@ package org.tylproject.vaadin.addon.fieldbinder.behavior;
 
 import com.vaadin.data.Container;
 import org.tylproject.vaadin.addon.datanav.events.CurrentItemChange;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.jpacontainer.JPAContainerCrud;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.mongocontainer.MongoCrud;
-import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.SearchWindowFindListeners;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.commons.Tables;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.jpacontainer
-.JPAContainerTableCrud;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontainer
-.ListContainerTableCrud;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.mongocontainer
-.BufferedMongoTableCrud;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.jpacontainer.JPAContainerTableCrud;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.listcontainer.ListContainerTableCrud;
+import org.tylproject.vaadin.addon.fieldbinder.behavior.containers.mongocontainer.BufferedMongoTableCrud;
+import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 import org.tylproject.vaadin.addon.fields.search.SearchForm;
 import org.tylproject.vaadin.addon.fields.search.SearchWindow;
 

@@ -24,7 +24,6 @@ import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.events.*;
 import org.tylproject.vaadin.addon.fieldbinder.*;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudHandler;
-import org.tylproject.vaadin.addon.fieldbinder.behavior.CrudListeners;
 import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TableAdaptor;
 import org.tylproject.vaadin.addon.fields.collectiontables.adaptors.TabularViewAdaptor;
 
@@ -40,15 +39,15 @@ public class Tables {
      * Link Table selection to the DataNavigation instance
      */
     public static class CurrentItemChangeListener implements CurrentItemChange.Listener {
-        private final TabularViewAdaptor<?,?> table;
+        private final TabularViewAdaptor<?,?> tabularViewAdaptor;
 
-        public CurrentItemChangeListener(TabularViewAdaptor<?,?> table) {
-            this.table = table;
+        public CurrentItemChangeListener(TabularViewAdaptor<?,?> tabularViewAdaptor) {
+            this.tabularViewAdaptor = tabularViewAdaptor;
         }
 
         @Override
         public void currentItemChange(CurrentItemChange.Event event) {
-            table.select(event.getNewItemId());
+            tabularViewAdaptor.select(event.getNewItemId());
         }
 
     }

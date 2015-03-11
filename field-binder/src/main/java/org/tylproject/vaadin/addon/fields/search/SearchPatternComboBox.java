@@ -60,8 +60,10 @@ public class SearchPatternComboBox extends SearchPatternField<Object, ComboBox> 
             backingField.removeContainerProperty(p);
         }
 
+        // setup displaying property ids
         backingField.addContainerProperty(CAPTION_PROPERTY_ID, String.class, "");
         backingField.setItemCaptionPropertyId(CAPTION_PROPERTY_ID);
+
         @SuppressWarnings("unchecked")
         EnumSet<?> enumSet = EnumSet.allOf((Class<java.lang.Enum>) getTargetPropertyType());
         for (Object r : enumSet) {

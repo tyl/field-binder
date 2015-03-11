@@ -191,6 +191,8 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
 
     /**
      * Bind an existing field to a propertyId
+     *
+     * If the caption of the field is null, it will be auto-generated
      */
     public <T extends Field<?>> T bind(T field, Object propertyId) {
         try {
@@ -210,8 +212,9 @@ public abstract class AbstractFieldBinder<T extends FieldGroup> implements Seria
             if (hasItemDataSource())
                 getFieldGroup().bind(field, propertyId);
 
+            // FIXME this is quite a side-effect. Verify if it makes sense to remove it
             if (field.getCaption() == null) {
-                field.setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
+                field.setCaption(createCaptionByPropertyId(propertyId));
             }
 
             configureField(field);

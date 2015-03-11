@@ -24,6 +24,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Validator;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.shared.util.SharedUtil;
 import com.vaadin.ui.*;
 import org.tylproject.vaadin.addon.datanav.BasicDataNavigation;
@@ -68,6 +69,7 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
 
         this.adaptor = adaptor;
 
+        // makes current selected item "stick" between container.getItem(currentId) invocations
         final CachingContainerProxy<?> proxy = new CachingContainerProxy<>(navigation);
         adaptor.setContainerDataSource(proxy);
 
@@ -93,7 +95,9 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     }
 
 
-
+    // this may throw an exception if the adaptor is a GRID adaptor
+    // grids do not include a FieldBinder, but a FieldGroup
+    // it may be worth to "adapt" this in some way
     public FieldBinder<T> getFieldBinder() {
         return getAdaptor().getFieldBinder();
     }
@@ -204,28 +208,6 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         // FIXME reset sort?
     }
 
-
-
-
-    protected void setListContainer(FilterableListContainer<T> listContainer) {
-//        this.listContainer = listContainer;
-        if (listContainer == null) {
-            // clears the table contents
-
-            adaptor.setContainerDataSource(null);
-            adaptor.select(null);
-            navigation.setContainer(null);
-        } else {
-
-            adaptor.setContainerDataSource(listContainer);
-            // clear selection
-            adaptor.select(null);
-            navigation.setContainer(listContainer);
-
-            setupColumns();
-        }
-    }
-
     protected FilterableListContainer<T> getListContainer() {
         return listContainer;
     }
@@ -252,6 +234,15 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
         return (U) getPropertyDataSource().getValue();
     }
 
+//    @Override
+//    public void setConverter(Converter<U, ?> converter) {
+//        throw new UnsupportedOperationException();
+//    }
+//
+//    @Override
+//    public void setConverter(Class<?> datamodelType) {
+//        throw new UnsupportedOperationException();
+//    }
 
     /*
      * return the actual value, pulling it from the container
@@ -260,26 +251,34 @@ public class CollectionTabularView<T,U extends Collection<T>> extends CustomFiel
     protected U getInternalValue() {
 
         FilterableListContainer<T> container = getListContainer();
-        if (container == null) return super.getInternalValue();
 
         // the value must be pulled from the internal collection
         // we know this is a ListContainer, so we just get all the Ids == all the values
-        Collection<T> allItems = container.getItemIds();
-        U propertyCollection = super.getInternalValue();
+        Collection<T> allItems = container.getItemIds(); // ListContainer returns the list of all the values
+        U internalValue = super.getInternalValue();
 
         // if they are the same instance, no need to copy the values over
-        if (propertyCollection == allItems) {
-            return propertyCollection;
+        // i.e.: if the collection returned by container.getItemIds()
+        //       is the same as the internal value, then there is no
+        //       need to copy over the values; we can just return the collection itself.
+
+        if (internalValue == allItems) {
+            return internalValue;
         }
 
-        if (propertyCollection == null) {
+        // this is only needed during initialization/binding
+        // there is a moment during which the internal state IS NOT consistent
+        // (caused by setPropertyDataSource())
+        // the internalValue is null, but the listContainer contains an empty collection
+        // we'll just ignore the inconsistency, and return null
+        if (internalValue == null) {
             return null;
         }
 
-        propertyCollection.clear();
-        propertyCollection.addAll(container.getItemIds());
+        internalValue.clear();
+        internalValue.addAll(allItems);
 
-        return propertyCollection;
+        return internalValue;
 
     }
 

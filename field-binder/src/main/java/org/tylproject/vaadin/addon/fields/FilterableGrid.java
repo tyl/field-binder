@@ -116,7 +116,7 @@ public class FilterableGrid extends Grid {
         Class<?> type = container.getType(propertyId);
 
         if (java.lang.Enum.class.isAssignableFrom(type)) {
-            f = new SearchPatternComboBox(propertyId, (Class<java.lang.Enum>)type, container);
+            f = new SearchPatternComboBox(propertyId, type, container);
         } else {
             f = new SearchPatternTextField(propertyId, type, container);
         }

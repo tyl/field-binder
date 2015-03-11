@@ -115,10 +115,18 @@ public class CollectionTable<T,U extends Collection<T>> extends CollectionTabula
      */
     public Table getTable() {
         if (tableAdaptor == null) {
-            throw new IllegalStateException("This CollectionTable");
+            throw new IllegalStateException("This CollectionTable does not use a com.vaadin.ui.Table");
         }
 
         return (Table) getAdaptor().getComponent();
+    }
+
+    public Grid getGrid() {
+        if (gridAdaptor == null) {
+            throw new IllegalStateException("This CollectionTable does not use a com.vaadin.ui.Grid");
+        }
+
+        return (Grid) getAdaptor().getComponent();
     }
 
 }
