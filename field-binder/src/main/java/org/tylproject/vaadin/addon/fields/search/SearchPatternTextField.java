@@ -34,11 +34,10 @@ public class SearchPatternTextField extends SearchPatternField<String, TextField
     }
 
 
-    public SearchPatternTextField(Object propertyId, Class<?> propertyType, Container
-    .Filterable targetContainer) {
+    public SearchPatternTextField(Object propertyId, Class<?> propertyType, Container.Filterable targetContainer) {
         super(new TextField(), String.class, propertyId, propertyType, targetContainer);
         setFieldDefaults(getBackingField());
-        addDefaultBackingFieldListeners(getTargetContainer());
+        addDefaultBackingFieldListeners();
     }
 
     private void setFieldDefaults(TextField backingField) {
@@ -46,11 +45,8 @@ public class SearchPatternTextField extends SearchPatternField<String, TextField
         backingField.setImmediate(true);
     }
 
-    private void addDefaultBackingFieldListeners(Container.Filterable targetContainer) {
-        if (!getBackingField().getListeners(
-                FieldEvents.TextChangeEvent.class).contains(textChangeListener)) {
-            getBackingField().addTextChangeListener(textChangeListener);
-        }
+    private void addDefaultBackingFieldListeners() {
+        getBackingField().addTextChangeListener(textChangeListener);
     }
 
     private final FieldEvents.TextChangeListener textChangeListener = new FieldEvents.TextChangeListener() {

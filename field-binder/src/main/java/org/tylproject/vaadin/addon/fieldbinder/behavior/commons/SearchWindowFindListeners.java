@@ -20,6 +20,7 @@
 package org.tylproject.vaadin.addon.fieldbinder.behavior.commons;
 
 import com.vaadin.data.Container;
+import org.tylproject.vaadin.addon.datanav.DataNavigation;
 import org.tylproject.vaadin.addon.fieldbinder.FieldBinder;
 import org.tylproject.vaadin.addon.fieldbinder.behavior.FindListeners;
 import org.tylproject.vaadin.addon.fields.search.SearchForm;
@@ -44,7 +45,8 @@ public class SearchWindowFindListeners implements FindListeners {
 
     @Override
     public void clearToFind(ClearToFind.Event event) {
-        searchWindow.callFindOnClose(event.getSource());
+        final DataNavigation navigation = event.getSource();
+        searchWindow.callFindEventOnWindowClosed(navigation);
         searchWindow.show();
     }
 

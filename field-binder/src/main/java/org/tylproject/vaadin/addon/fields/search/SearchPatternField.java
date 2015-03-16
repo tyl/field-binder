@@ -51,7 +51,13 @@ public abstract class SearchPatternField<T,F extends AbstractField<T>> extends C
     private final Object targetPropertyId;
     private final Class<?> targetPropertyType;
 
-
+    /**
+     *
+     * @param backingField input field
+     * @param fieldType value type of the backingField
+     * @param propertyId the propertyId of the Filter
+     * @param propertyType the type of the property in the Filter
+     */
     public SearchPatternField(final F backingField, final Class<T> fieldType,
                               final Object propertyId, final Class<?> propertyType) {
         super(backingField, new Button(FontAwesome.TIMES_CIRCLE), fieldType);
@@ -72,7 +78,8 @@ public abstract class SearchPatternField<T,F extends AbstractField<T>> extends C
 
 
     /**
-     *
+     * @param backingField input field
+     * @param fieldType value type of the backingField
      * @param propertyId the propertyId of the Filter
      * @param propertyType the type of the property in the Filter
      * @param targetContainer the container the Filter should be applied to
@@ -129,15 +136,12 @@ public abstract class SearchPatternField<T,F extends AbstractField<T>> extends C
 
         // remove last applied filter from the container
         SearchPattern lastPattern = getLastAppliedSearchPattern();
-        if (lastPattern != null)
+        if (lastPattern != null) {
             filterableContainer.removeContainerFilter(lastPattern.getFilter());
+        }
 
         // if the objectPattern is non-empty
-        if (objectPattern != null
-            && (
-              (!(objectPattern instanceof String))
-              || !((String)objectPattern).isEmpty())
-            ) {
+        if (!isEmpty(objectPattern)) {
 
             SearchPattern newPattern = getPattern(objectPattern);
 
@@ -148,15 +152,19 @@ public abstract class SearchPatternField<T,F extends AbstractField<T>> extends C
         return lastPattern;
     }
 
+    private boolean isEmpty(Object objectPattern) {
+        return objectPattern == null
+                || ((objectPattern instanceof String) // it is a string
+                     && ((String) objectPattern).isEmpty()); // or, it is a string, and it is empty
+    }
+
     public SearchPattern getPatternFromValue() {
         if (!isEnabled()) return SearchPattern.Empty;
         else return getPattern(getValue());
     }
 
     private SearchPattern getPattern(Object objectPattern) {
-        if (objectPattern == null) return SearchPattern.Empty;
-        if (objectPattern instanceof String && ((String)objectPattern).isEmpty()) return SearchPattern.Empty;
-
+        if (isEmpty(objectPattern)) return SearchPattern.Empty;
         else return SearchPattern.of(objectPattern, filterFactory.createFilter(targetPropertyType, targetPropertyId, objectPattern));
     }
 

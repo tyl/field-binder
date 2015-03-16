@@ -93,7 +93,7 @@ public class SearchWindow extends Window implements SearchDialog {
 
     public SearchWindow(FieldBinder<?> fieldBinder) {
         this(new SearchForm(fieldBinder));
-        callFindOnClose(fieldBinder.getNavigation());
+        callFindEventOnWindowClosed(fieldBinder.getNavigation());
     }
 
     private DataNavigation closeListenerNavigation;
@@ -102,7 +102,7 @@ public class SearchWindow extends Window implements SearchDialog {
     /**
      * Set to automatically invoke navigation.find() when the apply() button is clicked
      */
-    public SearchWindow callFindOnClose(final DataNavigation navigation) {
+    public SearchWindow callFindEventOnWindowClosed(final DataNavigation navigation) {
         // if same as previous, prevent enqueueing twice
         if (closeListenerNavigation == navigation) return this;
 

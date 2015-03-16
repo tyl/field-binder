@@ -186,12 +186,16 @@ public class ZoomField<T> extends CombinedField<T, String, TextField> {
         final ZoomDialog zoomDialog = getZoomDialog();
         if (mode == Mode.FullValue) {
             setValue((T) zoomDialog.getSelectedBean());
-            setDisplayValue(zoomDialog.getSelectedValue());
+//            setDisplayValue(zoomDialog.getSelectedValue());
         } else if (mode == Mode.PropertyId) {
             setValue((T) zoomDialog.getSelectedValue());
         } else {
             throw new IllegalStateException("Unknown mode " + mode);
         }
+    }
+
+    public void onZoomDialogNone() {
+        setValue(null);
     }
 
     class ButtonClickListener implements Button.ClickListener {

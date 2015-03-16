@@ -57,6 +57,8 @@ public class DrillDownWindow<T> extends Window implements Button.ClickListener {
         makeLayout(field);
 
         setContent(rootLayout);
+
+        //FIXME these values should not be hardcoded
         setWidth("1200px");
         setHeight("400px");
 

@@ -1,5 +1,6 @@
 package org.tylproject.vaadin.addon.fields.search;
 
+import com.vaadin.data.Container;
 import com.vaadin.ui.Field;
 
 public interface SearchFieldFactory {
@@ -7,6 +8,11 @@ public interface SearchFieldFactory {
      * Create a SearchPatternField for the given (propertyId, type) pair
      */
     public SearchPatternField<?,?> createField(Object propertyId, Class<?> propertyType);
+
+    /**
+     * Create a SearchPatternField for the given (propertyId, type) pair
+     */
+    public SearchPatternField<?,?> createField(Object propertyId, Class<?> propertyType, Container.Filterable container);
 
     /**
      * Create a SearchPatternField for the given propertyId, type, copying other settings

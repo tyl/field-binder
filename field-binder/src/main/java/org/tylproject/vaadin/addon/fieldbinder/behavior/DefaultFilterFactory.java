@@ -226,8 +226,7 @@ public class DefaultFilterFactory implements FilterFactory {
     }
 
     protected final Pattern numericRangePattern = Pattern.compile("^(.+)\\.\\.(.+)$");
-    protected Container.Filter numericRange(Object propertyId, Class<?> numberClass,
-    String pattern) {
+    protected Container.Filter numericRange(Object propertyId, Class<?> numberClass, String pattern) {
         Matcher matcher = numericRangePattern.matcher(pattern);
         if (!matcher.find()) return null;
         String left = matcher.group(1);

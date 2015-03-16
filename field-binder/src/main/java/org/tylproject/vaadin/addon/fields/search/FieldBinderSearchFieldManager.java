@@ -53,6 +53,8 @@ public class FieldBinderSearchFieldManager extends SearchFieldManager {
 
         // if there are more fields in the binder
         // than the fields there are in our maps, let us create them again
+        // "lazy initialization": that is, the numbers do not match because the manager
+        //                        has been initialized too early
         if (numNonCollectionFields > numSearchFields) {
             this.getPropertyIdToType().clear();
             this.getPropertyIdToSearchPatternField().clear();

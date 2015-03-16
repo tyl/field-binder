@@ -22,9 +22,7 @@ package org.tylproject.vaadin.addon.fields;
 import com.vaadin.data.Container;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Grid;
-import org.tylproject.vaadin.addon.fields.search.SearchPatternComboBox;
-import org.tylproject.vaadin.addon.fields.search.SearchPatternField;
-import org.tylproject.vaadin.addon.fields.search.SearchPatternTextField;
+import org.tylproject.vaadin.addon.fields.search.*;
 
 import java.util.*;
 
@@ -33,9 +31,10 @@ import java.util.*;
  */
 public class FilterableGrid extends Grid {
 
-    final Map<Object,Field<?>> filterMap = new HashMap<>();
-    final Grid.HeaderRow filterRow = this.appendHeaderRow();
+    final Map<Object,Field<?>> searchFieldMap = new HashMap<>();
+    final Grid.HeaderRow searchFieldRow = this.appendHeaderRow();
     Collection<?> visibleColumnIds;
+    final SearchFieldFactory searchFieldFactory = new DefaultSearchFieldFactory();
 
 
     public FilterableGrid() {
@@ -62,7 +61,14 @@ public class FilterableGrid extends Grid {
         setWidth("100%");
         setHeight("100%");
 
-        makeFilters((Container.Filterable)dataSource, dataSource.getContainerPropertyIds(), filterRow);
+        makeSearchHeader(
+                (Container.Filterable) dataSource,
+                dataSource.getContainerPropertyIds(),
+                searchFieldRow);
+    }
+
+    public SearchFieldFactory getSearchFieldFactory() {
+        return searchFieldFactory;
     }
 
     /**
@@ -76,7 +82,8 @@ public class FilterableGrid extends Grid {
             addColumn(propertyId);
         }
         visibleColumnIds = Arrays.asList(propertyIds);
-        makeFilters((Container.Filterable)getContainerDataSource(), visibleColumnIds, filterRow);
+        makeSearchHeader((Container.Filterable) getContainerDataSource(), visibleColumnIds,
+                searchFieldRow);
     }
 
     protected void assertAllPropertyIdsExist(Collection<?> containerPropertyIds, Object[] propertyIds) {
@@ -93,49 +100,39 @@ public class FilterableGrid extends Grid {
         }
     }
 
-    protected void makeFilters(Container.Filterable container, Collection<?> visibilePropertyIds, HeaderRow filterRow) {
+    protected void makeSearchHeader(Container.Filterable container, Collection<?> visiblePropertyIds, HeaderRow filterRow) {
+        final Map<Object,Field<?>> localFilterMap = makeSearchFields(container, visiblePropertyIds);
+        prepareFilterHeader(visiblePropertyIds, localFilterMap, filterRow);
 
-        final Map<Object,Field<?>> localFilterMap = makeFilterFields(container, visibilePropertyIds);
-        prepareFilterHeader(visibilePropertyIds, localFilterMap, filterRow);
-
-        setFilterMap(localFilterMap);
+        setSearchFieldMap(localFilterMap);
     }
 
-    protected Map<Object, Field<?>> makeFilterFields(Container.Filterable container, Collection<?> visiblePropertyIds) {
-        final Map<Object,Field<?>> localFilterMap = new HashMap<>();
-        for (Object propertyId: visiblePropertyIds) {
 
-            localFilterMap.put(propertyId, makeFilterField(propertyId, container));
-        }
-        return localFilterMap;
-    }
-
-    protected Field<?> makeFilterField(final Object propertyId, Container.Filterable container) {
-        SearchPatternField f ;
-
-        Class<?> type = container.getType(propertyId);
-
-        if (java.lang.Enum.class.isAssignableFrom(type)) {
-            f = new SearchPatternComboBox(propertyId, type, container);
-        } else {
-            f = new SearchPatternTextField(propertyId, type, container);
-        }
-
-        return f;
-    }
-
-    protected void prepareFilterHeader(Collection<?> propertyIds, Map<Object, Field<?>>
-     localFilterMap, HeaderRow filterRow) {
+    protected void prepareFilterHeader(Collection<?> propertyIds, Map<Object, Field<?>> searchFieldMap, HeaderRow filterRow) {
         for (Object propertyId: propertyIds) {
             HeaderCell cell = filterRow.getCell(propertyId);
-            Field<?> f = localFilterMap.get(propertyId);
+            Field<?> f = searchFieldMap.get(propertyId);
             cell.setComponent(f);
         }
     }
 
-    protected void setFilterMap(Map<Object, ? extends Field<?>> filterMap) {
-        this.filterMap.clear();
-        this.filterMap.putAll(filterMap);
+    protected Map<Object, Field<?>> makeSearchFields(Container.Filterable container, Collection<?> visiblePropertyIds) {
+        final Map<Object, Field<?>> localSearchFieldMap = new HashMap<>();
+        for (Object propertyId : visiblePropertyIds) {
+            localSearchFieldMap.put(propertyId, makeSearchField(propertyId, container));
+        }
+        return localSearchFieldMap;
+    }
+
+    protected Field<?> makeSearchField(final Object propertyId, Container.Filterable container) {
+        Class<?> type = container.getType(propertyId);
+        return searchFieldFactory.createField(propertyId, type, container);
+    }
+
+
+    protected void setSearchFieldMap(Map<Object, ? extends Field<?>> searchFieldMap) {
+        this.searchFieldMap.clear();
+        this.searchFieldMap.putAll(searchFieldMap);
     }
 
 

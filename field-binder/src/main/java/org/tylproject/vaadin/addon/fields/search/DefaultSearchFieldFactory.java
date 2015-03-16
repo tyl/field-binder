@@ -1,5 +1,6 @@
 package org.tylproject.vaadin.addon.fields.search;
 
+import com.vaadin.data.Container;
 import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import org.tylproject.vaadin.addon.fields.zoom.ZoomField;
@@ -20,6 +21,19 @@ public class DefaultSearchFieldFactory implements SearchFieldFactory {
             f = new SearchPatternComboBox(propertyId, (Class<java.lang.Enum>)propertyType);
         } else {
             f = new SearchPatternTextField(propertyId, propertyType);
+        }
+        f.setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
+        return f;
+    }
+
+    @Override
+    public SearchPatternField<?, ?> createField(Object propertyId, Class<?> propertyType, Container.Filterable container) {
+
+        SearchPatternField f ;
+        if (java.lang.Enum.class.isAssignableFrom(propertyType)) {
+            f = new SearchPatternComboBox(propertyId, propertyType, container);
+        } else {
+            f = new SearchPatternTextField(propertyId, propertyType, container);
         }
         f.setCaption(DefaultFieldFactory.createCaptionByPropertyId(propertyId));
         return f;

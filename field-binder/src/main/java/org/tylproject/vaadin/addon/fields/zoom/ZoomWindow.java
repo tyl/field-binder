@@ -54,6 +54,8 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
         makeLayout(field);
 
         setContent(rootLayout);
+
+        // FIXME these values should not be hardcoded
         setWidth("1200px");
         setHeight("400px");
 
@@ -79,8 +81,6 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
 
         content.setContent(dialogContents);
         content.setSizeFull();
-//            rootLayout.setMargin(true);
-
 
         rootLayout.setSizeFull();
         rootLayout.setExpandRatio(content, 1);
@@ -93,18 +93,10 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
 
         buttonBar.removeAllComponents();
 
+        // initialize buttons depending on null selection option
+        // should be moved somewhere else, but it cannot be done during initialization
         if (field.isNullSelectionEnabled()) {
             buttonBar.addComponents(spacer, btnSelect, btnSelectNone, btnCancel);
-            btnSelectNone.setClickShortcut(ShortcutAction.KeyCode.ENTER,
-                    ShortcutAction.ModifierKey.SHIFT);
-        } else {
-            buttonBar.addComponents(spacer, btnSelect, btnCancel);
-        }
-
-
-
-        if (field.isNullSelectionEnabled()) {
-            buttonBar.addComponents(btnSelect, btnSelectNone, btnCancel);
             btnSelectNone.setClickShortcut(ShortcutAction.KeyCode.ENTER,
                     ShortcutAction.ModifierKey.SHIFT);
         } else {
@@ -124,13 +116,13 @@ public class ZoomWindow<T> extends com.vaadin.ui.Window implements Button.ClickL
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
+        final ZoomDialog zd = field.getZoomDialog();
+        zd.dismiss();
         if (event.getSource() == btnSelect) {
-            final ZoomDialog zd = field.getZoomDialog();
-            zd.dismiss();
             field.onZoomDialogDismissed();
         } else
         if (event.getSource() == btnSelectNone) {
-            field.setValue(null);
+            field.onZoomDialogNone();
         }
         this.close();
     }

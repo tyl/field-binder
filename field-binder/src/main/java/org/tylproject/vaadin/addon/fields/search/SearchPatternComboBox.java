@@ -49,7 +49,7 @@ public class SearchPatternComboBox extends SearchPatternField<Object, ComboBox> 
         super(new ComboBox(), Object.class, propertyId, propertyType, targetContainer);
 
         setFieldDefaults(getBackingField());
-        addDefaultBackingFieldListeners(targetContainer);
+        addDefaultBackingFieldListeners();
     }
 
     private void setFieldDefaults(ComboBox backingField) {
@@ -72,11 +72,8 @@ public class SearchPatternComboBox extends SearchPatternField<Object, ComboBox> 
         }
     }
 
-    private void addDefaultBackingFieldListeners(Container.Filterable targetContainer) {
-        if (!getBackingField().getListeners(
-                FieldEvents.TextChangeEvent.class).contains(valueChangeListener)) {
-            getBackingField().addValueChangeListener(valueChangeListener);
-        }
+    private void addDefaultBackingFieldListeners() {
+        getBackingField().addValueChangeListener(valueChangeListener);
     }
 
     private final Property.ValueChangeListener valueChangeListener = new Property.ValueChangeListener() {
