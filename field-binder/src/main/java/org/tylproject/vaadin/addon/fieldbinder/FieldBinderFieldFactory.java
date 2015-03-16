@@ -83,8 +83,12 @@ public class FieldBinderFieldFactory extends DefaultFieldGroupFieldFactory {
     }
 
     private Field<?> configureJodaTimeField(Class<?> type, Field<?> f) {
-        boolean isJoda = DateTime.class.isAssignableFrom(type);
-
+        boolean isJoda = false;
+        try {
+            isJoda = DateTime.class.isAssignableFrom(type);
+        } catch (NoClassDefFoundError ex) {
+            // then it can't be joda
+        }
         // FIXME: pull out Joda-specific logic for date-time
         if (isJoda) {
             DateField dateField = createField(Date.class, DateField.class) ;
