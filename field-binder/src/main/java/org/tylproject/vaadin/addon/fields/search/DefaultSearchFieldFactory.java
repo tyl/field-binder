@@ -60,11 +60,8 @@ public class DefaultSearchFieldFactory implements SearchFieldFactory {
                 f = createField(propertyId + "." + containerPropertyId, ((ZoomField<?>) originalField).getZoomDialog().getContainerPropertyType());
             } else {
                 // fallback
-                f = createField(propertyId, propertyType);
                 unsupportedField(f);
             }
-
-
 
         } else
 
